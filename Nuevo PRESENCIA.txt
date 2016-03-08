@@ -1,0 +1,193 @@
+'---------------- HCO
+CREATE TABLE `marcajeshco` (                                                                               
+            `Entrada` int(11) NOT NULL default '0',                                                               
+	    `Traspaso` tinyint(1) NOT NULL default '0',                                                                   	
+            `idTrabajador` int(11) default '0',                                                                   
+            `Fecha` date default NULL,                                                                            
+            `Correcto` tinyint(1) default NULL,                                                                   
+            `IncFinal` smallint(6) default '0',                                                                   
+            `HorasTrabajadas` decimal(10,2) default '0.00',                                                       
+            `HorasIncid` decimal(10,2) default '0.00',                                                            
+            `idHorario` smallint(5) unsigned NOT NULL default '0',                                                
+            `HorasDto` decimal(10,2) NOT NULL default '0.00',                                                     
+            `Festivo` tinyint(3) unsigned NOT NULL default '0',                                                   
+            `Baja` tinyint(3) unsigned NOT NULL default '0',                                                      
+            PRIMARY KEY  (`Entrada`,`Traspaso`),                                                                             
+            KEY `F_idTrabajador` (`idTrabajador`),                                                                
+            KEY `id_Horario` (`idHorario`),                                                                       
+            KEY `inci` (`IncFinal`)                                                                              
+          ) ENGINE=MyIsam;
+
+
+
+CREATE TABLE `incidenciasgeneradashco` (    
+                        `Id` int(11) NOT NULL default '0', 
+		        `Traspaso` tinyint(1) NOT NULL default '0',      
+                        `EntradaMarcajehco` int(11) default '0',  
+                        `Incidencia` smallint(6) default '0',  
+                        `horas` decimal(10,2) default '0.00',  
+                        PRIMARY KEY  (`Id`,`traspaso`)                    
+                      ) ENGINE=MyISAM
+
+
+ CREATE TABLE `incidenciashco` (                  
+               `IdInci` smallint(6) NOT NULL default '0',  
+	       `Traspaso` tinyint(1) NOT NULL default '0', 	
+               `NomInci` char(50) default NULL,            
+               `Continuada` tinyint(1) default NULL,       
+               `ExcesoDefecto` tinyint(1) default NULL,    
+               PRIMARY KEY  (`IdInci`,`traspaso`)                     
+             ) ENGINE=MyISAM DEFAULT CHARSET=latin1   ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ALTER TABLE `empresas` ADD `Pathproces` VARCHAR(255);
+ALTER TABLE `empresas` ADD `Nomproces` VARCHAR(35);
+
+ALTER TABLE `empresas` ADD `servidor` VARCHAR(30) ;
+ALTER TABLE `empresas` ADD `usuario` VARCHAR(30) ;
+ALTER TABLE `empresas` ADD `pass` VARCHAR(30) ;
+ALTER TABLE `empresas` ADD `configreloj` VARCHAR(255) ;
+ALTER TABLE `tmpdatosmes` ADD `codusu` MEDIUMINT;
+ALTER TABLE `tmpcombinada` ADD `idinci` SMALLINT UNSIGNED DEFAULT "0";
+ALTER TABLE `tmpcombinada` ADD `HR` DECIMAL(5,2) ;
+ALTER TABLE `tmpdatosmes` CHANGE `codusu` `codusu` MEDIUMINT(9)  NOT NULL;
+ALTER TABLE `tmpdatosmes` DROP PRIMARY KEY, ADD PRIMARY KEY (Mes,Trabajador,codusu);
+
+
+
+
+CREATE TABLE `tmpdiastrabajinci` (
+  `idtrabajador` int(11) NOT NULL default '0',
+  `incidencia` smallint(6) NOT NULL default '0',
+  `horas` decimal(10,2) default NULL,
+  `codusu` mediumint(9) NOT NULL default '0',
+  `dias` smallint(5) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`codusu`,`idtrabajador`,`incidencia`)
+) ENGINE=MyISAM;
+
+
+'............En usuarios. Donde se lleve la gestion de usuarios
+
+ALTER TABLE `usuarios` ADD `nivelpres` TINYINT DEFAULT "-1";
+CREATE TABLE empresasPres (
+  codempre tinyint(4) NOT NULL default '0',
+  nomempre varchar(50) NOT NULL default '',
+  nomresum varchar(15) NOT NULL default '',
+  PRIMARY KEY  (codempre)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Empresas para Presencia en el sistema';
+
+
+CREATE TABLE usuarioempresaPres (
+  codusu smallint(1) unsigned NOT NULL default '0',
+  codempre smallint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (codusu,codempre)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+
+
+
+
+********************************************************
+********************************************************
+********************************************************
+
+
+cAMBIOS DURANTE EL TRASPASO DE ACCESS A MYSQL
+----------------------------------------------
+
+	-UPDATE  campos SET tipodato="TIME" where campo like "*hor*" and tipodato="DATE"
+
+	- Las tablas subhorarios,estan horaentrada salida ... que TAMBIEN son horas
+
+	-Modificar fichajes: SON HORAS
+
+
+
+********************************************************
+********************************************************
+********************************************************
+
+
+CREATE TABLE stipocontrol (
+  tipocontrol smallint(1) unsigned NOT NULL default '0',	
+  desccontrol varchar(30),
+  PRIMARY KEY  (tipocontrol)
+) TYPE=myisam;
+
+
+ALTER TABLE `horarios` CHANGE `TotalHoras` `TotalHoras` DECIMAL(10,2) ;
+ALTER TABLE `horarios` CHANGE `DtoAlm` `DtoAlm` DECIMAL(10,2);
+ALTER TABLE `horarios` CHANGE `DtoMer` `DtoMer` DECIMAL(10,2) ;
+
+ALTER TABLE `subhorarios` DROP PRIMARY KEY, ADD PRIMARY KEY (DiaSemana,IdHorario);
+ALTER TABLE `subhorarios` DROP `IdSubHorario`;
+
+ALTER TABLE `horarios` ADD `Rectificar` TINYINT UNSIGNED DEFAULT "0" NOT NULL;
+
+
+drop table modificarfichajes;
+CREATE TABLE ModificarFichajes (
+       idhorario SMALLINT  NOT NULL,
+       Inicio time NOT NULL,
+       Fin time NOT NULL,
+       Modificada time NOT NULL,
+       Primary Key (idhorario,inicio)
+) TYPE=MyISAM  ;
+
+
+CREATE TABLE calendarioT (
+  idtrabajador int(1)  NOT NULL ,	
+  fecha date not NULL,
+  idhorario smallint not null,
+  PRIMARY KEY  (idtrabajador,fecha,idhorario)
+) TYPE=myisam;
+
+
+ALTER TABLE `trabajadores` ADD `email` VARCHAR(100) ;
+ALTER TABLE `trabajadores` DROP `Imagen`;
+
+
+
+CREATE TABLE calendario (
+  idcal smallint(1) unsigned NOT NULL default '0',	
+	descripcion varchar(50),
+  PRIMARY KEY  (idcal)
+) TYPE=myisam;
+
+CREATE TABLE calendariof (
+  idcal smallint(1) unsigned NOT NULL default '0',	
+	fecha date,
+	descripcion varchar(50),
+  PRIMARY KEY  (idcal,fecha)
+) TYPE=myisam
+
+
+CREATE TABLE calendariol (
+  idcal smallint(1) unsigned NOT NULL default '0',	
+	fecha date not null,
+	idhorario smallint not null,
+  PRIMARY KEY  (idcal,fecha)
+) TYPE=myisam
+
+
+CREATE TABLE `timagen` (`idTrabajador` INT (3) UNSIGNED DEFAULT '0' NOT NULL, `imagen` BLOB, PRIMARY KEY(`idTrabajador`))  COMMENT = "Imagenes" TYPE = MyISAM;
+
+
+ALTER TABLE `empresas` ADD `imgtrabaj` TINYINT UNSIGNED DEFAULT "0" NOT NULL;
+ALTER TABLE `empresas` ADD `reloj` TINYINT UNSIGNED DEFAULT "0";
+ALTER TABLE `marcajes` ADD `idHorario` SMALLINT UNSIGNED NOT NULL;
+ALTER TABLE `marcajes` ADD INDEX id_Horario (idHorario);

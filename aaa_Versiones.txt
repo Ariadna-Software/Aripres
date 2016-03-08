@@ -1,0 +1,5 @@
+1_12:
+	-Existe la opcion de leer el fichero de datos carcater a caracter. A ver si funciona
+	   surge pq en herbelca, en el pC de manuel le daba error leyendo las lienas con el input line
+
+1_13:   -Abrir conexion. Falla en vista
