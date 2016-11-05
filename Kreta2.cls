@@ -19,6 +19,13 @@ Option Explicit
 Private mvarNumero As Integer 'copia local
 Private mvarSocket As Winsock
 Private mvarRecibido As String
+
+
+Private mvarDeshabilitado As Boolean
+Private mvarRelojAuxiliar As Boolean
+    'Si es reloj auxiliar, No contabiliza para horas  (ALZIRA Terminales baño)
+
+
 'Para activar este evento, use RaiseEvent con la siguiente sintaxis:
 'RaiseEvent LanzaMensaje[(arg1, arg2, ... , argn)]
 Public Event LanzaMensaje(Mensaje As String)
@@ -43,6 +50,28 @@ End Property
 Public Property Let Recibido(ByVal vData As String)
     Let mvarRecibido = vData
 End Property
+
+
+Public Property Get Deshabilitado() As Boolean
+    Deshabilitado = mvarDeshabilitado
+End Property
+
+Public Property Let Deshabilitado(ByVal vData As Boolean)
+    mvarDeshabilitado = vData
+End Property
+
+
+Public Property Get RelojAuxiliar() As Boolean
+    RelojAuxiliar = mvarRelojAuxiliar
+End Property
+
+
+Public Property Let RelojAuxiliar(ByVal vData As Boolean)
+    mvarRelojAuxiliar = vData
+End Property
+
+
+
 
 Public Function ComprobarConexion() As Boolean
     Dim TiempoEspera As Long
@@ -71,7 +100,7 @@ End Function
 
 Public Function CargarConfiguracion() As Boolean
     Dim SQL As String
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
     '-- CargarConfiguración: Carga la configuración según esté en la base de datos
@@ -79,23 +108,23 @@ Public Function CargarConfiguracion() As Boolean
     If Not ComprobarConexion() Then Exit Function
     CargarConfiguracion = True
     SQL = "select * from parametros"
-    Set RS = GesHuellaDB.cursor(SQL)
-    If Not RS.EOF Then
-        RS.MoveFirst
-        While Not RS.EOF
+    Set Rs = GesHuellaDB.cursor(SQL)
+    If Not Rs.EOF Then
+        Rs.MoveFirst
+        While Not Rs.EOF
             '-- Montamos la cadena para grabar la configuración
-            Envio = "311" & Right("00" & Hex(RS!codparam), 2) & Right("00" & Hex(RS!valor), 2)
+            Envio = "311" & Right("00" & Hex(Rs!codparam), 2) & Right("00" & Hex(Rs!valor), 2)
             Espero = "4111"
-            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando Parámetro: " & RS!codparam)
+            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando Parámetro: " & Rs!codparam)
             If EnviarRecibir(Envio, Espero) <> 0 Then CargarConfiguracion = False
-            RS.MoveNext
+            Rs.MoveNext
         Wend
     End If
 End Function
 
 Public Function CargarMensajes() As Boolean
     Dim SQL As String
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
     '-- CargarConfiguración: Carga la configuración según esté en la base de datos
@@ -103,23 +132,23 @@ Public Function CargarMensajes() As Boolean
     If Not ComprobarConexion() Then Exit Function
     CargarMensajes = True
     SQL = "select * from mensajes"
-    Set RS = GesHuellaDB.cursor(SQL)
-    If Not RS.EOF Then
-        RS.MoveFirst
-        While Not RS.EOF
+    Set Rs = GesHuellaDB.cursor(SQL)
+    If Not Rs.EOF Then
+        Rs.MoveFirst
+        While Not Rs.EOF
             '-- Montamos la cadena para grabar la configuración
-            Envio = "321" & Right("00" & Hex(RS!codmens), 2) & Left(RS!valor & String(20, " "), 20)
+            Envio = "321" & Right("00" & Hex(Rs!codmens), 2) & Left(Rs!valor & String(20, " "), 20)
             Espero = "4211"
-            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando mensaje: " & RS!codmens)
+            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando mensaje: " & Rs!codmens)
             If EnviarRecibir(Envio, Espero) <> 0 Then CargarMensajes = False
-            RS.MoveNext
+            Rs.MoveNext
         Wend
     End If
 End Function
 
 Public Function CargarDias() As Boolean
     Dim SQL As String
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
     '-- CargarConfiguración: Carga la configuración según esté en la base de datos
@@ -127,23 +156,23 @@ Public Function CargarDias() As Boolean
     If Not ComprobarConexion() Then Exit Function
     CargarDias = True
     SQL = "select * from dias"
-    Set RS = GesHuellaDB.cursor(SQL)
-    If Not RS.EOF Then
-        RS.MoveFirst
-        While Not RS.EOF
+    Set Rs = GesHuellaDB.cursor(SQL)
+    If Not Rs.EOF Then
+        Rs.MoveFirst
+        While Not Rs.EOF
             '-- Montamos la cadena para grabar la configuración
-            Envio = "331" & Right("00" & Hex(RS!coddia), 2) & Left(RS!valor & String(3, " "), 3)
+            Envio = "331" & Right("00" & Hex(Rs!coddia), 2) & Left(Rs!valor & String(3, " "), 3)
             Espero = "4311"
-            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " cargando dia: " & RS!coddia)
+            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " cargando dia: " & Rs!coddia)
             If EnviarRecibir(Envio, Espero) <> 0 Then CargarDias = False
-            RS.MoveNext
+            Rs.MoveNext
         Wend
     End If
 End Function
 
 Public Function CargarMeses() As Boolean
     Dim SQL As String
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
     '-- CargarConfiguración: Carga la configuración según esté en la base de datos
@@ -151,22 +180,22 @@ Public Function CargarMeses() As Boolean
     If Not ComprobarConexion() Then Exit Function
     CargarMeses = True
     SQL = "select * from meses"
-    Set RS = GesHuellaDB.cursor(SQL)
-    If Not RS.EOF Then
-        RS.MoveFirst
-        While Not RS.EOF
+    Set Rs = GesHuellaDB.cursor(SQL)
+    If Not Rs.EOF Then
+        Rs.MoveFirst
+        While Not Rs.EOF
             '-- Montamos la cadena para grabar la configuración
-            Envio = "341" & Right("00" & Hex(RS!codmes), 2) & Left(RS!valor & String(3, " "), 3)
+            Envio = "341" & Right("00" & Hex(Rs!codmes), 2) & Left(Rs!valor & String(3, " "), 3)
             Espero = "4411"
-            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " cargando mes: " & RS!codmes)
+            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " cargando mes: " & Rs!codmes)
             If EnviarRecibir(Envio, Espero) <> 0 Then CargarMeses = False
-            RS.MoveNext
+            Rs.MoveNext
         Wend
     End If
 End Function
 Public Function CargarIncidencias() As Boolean
     Dim SQL As String
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
     '-- CargarConfiguración: Carga la configuración según esté en la base de datos
@@ -174,16 +203,16 @@ Public Function CargarIncidencias() As Boolean
     If Not ComprobarConexion() Then Exit Function
     CargarIncidencias = True
     SQL = "select * from incidencias"
-    Set RS = GesHuellaDB.cursor(SQL)
-    If Not RS.EOF Then
-        RS.MoveFirst
-        While Not RS.EOF
+    Set Rs = GesHuellaDB.cursor(SQL)
+    If Not Rs.EOF Then
+        Rs.MoveFirst
+        While Not Rs.EOF
             '-- Montamos la cadena para grabar la configuración
-            Envio = "544" & Right("0000" & Hex(RS!codinc), 4) & Left(RS!valor & String(20, " "), 20)
+            Envio = "544" & Right("0000" & Hex(Rs!codinc), 4) & Left(Rs!valor & String(20, " "), 20)
             Espero = "64411"
-            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando incidencia: " & RS!codinc)
+            RaiseEvent LanzaMensaje("Terminal: " & mvarNumero & " Mandando incidencia: " & Rs!codinc)
             If EnviarRecibir(Envio, Espero) <> 0 Then CargarIncidencias = False
-            RS.MoveNext
+            Rs.MoveNext
         Wend
     End If
 End Function
@@ -252,7 +281,7 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
     Dim Espero2 As String
     Dim Aux As String
     Dim TieneDatos As Boolean
-    Dim RS As ADODB.Recordset
+    Dim Rs As ADODB.Recordset
     Dim FicheroCatadu As String
     
     
@@ -273,14 +302,17 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
 '        espera 1.5
     Case 2
         'ALIZRA
-        Fichero = Directorio & "\HU" & Format(Now, "yyyyMMddhhmmss") & _
-                "T" & Format(mvarNumero, "00") & ".txt"
-                
-'    Case 4
-'        'CATADAU, ponen 2 relojes
-'        ', ahora generara los ficheros como alziara
-'
-'        Fichero = mConfig.DirMarcajes & "\" & mConfig.NomFich
+        
+        'Si es reloj auxuliar , el fichero se llamará \AUX, si no conserva su nombre
+        
+        If mvarRelojAuxiliar Then
+            Fichero = Directorio & "\AUX" & Format(Now, "yyyyMMddhhmmss") & _
+                    "T" & Format(mvarNumero, "00") & ".txt"
+        Else
+            Fichero = Directorio & "\HU" & Format(Now, "yyyyMMddhhmmss") & _
+                    "T" & Format(mvarNumero, "00") & ".txt"
+        End If
+    
     End Select
     
     Final = False
@@ -375,19 +407,19 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
         lbl.Caption = "Leyendo aritick"
         lbl.Refresh
         Aux = "Select * from entradafichajes order by Secuencia desc"
-        Set RS = New ADODB.Recordset
-        RS.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Set Rs = New ADODB.Recordset
+        Rs.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Espero = ""
-        If Not RS.EOF Then
+        If Not Rs.EOF Then
             Espero = "OK"
-            Envio = CStr(RS!Secuencia)  'MAX secuencia
+            Envio = CStr(Rs!Secuencia)  'MAX secuencia
             
-            While Not RS.EOF
-                    Aux = Format(RS!idTrabajador, "00000")  'trab
-                    Aux = Aux & "," & Format(RS!Fecha, "mm")  'mes
-                    Aux = Aux & "," & Format(RS!Fecha, "dd")  'dia
-                    Aux = Aux & "," & Format(RS!Hora, "hh")   'hora
-                    Aux = Aux & "," & Format(RS!Hora, "nn")   'min
+            While Not Rs.EOF
+                    Aux = Format(Rs!idTrabajador, "00000")  'trab
+                    Aux = Aux & "," & Format(Rs!Fecha, "mm")  'mes
+                    Aux = Aux & "," & Format(Rs!Fecha, "dd")  'dia
+                    Aux = Aux & "," & Format(Rs!Hora, "hh")   'hora
+                    Aux = Aux & "," & Format(Rs!Hora, "nn")   'min
                     ''lo mando aunque no es importante
                     'Aux = Aux & "," & Format(rs!Fecha, "yyyy")   'año
                     'Aux = Aux & ",0000,"
@@ -399,7 +431,7 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
                     Print #NF, Aux
                     
                     
-                    RS.MoveNext
+                    Rs.MoveNext
             Wend
             
             Aux = "DELETE from entradafichajes where secuencia <= " & Envio
@@ -407,8 +439,8 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
             
             TieneDatos = True 'Tiene datos
         End If 'de belgida
-        RS.Close
-        Set RS = Nothing
+        Rs.Close
+        Set Rs = Nothing
         
     End If
     

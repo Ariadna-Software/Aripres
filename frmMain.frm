@@ -1,13 +1,13 @@
 VERSION 5.00
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.MDIForm frmMain 
    BackColor       =   &H00CCD1D0&
    Caption         =   "A R I P R E S     4 "
-   ClientHeight    =   8100
+   ClientHeight    =   8745
    ClientLeft      =   60
    ClientTop       =   735
-   ClientWidth     =   11625
+   ClientWidth     =   13575
    Icon            =   "frmMain.frx":0000
    LinkTopic       =   "MDIForm1"
    NegotiateToolbars=   0   'False
@@ -111,9 +111,9 @@ Begin VB.MDIForm frmMain
       Height          =   585
       Left            =   0
       TabIndex        =   0
-      Top             =   7515
-      Width           =   11625
-      _ExtentX        =   20505
+      Top             =   8160
+      Width           =   13575
+      _ExtentX        =   23945
       _ExtentY        =   1032
       _Version        =   393216
       BeginProperty Panels {8E3867A5-8586-11D1-B16A-00C0F0283628} 
@@ -126,7 +126,7 @@ Begin VB.MDIForm frmMain
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             AutoSize        =   1
-            Object.Width           =   12435
+            Object.Width           =   15875
          EndProperty
          BeginProperty Panel3 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             Style           =   1
@@ -151,7 +151,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "18:04"
+            TextSave        =   "13:05"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -170,8 +170,8 @@ Begin VB.MDIForm frmMain
       Left            =   0
       TabIndex        =   1
       Top             =   0
-      Width           =   11625
-      _ExtentX        =   20505
+      Width           =   13575
+      _ExtentX        =   23945
       _ExtentY        =   741
       ButtonWidth     =   609
       ButtonHeight    =   582
@@ -482,6 +482,7 @@ Begin VB.MDIForm frmMain
       End
       Begin VB.Menu mnbarra2_5 
          Caption         =   "-"
+         Visible         =   0   'False
       End
       Begin VB.Menu mnCambioHorarioMenu 
          Caption         =   "Cambios horario"
@@ -493,9 +494,14 @@ Begin VB.MDIForm frmMain
             Caption         =   "Ajustes"
          End
       End
+      Begin VB.Menu mnbarra2_8 
+         Caption         =   "-"
+      End
+      Begin VB.Menu mnRelojesAuxiliares 
+         Caption         =   "Marcajes relojes auxiliares"
+      End
       Begin VB.Menu mnbarra2_4 
          Caption         =   "-"
-         Visible         =   0   'False
       End
       Begin VB.Menu mnProcesar 
          Caption         =   "Procesar marcajes"
@@ -724,7 +730,8 @@ Attribute frmF.VB_VarHelpID = -1
 Private FechaRevision As Date
 Private PrimeraVez As Boolean
 
-
+'---------------------------------------------------------------------------------------------
+Private LlevaRelojesAuxiliares As Boolean   'Si existe la tabla es que lleva relojes auxiliares
 
 
 Private Sub MDIForm_Activate()
@@ -890,9 +897,10 @@ On Error Resume Next
     mnTraerDatosProduccion.Enabled = B
     
 
-   
-
-    
+    'Relojes auxiliares
+    mnbarra2_8.Visible = False
+    mnRelojesAuxiliares.Visible = False
+    If vEmpresa.QueEmpresa = 2 Then TieneRelojesAuxiliares
     
     
     
@@ -920,6 +928,22 @@ Private Sub MDIForm_Unload(Cancel As Integer)
     Set conn = Nothing
     End
 End Sub
+
+Private Sub TieneRelojesAuxiliares()
+    On Error Resume Next
+    conn.Execute "Select * from entradafichajAuxliares where Secuencia = -1"
+    'Si no da error es que la tabla existe3
+    If Err.Number = 0 Then
+        mnbarra2_8.Visible = True
+        mnRelojesAuxiliares.Visible = True
+    Else
+        Err.Clear
+    End If
+    
+End Sub
+
+
+
 
 
 
@@ -1026,7 +1050,7 @@ Private Sub mnLaboralHoras1_Click(Index As Integer)
         FrmVarios.Opcion = 5
         FrmVarios.Show vbModal
         If CadenaDesdeOtroForm <> "" Then
-            frmDatosMesAlz.Mes = CadenaDesdeOtroForm
+            frmDatosMesAlz.mes = CadenaDesdeOtroForm
             frmDatosMesAlz.Show vbModal
         End If
     End Select
@@ -1122,6 +1146,10 @@ End Sub
 
 Private Sub mnProcesar_Click()
     HacerToolBar 9
+End Sub
+
+Private Sub mnRelojesAuxiliares_Click()
+    frmTareaActuaRelojAuxiliar.Show vbModal
 End Sub
 
 'Private Sub mnResumen_Click()

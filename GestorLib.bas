@@ -40,20 +40,20 @@ Public Function hex2(B As Byte) As String
 End Function
 
 Public Function CalcCRC(sTrama As String) As String
-  Dim i As Integer
+  Dim I As Integer
   Dim iCRC As Integer
   
   iCRC = 0
-  For i = 1 To Len(sTrama)
-    iCRC = (iCRC + Asc(Mid(sTrama, i, 1))) Mod 256
-  Next i
+  For I = 1 To Len(sTrama)
+    iCRC = (iCRC + Asc(Mid(sTrama, I, 1))) Mod 256
+  Next I
   CalcCRC = hex2(iCRC Mod 256)
 End Function
 
 
 'CATADAU TENDRA EL SUYO PROPIO
 
-Public Function GrabaFichajeGesLabALZIRA(registro As String)
+Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Boolean)
     Dim SQL As String
     '-- Graba en la tabla EntradaFichajes
     Dim Secuencia As Long
@@ -115,9 +115,9 @@ Public Function GrabaFichajeGesLabALZIRA(registro As String)
      '       End If
             
             
-            Secuencia = ObtenerSecuencia()
-            SQL = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal) " & _
-                        " values("
+            Secuencia = ObtenerSecuencia(RelojAuxiliar)
+            SQL = "insert into " & IIf(RelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
+            SQL = SQL & "(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal)  values("
             SQL = SQL & Secuencia & ","
             SQL = SQL & idTrabajador & ","
             SQL = SQL & DBSet(Fecha, "F") & ","
@@ -138,7 +138,7 @@ End Function
 
 'DOS PROCESOS , meter sea lo que sea en marcajeskimaldi
 ' y luego meterlo tb en fichajeactual
-Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo As Byte)
+Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo As Byte, RelojAuxiliar As Boolean)
     Dim SQL As String
     '-- Graba en la tabla EntradaFichajes
     Dim Secuencia As Long
@@ -198,7 +198,7 @@ Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo As Byte)
             End If
             
             
-            Secuencia = ObtenerSecuencia()  'ObtenerSecuencia(db)
+            Secuencia = ObtenerSecuencia(RelojAuxiliar)  'ObtenerSecuencia(db)
             SQL = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal) " & _
                         " values("
             SQL = SQL & db.Numero(Secuencia) & ","
@@ -214,10 +214,10 @@ End Function
 
 
 'Public Function ObtenerSecuencia(db As BaseDatos) As Long
-Public Function ObtenerSecuencia() As Long
+Public Function ObtenerSecuencia(EsTablaRelojAuxiliar As Boolean) As Long
     Dim SQL As String
     Dim Rs As ADODB.Recordset
-    SQL = "select Max(Secuencia) from EntradaFichajes"
+    SQL = "select Max(Secuencia) from " & IIf(EsTablaRelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
     'Set Rs = db.cursor(SQL)
     Set Rs = New ADODB.Recordset
     Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
@@ -251,8 +251,8 @@ Dim Rs As ADODB.Recordset
     End If
     
     While Not Rs.EOF
-        CBO.AddItem Rs!Nombre & " (" & Rs!idSeccion & ")"
-        CBO.ItemData(CBO.NewIndex) = Rs!idSeccion
+        CBO.AddItem Rs!Nombre & " (" & Rs!IdSeccion & ")"
+        CBO.ItemData(CBO.NewIndex) = Rs!IdSeccion
         Rs.MoveNext
     Wend
     Rs.Close

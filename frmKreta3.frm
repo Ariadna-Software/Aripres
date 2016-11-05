@@ -4,14 +4,14 @@ Object = "{248DD890-BB45-11CF-9ABC-0080C7E7B78D}#1.0#0"; "MSWINSCK.OCX"
 Begin VB.Form frmKreta3 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Comunicador"
-   ClientHeight    =   4215
+   ClientHeight    =   4125
    ClientLeft      =   105
    ClientTop       =   405
    ClientWidth     =   7770
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   4215
+   ScaleHeight     =   4125
    ScaleWidth      =   7770
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -326,6 +326,66 @@ Begin VB.Form frmKreta3
       RemoteHost      =   "192.168.123.10"
       RemotePort      =   1001
    End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   10
+      Left            =   1800
+      Top             =   3960
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   11
+      Left            =   2280
+      Top             =   3960
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   12
+      Left            =   2760
+      Top             =   3960
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   13
+      Left            =   360
+      Top             =   4200
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   14
+      Left            =   840
+      Top             =   4200
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
+   Begin MSWinsockLib.Winsock tcpCliente 
+      Index           =   15
+      Left            =   1320
+      Top             =   4200
+      _ExtentX        =   741
+      _ExtentY        =   741
+      _Version        =   393216
+      RemoteHost      =   "192.168.123.10"
+      RemotePort      =   1001
+   End
    Begin VB.Label lblInf 
       Alignment       =   2  'Center
       Caption         =   "Información de proceso..."
@@ -357,7 +417,7 @@ Private Sub cmdGuardarMarcajes_Click()
 
     
     'CargarFichajesGeslab2 mConfig.DirMarcajes
-    CargarFichajesGeslab2
+    CargarFichajesGeslab
     MsgBox "Los marcajes han sido guardados"
 End Sub
 
@@ -461,7 +521,7 @@ Private Sub cmdMarcajes_Click()
     
     
     'Procesar fichero huella, solo para alzira o catadau
-    If vEmpresa.QueEmpresa = 2 Then CargarFichajesGeslab2
+    If vEmpresa.QueEmpresa = 2 Then CargarFichajesGeslab
     
     
     'Enero 2015.   Proceso NOCTURNO
@@ -736,6 +796,12 @@ Public Sub CargarConfiguracion()
     Next
 End Sub
 
+
+'---------------------------------------------------
+'
+'   0. Todos
+'   1.- Relojes Normales
+'   2.- Solo relojes auxiliares
 Public Sub CargarTerminales()
    
   
@@ -745,6 +811,9 @@ Public Sub CargarTerminales()
 
     Dim NumTerm As Integer
     SQL = " select * from terminales"
+    SQL = SQL & " AND deshabilitado=0"
+    
+        
     Set Rs = GesHuellaDB.cursor(SQL)
     If Not Rs.EOF Then
         Rs.MoveFirst
@@ -762,6 +831,8 @@ Public Sub CargarTerminales()
             Set k2 = New Kreta2
             Set k2.Socket = tcpCliente(NumTerm)
             k2.Numero = NumTerm
+            k2.Deshabilitado = Val(Rs!Deshabilitado) = 1
+            k2.RelojAuxiliar = Val(Rs!RelojAuxiliar) = 1
             If Not k2.ComprobarConexion() Then
                 MsgBox "No hay conexión con el terminal: " & k2.Numero & _
                         " IP:" & k2.Socket.RemoteHost, vbExclamation
@@ -955,6 +1026,8 @@ Public Function LeerMarcajes(Directorio As String) As Boolean
         Set k2 = ColK2(I)
         lblInf.Caption = "lectura reloj: " & k2.Numero
         lblInf.Refresh
+        
+        
         k2.LeerMarcajes Directorio, I = 1, lblInf
     Next
     LeerMarcajes = True
@@ -964,7 +1037,23 @@ Public Function LeerMarcajes(Directorio As String) As Boolean
     
 End Function
 
-Public Function CargarFichajesGeslab2() As Boolean
+
+
+Public Function CargarFichajesGeslab()
+    Screen.MousePointer = vbHourglass
+    Me.Refresh
+    CargarFichajesGeslab3 False
+    Screen.MousePointer = vbHourglass
+    CargarFichajesGeslab3 True
+End Function
+
+
+' RelojAuxiliar
+' true
+'       Los ficheros empiezan por aux y graban la tabla:  entradafichajAuxliares   (misma estructura)
+' false
+'       Lo de siempre, Empiezan por HU y van a entradafichajes
+Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
     '-- CargarFichajesGeslab:
     '   Se encarga de mirar en el directorio indicado si hay ficheros de fichajes
     '   y los actualiza en GesLab
@@ -986,12 +1075,13 @@ Public Function CargarFichajesGeslab2() As Boolean
     
     If Dir(vEmpresa.DirProcesados, vbDirectory) = "" Then MkDir vEmpresa.DirProcesados
     
-    '   Set db = New BaseDatos
-    'db.AbrirConexionDavid conn.ConnectionString
-    'db.Tipo = "ACCESS"
-    'db.abrir_MYSQL
     
-    Fichero = Dir(vEmpresa.DirMarcajes & "\HU*")
+    If RelojAuxiliar Then
+        Fichero = Dir(vEmpresa.DirMarcajes & "\AUX*")
+    Else
+        Fichero = Dir(vEmpresa.DirMarcajes & "\HU*")
+    End If
+    
     Set Cole = New Collection
     Do While Fichero <> ""
         Cole.Add Fichero
@@ -1038,7 +1128,7 @@ Public Function CargarFichajesGeslab2() As Boolean
             If vEmpresa.QueEmpresa = 2 Then
             
                 'ALZIRA
-                GrabaFichajeGesLabALZIRA Leido
+                GrabaFichajeGesLabALZIRA Leido, RelojAuxiliar
             Else
                 'CATADU
                 'GrabaFichajeGesLabCATADAU Leido, db, Nodo
