@@ -811,7 +811,7 @@ Public Sub CargarTerminales()
 
     Dim NumTerm As Integer
     SQL = " select * from terminales"
-    SQL = SQL & " AND deshabilitado=0"
+    SQL = SQL & " WHERE deshabilitado=0"
     
         
     Set Rs = GesHuellaDB.cursor(SQL)
@@ -837,7 +837,7 @@ Public Sub CargarTerminales()
                 MsgBox "No hay conexión con el terminal: " & k2.Numero & _
                         " IP:" & k2.Socket.RemoteHost, vbExclamation
             End If
-            ColK2.Add k2.Socket, NumTerm, CStr(NumTerm)
+            ColK2.Add k2.Socket, NumTerm, CStr(NumTerm), k2.RelojAuxiliar
             Rs.MoveNext
         Wend
     End If
@@ -1024,7 +1024,7 @@ Public Function LeerMarcajes(Directorio As String) As Boolean
     For I = 1 To ColK2.Count
         
         Set k2 = ColK2(I)
-        lblInf.Caption = "lectura reloj: " & k2.Numero
+        lblInf.Caption = "lectura reloj: " & k2.Numero & " -> " & IIf(k2.RelojAuxiliar, "Auxiliar", "")
         lblInf.Refresh
         
         
@@ -1043,8 +1043,9 @@ Public Function CargarFichajesGeslab()
     Screen.MousePointer = vbHourglass
     Me.Refresh
     CargarFichajesGeslab3 False
-    Screen.MousePointer = vbHourglass
+    
     CargarFichajesGeslab3 True
+    Screen.MousePointer = vbHourglass
 End Function
 
 
@@ -1093,7 +1094,7 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
         Me.Refresh
         Screen.MousePointer = vbHourglass
         
-        NF = FreeFile
+        
         Fichero = Cole.Item(jj)
         tam = FileLen(vEmpresa.DirMarcajes & "\" & Fichero)
         
@@ -1117,10 +1118,12 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
             
         End If
         llev = 0
-    
+        NF = FreeFile
         Open vEmpresa.DirMarcajes & "\" & Fichero For Input As #NF
+        lblInf.Caption = "Abriendo " & Fichero & "    de " & tam
+        espera 1
         Do While Not EOF(NF)
-            Line Input #1, Leido
+            Line Input #NF, Leido
             llev = llev + Len(Leido)
             lblInf.Caption = Fichero & "  " & llev & " de " & tam
             lblInf.Refresh
@@ -1238,7 +1241,8 @@ Dim Cad As String
         Cad = ""
     End If
     
-    
+    lblInf.Caption = Fichero & " .. mov procesados"
+    lblInf.Refresh
     FileCopy vEmpresa.DirMarcajes & "\" & Fichero, vEmpresa.DirProcesados & "\" & Cad & Fichero
     
     

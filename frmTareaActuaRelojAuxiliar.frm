@@ -248,7 +248,7 @@ Attribute frmB.VB_VarHelpID = -1
 Dim PrimeraVez As Boolean
 Dim Tamanyo As Long
 Dim Contador As Long
-Dim Cad As String
+Dim cad As String
 Dim Modifi As Boolean
 
 
@@ -334,12 +334,12 @@ Dim valor As Long
                 MsgBox "Campo fecha incorrecto", vbExclamation
                 Exit Sub
             End If
-            Cad = "Codigo|idTrabajador|N|00000|15·"
-            Cad = Cad & "Nombre|nomtrabajador|T||60·"
-            Cad = Cad & "Tarjeta|numtarjeta|T||20·"
+            cad = "Codigo|idTrabajador|N|00000|15·"
+            cad = cad & "Nombre|nomtrabajador|T||60·"
+            cad = cad & "Tarjeta|numtarjeta|T||20·"
             Set frmB = New frmBuscaGrid
             frmB.vTabla = "Trabajadores"
-            frmB.vCampos = Cad
+            frmB.vCampos = cad
             frmB.vDevuelve = "0|1|"
             frmB.vSelElem = 0
             frmB.vTitulo = "TRABAJADORES"
@@ -348,9 +348,9 @@ Dim valor As Long
             
             
             If Contador > 0 Then
-                Cad = "Va a crear marcajes para el trabajador: " & Me.Tag
-                Cad = Cad & "   ¿Desea continuar?"
-                If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
+                cad = "Va a crear marcajes para el trabajador: " & Me.Tag
+                cad = cad & "   ¿Desea continuar?"
+                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
             End If
         End If
         If Contador < 1 Then Exit Sub
@@ -360,13 +360,13 @@ Dim valor As Long
         
     Case 2
         'ELIMINAR
-                Cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
-                Cad = Cad & "   ¿Desea continuar?"
-                If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+                cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
+                cad = cad & "   ¿Desea continuar?"
+                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
                     
-                Cad = "DELETE from EntradaFichajes WHERE idTrabajador=" & ListView2.SelectedItem.Text
-                Cad = Cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
-                conn.Execute Cad
+                cad = "DELETE from entradafichajauxliares WHERE idTrabajador=" & ListView2.SelectedItem.Text
+                cad = cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
+                conn.Execute cad
                 Modifi = True
     End Select
     If Modifi Then
@@ -402,31 +402,6 @@ Private Sub Command2_Click(Index As Integer)
     Screen.MousePointer = vbDefault
 End Sub
 
-Private Sub Command3_Click(Index As Integer)
-    Screen.MousePointer = vbHourglass
-    Contador = 0
-    'Añadiremos en tmpCambioHor
-    Cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
-    conn.Execute Cad
-    espera 0.2
-    Cad = "INSERT INTO tmpCambioHor values ("
-    For Tamanyo = 1 To ListView2.ListItems.Count
-        If ListView2.ListItems(Tamanyo).Selected Then
-            conn.Execute Cad & ListView2.ListItems(Tamanyo).Text & "," & vUsu.Codigo & ")"
-            Contador = Contador + 1
-        End If
-    Next Tamanyo
-    If Contador > 0 Then
-            
-         'Segun index
-        frmCambioHorario2.Opcion = 2 + Index
-        frmCambioHorario2.Fecha = CDate(Me.Text1(1).Text)
-        frmCambioHorario2.Show vbModal
-        PonMarcajes
-    End If
-    
-    Screen.MousePointer = vbDefault
-End Sub
 
 Private Sub Form_Activate()
     If PrimeraVez Then
@@ -450,9 +425,9 @@ Private Sub Form_Load()
     
     'Fecha
     
-    Cad = DevuelveDesdeBD("max(fecha)", "entradafichajes", "1", "1")
-    If Cad = "" Then Cad = Format(Now, "dd/mm/yyyy")
-    QueFecha = CDate(Cad)
+    cad = DevuelveDesdeBD("max(fecha)", "entradafichajauxliares", "1", "1")
+    If cad = "" Then cad = Format(Now, "dd/mm/yyyy")
+    QueFecha = CDate(cad)
     Text1(1).Text = Format(QueFecha, "dd/mm/yyyy")
 
 
@@ -847,14 +822,14 @@ Private Sub PonMarcajes()
     Dim HoraPintar As Date
     
     ListView2.ListItems.Clear
-    SQL = "SELECT EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
-    SQL = SQL & " FROM EntradaFichajes ,Trabajadores WHERE EntradaFichajes.idTrabajador = Trabajadores.IdTrabajador"
+    SQL = "SELECT entradafichajauxliares.idTrabajador, Trabajadores.NomTrabajador"
+    SQL = SQL & " FROM entradafichajauxliares ,Trabajadores WHERE entradafichajauxliares.idTrabajador = Trabajadores.IdTrabajador"
     SQL = SQL & " AND Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "' "
     If vUsu.Nivel > 2 Then SQL = SQL & " AND Trabajadores.controlnomina >0"
-    SQL = SQL & " GROUP BY EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
+    SQL = SQL & " GROUP BY entradafichajauxliares.idTrabajador, Trabajadores.NomTrabajador"
     SQL = SQL & " ORDER BY "
     If optTicaje(0).Value Then
-        SQL = SQL & " EntradaFichajes.idTrabajador"
+        SQL = SQL & " entradafichajauxliares.idTrabajador"
     Else
         SQL = SQL & "  Trabajadores.NomTrabajador"
     End If
@@ -870,8 +845,8 @@ Private Sub PonMarcajes()
             SQL = "if(hour(horareal)<0,ADDTIME(hora , '24:00:00' ),''),if(hour(horareal)>24,ADDTIME(hora , '-24:00:00' ),horareal)"
         End If
     End If
-    SQL = "Select EntradaFichajes.*," & SQL
-    SQL = SQL & " as acabalga FROM EntradaFichajes WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
+    SQL = "Select entradafichajauxliares.*," & SQL
+    SQL = SQL & " as acabalga FROM entradafichajauxliares WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
     SQL = SQL & " AND idTrabajador = "
     While Not Rs.EOF
         RT.Open SQL & Rs.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText

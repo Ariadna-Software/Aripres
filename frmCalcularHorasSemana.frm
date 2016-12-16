@@ -652,8 +652,6 @@ Dim Laborable As Byte
                     End If
                 Next
                 'Febr 2016. Dias nomina
-                
-                
                 If Len(Cad) > 20000 Then
                     Cad = Mid(Cad, 2)
                     Cad = C & Cad
@@ -1008,3 +1006,28 @@ Dim DiasLaborables As Integer
 
 End Function
 
+Private Sub ListView1_DblClick()
+Dim QueTrabajador  As Integer
+Dim Cad As String
+
+
+    If ListView1.SelectedItem Is Nothing Then Exit Sub
+    Cad = ""
+    J = ListView1.SelectedItem.Index
+    While J > 0
+        If Me.ListView1.ListItems(J).Tag <> 0 Then   'columna nombre
+            'uno patras
+            J = J - 1
+           
+        Else
+            'Este es el trabajador
+             Cad = ListView1.ListItems(J).Text & "|" & ListView1.ListItems(J).SubItems(1) & "|" & InicioProceso & "|" & FinProceso & "|"
+             J = 0
+        End If
+       
+    Wend
+    If Cad <> "" Then
+        frmMarcajesPantalla.QuieroVerDatos = Cad
+        frmMarcajesPantalla.Show vbModal
+    End If
+End Sub

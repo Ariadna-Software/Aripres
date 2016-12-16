@@ -149,8 +149,8 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private WithEvents frmc As frmCal
-Attribute frmc.VB_VarHelpID = -1
+Private WithEvents frmC As frmCal
+Attribute frmC.VB_VarHelpID = -1
 
 Dim SQL As String
 
@@ -392,7 +392,8 @@ Dim L As Collection
     Case 1
         'Listado de trabajadores sin asignar horario para esta fecha
         Dim CalendarioVariable As Boolean
-        CalendarioVariable = vEmpresa.QueEmpresa <> 2 'alzira
+        CalendarioVariable = vEmpresa.QueEmpresa <> 2 And vEmpresa.QueEmpresa <> 5    'alzira y picassent
+        
         If CalendarioVariable Then
             
             SQL = "select entradafichajes.idtrabajador,idhorario as c1 from entradafichajes left join calendariot"
@@ -491,7 +492,7 @@ Private Sub Form_Load()
     SQL = ""
 End Sub
 
-Private Sub frmc_Selec(vFecha As Date)
+Private Sub frmC_Selec(vFecha As Date)
     Text1(CInt(Me.imgFec(0).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -501,7 +502,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim obj As Object
 
-    Set frmc = New frmCal
+    Set frmC = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -517,16 +518,16 @@ Private Sub imgFec_Click(Index As Integer)
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
 
-    frmc.Left = esq + imgFec(Index).Parent.Left + 30
-    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmC.Left = esq + imgFec(Index).Parent.Left + 30
+    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If Text1(Index).Text <> "" Then frmc.NovaData = Text1(Index).Text
+    If Text1(Index).Text <> "" Then frmC.NovaData = Text1(Index).Text
     ' ********************************************
 
-    frmc.Show vbModal
-    Set frmc = Nothing
+    frmC.Show vbModal
+    Set frmC = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco Text1(CByte(imgFec(0).Tag)) '<===
     ' ********************************************

@@ -7,10 +7,10 @@ Option Explicit
 '
 'LINEA= linea del fichero de texto
 
-Public Sub ProcesarLinea(Linea As String, Contador As Long, anyo As Integer)
+Public Sub ProcesarLinea(Linea As String, Contador As Long, anyo As Integer, segundos As Integer)
 Dim I As Integer
 Dim vector(4) As String
-Dim RS As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim LError As String
 
 On Error GoTo ErrorProcesandoLinea
@@ -24,7 +24,7 @@ On Error GoTo ErrorProcesandoLinea
         'FECHA
         vector(0) = Mid(Linea, 10, 2) & "/" & Mid(Linea, 7, 2) & "/" & anyo
         'Hora
-        vector(1) = Mid(Linea, 13, 2) & ":" & Mid(Linea, 16, 2)
+        vector(1) = Mid(Linea, 13, 2) & ":" & Mid(Linea, 16, 2) & ":" & Format(segundos, "00")
         'operario
         vector(2) = Mid(Linea, 1, 5)
         'seccion
@@ -33,18 +33,18 @@ On Error GoTo ErrorProcesandoLinea
         vector(4) = Mid(Linea, 24, 4)
         
         'Ahora insertamos en la BD
-        Set RS = New ADODB.Recordset
-        RS.CursorType = adOpenKeyset
-        RS.LockType = adLockOptimistic
-        RS.Open "TemporalFichajes", Conn, , , adCmdTable
-        RS.AddNew
-        RS!Secuencia = Contador
-        RS!Numtarjeta = vector(2)
-        RS!Fecha = vector(0)
-        RS!Hora = vector(1)
-        RS!idinci = vector(4)
-        RS.Update
-        RS.Close
+        Set Rs = New ADODB.Recordset
+        Rs.CursorType = adOpenKeyset
+        Rs.LockType = adLockOptimistic
+        Rs.Open "TemporalFichajes", conn, , , adCmdTable
+        Rs.AddNew
+        Rs!Secuencia = Contador
+        Rs!Numtarjeta = vector(2)
+        Rs!Fecha = vector(0)
+        Rs!Hora = vector(1)
+        Rs!idInci = vector(4)
+        Rs.Update
+        Rs.Close
     
         Exit Sub
 ErrorProcesandoLinea:
@@ -57,7 +57,7 @@ End Sub
 Public Sub ProcesarLineaALZ(Linea As String, Contador As Long, PuntoInicio As Integer)
 Dim I As Integer
 Dim vector(4) As String
-Dim RS As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim LError As String
 Dim Longitud As Integer
 
@@ -122,25 +122,25 @@ If I = 0 Then
     If I = 1 Then Exit Sub
     
     'llegados a este punto insertamos en la BD
-    Set RS = New ADODB.Recordset
-    RS.CursorType = adOpenKeyset
-    RS.LockType = adLockOptimistic
-    RS.Open "TipoAlzicoop", Conn, , , adCmdTable
-    RS.AddNew
-    RS!Secuencia = Contador
-    RS!Tarjeta = vector(2)
-    RS!Fecha = Format(vector(0), "dd/mm/yyyy")
+    Set Rs = New ADODB.Recordset
+    Rs.CursorType = adOpenKeyset
+    Rs.LockType = adLockOptimistic
+    Rs.Open "TipoAlzicoop", conn, , , adCmdTable
+    Rs.AddNew
+    Rs!Secuencia = Contador
+    Rs!Tarjeta = vector(2)
+    Rs!Fecha = Format(vector(0), "dd/mm/yyyy")
     
-    RS!Hora = vector(1)
-    RS!Seccion = vector(3)
-    RS!tecla = vector(4)
+    Rs!Hora = vector(1)
+    Rs!Seccion = vector(3)
+    Rs!tecla = vector(4)
     
     'Hora real
     'Modificacion del 22 Julio 2004
-    RS!horareal = RS!Hora
-    RS.Update
-    RS.Close
-    Set RS = Nothing
+    Rs!HoraReal = Rs!Hora
+    Rs.Update
+    Rs.Close
+    Set Rs = Nothing
 End If
 Exit Sub
 ErrorProcesandoLinea:
@@ -164,7 +164,7 @@ End Function
 
 
 
-Public Function TransformaLineaRobotics(cadena As String, ByRef ElAnyo As Integer) As String
+Public Function TransformaLineaRobotics(CADENA As String, ByRef ElAnyo As Integer) As String
 Dim C As String
 
     'Se trata de a partir de la cadena de ROBOTICS
@@ -195,16 +195,16 @@ Dim C As String
        
         
         
-    C = Mid(cadena, 18, 5) & ","
-    C = C & Mid(cadena, 5, 2) & "," & Mid(cadena, 3, 2) & ","
-    ElAnyo = CInt("20" & Mid(cadena, 7, 2))
-    C = C & Mid(cadena, 23, 2) & "," & Mid(cadena, 26, 2)  'HORA
+    C = Mid(CADENA, 18, 5) & ","
+    C = C & Mid(CADENA, 5, 2) & "," & Mid(CADENA, 3, 2) & ","
+    ElAnyo = CInt("20" & Mid(CADENA, 7, 2))
+    C = C & Mid(CADENA, 23, 2) & "," & Mid(CADENA, 26, 2)  'HORA
     C = C & ",0000,"
     
-    If InStr(1, cadena, "F") > 0 Then
+    If InStr(1, CADENA, "F") > 0 Then
         'Lleva INCIDENCIA MANUAL
         
-        C = C & Format(Val(Mid(cadena, 28)), "0000")
+        C = C & Format(Val(Mid(CADENA, 28)), "0000")
     Else
         'NO LLEVA inci
         C = C & "0000"
@@ -212,4 +212,35 @@ Dim C As String
     C = C & ",12345"
     TransformaLineaRobotics = C
 End Function
+
+
+
+Public Function TransformaLineaCoopic(CADENA As String, ByRef ElAnyo As Integer, ByRef Seg As Integer) As String
+Dim C As String
+
+    'Se trata de a partir de la cadena de ROBOTICS
+    'GENERO LA CADENA DE TCP que es la que trabajaremos
+    
+    'TCP3:      01234,11,23,08,20,0000,0000,18411
+    
+    '           1  5    0    5    0    5
+    'COOPIC:  000471610271127520000011ILOC010
+    '         ttttt  trabajador
+    '                                Terminal
+    '              yymmdd
+    '                    hhmmss
+        
+        
+    C = Mid(CADENA, 1, 5) & ","
+    C = C & Mid(CADENA, 8, 2) & "," & Mid(CADENA, 10, 2) & ","
+    ElAnyo = CInt("20" & Mid(CADENA, 6, 2))
+    C = C & Mid(CADENA, 12, 2) & "," & Mid(CADENA, 14, 2)  'HORA
+    Seg = CInt(Mid(CADENA, 16, 2))
+    C = C & ",0000,"
+    'NO LLEVA inci
+    C = C & "0000"
+    C = C & ",12345"
+    TransformaLineaCoopic = C
+End Function
+
 

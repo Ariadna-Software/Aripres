@@ -763,7 +763,7 @@ End Sub
 
 
 Private Sub cmdRegresar_Click()
-Dim Cad As String
+Dim cad As String
 Dim I As Integer
 Dim J As Integer
 Dim Aux As String
@@ -772,7 +772,7 @@ Dim Aux As String
         MsgBox "Ningún registro devuelto.", vbExclamation
         Exit Sub
     End If
-    Cad = ""
+    cad = ""
     I = 0
     Do
         J = I + 1
@@ -780,10 +780,10 @@ Dim Aux As String
         If I > 0 Then
             Aux = Mid(DatosADevolverBusqueda, J, I - J)
             J = Val(Aux)
-            Cad = Cad & adodc1.Recordset.Fields(J) & "|"
+            cad = cad & adodc1.Recordset.Fields(J) & "|"
         End If
     Loop Until I = 0
-    RaiseEvent DatoSeleccionado(Cad)
+    RaiseEvent DatoSeleccionado(cad)
     Unload Me
 End Sub
 
@@ -795,73 +795,79 @@ End Sub
 
 Private Sub DataGrid1_DblClick()
 Dim F1 As Date
+
     If cmdRegresar.Visible Then
         cmdRegresar_Click
     Else
         If Modo = 2 Then
             If Not adodc1.Recordset.EOF Then
-                frmAlzModificarHorasEmpresa.idTrabajador = adodc1.Recordset!idTrabajador
-                frmAlzModificarHorasEmpresa.Fecha = adodc1.Recordset!Fecha
-                frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!tipohoras
-                frmAlzModificarHorasEmpresa.Label1(0).Caption = adodc1.Recordset!nomtrabajador
-                frmAlzModificarHorasEmpresa.Label1(3).Caption = adodc1.Recordset!DescTipoHora
-                frmAlzModificarHorasEmpresa.Show vbModal
-                      
-                If CadenaDesdeOtroForm <> "" Then
+            
+                If vEmpresa.QueEmpresa = 2 Then
+                    'Cambio de horas entre alzira y fruxeresa
+            
+                    frmAlzModificarHorasEmpresa.idTrabajador = adodc1.Recordset!idTrabajador
+                    frmAlzModificarHorasEmpresa.Fecha = adodc1.Recordset!Fecha
+                    frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!tipohoras
+                    frmAlzModificarHorasEmpresa.Label1(0).Caption = adodc1.Recordset!nomtrabajador
+                    frmAlzModificarHorasEmpresa.Label1(3).Caption = adodc1.Recordset!DescTipoHora
+                    frmAlzModificarHorasEmpresa.Show vbModal
+                          
+                    If CadenaDesdeOtroForm <> "" Then
+                        
+                        cadSeleccion = adodc1.Recordset!idTrabajador & "|" & adodc1.Recordset!Fecha & "|" & adodc1.Recordset!tipohoras & "|"
                     
-                    cadSeleccion = adodc1.Recordset!idTrabajador & "|" & adodc1.Recordset!Fecha & "|" & adodc1.Recordset!tipohoras & "|"
-                
-                    'Ha modificado algo
-                    'Ahora encesitamos ver las dos horas(fruixeresa y alzicoop)
-                    'Con lo cual, si en el WHERE esta paraempresa , monto un where nuevo
-                    NumRegElim = InStr(1, adodc1.RecordSource, "= tiposhora.tipohora")
-                    If NumRegElim > 0 Then
-                        CadB = Mid(adodc1.RecordSource, NumRegElim + 18)
-                        'QUito el order by
-                        NumRegElim = InStr(1, CadB, "ORDER BY ")
-                        CadB = Mid(CadB, 1, NumRegElim - 1)
-                        
-                        NumRegElim = InStr(1, CadB, "ParaEmpresa")
-                        
+                        'Ha modificado algo
+                        'Ahora encesitamos ver las dos horas(fruixeresa y alzicoop)
+                        'Con lo cual, si en el WHERE esta paraempresa , monto un where nuevo
+                        NumRegElim = InStr(1, adodc1.RecordSource, "= tiposhora.tipohora")
                         If NumRegElim > 0 Then
-                            'Monto un nuevo select
-                            CadB = " jornadassemanalesalz.idtrabajador = " & RecuperaValor(cadSeleccion, 1) & " AND fecha = " & DBSet(RecuperaValor(cadSeleccion, 2), "F")
-                            CadB = DevuelveSQL(CadB)
+                            CadB = Mid(adodc1.RecordSource, NumRegElim + 18)
+                            'QUito el order by
+                            NumRegElim = InStr(1, CadB, "ORDER BY ")
+                            CadB = Mid(CadB, 1, NumRegElim - 1)
                             
-                        Else
-                            CadB = adodc1.RecordSource
-                        End If
-                        
-                        CargaGrid2 False, CadB
-                        
-                        'Situamos el grid
-                        CadB = "idtrabajador = " & RecuperaValor(cadSeleccion, 1)
-                        adodc1.Recordset.Find CadB
-                        F1 = RecuperaValor(cadSeleccion, 2)
-                        CadB = RecuperaValor(cadSeleccion, 3)
-                        cadSeleccion = RecuperaValor(cadSeleccion, 1)
-                        NumRegElim = 1
-                        Do
-                            If adodc1.Recordset.EOF Then
-                                NumRegElim = 2
+                            NumRegElim = InStr(1, CadB, "ParaEmpresa")
+                            
+                            If NumRegElim > 0 Then
+                                'Monto un nuevo select
+                                CadB = " jornadassemanalesalz.idtrabajador = " & RecuperaValor(cadSeleccion, 1) & " AND fecha = " & DBSet(RecuperaValor(cadSeleccion, 2), "F")
+                                CadB = DevuelveSQL(CadB)
+                                
                             Else
-                                If adodc1.Recordset!idTrabajador <> cadSeleccion Then
+                                CadB = adodc1.RecordSource
+                            End If
+                            
+                            CargaGrid2 False, CadB
+                            
+                            'Situamos el grid
+                            CadB = "idtrabajador = " & RecuperaValor(cadSeleccion, 1)
+                            adodc1.Recordset.Find CadB
+                            F1 = RecuperaValor(cadSeleccion, 2)
+                            CadB = RecuperaValor(cadSeleccion, 3)
+                            cadSeleccion = RecuperaValor(cadSeleccion, 1)
+                            NumRegElim = 1
+                            Do
+                                If adodc1.Recordset.EOF Then
                                     NumRegElim = 2
                                 Else
-                                    If adodc1.Recordset!Fecha = F1 Then
-                                        If adodc1.Recordset!tipohoras = Val(CadB) Then NumRegElim = 2
+                                    If adodc1.Recordset!idTrabajador <> cadSeleccion Then
+                                        NumRegElim = 2
+                                    Else
+                                        If adodc1.Recordset!Fecha = F1 Then
+                                            If adodc1.Recordset!tipohoras = Val(CadB) Then NumRegElim = 2
+                                        End If
                                     End If
                                 End If
-                            End If
-                            If NumRegElim = 1 Then adodc1.Recordset.MoveNext
-                        Loop Until NumRegElim = 2
-                        
-                        CadB = ""
-                    End If
-                End If
-            End If
-        End If
-    End If
+                                If NumRegElim = 1 Then adodc1.Recordset.MoveNext
+                            Loop Until NumRegElim = 2
+                            
+                            CadB = ""
+                        End If 'nnumregelim>0
+                    End If 'cadena desde otrofomz<>''
+                End If  'que empresa=alzira
+            End If  'EOF
+        End If  'modo=2
+    End If 'de regresar visible
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
@@ -921,13 +927,16 @@ Private Sub Form_Load()
         .Buttons(12).Image = 11  'Salir
     End With
 
-
     Combo1.Clear
-    Combo1.AddItem "Alzicoop"
-    Combo1.ItemData(Combo1.NewIndex) = 0
-    Combo1.AddItem "Fruxeresa"
-    Combo1.ItemData(Combo1.NewIndex) = 1
-
+    If vEmpresa.QueEmpresa = 2 Then
+        Combo1.AddItem "Alzicoop"
+        Combo1.ItemData(Combo1.NewIndex) = 0
+        Combo1.AddItem "Fruxeresa"
+        Combo1.ItemData(Combo1.NewIndex) = 1
+    Else
+        Combo1.AddItem "Coopic"
+        Combo1.ItemData(Combo1.NewIndex) = 1
+    End If
     CadB = ""
     CargaGrid2 True, "TipoHoras = -1"
 End Sub
@@ -1141,7 +1150,12 @@ Private Function DevuelveSQL(SQL As String) As String
 
 
     DevuelveSQL = "select jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,"
-    DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Alzicoop','Fruxeresa'),horastrabajadas,Ajuste as ajustadas"
+    If vEmpresa.QueEmpresa = 2 Then
+        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Alzicoop','Fruxeresa')"
+    Else
+        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Externo','')"
+    End If
+    DevuelveSQL = DevuelveSQL & " ,horastrabajadas,Ajuste as ajustadas"
     DevuelveSQL = DevuelveSQL & ",laborable from jornadassemanalesalz,trabajadores,tiposhora where"
     DevuelveSQL = DevuelveSQL & " jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador and jornadassemanalesalz.tipohoras = tiposhora.tipohora"
     

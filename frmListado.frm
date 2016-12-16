@@ -3660,7 +3660,7 @@ Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
 
 
-Dim Cad As String
+Dim cad As String
 Dim I  As Integer
 Dim NumPa As Integer
 Dim CadPa As String
@@ -3754,37 +3754,37 @@ Dim B As Boolean
         
     Screen.MousePointer = vbDefault
     If B Then
-        Cad = ""
+        cad = ""
         
-        If txtSecc(10).Text <> "" Then Cad = Cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
-        If txtSecc(11).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
-        If Cad <> "" Then Cad = "Sección: " & Trim(Cad)
+        If txtSecc(10).Text <> "" Then cad = cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
+        If txtSecc(11).Text <> "" Then cad = cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
+        If cad <> "" Then cad = "Sección: " & Trim(cad)
         CadPa = ""
         If txtFec(8).Text <> "" Then CadPa = "Desde " & txtFec(8).Text
         If txtFec(9).Text <> "" Then CadPa = CadPa & "  Hasta " & txtFec(9).Text
-        CadPa = Trim(CadPa & "   " & Cad)
+        CadPa = Trim(CadPa & "   " & cad)
         
-        Cad = ""
-        If txtTrab(10).Text <> "" Then Cad = "Desde " & txtTrab(10).Text & " - " & txtDT(10).Text
-        If txtTrab(11).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(11).Text & " - " & txtDT(11).Text
-        Cad = Trim(Cad)
-        If Cad <> "" Then
-            If CadPa <> "" Then Cad = """ + chr(13) + """ & Cad
+        cad = ""
+        If txtTrab(10).Text <> "" Then cad = "Desde " & txtTrab(10).Text & " - " & txtDT(10).Text
+        If txtTrab(11).Text <> "" Then cad = cad & "    hasta " & txtTrab(11).Text & " - " & txtDT(11).Text
+        cad = Trim(cad)
+        If cad <> "" Then
+            If CadPa <> "" Then cad = """ + chr(13) + """ & cad
         End If
-        CadPa = CadPa & Cad
+        CadPa = CadPa & cad
         
         
         If optActual(0).Value Then
-            Cad = "pOrden= {tmpcombinada.idtrabajador}|"
+            cad = "pOrden= {tmpcombinada.idtrabajador}|"
         Else
-            Cad = "pOrden= {trabajadores.nomtrabajador}|"
+            cad = "pOrden= {trabajadores.nomtrabajador}|"
         End If
         
-        Cad = Cad & "DesdeHasta= """ & CadPa & """|"
+        cad = cad & "DesdeHasta= """ & CadPa & """|"
         
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
-        Cad = Cad & "EsTeinsa= " & CadPa & "|"
+        cad = cad & "EsTeinsa= " & CadPa & "|"
         
         
         If Me.chkSinProcesar(0).Value = 1 Then
@@ -3793,7 +3793,7 @@ Dim B As Boolean
             frmImprimir.Opcion = 32
         End If
         frmImprimir.FormulaSeleccion = "{tmpcombinada.codusu} = " & vUsu.Codigo
-        frmImprimir.OtrosParametros = Cad
+        frmImprimir.OtrosParametros = cad
         frmImprimir.NumeroParametros = 3
 
         frmImprimir.Show vbModal
@@ -3817,17 +3817,17 @@ Dim F As Date
     End If
     
     
-    Cad = ""
+    cad = ""
     For I = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(I).Checked Then Cad = Cad & "1"
+        If ListView1.ListItems(I).Checked Then cad = cad & "1"
     Next I
     
-    If Cad = "" Then
+    If cad = "" Then
         MsgBox "No tiene festivos para copiar", vbExclamation
         Exit Sub
     Else
-        Cad = "Desea copiar " & Len(Cad) & " dia(s) sobre el calendario: " & Me.txtCalendarioDestino & "?"
-        If MsgBox(Cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+        cad = "Desea copiar " & Len(cad) & " dia(s) sobre el calendario: " & Me.txtCalendarioDestino & "?"
+        If MsgBox(cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
     End If
     
     
@@ -3839,10 +3839,10 @@ Dim F As Date
         If ListView1.ListItems(I).Checked Then
               F = CDate(ListView1.ListItems(I))
               If Me.chkMas1año.Value = 1 Then F = DateAdd("yyyy", 1, F)
-              Cad = ListView1.ListItems(I).SubItems(1)
-              NombreSQL Cad
-              Cad = CadPa & "'" & Format(F, FormatoFecha) & "','" & Cad & "')"
-              If Not ExisteElFestivo(F) Then EjecutaSQL Cad
+              cad = ListView1.ListItems(I).SubItems(1)
+              NombreSQL cad
+              cad = CadPa & "'" & Format(F, FormatoFecha) & "','" & cad & "')"
+              If Not ExisteElFestivo(F) Then EjecutaSQL cad
         End If
     Next I
     Set miRsAux = Nothing
@@ -3880,18 +3880,18 @@ Private Sub cmdDiasTrabajados_Click()
     'Generamos los datos
     If GenerarDiasTrabajados Then
         
-        Cad = ""
-        If txtFec(12).Text <> "" Then Cad = "DESDE " & txtFec(12).Text
-        If txtFec(13).Text <> "" Then Cad = Cad & "     HASTA " & txtFec(13).Text
-        Cad = "LasFEchas= ""      " & Trim(Cad) & """|"
-        CadPa = Cad
-        Cad = ""
-        If txtTrab(14).Text <> "" Then Cad = "Desde " & txtTrab(14).Text & " - " & txtDT(14).Text
-        If txtTrab(15).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(15).Text & " - " & txtDT(15).Text
-        If txtSecc(4).Text <> "" Then Cad = Cad & "    desde " & txtSecc(4).Text & " - " & txtDSecc(4).Text
-        If txtSecc(5).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(5).Text & " - " & txtDSecc(5).Text
-        Cad = "FechaIni= """ & Trim(Cad) & """|"
-        CadPa = CadPa & Cad
+        cad = ""
+        If txtFec(12).Text <> "" Then cad = "DESDE " & txtFec(12).Text
+        If txtFec(13).Text <> "" Then cad = cad & "     HASTA " & txtFec(13).Text
+        cad = "LasFEchas= ""      " & Trim(cad) & """|"
+        CadPa = cad
+        cad = ""
+        If txtTrab(14).Text <> "" Then cad = "Desde " & txtTrab(14).Text & " - " & txtDT(14).Text
+        If txtTrab(15).Text <> "" Then cad = cad & "    hasta " & txtTrab(15).Text & " - " & txtDT(15).Text
+        If txtSecc(4).Text <> "" Then cad = cad & "    desde " & txtSecc(4).Text & " - " & txtDSecc(4).Text
+        If txtSecc(5).Text <> "" Then cad = cad & "    hasta " & txtSecc(5).Text & " - " & txtDSecc(5).Text
+        cad = "FechaIni= """ & Trim(cad) & """|"
+        CadPa = CadPa & cad
         NumPa = 2
         With frmImprimir
             .FormulaSeleccion = "{tmpdatosmes.codusu}=" & vUsu.Codigo
@@ -3931,17 +3931,17 @@ Private Sub cmdGeneraInci_Click()
     
     If Me.FrameIncidenciaGenerada.Tag = "" Then
         'Insertar incidencia manual
-        Cad = CStr(DameIncidenciaGenerada())
-        Cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES (" & Cad
-        Cad = Cad & "," & NumRegElim & "," & txtInci(2).Text
-        Cad = Cad & "," & TransformaComasPuntos(txtHoraD(0).Text) & ")"
+        cad = CStr(DameIncidenciaGenerada())
+        cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES (" & cad
+        cad = cad & "," & NumRegElim & "," & txtInci(2).Text
+        cad = cad & "," & TransformaComasPuntos(txtHoraD(0).Text) & ")"
     Else
-        Cad = "UPDATE incidenciasgeneradas SET horas =" & TransformaComasPuntos(txtHoraD(0).Text)
-        Cad = Cad & " ,incidencia = " & txtInci(2).Text
-        Cad = Cad & " WHERE Id = " & FrameIncidenciaGenerada.Tag
+        cad = "UPDATE incidenciasgeneradas SET horas =" & TransformaComasPuntos(txtHoraD(0).Text)
+        cad = cad & " ,incidencia = " & txtInci(2).Text
+        cad = cad & " WHERE Id = " & FrameIncidenciaGenerada.Tag
         
     End If
-    If EjecutaSQL(Cad) Then
+    If EjecutaSQL(cad) Then
         CadenaDesdeOtroForm = "OK"
         Unload Me
     End If
@@ -3952,10 +3952,10 @@ Private Function DameIncidenciaGenerada() As Long
 Dim L As Long
 Dim Fin As Boolean
 
-    Cad = "Select id from incidenciasgeneradas order by id"
+    cad = "Select id from incidenciasgeneradas order by id"
     L = 1
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not Fin
         If Val(miRsAux.Fields(0)) - L > 0 Then
             DameIncidenciaGenerada = L
@@ -3987,7 +3987,7 @@ Dim F1 As Date
     NumPa = 0
     CadPa = ""
     vSQL = ""
-    Cad = ""
+    cad = ""
     
     
     
@@ -3996,37 +3996,37 @@ Dim F1 As Date
     NumPa = NumPa + 1
     CadPa = CadPa & "FechaIni= """ & Format(F1, "dd/mm/yyyy") & """|"
     vSQL = "({jornadassemanalesalz.fecha} >= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & ")"
-    Cad = "Desde " & F1
+    cad = "Desde " & F1
     
     F1 = Now
     If txtFec(17).Text <> "" Then F1 = CDate(txtFec(17).Text)
     NumPa = NumPa + 1
     CadPa = CadPa & "FechaFin= """ & Format(F1, "dd/mm/yyyy") & """|"
     vSQL = vSQL & " AND {jornadassemanalesalz.fecha} <= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & "))"
-    Cad = Cad & " hasta " & F1
+    cad = cad & " hasta " & F1
   
         
     
     'Trabajador
     If txtTrab(18).Text <> "" Then
-        Cad = Cad & "   Desde " & txtTrab(18).Text & " " & txtDT(18).Text
+        cad = cad & "   Desde " & txtTrab(18).Text & " " & txtDT(18).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(1, 18, "{jornadassemanalesalz.idtrabajador} >=", " AND ")
     
     If txtTrab(19).Text <> "" Then
-        Cad = Cad & "hasta " & txtTrab(19).Text & " " & txtDT(19).Text
+        cad = cad & "hasta " & txtTrab(19).Text & " " & txtDT(19).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(1, 19, "{jornadassemanalesalz.idtrabajador} <=", " AND ")
     
     'Seccion
     If txtSecc(8).Text <> "" Then
-        Cad = Cad & "   Desde " & txtSecc(8).Text & " " & txtDSecc(8).Text
+        cad = cad & "   Desde " & txtSecc(8).Text & " " & txtDSecc(8).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(2, 8, "{trabajadores.Seccion} >=", " AND ")
     
     
     If txtSecc(9).Text <> "" Then
-        Cad = Cad & "hasta " & txtSecc(9).Text & " " & txtDSecc(9).Text
+        cad = cad & "hasta " & txtSecc(9).Text & " " & txtDSecc(9).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(2, 9, "{trabajadores.Seccion} <=", " AND ")
     
@@ -4034,45 +4034,46 @@ Dim F1 As Date
     
     
     'Para el resumen Hoja trabajador , para los desde hasta solo PINTO en el rpt la coopertaiva o no
-    If Me.optHorasPorecesadas(1).Value Then Cad = ""
+    If Me.optHorasPorecesadas(1).Value Then cad = ""
     
     
     'Desde /hasta empresa
     'Si estan las dos no pongo nada
-    If List1.Selected(0) Xor List1.Selected(1) Then
-        If List1.Selected(0) Then
-            Cad = Trim(Cad & "      " & List1.List(0))
-            vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=0 "
-        Else
-            Cad = Trim(Cad & "      " & List1.List(1))
-            vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=1 "
+    If vEmpresa.QueEmpresa = 2 Then
+        If List1.Selected(0) Xor List1.Selected(1) Then
+            If List1.Selected(0) Then
+                cad = Trim(cad & "      " & List1.List(0))
+                vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=0 "
+            Else
+                cad = Trim(cad & "      " & List1.List(1))
+                vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=1 "
+            End If
         End If
     End If
     
     
     
-    
-    CadPa = CadPa & "Intervalo= """ & Cad & """|"
+    CadPa = CadPa & "Intervalo= """ & cad & """|"
     CadPa = CadPa & "DetallaTr= " & Abs(chkDesglosaDias(0).Value) & "|"
     NumPa = NumPa + 2
     
     
     
     If Me.optHorasPorecesadas(0).Value Then
-        Cad = "AlzHorasProcesadasFecha"
-        If Me.chkDesglosaDias(1).Value = 1 Then Cad = Cad & "Emp"
-        Cad = Cad & ".rpt"
+        cad = "AlzHorasProcesadasFecha"
+        If Me.chkDesglosaDias(1).Value = 1 Then cad = cad & "Emp"
+        cad = cad & ".rpt"
     
     Else
         'Desglose trabajador
-        Cad = "AlzHorasTrabajador.rpt"
+        cad = "AlzHorasTrabajador.rpt"
     End If
     
     With frmImprimir
         .FormulaSeleccion = vSQL
         .OtrosParametros = CadPa
         .NumeroParametros = NumPa
-        .NombreRPT100 = Cad
+        .NombreRPT100 = cad
         .Opcion = 65
         .Show vbModal
     End With
@@ -4134,8 +4135,8 @@ Dim L2 As String
         End If
         vSQL = vSQL & DesdeHastaSelect(3, 4, "incfinal<=", " AND ")
         
-        Cad = "SELECT count(*) from marcajes"
-        If vSQL <> "" Then Cad = Cad & " WHERE " & Mid(vSQL, 6)
+        cad = "SELECT count(*) from marcajes"
+        If vSQL <> "" Then cad = cad & " WHERE " & Mid(vSQL, 6)
     Else
         
         'Incidencia generada
@@ -4153,13 +4154,13 @@ Dim L2 As String
         End If
         vSQL = vSQL & DesdeHastaSelect(3, 4, "incidencia<=", " AND ")
         
-        Cad = "SELECT count(*) from marcajes,incidenciasgeneradas where incidenciasgeneradas.entradamarcaje=marcajes.entrada"
-        If vSQL <> "" Then Cad = Cad & " AND " & Mid(vSQL, 6)
+        cad = "SELECT count(*) from marcajes,incidenciasgeneradas where incidenciasgeneradas.entradamarcaje=marcajes.entrada"
+        If vSQL <> "" Then cad = cad & " AND " & Mid(vSQL, 6)
         
         
     End If
     
-    If Not TieneDatos(Cad) Then
+    If Not TieneDatos(cad) Then
         MsgBox "Ningún registro con esos valores", vbExclamation
         Exit Sub
     End If
@@ -4254,9 +4255,9 @@ Private Sub cmdMarcajeTrabajador_Click()
     vSQL = vSQL & DesdeHastaSelect(0, 2, "Marcajes.Fecha<=", " AND ")
     
     
-    Cad = "SELECT count(*) from marcajes "
-    If vSQL <> "" Then Cad = Cad & " WHERE " & Mid(vSQL, 6)  'le quito el primer AND
-    If Not TieneDatos(Cad) Then
+    cad = "SELECT count(*) from marcajes "
+    If vSQL <> "" Then cad = cad & " WHERE " & Mid(vSQL, 6)  'le quito el primer AND
+    If Not TieneDatos(cad) Then
         MsgBox "Ningún registro con esos valores", vbExclamation
         Exit Sub
     End If
@@ -4290,16 +4291,16 @@ Private Sub cmdPResenciaReal_Click()
                 If CadPa <> "" Then CadPa = CadPa & "  "
                 CadPa = CadPa & " hasta " & txtFec(5).Text
             End If
-            Cad = ""
+            cad = ""
             If txtTrab(6).Text <> "" Then
-                Cad = txtTrab(6).Text & " (" & txtDT(6).Text & ")"
+                cad = txtTrab(6).Text & " (" & txtDT(6).Text & ")"
             End If
             If txtTrab(7).Text <> "" Then
                 If CadPa <> "" Then CadPa = CadPa & "  "
-                Cad = Cad & " hasta " & txtTrab(7).Text & " (" & txtDT(7).Text & ")"
+                cad = cad & " hasta " & txtTrab(7).Text & " (" & txtDT(7).Text & ")"
             End If
-            Cad = Trim(CadPa & " " & Cad)
-            CadPa = "FechaFin= """ & Cad & """|"
+            cad = Trim(CadPa & " " & cad)
+            CadPa = "FechaFin= """ & cad & """|"
             NumPa = 1
             'Agrupado por
             If Me.chkPresReal.Value = 1 Then
@@ -4333,24 +4334,24 @@ Dim anyo As Integer
     On Error GoTo EHacerPresReal
     HacerPresReal = False
 
-    Cad = "Delete from tmppresencia where codusu =" & vUsu.Codigo
-    conn.Execute Cad
+    cad = "Delete from tmppresencia where codusu =" & vUsu.Codigo
+    conn.Execute cad
     
     'HACemos el select
-    Cad = "select entradamarcajes.* , nomtrabajador,nominci "
-    Cad = Cad & " From entradamarcajes, trabajadores, incidencias"
-    Cad = Cad & " Where entradamarcajes.idTrabajador = trabajadores.idTrabajador"
-    Cad = Cad & " and entradamarcajes.idinci =incidencias.idinci"
-    If txtFec(4).Text <> "" Then Cad = Cad & " and fecha >= '" & Format(txtFec(4).Text, FormatoFecha) & "'"
-    If txtFec(5).Text <> "" Then Cad = Cad & " and fecha <= '" & Format(txtFec(5).Text, FormatoFecha) & "'"
+    cad = "select entradamarcajes.* , nomtrabajador,nominci "
+    cad = cad & " From entradamarcajes, trabajadores, incidencias"
+    cad = cad & " Where entradamarcajes.idTrabajador = trabajadores.idTrabajador"
+    cad = cad & " and entradamarcajes.idinci =incidencias.idinci"
+    If txtFec(4).Text <> "" Then cad = cad & " and fecha >= '" & Format(txtFec(4).Text, FormatoFecha) & "'"
+    If txtFec(5).Text <> "" Then cad = cad & " and fecha <= '" & Format(txtFec(5).Text, FormatoFecha) & "'"
     
-    If txtTrab(6).Text <> "" Then Cad = Cad & " and entradamarcajes.idtrabajador >= " & txtTrab(6).Text
-    If txtTrab(7).Text <> "" Then Cad = Cad & " and entradamarcajes.idtrabajador <= " & txtTrab(7).Text
-    Cad = Cad & " order by idmarcaje,horareal"
+    If txtTrab(6).Text <> "" Then cad = cad & " and entradamarcajes.idtrabajador >= " & txtTrab(6).Text
+    If txtTrab(7).Text <> "" Then cad = cad & " and entradamarcajes.idtrabajador <= " & txtTrab(7).Text
+    cad = cad & " order by idmarcaje,horareal"
     
     
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     N = 0
     m = 0
     Inci = ""
@@ -4367,12 +4368,12 @@ Dim anyo As Integer
            ' Label2.Refresh
             Inci = ""
             N = N + 1
-            Cad = miRsAux!nomtrabajador
-            NombreSQL Cad
-            Cad = N & "," & miRsAux!idTrabajador & ",'" & Cad & "','" & Format(miRsAux!Fecha, FormatoFecha) & "'"
+            cad = miRsAux!nomtrabajador
+            NombreSQL cad
+            cad = N & "," & miRsAux!idTrabajador & ",'" & cad & "','" & Format(miRsAux!Fecha, FormatoFecha) & "'"
             'Semana
             I = (Year(miRsAux!Fecha) - anyo) * 100 + Format(miRsAux!Fecha, "ww", vbMonday)
-            Cad = Cad & "," & I
+            cad = cad & "," & I
             I = 0
             m = miRsAux!idMarcaje
         End If
@@ -4388,7 +4389,7 @@ Dim anyo As Integer
         End If
         
         I = I + 1
-        If I <= 8 Then Cad = Cad & ",'" & Format(miRsAux!HoraReal, "hh:mm:ss") & "'"
+        If I <= 8 Then cad = cad & ",'" & Format(miRsAux!HoraReal, "hh:mm:ss") & "'"
         
         
         miRsAux.MoveNext
@@ -4416,7 +4417,7 @@ Private Sub InsertaHoraReal(NumHoras As Integer, ByRef Incidencia As String)
     'CadPara    ---> Tiene el INSERT INTO ......
     NumHoras = NumHoras + 1
     While NumHoras <= 8
-        Cad = Cad & ",NULL"
+        cad = cad & ",NULL"
         NumHoras = NumHoras + 1
     Wend
     If Incidencia <> "" Then
@@ -4426,8 +4427,8 @@ Private Sub InsertaHoraReal(NumHoras As Integer, ByRef Incidencia As String)
         Incidencia = "NULL"
     End If
     
-    Cad = CadPa & Cad & "," & Incidencia & ")"
-    conn.Execute Cad
+    cad = CadPa & cad & "," & Incidencia & ")"
+    conn.Execute cad
     
     
     
@@ -4443,7 +4444,7 @@ Private Sub cmdRelojesAuxiliares_Click()
         
     Screen.MousePointer = vbDefault
     If B Then
-        Cad = ""
+        cad = ""
         
    '     If txtSecc(10).Text <> "" Then Cad = Cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
    '     If txtSecc(11).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
@@ -4451,36 +4452,36 @@ Private Sub cmdRelojesAuxiliares_Click()
         CadPa = ""
         If txtFec(18).Text <> "" Then CadPa = "Desde " & txtFec(18).Text
         If txtFec(19).Text <> "" Then CadPa = CadPa & "  Hasta " & txtFec(19).Text
-        CadPa = Trim(CadPa & "   " & Cad)
+        CadPa = Trim(CadPa & "   " & cad)
         
-        Cad = ""
-        If txtTrab(20).Text <> "" Then Cad = "Desde " & txtTrab(20).Text & " - " & txtDT(20).Text
-        If txtTrab(21).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(21).Text & " - " & txtDT(21).Text
-        Cad = Trim(Cad)
-        If Cad <> "" Then
-            If CadPa <> "" Then Cad = """ + chr(13) + """ & Cad
+        cad = ""
+        If txtTrab(20).Text <> "" Then cad = "Desde " & txtTrab(20).Text & " - " & txtDT(20).Text
+        If txtTrab(21).Text <> "" Then cad = cad & "    hasta " & txtTrab(21).Text & " - " & txtDT(21).Text
+        cad = Trim(cad)
+        If cad <> "" Then
+            If CadPa <> "" Then cad = """ + chr(13) + """ & cad
         End If
-        CadPa = CadPa & Cad
+        CadPa = CadPa & cad
         
         
         If optActual(0).Value Then
-            Cad = "pOrden= {tmpcombinada.idtrabajador}|"
+            cad = "pOrden= {tmpcombinada.idtrabajador}|"
         Else
-            Cad = "pOrden= {trabajadores.nomtrabajador}|"
+            cad = "pOrden= {trabajadores.nomtrabajador}|"
         End If
         
-        Cad = Cad & "DesdeHasta= """ & CadPa & """|"
+        cad = cad & "DesdeHasta= """ & CadPa & """|"
         
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
-        Cad = Cad & "EsTeinsa= " & CadPa & "|"
+        cad = cad & "EsTeinsa= " & CadPa & "|"
         
         
       With frmImprimir
             .FormulaSeleccion = "{tmpcombinada.codusu} = " & vUsu.Codigo
             .NombreRPT100 = IIf(chkSinProcesar(1).Value = 0, "marcactualAux.rpt", "marcactualAuxT.rpt")
             .Titulo100 = "Relojes auxiliares"
-            .OtrosParametros = Cad
+            .OtrosParametros = cad
             .Opcion = 100
             .NumeroParametros = 3
             .Show vbModal
@@ -4843,10 +4844,16 @@ Dim IndiceCancelar As Integer
         
         
         'Igual deberia venir de una BDs
-        List1.AddItem "Fruxeresa"
-        List1.Selected(0) = True
-        List1.AddItem "Cooperativa"
-        List1.Selected(1) = True
+        If vEmpresa.QueEmpresa = 2 Then
+            List1.AddItem "Fruxeresa"
+            List1.Selected(0) = True
+            List1.AddItem "Cooperativa"
+            List1.Selected(1) = True
+        Else
+            List1.AddItem "Cooperativa"
+            List1.Selected(0) = True
+        End If
+
     
     Case 18
         FrameRelojesAuxiliares.Visible = True
@@ -4908,11 +4915,11 @@ End Sub
 Private Sub imgCalen_Click(Index As Integer)
     imgTra(0).Tag = 2 'Para que el devuelve grid sepa que es CALENDARIOS
     imgInci(0).Tag = Index 'Dentro de calendarios, que INDEX
-    Cad = "Codigo|idcal|N||15·"
-    Cad = Cad & "Descripción|Descripcion|T||85·"
+    cad = "Codigo|idcal|N||15·"
+    cad = cad & "Descripción|Descripcion|T||85·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Calendario"
-    frmB.vCampos = Cad
+    frmB.vCampos = cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "CALENDARIO"
@@ -4967,11 +4974,11 @@ End Sub
 Private Sub imgInci_Click(Index As Integer)
     imgTra(0).Tag = 1 'Para que el devuelve grid sepa que es INCIDENCIAS
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    Cad = "Codigo|idInci|N||15·"
-    Cad = Cad & "Nombre|nominci|T||60·"
+    cad = "Codigo|idInci|N||15·"
+    cad = cad & "Nombre|nominci|T||60·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Incidencias"
-    frmB.vCampos = Cad
+    frmB.vCampos = cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "INCIDENCIAS"
@@ -4982,11 +4989,11 @@ End Sub
 Private Sub imgSecc_Click(Index As Integer)
     imgTra(0).Tag = 3 'Para que el devuelve grid sepa que es SECCION
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    Cad = "Codigo|idseccion|N||15·"
-    Cad = Cad & "Descripcion|nombre|T||75·"
+    cad = "Codigo|idseccion|N||15·"
+    cad = cad & "Descripcion|nombre|T||75·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Secciones"
-    frmB.vCampos = Cad
+    frmB.vCampos = cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "Secciones"
@@ -4997,12 +5004,12 @@ End Sub
 Private Sub imgTra_Click(Index As Integer)
     imgTra(0).Tag = 0 'Para que el devuelve grid sepa que es TRABAJADORES
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    Cad = "Codigo|idTrabajador|N||15·"
-    Cad = Cad & "Nombre|nomtrabajador|T||60·"
-    Cad = Cad & "Tarjeta|numtarjeta|T||20·"
+    cad = "Codigo|idTrabajador|N||15·"
+    cad = cad & "Nombre|nomtrabajador|T||60·"
+    cad = cad & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = Cad
+    frmB.vCampos = cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
@@ -5046,9 +5053,9 @@ Private Sub txtCalen_LostFocus(Index As Integer)
             txtCalendD(Index).Text = ""
             PonerFoco txtCalen(Index)
         Else
-            Cad = DevuelveDesdeBD("descripcion", "calendario", "idcal", txtCalen(Index).Text, "N")
+            cad = DevuelveDesdeBD("descripcion", "calendario", "idcal", txtCalen(Index).Text, "N")
             
-            txtCalendD(Index).Text = Cad
+            txtCalendD(Index).Text = cad
         End If
     End If
             
@@ -5123,20 +5130,20 @@ End Sub
 Private Sub txtHora_LostFocus(Index As Integer)
         txtHora(Index).Text = Trim(txtHora(Index).Text)
         If txtHora(Index).Text = "" Then
-            Cad = ""
+            cad = ""
         Else
             txtHora(Index).Text = TransformaPunto2Puntos(txtHora(Index).Text)
             txtHora(Index).Text = Format(txtHora(Index).Text, "hh:mm:ss")
             If IsDate(txtHora(Index).Text) Then
                 'Cambiamos las horas del campo decimal
-                Cad = Format(DevuelveValorHora(CDate(txtHora(Index).Text)), "0.00")
+                cad = Format(DevuelveValorHora(CDate(txtHora(Index).Text)), "0.00")
             Else
-                Cad = ""
+                cad = ""
                 txtHora(Index).Text = ""
             End If
             
         End If
-        txtHoraD(Index).Text = Cad
+        txtHoraD(Index).Text = cad
 End Sub
 
 
@@ -5152,17 +5159,17 @@ End Sub
 Private Sub txtHoraD_LostFocus(Index As Integer)
     txtHoraD(Index).Text = Trim(txtHoraD(Index).Text)
     If txtHoraD(Index).Text = "" Then
-        Cad = ""
+        cad = ""
     Else
         txtHoraD(Index).Text = TransformaPuntosComas(txtHoraD(Index).Text)
         If Not IsNumeric(txtHoraD(Index).Text) Then
             MsgBox "Campo numérico", vbExclamation
-            Cad = ""
+            cad = ""
         Else
-            Cad = DevuelveHora(CSng(txtHoraD(Index).Text))
+            cad = DevuelveHora(CSng(txtHoraD(Index).Text))
         End If
     End If
-    txtHora(Index).Text = Cad
+    txtHora(Index).Text = cad
         
 End Sub
 
@@ -5196,9 +5203,9 @@ Private Sub txtInci_LostFocus(Index As Integer)
         txtDInci(Index).Text = ""
         PonerFoco txtInci(Index)
     Else
-        Cad = DevuelveDesdeBD("nominci", "incidencias", "idinci", txtInci(Index).Text, "N")
-        If Cad = "" Then Cad = "NO EXISTE"
-        txtDInci(Index).Text = Cad
+        cad = DevuelveDesdeBD("nominci", "incidencias", "idinci", txtInci(Index).Text, "N")
+        If cad = "" Then cad = "NO EXISTE"
+        txtDInci(Index).Text = cad
     End If
 End Sub
 
@@ -5226,9 +5233,9 @@ Private Sub txtSecc_LostFocus(Index As Integer)
         txtDSecc(Index).Text = ""
         PonerFoco txtSecc(Index)
     Else
-        Cad = DevuelveDesdeBD("nombre", "secciones", "idseccion", txtSecc(Index).Text, "N")
-        If Cad = "" Then Cad = "NO EXISTE"
-        txtDSecc(Index).Text = Cad
+        cad = DevuelveDesdeBD("nombre", "secciones", "idseccion", txtSecc(Index).Text, "N")
+        If cad = "" Then cad = "NO EXISTE"
+        txtDSecc(Index).Text = cad
     End If
 End Sub
 
@@ -5262,9 +5269,9 @@ Private Sub txtTrab_LostFocus(Index As Integer)
         txtDT(Index).Text = ""
         PonerFoco txtTrab(Index)
     Else
-        Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
-        If Cad = "" Then Cad = "NO EXISTE"
-        txtDT(Index).Text = Cad
+        cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
+        If cad = "" Then cad = "NO EXISTE"
+        txtDT(Index).Text = cad
     End If
 End Sub
 
@@ -5289,13 +5296,13 @@ Dim IT As ListItem
     ListView1.ListItems.Clear
     If txtCalen(0).Text <> "" Then
         Set miRsAux = New ADODB.Recordset
-        Cad = "Select * from calendariof where idcal =" & txtCalen(0).Text
+        cad = "Select * from calendariof where idcal =" & txtCalen(0).Text
         If Me.chkTempoActual.Value = 1 Then
-            Cad = Cad & " and fecha >= '" & Format(vEmpresa.FechaInicio, FormatoFecha)
-            Cad = Cad & "' and fecha <= '" & Format(vEmpresa.FechaFin, FormatoFecha) & "'"
+            cad = cad & " and fecha >= '" & Format(vEmpresa.FechaInicio, FormatoFecha)
+            cad = cad & "' and fecha <= '" & Format(vEmpresa.FechaFin, FormatoFecha) & "'"
         End If
-        Cad = Cad & " ORDER BY fecha"
-        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = cad & " ORDER BY fecha"
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
             Set IT = ListView1.ListItems.Add()
             IT.Text = Format(miRsAux!Fecha, "dd/mm/yyyy")
@@ -5337,23 +5344,23 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
     SQL = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
     SQL = SQL & ",Control from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
-    Cad = ""
-    If Me.txtFec(8).Text <> "" Then Cad = Cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
-    If Me.txtFec(9).Text <> "" Then Cad = Cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
-    If Me.txtTrab(10).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
-    If Me.txtTrab(11).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
+    cad = ""
+    If Me.txtFec(8).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
+    If Me.txtFec(9).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
+    If Me.txtTrab(10).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
+    If Me.txtTrab(11).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
     
     'Abril 2014
-    If Me.txtSecc(10).Text <> "" Then Cad = Cad & " AND t.seccion >= " & txtSecc(10).Text
-    If Me.txtSecc(11).Text <> "" Then Cad = Cad & " AND t.seccion <= " & txtSecc(11).Text
+    If Me.txtSecc(10).Text <> "" Then cad = cad & " AND t.seccion >= " & txtSecc(10).Text
+    If Me.txtSecc(11).Text <> "" Then cad = cad & " AND t.seccion <= " & txtSecc(11).Text
     
     
     
-    If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
-    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
+    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
+    cad = cad & " ORDER BY fecha,idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
-    SQL = SQL & Cad
+    SQL = SQL & cad
     miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
@@ -5386,13 +5393,13 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
             
             If PuedeQuitarParadas Then
                 'Veamos el horario para el trabajador, dia
-                Cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
+                cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
                 CadPa = "trabajadores.idcal"
-                Cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", Cad, CStr(T), "N", CadPa)
-                If Val(Cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
+                cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(T), "N", CadPa)
+                If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
                 
-                If Val(Cad) <> vH.IdHorario Then
-                    If vH.Leer(CInt(Cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & Cad
+                If Val(cad) <> vH.IdHorario Then
+                    If vH.Leer(CInt(cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
                 End If
                 
                 'Si puede quitar paradas, y el horario lo tiene:
@@ -5412,7 +5419,7 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
             End If
             vSQL = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
             vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
-            Cad = ""
+            cad = ""
         End If
         
         
@@ -5429,14 +5436,14 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
                 I = miRsAux!LaHora - FueraIntervalo_
             End If
             
-            CadPa = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
-            Cad = Cad & ",'" & CadPa & "'"
+            CadPa = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+            cad = cad & ",'" & CadPa & "'"
             
             
             
             
             If Not Entrada Then
-                HF = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
+                HF = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                 difer = DateDiff("n", HI, HF)
                 If FueraIntervalo_ > 0 Then difer = difer + 1440
                 
@@ -5454,7 +5461,7 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
             
             
             Else
-                HI = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
+                HI = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                 If Minutos > 0 Then
                     HIAustada = HoraRectificada(HI, vEmpresa.AjusteSalida, Minutos)
                 Else
@@ -5532,17 +5539,17 @@ Dim J As Integer
         End If
         J = NTicajes
         While J < 16
-            Cad = Cad & ",NULL"
+            cad = cad & ",NULL"
             J = J + 1
         Wend
         
-        Cad = DBSet(Paradas, "N") & "," & Abs(Correcto) & Cad
+        cad = DBSet(Paradas, "N") & "," & Abs(Correcto) & cad
         
-        Cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & Cad
+        cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & cad
         
     
         
-        vSQL = vSQL & Cad & ")"
+        vSQL = vSQL & cad & ")"
         EjecutaSQL vSQL
     
     
@@ -5567,17 +5574,17 @@ Dim J As Integer
         End If
         J = NTicajes
         While J < 16
-            Cad = Cad & ",NULL"
+            cad = cad & ",NULL"
             J = J + 1
         Wend
         
-        Cad = DBSet(0, "N") & "," & Abs(Correcto) & Cad
+        cad = DBSet(0, "N") & "," & Abs(Correcto) & cad
         
-        Cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & Cad
+        cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & cad
         
     
         
-        vSQL = vSQL & Cad & ")"
+        vSQL = vSQL & cad & ")"
         EjecutaSQL vSQL
     
     
@@ -5653,7 +5660,7 @@ Dim Rs As ADODB.Recordset
 Dim RT As ADODB.Recordset
 Dim C As Integer
 Dim CadenaSQL As String
-Dim Cad As String
+Dim cad As String
 Dim Fecha As Date
 Dim NH As Currency
 Dim vH As CHorarios
@@ -5680,24 +5687,24 @@ CadenaSQL = CadenaSQL & DesdeHastaSelect(2, 3, "Trabajadores.Seccion <= ", "AND"
 
 'Devolvemos la cadena
 'Ahora recorremos los textos para hallar la subconsulta
-Cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,Marcajes.idhorario,incfinal,Trabajadores.idcal"
-Cad = Cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
-Cad = Cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
-Cad = Cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
-Cad = Cad & " AND Incidencias.idInci = Marcajes.IncFinal"
-Cad = Cad & " AND Marcajes.correcto = 1"
+cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,Marcajes.idhorario,incfinal,Trabajadores.idcal"
+cad = cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
+cad = cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
+cad = cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
+cad = cad & " AND Incidencias.idInci = Marcajes.IncFinal"
+cad = cad & " AND Marcajes.correcto = 1"
 
 'unimos la cadena sql
-Cad = Cad & CadenaSQL
+cad = cad & CadenaSQL
 
-Cad = Cad & " ORDER BY idhorario,fecha,idcal"
+cad = cad & " ORDER BY idhorario,fecha,idcal"
 Set vH = New CHorarios
 vH.IdHorario = -1
 
 Set RsBase = New ADODB.Recordset
 lblCombinado.Caption = "Obteniendo conjunto registros"
 lblCombinado.Refresh
-RsBase.Open Cad, conn, , , adCmdText
+RsBase.Open cad, conn, , , adCmdText
 If RsBase.EOF Then
     MsgBox "Ningun registro con esos valores", vbExclamation
     Set RsBase = Nothing
@@ -5745,9 +5752,9 @@ While Not RsBase.EOF
 '    If RsBase!idTrabajador = 50049 Then Stop
 
     RT.AddNew
-    Cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
-    Cad = Cad & " ORDER BY Hora"
-    Rs.Open Cad, conn, , , adCmdText
+    cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
+    cad = cad & " ORDER BY Hora"
+    Rs.Open cad, conn, , , adCmdText
     RT!idTrabajador = RsBase!idTrabajador
     RT!Fecha = RsBase!Fecha
     RT!codusu = vUsu.Codigo
@@ -5804,7 +5811,7 @@ While Not RsBase.EOF
         Else
             Hora = Rs!LaHora
         End If
-        Fecha = Format(Hora, "00") & ":" & Format(Rs!Minutos, "00") & ":" & Format(Rs!Segundos, "00")
+        Fecha = Format(Hora, "00") & ":" & Format(Rs!Minutos, "00") & ":" & Format(Rs!segundos, "00")
         If C < 9 Then
             Select Case C
             Case 1
@@ -5901,18 +5908,18 @@ On Error GoTo EGenerarDiasTrabajados
 
     Set miRsAux = New ADODB.Recordset
     
-    Cad = "Select count(*) from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador"
-    Cad = Cad & " and marcajes.incfinal =incidencias.idinci "
-    Cad = Cad & vSQL
-    Cad = Cad & " AND correcto = 0"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "Select count(*) from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador"
+    cad = cad & " and marcajes.incfinal =incidencias.idinci "
+    cad = cad & vSQL
+    cad = cad & " AND correcto = 0"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not miRsAux.EOF Then
-        If DBLet(miRsAux.Fields(0), "N") > 0 Then Cad = ""
+        If DBLet(miRsAux.Fields(0), "N") > 0 Then cad = ""
     End If
     miRsAux.Close
     
     'Muestro el mensaje de que hay marcajes incorrectos
-    If Cad = "" Then
+    If cad = "" Then
         MsgBox "Hay marcajes INCORRECTOS con esos parametros", vbExclamation
     End If
     
@@ -5926,11 +5933,11 @@ On Error GoTo EGenerarDiasTrabajados
     miSQL = "INSERT INTO tmpdatosmes (Mes, codusu,Trabajador, DiasTrabajados,  HorasT, HorasE,HorasN)"
     miSQL = miSQL & " VALUES (0," & vUsu.Codigo & ","
     
-    Cad = "Select marcajes.idtrabajador,incfinal,excesodefecto,count(*) as dias,sum(horastrabajadas) as ht,sum(horasincid) as hi"
-    Cad = Cad & " from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador and marcajes.incfinal =incidencias.idinci"
-    Cad = Cad & vSQL
-    Cad = Cad & " group by marcajes.idtrabajador,incfinal,excesodefecto order by marcajes.idtrabajador"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "Select marcajes.idtrabajador,incfinal,excesodefecto,count(*) as dias,sum(horastrabajadas) as ht,sum(horasincid) as hi"
+    cad = cad & " from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador and marcajes.incfinal =incidencias.idinci"
+    cad = cad & vSQL
+    cad = cad & " group by marcajes.idtrabajador,incfinal,excesodefecto order by marcajes.idtrabajador"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Trab = -1
     
     While Not miRsAux.EOF
@@ -5938,9 +5945,9 @@ On Error GoTo EGenerarDiasTrabajados
         If Trab <> miRsAux!idTrabajador Then
             If Trab > 0 Then
                 'INSERTAMOS EN BD   DiasTrabajados,  HorasT, HorasE,HorasN
-                Cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
-                Cad = Cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
-                conn.Execute Cad
+                cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
+                cad = cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
+                conn.Execute cad
             End If
             Trab = miRsAux!idTrabajador
             lblDiasTrabajados.Caption = Trab
@@ -5972,9 +5979,9 @@ On Error GoTo EGenerarDiasTrabajados
     'El ultimo
     If Trab > 0 Then
         'INSERTAMOS EN BD   DiasTrabajados,  HorasT, HorasE,HorasN
-        Cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
-        Cad = Cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
-        conn.Execute Cad
+        cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
+        cad = cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
+        conn.Execute cad
     Else
         MsgBox "Ningun dato con esos parametros", vbExclamation
         Set miRsAux = Nothing
@@ -5985,16 +5992,16 @@ On Error GoTo EGenerarDiasTrabajados
     lblDiasTrabajados.Caption = "Incidencias generadas"
     lblDiasTrabajados.Refresh
                 'NO TOCAR vsql
-    Cad = "INSERT INTO tmpdiastrabajinci (idtrabajador, incidencia, horas,dias, codusu) "
-    Cad = Cad & " select marcajes.idtrabajador,incidencia,sum(horas),count(*)," & vUsu.Codigo
-    Cad = Cad & " from marcajes,trabajadores,incidencias,incidenciasgeneradas where"
-    Cad = Cad & " marcajes.idtrabajador = trabajadores.idtrabajador and "
-    Cad = Cad & " incidenciasgeneradas.entradamarcaje=marcajes.entrada  and"
-    Cad = Cad & " incidencias.idinci = incidenciasgeneradas.Incidencia"
+    cad = "INSERT INTO tmpdiastrabajinci (idtrabajador, incidencia, horas,dias, codusu) "
+    cad = cad & " select marcajes.idtrabajador,incidencia,sum(horas),count(*)," & vUsu.Codigo
+    cad = cad & " from marcajes,trabajadores,incidencias,incidenciasgeneradas where"
+    cad = cad & " marcajes.idtrabajador = trabajadores.idtrabajador and "
+    cad = cad & " incidenciasgeneradas.entradamarcaje=marcajes.entrada  and"
+    cad = cad & " incidencias.idinci = incidenciasgeneradas.Incidencia"
     
-    Cad = Cad & vSQL
-    Cad = Cad & " group by 1,2"
-    conn.Execute Cad
+    cad = cad & vSQL
+    cad = cad & " group by 1,2"
+    conn.Execute cad
 
     '---------------------------------------
     lblDiasTrabajados.Caption = "Vacaciones"
@@ -6003,26 +6010,26 @@ On Error GoTo EGenerarDiasTrabajados
     If vEmpresa.TodosLosDias Then
         'Llevo control de vacaciones
         '
-        Cad = "select idtrabajador,count(*) from calendariot where tipodia=2"
+        cad = "select idtrabajador,count(*) from calendariot where tipodia=2"
         vSQL = DesdeHastaSelect(0, 12, "Fecha>=", " AND ")
         vSQL = vSQL & DesdeHastaSelect(0, 13, "Fecha<=", " AND ")
-        Cad = Cad & vSQL
+        cad = cad & vSQL
 '        cad = cad & " and idtrabajador in (select idtrabajador from tmpdatosmes where codusu=" & vUsu.Codigo & ")"
-        Cad = Cad & " group by idtrabajador"
-        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = cad & " group by idtrabajador"
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
-            Cad = "UPDATE tmpDatosMes SET Anticipos=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
-            conn.Execute Cad
+            cad = "UPDATE tmpDatosMes SET Anticipos=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
+            conn.Execute cad
             miRsAux.MoveNext
         Wend
         miRsAux.Close
         
-        Cad = "Select idtrabajador,count(*) From marcajes where  incfinal= " & vEmpresa.IncVacaciones
-        Cad = Cad & vSQL & " group by idtrabajador"
-        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = "Select idtrabajador,count(*) From marcajes where  incfinal= " & vEmpresa.IncVacaciones
+        cad = cad & vSQL & " group by idtrabajador"
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
-            Cad = "UPDATE tmpDatosMes SET Extras=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
-            conn.Execute Cad
+            cad = "UPDATE tmpDatosMes SET Extras=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
+            conn.Execute cad
             miRsAux.MoveNext
         Wend
         miRsAux.Close
@@ -6444,8 +6451,8 @@ Dim Anti As Currency
     On Error GoTo eGeneraExcel
     GeneraExcel = False
     I = -1
-    Cad = App.Path & "\tmpxls.csv"
-    If Dir(Cad, vbArchive) <> "" Then Kill Cad
+    cad = App.Path & "\tmpxls.csv"
+    If Dir(cad, vbArchive) <> "" Then Kill cad
     
    
     
@@ -6470,7 +6477,7 @@ Dim Anti As Currency
     miRsAux.Open CadPa, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
      I = FreeFile
-    Open Cad For Output As #I
+    Open cad For Output As #I
     
     
     'Primera linea, encabezados
@@ -6571,7 +6578,7 @@ Dim Anti As Currency
                 If MsgBox("El fichero: " & cd1.FileName & " YA existe, ¿Sobreescribir?", vbQuestion + vbYesNoCancel) <> vbYes Then CadPa = "NO"
             End If
             If CadPa = "" Then
-                FileCopy Cad, cd1.FileName
+                FileCopy cad, cd1.FileName
                 MsgBox "Se ha generado correctamente el fichero: " & cd1.FileName, vbInformation
             End If
         End If
@@ -6626,19 +6633,19 @@ Dim Seg As Integer
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
     SQL = "select entradafichajauxliares.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
     SQL = SQL & ",Control from entradafichajauxliares inner join trabajadores t on t.idtrabajador=entradafichajauxliares.idtrabajador"
-    Cad = ""
-    If Me.txtFec(18).Text <> "" Then Cad = Cad & " AND fecha >='" & Format(txtFec(18).Text, FormatoFecha) & "'"
-    If Me.txtFec(19).Text <> "" Then Cad = Cad & " AND fecha <='" & Format(txtFec(19).Text, FormatoFecha) & "'"
-    If Me.txtTrab(20).Text <> "" Then Cad = Cad & " AND entradafichajauxliares.idtrabajador >= " & txtTrab(20).Text
-    If Me.txtTrab(21).Text <> "" Then Cad = Cad & " AND entradafichajauxliares.idtrabajador <= " & txtTrab(21).Text
+    cad = ""
+    If Me.txtFec(18).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(18).Text, FormatoFecha) & "'"
+    If Me.txtFec(19).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(19).Text, FormatoFecha) & "'"
+    If Me.txtTrab(20).Text <> "" Then cad = cad & " AND entradafichajauxliares.idtrabajador >= " & txtTrab(20).Text
+    If Me.txtTrab(21).Text <> "" Then cad = cad & " AND entradafichajauxliares.idtrabajador <= " & txtTrab(21).Text
    
     
     
-    If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
-    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
+    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
+    cad = cad & " ORDER BY fecha,idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
-    SQL = SQL & Cad
+    SQL = SQL & cad
     miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
@@ -6665,7 +6672,7 @@ Dim Seg As Integer
            
             vSQL = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
             vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
-            Cad = ""
+            cad = ""
         End If
         
         
@@ -6682,14 +6689,14 @@ Dim Seg As Integer
                 I = miRsAux!LaHora - FueraIntervalo_
             End If
             
-            CadPa = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
-            Cad = Cad & ",'" & CadPa & "'"
+            CadPa = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+            cad = cad & ",'" & CadPa & "'"
             
             
             
             
             If Not Entrada Then
-                HF = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
+                HF = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                 difer = DateDiff("s", HI, HF)
                 If FueraIntervalo_ > 0 Then difer = difer + 86400  'segundos
                 Min = difer \ 60
@@ -6721,7 +6728,7 @@ Dim Seg As Integer
             
             
             Else
-                HI = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!Segundos, "00")
+                HI = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                 If Minutos > 0 Then
                     HIAustada = HoraRectificada(HI, vEmpresa.AjusteSalida, Minutos)
                 Else

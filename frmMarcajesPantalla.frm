@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmMarcajesPantalla 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Visor  marcajes"
@@ -244,11 +244,13 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Public QuieroVerDatos As String
+
 
 Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 
 Dim PrimeraVez As Boolean
 Dim Antiguo As String
@@ -285,8 +287,18 @@ Private Sub Form_Load()
     
     
     'Pongo la semana anterior.
-    txtFec(1).Text = Format(DateAdd("d", -1, Now), "dd/mm/yyyy")
-    txtFec(0).Text = Format(DateAdd("d", -8, Now), "dd/mm/yyyy")
+    If QuieroVerDatos = "" Then
+        txtFec(1).Text = Format(DateAdd("d", -1, Now), "dd/mm/yyyy")
+        txtFec(0).Text = Format(DateAdd("d", -8, Now), "dd/mm/yyyy")
+        
+    Else
+        txtFec(0).Text = Format(RecuperaValor(QuieroVerDatos, 3), "dd/mm/yyyy")
+        txtFec(1).Text = Format(RecuperaValor(QuieroVerDatos, 4), "dd/mm/yyyy")
+        Me.txtTrab(4).Text = RecuperaValor(QuieroVerDatos, 1)
+        Me.txtTrab(5).Text = Me.txtTrab(4).Text
+        txtDT(4).Text = RecuperaValor(QuieroVerDatos, 2)
+        txtDT(5).Text = txtDT(4).Text
+    End If
     
     CargarColumnas
     Set ListView1.SmallIcons = Me.ImageList1
@@ -314,7 +326,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
 
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     txtFec(CInt(imgFec(0).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -473,7 +485,11 @@ Dim T1 As Single
                 IT.SubItems(7) = "*"
             Else
                 IT.SubItems(7) = "."
-                IT.SubItems(SubI) = Format(miRsAux!Hora, "hh:mm")
+                If IsNull(miRsAux!Hora) Then
+                    IT.SubItems(SubI) = " "
+                Else
+                    IT.SubItems(SubI) = PonerTextoHoraConNull
+                End If
                 SubI = SubI + 1
             End If
         
@@ -484,11 +500,18 @@ Dim T1 As Single
     Set miRsAux = Nothing
 End Sub
 
-
+Private Function PonerTextoHoraConNull() As String
+    On Error Resume Next
+    PonerTextoHoraConNull = Format(miRsAux!Hora, "hh:mm")
+    If Err.Number <> 0 Then
+        Err.Clear
+        PonerTextoHoraConNull = " "
+    End If
+End Function
 
 Private Sub CargarColumnas()
 Dim L As Collection
-Dim i As Integer
+Dim I As Integer
 Dim C As ColumnHeader
 
     ListView1.ColumnHeaders.Clear
@@ -506,9 +529,9 @@ Dim C As ColumnHeader
     If Not (Check1.Value = 1) Then L.Add "Fecha|1100|"
 
     'Las columnas para el resto de campos
-    For i = 1 To 4
-        L.Add "H" & i & "|800|"
-    Next i
+    For I = 1 To 4
+        L.Add "H" & I & "|800|"
+    Next I
     'Columna para marcar si hay mas
     L.Add "+|300|"
     
@@ -519,11 +542,11 @@ Dim C As ColumnHeader
     
     
     'TOTAL..... 11 campos
-    For i = 1 To 11
-        Set C = ListView1.ColumnHeaders.Add(, "C" & i)
-        C.Text = RecuperaValor(L.Item(i), 1)
-        C.Width = RecuperaValor(L.Item(i), 2)
-    Next i
+    For I = 1 To 11
+        Set C = ListView1.ColumnHeaders.Add(, "C" & I)
+        C.Text = RecuperaValor(L.Item(I), 1)
+        C.Width = RecuperaValor(L.Item(I), 2)
+    Next I
     
     'A MANO
     '---------
@@ -539,7 +562,7 @@ Private Sub imgFec_Click(Index As Integer)
 
     Antiguo = Me.txtFec(Index).Text
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -555,16 +578,16 @@ Private Sub imgFec_Click(Index As Integer)
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
     
     
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If txtFec(Index).Text <> "" Then frmC.NovaData = txtFec(Index).Text
+    If txtFec(Index).Text <> "" Then frmc.NovaData = txtFec(Index).Text
     ' ********************************************
     'AbriendoForm = True
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     'AbriendoForm = False
     ' *** repasar si el camp es txtAux o Text1 ***
     'PonerFoco txtFec(CByte(imgFec(0).Tag)) '<===
@@ -625,7 +648,7 @@ Private Sub txtFec_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtFec_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtFec_LostFocus(Index As Integer)
@@ -643,7 +666,7 @@ Private Sub txtTrab_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtTrab_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtTrab_LostFocus(Index As Integer)
@@ -664,7 +687,7 @@ Private Sub txtTrab_LostFocus(Index As Integer)
 End Sub
 
 
-Private Sub KEYpress(ByRef KeyAscii As Integer)
+Private Sub KeyPress(ByRef KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

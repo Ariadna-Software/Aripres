@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmAsignaHorario 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Asignar calendario"
@@ -846,8 +846,8 @@ Dim C3 As String
         miSQL = "DELETE from calendariot where idtrabajador = " & Text2.Tag
         miSQL = miSQL & " AND fecha >=' " & Format(F1, FormatoFecha) & "' AND fecha <='" & Format(F2, FormatoFecha) & "'"
         conn.Execute miSQL
-        miSQL = "INSERT INTO calendariot (idtrabajador, idhorario, TipoDia,Fecha) VALUES  (" & Text2.Tag & "," & Nodo.Tag & ","
-        
+        miSQL = "INSERT INTO calendariot (idtrabajador, idhorario, TipoDia,Fecha) VALUES (" & Text2.Tag & "," & Nodo.Tag & ","
+        C = ""
     Case 3
        
         If F2 <= FechaOpcion3 Then

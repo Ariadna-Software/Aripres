@@ -97,7 +97,7 @@ Private mvarAcabalgadoIncremento As Currency
 
 Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
-Private RS As ADODB.Recordset 'Para la base de datos
+Private Rs As ADODB.Recordset 'Para la base de datos
 Private Rc As Byte
 
 
@@ -762,7 +762,7 @@ End Property
 
 
 
-'Solo tienen GET  '0. TEinsa     1.- Libre    2.- Alzira   4.- "Catadau "
+'Solo tienen GET  '0. TEinsa     1.- Libre    2.- Alzira   4.- "Catadau "    5.- Coopic
 Public Property Get QueEmpresa() As Byte
 
      QueEmpresa = mvarQueEmpresa
@@ -817,86 +817,86 @@ Dim I As Integer
     SQL = "SELECT * FROM empresas"
     SQL = SQL & " WHERE "
     SQL = SQL & " IdEmpresa = " & vIdIdEmpresa
-    RS.Open SQL, conn, , , adCmdText
-    If RS.EOF Then
+    Rs.Open SQL, conn, , , adCmdText
+    If Rs.EOF Then
         Leer = 1
         'ELSE
         Else
-            mvarIdEmpresa = RS!IdEmpresa
-            mvarNomEmpresa = DBLet(RS!NomEmpresa)
-            mvarDirEmpresa = DBLet(RS!DirEmpresa)
-            mvarPobEmpresa = DBLet(RS!PobEmpresa)
-            mvarProvEmpresa = DBLet(RS!ProvEmpresa)
-            mvarTelEmpresa = DBLet(RS!TelEmpresa)
-            mvarCodPosEmpresa = DBLet(RS!CodPosEmpresa)
-            mvarMaxRetraso = RS!MaxRetraso
-            mvarMaxExceso = RS!MaxExceso
-            mvarIncHoraExtra = RS!IncHoraExtra
-            mvarIncRetraso = RS!IncRetraso
-            mvarIncMarcaje = RS!IncMarcaje
-            mvarIncVacaciones = RS!IncVacaciones
-            mvarIncTarjError = RS!IncTarjError
-            mvarIncHoraExceso = RS!IncHoraExceso
-            mvarCIF = DBLet(RS!CIF)
-            mvarMinutosRedondeo = RS!MinutosRedondeo
-            mvarAjusteEntrada = RS!AjusteEntrada
-            mvarAjusteSalida = RS!AjusteSalida
-            mvarHorasJornada = DBLet(RS!HorasJornada, "N")
-            mvarRecuperacionDias = RS!RecuperacionDias
-            mvarEntidad = DBLet(RS!Entidad)
-            mvarSucursal = DBLet(RS!Sucursal)
-            mvarCodControl = DBLet(RS!CodControl)
-            mvarCuenta = DBLet(RS!Cuenta)
-            mvarRepeticion = RS!Repeticion
-            mvarAplicaAntiguedadHN = RS!AplicaAntiguedadHN = 1
-            mvarAplicaAntiguedadHC = RS!AplicaAntiguedadHC = 1
-            mvarAbonosSeparados = RS!AbonosSeparados = 1
-            mvarIRPF = DBLet(RS!IRPF, "N")
-            mvarEmpresaHoraExtra = RS!EmpresaHoraExtra = 1
-            mvarNominaAutomatica = RS!NominaAutomatica = 1
-            mvarHorarioNocturno = RS!HorarioNocturno = 1
-            mvarredondeo = RS!redondeo
-            mvarlaboral = RS!laboral = 1
-            mvarproduccion = RS!produccion = 1
-            mvarimgtrabaj = RS!imgtrabaj = 1
-            mvarreloj = RS!reloj
-            mvarTodosLosDias = (RS!TodosLosDias = 1)
+            mvarIdEmpresa = Rs!IdEmpresa
+            mvarNomEmpresa = DBLet(Rs!NomEmpresa)
+            mvarDirEmpresa = DBLet(Rs!DirEmpresa)
+            mvarPobEmpresa = DBLet(Rs!PobEmpresa)
+            mvarProvEmpresa = DBLet(Rs!ProvEmpresa)
+            mvarTelEmpresa = DBLet(Rs!TelEmpresa)
+            mvarCodPosEmpresa = DBLet(Rs!CodPosEmpresa)
+            mvarMaxRetraso = Rs!MaxRetraso
+            mvarMaxExceso = Rs!MaxExceso
+            mvarIncHoraExtra = Rs!IncHoraExtra
+            mvarIncRetraso = Rs!IncRetraso
+            mvarIncMarcaje = Rs!IncMarcaje
+            mvarIncVacaciones = Rs!IncVacaciones
+            mvarIncTarjError = Rs!IncTarjError
+            mvarIncHoraExceso = Rs!IncHoraExceso
+            mvarCIF = DBLet(Rs!CIF)
+            mvarMinutosRedondeo = Rs!MinutosRedondeo
+            mvarAjusteEntrada = Rs!AjusteEntrada
+            mvarAjusteSalida = Rs!AjusteSalida
+            mvarHorasJornada = DBLet(Rs!HorasJornada, "N")
+            mvarRecuperacionDias = Rs!RecuperacionDias
+            mvarEntidad = DBLet(Rs!Entidad)
+            mvarSucursal = DBLet(Rs!Sucursal)
+            mvarCodControl = DBLet(Rs!CodControl)
+            mvarCuenta = DBLet(Rs!Cuenta)
+            mvarRepeticion = Rs!Repeticion
+            mvarAplicaAntiguedadHN = Rs!AplicaAntiguedadHN = 1
+            mvarAplicaAntiguedadHC = Rs!AplicaAntiguedadHC = 1
+            mvarAbonosSeparados = Rs!AbonosSeparados = 1
+            mvarIRPF = DBLet(Rs!IRPF, "N")
+            mvarEmpresaHoraExtra = Rs!EmpresaHoraExtra = 1
+            mvarNominaAutomatica = Rs!NominaAutomatica = 1
+            mvarHorarioNocturno = Rs!HorarioNocturno = 1
+            mvarredondeo = Rs!redondeo
+            mvarlaboral = Rs!laboral = 1
+            mvarproduccion = Rs!produccion = 1
+            mvarimgtrabaj = Rs!imgtrabaj = 1
+            mvarreloj = Rs!reloj
+            mvarTodosLosDias = (Rs!TodosLosDias = 1)
             'mvarFechaInicio="01/04/2006"  'Para probar años partidos
-            mvarFechaInicio = Format(RS!FechaInicio, "dd/mm/yyyy")
+            mvarFechaInicio = Format(Rs!FechaInicio, "dd/mm/yyyy")
             mvarFechaFin = DateAdd("yyyy", 1, mvarFechaInicio)
             mvarFechaFin = DateAdd("d", -1, mvarFechaFin)
             
             '---------------------
             'Antiguamente estaba en el config.cfg
-            mvarDirMarcajes = DBLet(RS!DirMarcajes)
-            mvarDirProcesados = DBLet(RS!Pathproces)
-            mvarNomFich = DBLet(RS!Nomproces)
+            mvarDirMarcajes = DBLet(Rs!DirMarcajes)
+            mvarDirProcesados = DBLet(Rs!Pathproces)
+            mvarNomFich = DBLet(Rs!Nomproces)
             
             
             'Cotubre 2013
-            mvarQueEmpresa = DBLet(RS!QueEmpresa, "N")
+            mvarQueEmpresa = DBLet(Rs!QueEmpresa, "N")
     
             
             
-            mvarCreaCalDiariaTra = DBLet(RS!CreaCalDiariaTra, "N") = 1
+            mvarCreaCalDiariaTra = DBLet(Rs!CreaCalDiariaTra, "N") = 1
             
             
-            mvarDirHuellas = DBLet(RS!DirHuellas, "T")
+            mvarDirHuellas = DBLet(Rs!DirHuellas, "T")
             
             
             
             'Enero 2015
             If mvarHorarioNocturno Then
-                mvarAcabalgadoDiaInicio = DBLet(RS!AcabalDiaTrabajado, "N") = 0
+                mvarAcabalgadoDiaInicio = DBLet(Rs!AcabalDiaTrabajado, "N") = 0
                 mvarAcabalgadoHora = "22:30:00"
-                If Not IsNull(RS!AcabalHora) Then mvarAcabalgadoHora = Format(RS!AcabalHora, "hh:mm")
-                mvarAcabalgadoIncremento = DBLet(RS!AcabalIncrementoxDia, "N")
+                If Not IsNull(Rs!AcabalHora) Then mvarAcabalgadoHora = Format(Rs!AcabalHora, "hh:mm")
+                mvarAcabalgadoIncremento = DBLet(Rs!AcabalIncrementoxDia, "N")
             End If
             
             
             
             'USuarios
-            mvarServer = DBLet(RS!Servidor)
+            mvarServer = DBLet(Rs!Servidor)
             '-------------------------------------
             'Vere si son el mismo
             I = InStr(1, conn.ConnectionString, ";SERVER=")
@@ -919,13 +919,13 @@ Dim I As Integer
                     'PERFECTO. SOn el mismo servidor
                     mvarServer = ""
                 Else
-                    mvarServer = DBLet(RS!Servidor) & "|" & DBLet(RS!Usuario) & "|" & DBLet(RS!Pass)
+                    mvarServer = DBLet(Rs!Servidor) & "|" & DBLet(Rs!Usuario) & "|" & DBLet(Rs!Pass)
                 End If
             End If
             Leer = 0
     End If
  
-    RS.Close
+    Rs.Close
     Exit Function
 
 Err3:
@@ -1007,13 +1007,13 @@ End Function
 
 
 Private Sub Class_Initialize()
-    Set RS = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     'Ponemos el recordset en modo:
-    RS.CursorType = adOpenKeyset
-    RS.LockType = adLockOptimistic
+    Rs.CursorType = adOpenKeyset
+    Rs.LockType = adLockOptimistic
 End Sub
 
 
 Private Sub Class_Terminate()
-    Set RS = Nothing
+    Set Rs = Nothing
 End Sub

@@ -132,7 +132,7 @@ Begin VB.Form FrmVarios
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00000080&
+         ForeColor       =   &H00C000C0&
          Height          =   240
          Index           =   1
          Left            =   1080
@@ -793,10 +793,13 @@ Public Opcion As Integer
     ' 6.- Ajuste paradas en procesar fecha
     
     
+    ' 7. Generacion de horas semanales para FRUXERESA (SOLO alzicoop, obviamente)
+    
+    
 Public Parametros As String
 
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 
 
 Dim FInicioSeccion As Date
@@ -818,28 +821,55 @@ Private Sub cboSeccion_Click()
     If Me.cboSeccion.ListIndex < 0 Then Exit Sub
     cboSeccion.Tag = 0  'Puede ir por ms de una semana
     
-    Cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-    cboSeccion.Tag = Val(Cad)
-    FInicioSeccion = "01/01/2001"
-    Cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-    If Cad <> "" Then
-        Me.txtFecha(5).Text = Format(Cad, "dd/mm/yyyy")
-        Me.txtFecha(5).Text = DateAdd("d", 1, CDate(Me.txtFecha(5).Text))
-        FInicioSeccion = CDate(txtFecha(5).Text)
+    
+    If Opcion = 4 Then
+        '-------------------  Proceso nominas
+    
+            Cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            cboSeccion.Tag = Val(Cad)
+            FInicioSeccion = "01/01/2001"
+            Cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            If Cad <> "" Then
+                Me.txtFecha(5).Text = Format(Cad, "dd/mm/yyyy")
+                Me.txtFecha(5).Text = DateAdd("d", 1, CDate(Me.txtFecha(5).Text))
+                FInicioSeccion = CDate(txtFecha(5).Text)
+                
+                'seccion.nominas =1
+                If cboSeccion.Tag = 1 Then
+                    'Sera desde hasta el domingo de esa semana
+                    I = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
+                    I = 7 - I
+                    Me.txtFecha(6).Text = Format(DateAdd("d", I, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
+                Else
+                    Me.txtFecha(6).Text = ""
+                End If
+            End If
         
-        'seccion.nominas =1
-        If cboSeccion.Tag = 1 Then
-            'Sera desde hasta el domingo de esa semana
-            I = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
-            I = 7 - I
-            Me.txtFecha(6).Text = Format(DateAdd("d", I, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
-        Else
-            Me.txtFecha(6).Text = ""
-        End If
+    Else
+        'Solo ALzira
+        'Es generar datos para FRUXERESA
+        'ESTOY AQUIIIIIII
+            Cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            cboSeccion.Tag = Val(Cad)
+            FInicioSeccion = "01/01/2001"
+            Cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            If Cad <> "" Then
+                Me.txtFecha(5).Text = Format(Cad, "dd/mm/yyyy")
+                Me.txtFecha(5).Text = DateAdd("d", 1, CDate(Me.txtFecha(5).Text))
+                FInicioSeccion = CDate(txtFecha(5).Text)
+                
+                'seccion.nominas =1
+                If cboSeccion.Tag = 1 Then
+                    'Sera desde hasta el domingo de esa semana
+                    I = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
+                    I = 7 - I
+                    Me.txtFecha(6).Text = Format(DateAdd("d", I, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
+                Else
+                    Me.txtFecha(6).Text = ""
+                End If
         
-        
-     End If
-        
+            End If
+  End If
 End Sub
 
 Private Sub cmdCambioCalen_Click()
@@ -1098,8 +1128,6 @@ Private Sub HazCalcularHorasTrabajadasSemana()
 Dim ColTraba  As Collection
 Dim N As Byte
 
-
-        
         
         
         
@@ -1107,6 +1135,8 @@ Dim N As Byte
         
         
     Set miRsAux = New ADODB.Recordset
+    
+    
     
     'Abril 2014
     'Una comprobacion
@@ -1193,6 +1223,13 @@ Dim T1 As Currency
 Dim T2 As Currency
     
 Dim HorasExceso As Currency
+Dim HorasmaximoNormalesDia As Integer
+Dim HoraSabadoExtras As Date
+
+    
+    HorasmaximoNormalesDia = 9
+
+    
     
     Insert = "INSERT INTO tmphorastipoalzira(codusu,idtrabajador,diasem,fecha,TipoHoras,horastrabajadas) "
     
@@ -1212,28 +1249,28 @@ Dim HorasExceso As Currency
     
     'Resto de dias menos sabados
     Cad = 0 'HORA normales
-    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>9,9,horastrabajadas)"
+    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
     Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
     Cad = Cad & ListaTrabajadores & " AND "
     conn.Execute Insert & Cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND    Festivo = 0"
     
-    'Las que se pasen de 9 van a horas estrcutrales
+    'Las que se pasen de 9 (HorasmaximoNormalesDia) van a horas estrcutrales
     Cad = 1 'HORA estrucutrales
-    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas-9"
+    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas-" & HorasmaximoNormalesDia
     Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
     Cad = Cad & ListaTrabajadores & " AND "
-    Cad = Cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND Festivo = 0 AND horastrabajadas>9"
+    Cad = Cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND Festivo = 0 AND horastrabajadas>" & HorasmaximoNormalesDia
     conn.Execute Insert & Cad
     
     
     
+    
+    'ALZRIRA
+    'Los sabados, a partir de las 14:30 son extras
     '------------------------------------------------
     'Los sabados, que no sean festivos
-    
     Cad = "select fecha from marcajes where " & TipoAlziraEntreFechas
-    '
     Cad = Cad & ListaTrabajadores & " and date_format(fecha,'%w')=6 and festivo=0 GROUP BY 1"
-    
     miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Set ColSabados = New Collection
     While Not miRsAux.EOF
@@ -1242,10 +1279,19 @@ Dim HorasExceso As Currency
     Wend
     miRsAux.Close
     
+    
+    If vEmpresa.QueEmpresa = 5 Then
+        HoraSabadoExtras = "13:30:00"
+    Else
+        HoraSabadoExtras = "14:30:00"
+    End If
+    
+    
+    
     For I = 1 To ColSabados.Count
                 
-            'Veremos que trabajadores tienen un fichaje mas alla de las 14:30
-            Cad = "select idtrabajador from  entradamarcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " and hora>'14:30:00'"
+            'Veremos que trabajadores tienen un fichaje mas alla de las 14:30(HoraSabadoExtras )
+            Cad = "select idtrabajador from  entradamarcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " and hora>" & DBSet(HoraSabadoExtras, "H")
             Cad = Cad & ListaTrabajadores & " GROUP BY 1"
             miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             AuxTra = ""
@@ -1255,12 +1301,12 @@ Dim HorasExceso As Currency
             Wend
             miRsAux.Close
             
-            'YA tengo los trabadores que el SABADO ha trabajado mas alla de las 14:30
+            'YA tengo los trabadores que el SABADO ha trabajado mas alla de las HoraSabadoExtras
             
-          
+            'Los que NO han ido mas alla HoraSabadoExtras
                 Cad = 1 'HORA estrucutrales
-                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>9,9,horastrabajadas)"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas>9"
+                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
+                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas>" & HorasmaximoNormalesDia
                 Cad = Cad & ListaTrabajadores
                 If AuxTra <> "" Then
                     AuxTra = Mid(AuxTra, 2)
@@ -1272,10 +1318,10 @@ Dim HorasExceso As Currency
                 
                 Cad = 0 'HORA normales
                 Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas<=9"
+                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas<=" & HorasmaximoNormalesDia
                 Cad = Cad & ListaTrabajadores
                 If AuxTra <> "" Then
-                    'En auxtra estan los que han trabajado mas alla de las 14:30
+                    'En auxtra estan los que han trabajado mas alla de las  HoraSabadoExtras
                     Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
                 End If
                 conn.Execute Insert & Cad
@@ -1287,7 +1333,7 @@ Dim HorasExceso As Currency
             If AuxTra <> "" Then
                 Set RT = New ADODB.Recordset
                 
-                'REESTABLECEMOS LAS HORAS PARA AQUELLOS  han trabajado mas alla de las 14:30
+                'REESTABLECEMOS LAS HORAS PARA AQUELLOS  han trabajado mas alla de las HoraSabadoExtras
                 Cad = "Select marcajes.*,ExcesoDefecto from marcajes,incidencias where idinci=IncFinal AND fecha=" & DBSet(ColSabados.Item(I), "F") & " and idtrabajador in  (" & AuxTra & ")"
                 miRsAux.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
                 While Not miRsAux.EOF
@@ -1307,16 +1353,16 @@ Dim HorasExceso As Currency
                     End If
                     
                     
-                    'Vere las fichadas de ese dia que superen las 14:30
+                    'Vere las fichadas de ese dia que superen las HoraSabadoExtras
                     Cad = "Select * from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
-                    Cad = Cad & "  and hora>'14:30:00' and hora <='23:59:59' ORDER by hora desc"
+                    Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
                     RT.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                     Fin = False
                     Do
                         T1 = CCur(DevuelveValorHora(RT!Hora))
                         RT.MoveNext
                         If RT.EOF Then
-                            T2 = CCur(DevuelveValorHora(CDate("14:30:00")))
+                            T2 = CCur(DevuelveValorHora(HoraSabadoExtras))
                         Else
                             T2 = CCur(DevuelveValorHora(RT!Hora))
                             RT.MoveNext
@@ -1379,6 +1425,25 @@ Dim HorasExceso As Currency
     
                 
     Next I
+    
+        'Si los sabados fueran proceso normal seria el trozo de aqui abajo
+        'COOPIC. Sabados, proceso normal  correinte
+        'cad = 0 'HORA normales
+        'cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
+        'cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+        'cad = cad & ListaTrabajadores & " AND "
+        'conn.Execute Insert & cad & " date_format(fecha,'%w') in (6) AND    Festivo = 0"
+        
+        'Las que se pasen de 9 (HorasmaximoNormalesDia) van a horas estrcutrales
+        'cad = 1 'HORA estrucutrales
+        'cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",horastrabajadas-" & HorasmaximoNormalesDia
+        'cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+        'cad = cad & ListaTrabajadores & " AND "
+        'cad = cad & " date_format(fecha,'%w') in (6) AND Festivo = 0 AND horastrabajadas>" & HorasmaximoNormalesDia
+        'conn.Execute Insert & cad
+            
+    
+    
     
     
     Cad = "Delete FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo & " AND horastrabajadas=0"
@@ -1496,12 +1561,23 @@ Dim W As Integer
         optPeriodo(1).Caption = optPeriodo(1).Caption & Format(DateAdd("yyyy", 1, vEmpresa.FechaFin), "dd/mm/yyyy")
         CargaCombo 0
         Me.imgFechasSueltas.Picture = frmPpal.imgListImages16.ListImages(3).Picture
-    Case 4
+    
+    
+    
+    Case 4, 7
         'GENERA SEMANA
     
         Label3(14).Caption = ""  'indicador proceso
-        Caption = "Horas laboral"
         PonerFrameVisible FrameGenSemana, H, W
+        If Opcion = 4 Then
+            Caption = "Horas laboral"
+            Label4(1).Caption = "Generación horas semanales"
+            Label4(1).ForeColor = &H80&
+        Else
+            Caption = "Horas Fruxeresa"
+            Label4(1).Caption = "Gen HORAS Fruxeresa"
+            Label4(1).ForeColor = &HC000C0
+        End If
         
         
         Cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
@@ -1570,7 +1646,7 @@ Private Sub PonerFrameVisible(ByRef Fr As Frame, He As Integer, Wi As Integer)
         Fr.Visible = True
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     'Me.Caption = vFecha & "   ind: " & imgFec(0).Tag
     Cad = Format(vFecha, "dd/mm/yyyy")
 End Sub
@@ -1582,7 +1658,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim obj As Object
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -1629,8 +1705,8 @@ Private Sub imgFec_Click(Index As Integer)
 
     ' *** adredre ***
 '    If Index <> 49 Then 'dreta i baix
-        frmC.Left = esq + imgFec(Index).Parent.Left + 30
-        frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+        frmc.Left = esq + imgFec(Index).Parent.Left + 30
+        frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 '    Else 'esquerra i dalt
 '        frmC.Left = esq + btnFec(Index).Parent.Left - frmC.Width + btnFec(Index).Width + 40
 '        frmC.Top = dalt + btnFec(Index).Parent.Top - frmC.Height + menu - 25
@@ -1639,11 +1715,11 @@ Private Sub imgFec_Click(Index As Integer)
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If txtFecha(Index).Text <> "" Then frmC.NovaData = txtFecha(Index).Text
+    If txtFecha(Index).Text <> "" Then frmc.NovaData = txtFecha(Index).Text
     ' ********************************************
     Cad = ""
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     
     If Cad <> "" Then
         'Me.Caption = Cad

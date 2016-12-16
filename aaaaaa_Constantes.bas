@@ -21,6 +21,7 @@ Public Const vbAlzira = 3
 Public Const vbRobotics = 4
 Public Const vbFingKey = 5
 
+
 '--------------------------------------------------------------
 'RECTIFICACION DE MARCAJES
 Public Const vbRecAjustes = 1

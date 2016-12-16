@@ -20,7 +20,7 @@ Option Explicit
 'variable local para contener colección
 Private mCol As Collection
 
-Public Function Add(Socket As Winsock, Numero As Integer, Optional sKey As String) As Kreta2
+Public Function Add(Socket As Winsock, Numero As Integer, Optional sKey As String, Optional Auxiliar As Boolean) As Kreta2
     'crear un nuevo objeto
     Dim objNewMember As Kreta2
     Set objNewMember = New Kreta2
@@ -33,12 +33,15 @@ Public Function Add(Socket As Winsock, Numero As Integer, Optional sKey As Strin
         objNewMember.Socket = Socket
     End If
     objNewMember.Numero = Numero
+    objNewMember.RelojAuxiliar = Auxiliar
+    
+    
     If Len(sKey) = 0 Then
         mCol.Add objNewMember
     Else
         mCol.Add objNewMember, sKey
     End If
-
+    
 
     'devolver el objeto creado
     Set Add = objNewMember

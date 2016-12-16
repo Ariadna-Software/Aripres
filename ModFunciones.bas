@@ -1645,9 +1645,9 @@ End Function
 
 'recupera valor desde una cadena con pipes(acabada en pipes)
 'Para ello le decimos el orden  y ya ta
-Public Function RecuperaValor(ByRef cadena As String, Orden As Integer) As String
+Public Function RecuperaValor(ByRef CADENA As String, Orden As Integer) As String
 Dim I As Integer
-Dim j As Integer
+Dim J As Integer
 Dim Cont As Integer
 Dim cad As String
 
@@ -1655,12 +1655,12 @@ Dim cad As String
     Cont = 1
     cad = ""
     Do
-        j = I + 1
-        I = InStr(j, cadena, "|")
+        J = I + 1
+        I = InStr(J, CADENA, "|")
         If I > 0 Then
             If Cont = Orden Then
-                cad = Mid(cadena, j, I - j)
-                I = Len(cadena) 'Para salir del bucle
+                cad = Mid(CADENA, J, I - J)
+                I = Len(CADENA) 'Para salir del bucle
                 Else
                     Cont = Cont + 1
             End If
@@ -1679,7 +1679,7 @@ End Function
 
 Public Sub PonerOpcionesMenuGeneral(ByRef formulario As Form)
 Dim I As Integer
-Dim j As Integer
+Dim J As Integer
 'Dim bol As Boolean
 
 On Error GoTo EPonerOpcionesMenuGeneral
@@ -2217,4 +2217,52 @@ Dim Rs As ADODB.Recordset
     
     
 End Sub
+
+
+
+
+'==== LAURA
+Public Function PonerFormatoHora(ByRef T As TextBox) As Boolean
+Dim cad As String
+
+        cad = T.Text
+        PonerFormatoHora = False
+        If cad <> "" Then
+            If Not EsHoraOK(cad) Then
+                MsgBox "Hora incorrecta. (hh:mm:ss)", vbExclamation
+                cad = "mal"
+            End If
+            If cad <> "" And cad <> "mal" Then
+                T.Text = cad
+                PonerFormatoHora = True
+            Else
+                T.Text = ""
+                PonerFoco T
+            End If
+        End If
+End Function
+
+'=== DAVID (estaba en Modulo:bus)
+Public Function EsHoraOK(T As String) As Boolean
+Dim cad As String
+    
+    cad = T
+    If InStr(1, cad, ":") = 0 Then
+        Select Case Len(T)
+            Case 8
+                cad = Mid(cad, 1, 2) & ":" & Mid(cad, 3, 2) & ":" & Mid(cad, 5)
+            Case 6
+                cad = Mid(cad, 1, 2) & ":" & Mid(cad, 3, 2) & ":" & Mid(cad, 5)
+            Case 4
+                cad = Mid(cad, 1, 2) & ":" & Mid(cad, 3, 2) & ":00"
+        End Select
+    End If
+    
+    If IsDate(cad) Then
+        EsHoraOK = True
+        T = Format(cad, "hh:mm:ss")
+    Else
+        EsHoraOK = False
+    End If
+End Function
 

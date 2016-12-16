@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmCalendario 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Calendarios"
@@ -771,7 +771,7 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -779,7 +779,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Form_Load()
-Dim i As Integer
+Dim I As Integer
 
     PrimeraVez = True
 
@@ -850,10 +850,10 @@ Dim i As Integer
 '        CargaCombo I
 '    Next I
     
-    For i = 0 To DataGridAux.Count - 1
-        CargaGrid i, False 'carregue els datagrids de llinies
+    For I = 0 To DataGridAux.Count - 1
+        CargaGrid I, False 'carregue els datagrids de llinies
         'DataGridAux(i).Enabled = False 'inicialment tots disabled
-    Next i
+    Next I
     
     
     
@@ -870,7 +870,7 @@ End Sub
 
 
 Private Sub LimpiarCampos()
-Dim i As Integer
+Dim I As Integer
     
     On Error Resume Next
 
@@ -890,7 +890,7 @@ End Sub
 '   En PONERMODO se habilitan, o no, los diverso campos del
 '   formulario en funcion del modo en k vayamos a trabajar
 Private Sub PonerModo(Kmodo As Byte)
-Dim i As Integer, NumReg As Byte
+Dim I As Integer, NumReg As Byte
 Dim B As Boolean
 
     On Error GoTo EPonerModo
@@ -962,9 +962,9 @@ Dim B As Boolean
     
     
     B = (Modo = 4) Or (Modo = 2)
-    For i = 0 To DataGridAux.Count - 1
-        DataGridAux(i).Enabled = B
-    Next i
+    For I = 0 To DataGridAux.Count - 1
+        DataGridAux(I).Enabled = B
+    Next I
  
     
     
@@ -990,7 +990,7 @@ Private Sub PonerModoOpcionesMenu(Modo)
 'Activa/desact. las Opciones de Menu y Toolbar según el modo en que estemos
 Dim B As Boolean
 Dim Baux As Boolean
-Dim i As Integer
+Dim I As Integer
 
 ' ******** comentar o descomentar depenent de si n'hi ha menú desplegable o no ****
     'b = (Modo = 2 Or Modo = 0 Or Modo = 1)
@@ -1023,21 +1023,21 @@ Dim i As Integer
     'LINEAS
     'b = (Modo = 3 Or Modo = 4 Or Modo = 2)
     B = (Modo = 2)
-    For i = 0 To ToolAux.Count - 1
+    For I = 0 To ToolAux.Count - 1
  
-        ToolAux(i).Buttons(1).Enabled = B
-        If i = 0 Then
-            If B Then Baux = (B And Me.AdoAux(i).Recordset.RecordCount > 0)
-            ToolAux(i).Buttons(2).Enabled = Baux
-            ToolAux(i).Buttons(3).Enabled = Baux
-            ToolAux(i).Buttons(7).Enabled = B
+        ToolAux(I).Buttons(1).Enabled = B
+        If I = 0 Then
+            If B Then Baux = (B And Me.AdoAux(I).Recordset.RecordCount > 0)
+            ToolAux(I).Buttons(2).Enabled = Baux
+            ToolAux(I).Buttons(3).Enabled = Baux
+            ToolAux(I).Buttons(7).Enabled = B
         Else
-            ToolAux(i).Buttons(2).Enabled = B
-            ToolAux(i).Buttons(4).Enabled = B
+            ToolAux(I).Buttons(2).Enabled = B
+            ToolAux(I).Buttons(4).Enabled = B
         End If
         
 
-    Next i
+    Next I
     
     
     
@@ -1417,7 +1417,7 @@ End Sub
 Private Sub cmdRegresar_Click()
 Dim Cad As String
 Dim Aux As String
-Dim i As Integer
+Dim I As Integer
 Dim J As Integer
 
     If Data1.Recordset.EOF Then
@@ -1426,16 +1426,16 @@ Dim J As Integer
     End If
     
     Cad = ""
-    i = 0
+    I = 0
     Do
-        J = i + 1
-        i = InStr(J, DatosADevolverBusqueda, "|")
-        If i > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, J, i - J)
+        J = I + 1
+        I = InStr(J, DatosADevolverBusqueda, "|")
+        If I > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, I - J)
             J = Val(Aux)
             Cad = Cad & Text1(J).Text & "|"
         End If
-    Loop Until i = 0
+    Loop Until I = 0
     RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
@@ -1661,7 +1661,7 @@ End Sub
 
 Private Function DatosOk() As Boolean
 Dim B As Boolean
-Dim i As Integer
+Dim I As Integer
 
     On Error GoTo EDatosOK
 
@@ -1980,7 +1980,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
                 End Select
             End If
         Else
-            KEYpress KeyAscii
+            KeyPress KeyAscii
         End If
     End If
 End Sub
@@ -1990,7 +1990,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
     If Not Text1(Index).MultiLine Then KEYdown KeyCode
 End Sub
 
-Private Sub KEYpress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -2283,7 +2283,7 @@ Private Sub BotonAnyadirLinea(Index As Integer)
 Dim NumF As String
 Dim vWhere As String, vTabla As String
 Dim anc As Single
-Dim i As Integer
+Dim I As Integer
     
     'Si no estaba modificando lineas salimos
     ' Es decir, si estaba insertando linea no podemos hacer otra cosa
@@ -2332,7 +2332,7 @@ End Sub
 
 Private Sub BotonModificarLinea(Index As Integer)
     Dim anc As Single
-    Dim i As Integer
+    Dim I As Integer
     Dim J As Integer
     
     ModoLineas = 2 'Modificar llínia
@@ -2351,8 +2351,8 @@ Private Sub BotonModificarLinea(Index As Integer)
 '    Me.lblIndicador.Caption = "MODIFICAR LINEA"
     
     If DataGridAux(Index).Bookmark < DataGridAux(Index).FirstRow Or DataGridAux(Index).Bookmark > (DataGridAux(Index).FirstRow + DataGridAux(Index).VisibleRows - 1) Then
-        i = DataGridAux(Index).Bookmark - DataGridAux(Index).FirstRow
-        DataGridAux(Index).Scroll 0, i
+        I = DataGridAux(Index).Bookmark - DataGridAux(Index).FirstRow
+        DataGridAux(Index).Scroll 0, I
         DataGridAux(Index).Refresh
     End If
       
@@ -2732,8 +2732,7 @@ On Error GoTo EDatosOKLlin
     If Not B Then Exit Function
     
     If CDate(txtAux(1).Text) > vEmpresa.FechaFin Then
-        MsgBox "Fecha fuera de temporada.", vbExclamation
-        Exit Function
+        If MsgBox("Fecha fuera de temporada.  ¿Continuar?", vbQuestion + vbYesNo) <> vbYes Then Exit Function
     End If
     
     
@@ -2746,12 +2745,12 @@ EDatosOKLlin:
 End Function
 
 
-Private Sub txtAux_GotFocus(Index As Integer)
+Private Sub txtaux_GotFocus(Index As Integer)
     ConseguirFoco txtAux(Index), Modo
 End Sub
 
-Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
+    KeyPress KeyAscii
 End Sub
 
 

@@ -201,11 +201,11 @@ Public Sub Main()
 End Sub
 
 'espera els segon que li digam
-Public Function espera(Segundos As Single)
+Public Function espera(segundos As Single)
     Dim T1
     T1 = Timer
     Do
-    Loop Until Timer - T1 > Segundos
+    Loop Until Timer - T1 > segundos
 End Function
 
 
@@ -586,16 +586,16 @@ End Sub
 '   Cogemos un numero formateado: 1.256.256,98  y deevolvemos 1256256,98
 '   Tiene que venir numérico
 Public Function ImporteFormateado(Importe As String) As Currency
-Dim i As Integer
+Dim I As Integer
 
     If Importe = "" Then
         ImporteFormateado = 0
     Else
         'Primero quitamos los puntos
         Do
-            i = InStr(1, Importe, ".")
-            If i > 0 Then Importe = Mid(Importe, 1, i - 1) & Mid(Importe, i + 1)
-        Loop Until i = 0
+            I = InStr(1, Importe, ".")
+            If I > 0 Then Importe = Mid(Importe, 1, I - 1) & Mid(Importe, I + 1)
+        Loop Until I = 0
         ImporteFormateado = Importe
     End If
 End Function
@@ -603,44 +603,44 @@ End Function
 'Cambia los puntos de los numeros decimales
 'por comas
 Public Function TransformaComasPuntos(CADENA As String) As String
-Dim i As Integer
+Dim I As Integer
     Do
-        i = InStr(1, CADENA, ",")
-        If i > 0 Then
-            CADENA = Mid(CADENA, 1, i - 1) & "." & Mid(CADENA, i + 1)
+        I = InStr(1, CADENA, ",")
+        If I > 0 Then
+            CADENA = Mid(CADENA, 1, I - 1) & "." & Mid(CADENA, I + 1)
         End If
-    Loop Until i = 0
+    Loop Until I = 0
     TransformaComasPuntos = CADENA
 End Function
 
 'Para los nombre que pueden tener ' . Para las comillas habra que hacer dentro otro INSTR
 Public Sub NombreSQL(ByRef CADENA As String)
 Dim J As Integer
-Dim i As Integer
+Dim I As Integer
 Dim Aux As String
     
     
     'Buscamos los \
     J = 1
     Do
-        i = InStr(J, CADENA, "\")
-        If i > 0 Then
-            CADENA = Mid(CADENA, 1, i) & "\" & Mid(CADENA, i + 1)
-            J = i + 2
+        I = InStr(J, CADENA, "\")
+        If I > 0 Then
+            CADENA = Mid(CADENA, 1, I) & "\" & Mid(CADENA, I + 1)
+            J = I + 2
         End If
-    Loop Until i = 0
+    Loop Until I = 0
     
     
     
     J = 1
     Do
-        i = InStr(J, CADENA, "'")
-        If i > 0 Then
-            Aux = Mid(CADENA, 1, i - 1) & "\"
-            CADENA = Aux & Mid(CADENA, i)
-            J = i + 2
+        I = InStr(J, CADENA, "'")
+        If I > 0 Then
+            Aux = Mid(CADENA, 1, I - 1) & "\"
+            CADENA = Aux & Mid(CADENA, I)
+            J = I + 2
         End If
-    Loop Until i = 0
+    Loop Until I = 0
     
     
 
@@ -686,10 +686,8 @@ Dim cad As String
     End If
 End Function
 
-
-
 Public Function DevuelveDesdeBD(kCampo As String, Ktabla As String, Kcodigo As String, ValorCodigo As String, Optional Tipo As String, Optional ByRef otroCampo As String) As String
-    Dim rs As Recordset
+    Dim Rs As Recordset
     Dim cad As String
     Dim Aux As String
     
@@ -714,14 +712,14 @@ Public Function DevuelveDesdeBD(kCampo As String, Ktabla As String, Kcodigo As S
     
     
     'Creamos el sql
-    Set rs = New ADODB.Recordset
-    rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
-    If Not rs.EOF Then
-        DevuelveDesdeBD = DBLet(rs.Fields(0))
-        If otroCampo <> "" Then otroCampo = DBLet(rs.Fields(1))
+    Set Rs = New ADODB.Recordset
+    Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    If Not Rs.EOF Then
+        DevuelveDesdeBD = DBLet(Rs.Fields(0))
+        If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
     End If
-    rs.Close
-    Set rs = Nothing
+    Rs.Close
+    Set Rs = Nothing
     Exit Function
 EDevuelveDesdeBD:
         MuestraError Err.Number, "Devuelve DesdeBD.", Err.Description
@@ -819,7 +817,7 @@ End Function
 'Funciona para claves primarias formadas por 3 campos
 Public Function DevuelveDesdeBDNew(vBD As Byte, Ktabla As String, kCampo As String, Kcodigo1 As String, valorCodigo1 As String, Optional tipo1 As String, Optional ByRef otroCampo As String, Optional KCodigo2 As String, Optional ValorCodigo2 As String, Optional tipo2 As String, Optional KCodigo3 As String, Optional ValorCodigo3 As String, Optional tipo3 As String) As String
 'IN: vBD --> Base de Datos a la que se accede
-Dim rs As Recordset
+Dim Rs As Recordset
 Dim cad As String
 Dim Aux As String
     
@@ -891,20 +889,20 @@ On Error GoTo EDevuelveDesdeBDnew
     
     
     'Creamos el sql
-    Set rs = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     
    ' If vBD = 1 Then 'BD 1: Ariges
-        rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+        Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
    ' Else    'BD 2: Conta
       '  RS.Open cad, ConnConta, adOpenForwardOnly, adLockOptimistic, adCmdText
    ' End If
     
-    If Not rs.EOF Then
-        DevuelveDesdeBDNew = DBLet(rs.Fields(0))
-        If otroCampo <> "" Then otroCampo = DBLet(rs.Fields(1))
+    If Not Rs.EOF Then
+        DevuelveDesdeBDNew = DBLet(Rs.Fields(0))
+        If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
     End If
-    rs.Close
-    Set rs = Nothing
+    Rs.Close
+    Set Rs = Nothing
     Exit Function
     
 EDevuelveDesdeBDnew:
@@ -916,7 +914,7 @@ End Function
 
 'CESAR
 Public Function DevuelveDesdeBDnew2(kBD As Integer, kCampo As String, Ktabla As String, Kcodigo As String, ValorCodigo As String, Optional Tipo As String, Optional num As Byte, Optional ByRef otroCampo As String) As String
-Dim rs As Recordset
+Dim Rs As Recordset
 Dim cad As String
 Dim Aux As String
 Dim v_aux As Integer
@@ -956,20 +954,20 @@ For v_aux = 1 To num
   Next v_aux
 
 'Creamos el sql
-Set rs = New ADODB.Recordset
+Set Rs = New ADODB.Recordset
 Select Case kBD
     Case 1
-        rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+        Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
 End Select
 
-If Not rs.EOF Then
-    DevuelveDesdeBDnew2 = DBLet(rs.Fields(0))
-    If otroCampo <> "" Then otroCampo = DBLet(rs.Fields(1))
+If Not Rs.EOF Then
+    DevuelveDesdeBDnew2 = DBLet(Rs.Fields(0))
+    If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
 Else
      If otroCampo <> "" Then otroCampo = ""
 End If
-rs.Close
-Set rs = Nothing
+Rs.Close
+Set Rs = Nothing
 Exit Function
 EDevuelveDesdeBDnew2:
     MuestraError Err.Number, "Devuelve DesdeBDnew2.", Err.Description
@@ -977,7 +975,7 @@ End Function
 
 
 Public Function EsEntero(Texto As String) As Boolean
-Dim i As Integer
+Dim I As Integer
 Dim C As Integer
 Dim L As Integer
 Dim res As Boolean
@@ -992,24 +990,24 @@ Dim res As Boolean
         C = 0
         L = 1
         Do
-            i = InStr(L, Texto, ".")
-            If i > 0 Then
-                L = i + 1
+            I = InStr(L, Texto, ".")
+            If I > 0 Then
+                L = I + 1
                 C = C + 1
             End If
-        Loop Until i = 0
+        Loop Until I = 0
         If C > 1 Then res = False
         
         'Si ha puesto mas de una coma y no tiene puntos
         If C = 0 Then
             L = 1
             Do
-                i = InStr(L, Texto, ",")
-                If i > 0 Then
-                    L = i + 1
+                I = InStr(L, Texto, ",")
+                If I > 0 Then
+                    L = I + 1
                     C = C + 1
                 End If
-            Loop Until i = 0
+            Loop Until I = 0
             If C > 1 Then res = False
         End If
         
@@ -1018,26 +1016,26 @@ Dim res As Boolean
 End Function
 
 Public Function TransformaPuntosComas(CADENA As String) As String
-    Dim i As Integer
+    Dim I As Integer
     Do
-        i = InStr(1, CADENA, ".")
-        If i > 0 Then
-            CADENA = Mid(CADENA, 1, i - 1) & "," & Mid(CADENA, i + 1)
+        I = InStr(1, CADENA, ".")
+        If I > 0 Then
+            CADENA = Mid(CADENA, 1, I - 1) & "," & Mid(CADENA, I + 1)
         End If
-        Loop Until i = 0
+        Loop Until I = 0
     TransformaPuntosComas = CADENA
 End Function
 
 
 
 Public Function TransformaPunto2Puntos(CADENA As String) As String
-    Dim i As Integer
+    Dim I As Integer
     Do
-        i = InStr(1, CADENA, ".")
-        If i > 0 Then
-            CADENA = Mid(CADENA, 1, i - 1) & ":" & Mid(CADENA, i + 1)
+        I = InStr(1, CADENA, ".")
+        If I > 0 Then
+            CADENA = Mid(CADENA, 1, I - 1) & ":" & Mid(CADENA, I + 1)
         End If
-        Loop Until i = 0
+        Loop Until I = 0
     TransformaPunto2Puntos = CADENA
 End Function
 
@@ -1081,25 +1079,25 @@ End Sub
 
 
 Public Function DevuelveTextoIncidencia(vId As Integer, Optional ByRef vSigno As Single) As String
-Dim rs As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim SQL As String
 
     DevuelveTextoIncidencia = ""
     vSigno = 0
-    Set rs = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     SQL = "SELECT * From Incidencias " & _
         " WHERE Incidencias.IdInci =" & vId
-    rs.Open SQL, conn, , , adCmdText
-    If Not rs.EOF Then
-            DevuelveTextoIncidencia = rs.Fields(1)
-            If rs!excesodefecto Then
+    Rs.Open SQL, conn, , , adCmdText
+    If Not Rs.EOF Then
+            DevuelveTextoIncidencia = Rs.Fields(1)
+            If Rs!excesodefecto Then
                 vSigno = -1
                 Else
                 vSigno = 1
             End If
     End If
-    rs.Close
-    Set rs = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
@@ -1107,18 +1105,18 @@ End Function
 
 
 Public Function DevuelveCodigo(vNUmTar) As Long
-Dim rs As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim SQL As String
     DevuelveCodigo = -1
-    Set rs = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     SQL = "SELECT idTrabajador From Trabajadores " & _
         " WHERE NumTarjeta ='" & vNUmTar & "'"
-    rs.Open SQL, conn, , , adCmdText
-    If Not rs.EOF Then
-            DevuelveCodigo = rs.Fields(0)
+    Rs.Open SQL, conn, , , adCmdText
+    If Not Rs.EOF Then
+            DevuelveCodigo = Rs.Fields(0)
     End If
-    rs.Close
-    Set rs = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
@@ -1128,9 +1126,9 @@ End Function
 
 
 Public Function MarcajesCorrectos(Correctos As Boolean, vSQL As String) As Boolean
-Dim rs As ADODB.Recordset
+Dim Rs As ADODB.Recordset
     
-    Set rs = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     If vSQL <> "" Then
         vSQL = vSQL & " AND "
     Else
@@ -1138,27 +1136,27 @@ Dim rs As ADODB.Recordset
     End If
     vSQL = vSQL & " correcto = " & Abs(Correctos)
     vSQL = "Select count(*) from marcajes " & vSQL
-    rs.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Rs.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     MarcajesCorrectos = False
-    If Not rs.EOF Then
-        If DBLet(rs.Fields(0), "N") > 0 Then MarcajesCorrectos = True
+    If Not Rs.EOF Then
+        If DBLet(Rs.Fields(0), "N") > 0 Then MarcajesCorrectos = True
     End If
-    rs.Close
-    Set rs = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
 
 Public Function ComprobarMarcajesCorrectos(FI As Date, FF As Date, Correctos As Boolean) As Byte
-Dim rs As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim cad As String
 Dim C As Long
     
     ComprobarMarcajesCorrectos = 127
     C = 0
-    Set rs = New ADODB.Recordset
-    rs.CursorType = adOpenKeyset
-    rs.LockType = adLockOptimistic
+    Set Rs = New ADODB.Recordset
+    Rs.CursorType = adOpenKeyset
+    Rs.LockType = adLockOptimistic
     'SQL. Marcajes incorrectos entre las dos fechas
     cad = "Select count(Entrada) "
     cad = cad & " From Secciones, Trabajadores, Marcajes"
@@ -1173,11 +1171,11 @@ Dim C As Long
     Else
         cad = cad & " False"
     End If
-    rs.Open cad, conn, , , adCmdText
-    If Not rs.EOF Then
-        If Not IsNull(rs.Fields(0)) Then C = rs.Fields(0)
+    Rs.Open cad, conn, , , adCmdText
+    If Not Rs.EOF Then
+        If Not IsNull(Rs.Fields(0)) Then C = Rs.Fields(0)
     End If
-    rs.Close
+    Rs.Close
     'Si c>0 entonces tiene marcajes incorrectos
     If C > 0 Then
         ComprobarMarcajesCorrectos = 1
