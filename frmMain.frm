@@ -151,7 +151,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "13:16"
+            TextSave        =   "16:37"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -543,13 +543,69 @@ Begin VB.MDIForm frmMain
             Index           =   1
          End
          Begin VB.Menu mnLaboralHoras1 
-            Caption         =   "Ver datos  mes"
+            Caption         =   "Ver datos mes trabajado "
             Index           =   2
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "-"
+            Index           =   3
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "Bajas"
+            Index           =   4
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "-"
+            Index           =   5
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "libre"
+            Index           =   6
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "Libre"
+            Index           =   7
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "libre"
+            Index           =   8
+            Visible         =   0   'False
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "-"
+            Index           =   9
+         End
+         Begin VB.Menu mnLaboralHoras1 
+            Caption         =   "Deshacer proceso diario/semanal"
+            Index           =   10
+         End
+      End
+      Begin VB.Menu mnLaboral1 
+         Caption         =   "Nominas"
+         Index           =   1
+         Begin VB.Menu mnLaboralNominas 
+            Caption         =   "Historico nominas"
+            Index           =   0
+         End
+         Begin VB.Menu mnLaboralNominas 
+            Caption         =   "Generacion desde horas"
+            Index           =   1
+         End
+         Begin VB.Menu mnLaboralNominas 
+            Caption         =   "-"
+            Index           =   2
+         End
+         Begin VB.Menu mnLaboralNominas 
+            Caption         =   "Exportación "
+            Index           =   3
          End
       End
       Begin VB.Menu mnLaboral1 
          Caption         =   "Anticipos"
-         Index           =   1
+         Index           =   2
          Begin VB.Menu mnLaboralAnticipos 
             Caption         =   "Mantenimiento anticipos"
             Index           =   0
@@ -900,6 +956,7 @@ On Error Resume Next
     mnInsertarTicajeManual.Enabled = B
     mnTraerDatosProduccion.Enabled = B
     
+    mnListHorTrab.Visible = vEmpresa.QueEmpresa <> 5
 
     'Relojes auxiliares
     mnbarra2_8.Visible = False
@@ -916,8 +973,14 @@ On Error Resume Next
     Toolbar1.Buttons(13).Visible = mnCombinado.Visible
     Toolbar1.Buttons(13).Visible = mnPresencia.Visible
 
+   
+
+    'Deshacer semana
+    mnLaboralHoras1(9).Visible = vEmpresa.QueEmpresa = 2
+    mnLaboralHoras1(10).Visible = vEmpresa.QueEmpresa = 2
 
 
+    
     If vEmpresa.QueEmpresa = 2 Then
     
         'Alzira  entra aqui
@@ -1061,6 +1124,29 @@ Private Sub mnLaboralHoras1_Click(Index As Integer)
             frmDatosMesAlz.Mes = CadenaDesdeOtroForm
             frmDatosMesAlz.Show vbModal
         End If
+    
+    
+    Case 4
+        frmBajas.Show vbModal
+    
+    Case 6
+       
+    Case 10
+        'deshaceProcesoJorandasSemanas
+        frmDeshacerProcesoSemanal.Show vbModal
+    End Select
+End Sub
+
+Private Sub mnLaboralNominas_Click(Index As Integer)
+    Select Case Index
+    Case 0
+        frmNominas.Show vbModal
+    Case 1
+        frmCalculoHorasMes.Show vbModal
+    Case 3
+        'exportar
+        frmListado.Opcion = 20
+        frmListado.Show vbModal
     End Select
 End Sub
 
@@ -1376,32 +1462,32 @@ End Sub
 
 Private Sub PoneMenusDelEditor()
 Dim T As Control
-Dim SQL As String
+Dim Sql As String
 Dim C As String
 
     On Error GoTo ELeerEditorMenus
     
-    SQL = "Select * from usuarios.appmenususuario where aplicacion='conta' and codusu = " & Val(Right(CStr(vUsu.Codigo), 3))
+    Sql = "Select * from usuarios.appmenususuario where aplicacion='conta' and codusu = " & Val(Right(CStr(vUsu.Codigo), 3))
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = ""
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = ""
 
     While Not miRsAux.EOF
         If Not IsNull(miRsAux.Fields(3)) Then
-            SQL = SQL & miRsAux.Fields(3) & "·"
+            Sql = Sql & miRsAux.Fields(3) & "·"
         End If
         miRsAux.MoveNext
     Wend
     miRsAux.Close
         
    
-    If SQL <> "" Then
-        SQL = "·" & SQL
+    If Sql <> "" Then
+        Sql = "·" & Sql
         For Each T In Me.Controls
             If TypeOf T Is menu Then
                ' C = DevuelveCadenaMenu(T)
                 C = "·" & C & "·"
-                If InStr(1, SQL, C) > 0 Then T.Visible = False
+                If InStr(1, Sql, C) > 0 Then T.Visible = False
            
             End If
         Next
@@ -1468,12 +1554,12 @@ End Sub
 '
 Private Sub ProcesoHorasAcabalgadas()
 Dim primeraFechaProcesar As Date
-Dim Cad As String
+Dim cad As String
 Dim RegistrosTratar As Collection
 Dim FE As Date
 Dim Hora As Date
 Dim H1 As Date
-Dim I As Long
+Dim i As Long
 
 Dim QueDia As Integer
 Dim DiaTraba As Collection
@@ -1500,50 +1586,50 @@ Dim J As Integer
     
     Set Rs = New ADODB.Recordset
     
-    Cad = DevuelveDesdeBD("AcabalUltimoDiaProcesado", "empresas", "1", "1")
-    If Cad = "" Then
+    cad = DevuelveDesdeBD("AcabalUltimoDiaProcesado", "empresas", "1", "1")
+    If cad = "" Then
         'No esta grababado todavia. voy a ver la primera fecha de entradafichajes
         'select min(fecha) from entradafichajes
-        Cad = DevuelveDesdeBD("min(fecha)", "entradafichajes", "1", "1")
-        If Cad = "" Then Cad = "02/01/1900"
-        Cad = DateAdd("d", -1, CDate(Cad))  'Para que el primer dia trabajado se el primero de entradafichakes
+        cad = DevuelveDesdeBD("min(fecha)", "entradafichajes", "1", "1")
+        If cad = "" Then cad = "02/01/1900"
+        cad = DateAdd("d", -1, CDate(cad))  'Para que el primer dia trabajado se el primero de entradafichakes
     End If
-    primeraFechaProcesar = CDate(Cad)
+    primeraFechaProcesar = CDate(cad)
     UltimoDiaProcesado = primeraFechaProcesar
     
     'Voy a ver ultimo dia -hora que hemos traido desde la maquina
-    Cad = "Select fecha , concat(horareal,'') h1 from entradafichajes ORDER BY 1 desc,2 desc"
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "Select fecha , concat(horareal,'') h1 from entradafichajes ORDER BY 1 desc,2 desc"
+    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Rs.EOF Then
         Err.Raise 513, , "Entrada fichejes vacia"
     Else
-        Cad = "23:59:59"
-        If Not HoraFueraIntervalo(Rs!H1) Then Cad = Format(Rs!H1, "hh:nn:ss")
-        Cad = Format(Rs!Fecha, "dd/mm/yyyy") & " " & Cad
+        cad = "23:59:59"
+        If Not HoraFueraIntervalo(Rs!H1) Then cad = Format(Rs!H1, "hh:nn:ss")
+        cad = Format(Rs!Fecha, "dd/mm/yyyy") & " " & cad
     End If
     Rs.Close
-    UltimaDiaHoraTraidoMaquina2 = Cad
+    UltimaDiaHoraTraidoMaquina2 = cad
     
     
     
     'Vamos a ver los dias a tratar
     Set DiasATratar = New Collection
     
-    I = Round(vEmpresa.MaxRetraso * 60, 0)
-    Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
-    If CDate(Format(UltimaDiaHoraTraidoMaquina2, "hh:nn:ss")) >= CDate(Cad) Then
-        Cad = ""
+    i = Round(vEmpresa.MaxRetraso * 60, 0)
+    cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+    If CDate(Format(UltimaDiaHoraTraidoMaquina2, "hh:nn:ss")) >= CDate(cad) Then
+        cad = ""
     Else
-        Cad = " AND fecha <" & DBSet(UltimaDiaHoraTraidoMaquina2, "F")
+        cad = " AND fecha <" & DBSet(UltimaDiaHoraTraidoMaquina2, "F")
     End If
     
     
     
-    Cad = "Select distinct fecha from entradafichajes where fecha> " & DBSet(primeraFechaProcesar, "F") & Cad
-    Cad = Cad & "  order by 1"
+    cad = "Select distinct fecha from entradafichajes where fecha> " & DBSet(primeraFechaProcesar, "F") & cad
+    cad = cad & "  order by 1"
     
  
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not Rs.EOF
         DiasATratar.Add CStr(Format(Rs.Fields(0), "dd/mm/yyyy"))
         Rs.MoveNext
@@ -1558,18 +1644,18 @@ Dim J As Integer
     For QueDia = 1 To DiasATratar.Count
             'Voy a ver que dias tienen fichajes superiror a las 22:30 (parametros)
             ' Y luego estudiare esos dias
-            I = Round(vEmpresa.MaxRetraso * 60, 0)
-            Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
-            Hora = Cad
-            Cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
+            i = Round(vEmpresa.MaxRetraso * 60, 0)
+            cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+            Hora = cad
+            cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
             'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
-            Cad = "Select distinct idtrabajador from entradafichajes where " & Cad & " ORDER BY idtrabajador"
-            Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            cad = "Select distinct idtrabajador from entradafichajes where " & cad & " ORDER BY idtrabajador"
+            Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             Set RegistrosTratar = New Collection
-            I = -1
+            i = -1
             While Not Rs.EOF
-                Cad = Rs!idTrabajador
-                RegistrosTratar.Add Cad
+                cad = Rs!idTrabajador
+                RegistrosTratar.Add cad
                 Rs.MoveNext
             Wend
             Rs.Close
@@ -1590,13 +1676,13 @@ Dim J As Integer
                     '
                     conn.Execute "Delete from tmpnotrabajo"
                     espera 0.5
-                    Cad = ""
-                    For I = 1 To RegistrosTratar.Count
-                        Cad = Cad & ", (" & RegistrosTratar(I) & ")"
+                    cad = ""
+                    For i = 1 To RegistrosTratar.Count
+                        cad = cad & ", (" & RegistrosTratar(i) & ")"
                     Next
-                    Cad = Mid(Cad, 2)
-                    Cad = "INSERT INTO tmpnotrabajo(idTra) VALUES " & Cad
-                    conn.Execute Cad
+                    cad = Mid(cad, 2)
+                    cad = "INSERT INTO tmpnotrabajo(idTra) VALUES " & cad
+                    conn.Execute cad
                     espera 0.5
                     
                     CadenaDesdeOtroForm = ""
@@ -1614,12 +1700,12 @@ Dim J As Integer
                         DoEvents
                         Screen.MousePointer = vbHourglass
                     
-                        Cad = "Select * from tmpnotrabajo ORDER by idtra"
+                        cad = "Select * from tmpnotrabajo ORDER by idtra"
                         Set DiaTraba = New Collection
                         
-                        Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                        Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                         While Not Rs.EOF
-                            DiaTraba.Add CStr(Rs!IdTra)
+                            DiaTraba.Add CStr(Rs!idTRa)
                             Rs.MoveNext
                         Wend
                         Rs.Close
@@ -1644,30 +1730,30 @@ Dim J As Integer
                             If vEmpresa.AcabalgadoDiaInicio Then
                                 'La primera fichada marca el dia de inicio
                                 '       -updaearemos los del dia siguiente a hh:mm + 24:00 y dia=dia -1
-                                Cad = "fecha = " & DBSet(FE, "F")
-                                Cad = Cad & ",hora = ADDTIME(hora , '24:00:00' ) "
-                                Cad = Cad & ",horareal = ADDTIME(horareal , '24:00:00' ) "
-                                Cad = Cad & " WHERE fecha = " & DBSet(DateAdd("d", 1, FE), "F")
-                                Cad = Cad & " AND hora < " & DBSet(Hora, "H")
+                                cad = "fecha = " & DBSet(FE, "F")
+                                cad = cad & ",hora = ADDTIME(hora , '24:00:00' ) "
+                                cad = cad & ",horareal = ADDTIME(horareal , '24:00:00' ) "
+                                cad = cad & " WHERE fecha = " & DBSet(DateAdd("d", 1, FE), "F")
+                                cad = cad & " AND hora < " & DBSet(Hora, "H")
                             Else
                                 'La fichada es la primera del dia siguiente
                                 '       -updaearemos el primero a hh:mm  - 24:00    y dia=dia +1
-                                Cad = "fecha = " & DBSet(DateAdd("d", 1, FE), "F")
-                                Cad = Cad & ",hora = ADDTIME(hora , '-24:00:00' ) "
-                                Cad = Cad & ",horareal = ADDTIME(horareal , '-24:00:00' ) "
-                                Cad = Cad & " WHERE fecha = " & DBSet(FE, "F")
-                                Cad = Cad & " AND hora >= " & DBSet(Hora, "H")
+                                cad = "fecha = " & DBSet(DateAdd("d", 1, FE), "F")
+                                cad = cad & ",hora = ADDTIME(hora , '-24:00:00' ) "
+                                cad = cad & ",horareal = ADDTIME(horareal , '-24:00:00' ) "
+                                cad = cad & " WHERE fecha = " & DBSet(FE, "F")
+                                cad = cad & " AND hora >= " & DBSet(Hora, "H")
                                                   
                             End If
-                            Cad = Cad & " AND idtrabajador = " & DiaTraba(J)
-                            Cad = "UPDATE entradafichajes set " & Cad
-                            conn.Execute Cad
+                            cad = cad & " AND idtrabajador = " & DiaTraba(J)
+                            cad = "UPDATE entradafichajes set " & cad
+                            conn.Execute cad
                             espera 0.1
                                 
                         Next J
                                 
-                        Cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(FE, "F")
-                        conn.Execute Cad
+                        cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(FE, "F")
+                        conn.Execute cad
                         Me.StatusBar1.Panels(2).Text = "Actualizando ......."
                         Me.StatusBar1.Refresh
                         espera 1.5
@@ -1675,8 +1761,8 @@ Dim J As Integer
                     End If
             Else
                 'Hemos pulsado tratar dia pero no hay trabajadores para mirar
-                Cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(DiasATratar.Item(QueDia), "F")
-                conn.Execute Cad
+                cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(DiasATratar.Item(QueDia), "F")
+                conn.Execute cad
             End If
             
             Set RegistrosTratar = Nothing

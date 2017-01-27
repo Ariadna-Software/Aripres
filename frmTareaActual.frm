@@ -592,7 +592,7 @@ Dim Modifi As Boolean
 
 
 Private Sub Check1_Click()
-Dim I As Integer
+Dim i As Integer
         ListView2.MultiSelect = Check1.Value
         cmdSelecc(0).Visible = Check1.Value = 1
         cmdSelecc(1).Visible = Check1.Value = 1
@@ -601,9 +601,9 @@ Dim I As Integer
         Me.Text1(2).Visible = Check1.Value = 1
         
         If Not Check1.Value Then
-            For I = 1 To ListView2.ListItems.Count
-                ListView2.ListItems(I).Selected = False
-            Next I
+            For i = 1 To ListView2.ListItems.Count
+                ListView2.ListItems(i).Selected = False
+            Next i
             Set ListView2.SelectedItem = Nothing
         End If
 End Sub
@@ -677,7 +677,7 @@ Private Sub cmdImpTarea_Click()
 End Sub
 
 Private Sub cmdSelecc_Click(Index As Integer)
-Dim I As Integer
+Dim i As Integer
 Dim B As Boolean
 Dim Hora As Date
     If Me.ListView2.ListItems.Count = 0 Then Exit Sub
@@ -692,23 +692,23 @@ Dim Hora As Date
         Hora = CDate(Text1(2).Text)
         For Contador = 1 To ListView2.ListItems.Count
             B = False
-            For I = 2 To 17
-                If ListView2.ListItems(Contador).SubItems(I) = "" Then
+            For i = 2 To 17
+                If ListView2.ListItems(Contador).SubItems(i) = "" Then
                     Exit For
                 Else
                     If Index = 0 Then
                         'Seleccionamos los que tengan un marcaje anterior
-                        If CDate(Me.ListView2.ListItems(Contador).SubItems(I)) <= Hora Then B = True
+                        If CDate(Me.ListView2.ListItems(Contador).SubItems(i)) <= Hora Then B = True
                         Exit For
                     Else
                         'Marcaje posterior
-                        If CDate(Me.ListView2.ListItems(Contador).SubItems(I)) >= Hora Then
+                        If CDate(Me.ListView2.ListItems(Contador).SubItems(i)) >= Hora Then
                             B = True
                             Exit For
                         End If
                     End If
                 End If
-            Next I
+            Next i
             Me.ListView2.ListItems(Contador).Selected = B
         Next Contador
         PonFocoLW
@@ -976,7 +976,7 @@ Private Sub Form_Resize()
     Me.TreeView1.Top = Me.Label3.Top + Label3.Height + 30
     ListView1.Top = Me.TreeView1.Top
     Me.TreeView1.Height = Me.Height - Me.TreeView1.Top - 500
-    Me.ListView1.Height = Me.TreeView1.Height
+    Me.ListView1.Height = Me.TreeView1.Height - 120
     
     'la proporcionde ancho = 2/5 3/5
     Me.TreeView1.Width = (2 * (Me.Width \ 5)) - 100
@@ -994,7 +994,7 @@ Private Sub Form_Resize()
     'LIST2
     ListView2.Top = Me.Frame1.Top + Frame1.Height + 30
     ListView2.Width = Me.Width - 320
-    ListView2.Height = Me.Height - ListView2.Top - 420
+    ListView2.Height = Me.Height - ListView2.Top - 620
 End Sub
 
 
@@ -1051,19 +1051,19 @@ Private Sub imgFec_Click(Index As Integer)
    Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
     
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
     
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -1458,7 +1458,7 @@ End Sub
 
 Private Sub PonMarcajes()
     'Dos recordsets
-    Dim I As Integer
+    Dim i As Integer
     Dim RS As ADODB.Recordset
     Dim RT As ADODB.Recordset
     Dim SQL As String
@@ -1497,13 +1497,13 @@ Private Sub PonMarcajes()
     SQL = SQL & " AND idTrabajador = "
     While Not RS.EOF
         RT.Open SQL & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        I = 2
+        i = 2
         
         Set Item = ListView2.ListItems.Add(, , RS.Fields(0))
         Item.SubItems(1) = RS.Fields(1)
         While Not RT.EOF
             'If i < 8 Then  He puesto 2 mas
-            If I < 17 Then
+            If i < 17 Then
                 
                 'If RT!HoraReal > "23:59:59" Then
                 '    HoraPintar = DateAdd("h", -24, RT!HoraReal)
@@ -1513,14 +1513,14 @@ Private Sub PonMarcajes()
                 '    HoraPintar = RT!HoraReal
                 '
                 'End If
-                Item.SubItems(I) = Format(RT!acabalga, "hh:mm")
+                Item.SubItems(i) = Format(RT!acabalga, "hh:mm")
             End If
-            I = I + 1
+            i = i + 1
             RT.MoveNext
         Wend
         
         'El icono
-        If I Mod 2 = 0 Then
+        If i Mod 2 = 0 Then
             Item.SmallIcon = 3
         Else
             Item.SmallIcon = 4

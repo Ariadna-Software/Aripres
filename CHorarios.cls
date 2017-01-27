@@ -40,7 +40,7 @@ Private mvarIdCal As Integer
 Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
 Private RS As Recordset
-Private Rc As Byte
+Private RC As Byte
 
 
 
@@ -64,18 +64,18 @@ Public Property Get IdHorario() As Integer
 End Property
 
 
-Public Property Let idCal(ByVal vData As Integer)
+Public Property Let IdCal(ByVal vData As Integer)
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado izquierdo de la asignacion
 'Syntax: X.IdHorario = 5
      mvarIdCal = vData
 End Property
 
-Public Property Get idCal() As Integer
+Public Property Get IdCal() As Integer
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado derecho de la asignacion
 'Syntax: Debug.Print X.IdHorario
-     idCal = mvarIdCal
+     IdCal = mvarIdCal
 End Property
 
 
@@ -487,7 +487,7 @@ Dim RT As ADODB.Recordset
 Dim HayHorarios As Boolean
 Dim EsFinD As Boolean 'Festivo de Fin de semana
 Dim FE As Date
-Dim d As Integer
+Dim D As Integer
 Dim FESTIVOS As String
 Dim RecuperaEnSabado As Boolean
 
@@ -504,14 +504,16 @@ Dim RecuperaEnSabado As Boolean
             mvarIdHorario = RS!IdHorario
             mvarNomHorario = RS!NomHorario
             
-            'Vemos si los sabados son recuperables
-            RecuperaEnSabado = RecuperaDiasEnSabado(RS)
+            'Vemos si los sabados son recuperables . COOPIC seguro que no lo hace
+            RecuperaEnSabado = False
+            If vEmpresa.QueEmpresa <> 5 Then RecuperaEnSabado = RecuperaDiasEnSabado(RS)
             
             Set RT = New ADODB.Recordset
                         
-            SQL = "Select * from Festivos WHERE idHorario = " & mvarIdHorario
-            SQL = SQL & " AND Fecha >= #" & Format(Fini, FormatoFecha) & "#"
-            SQL = SQL & " AND Fecha <= #" & Format(FFin, FormatoFecha) & "#"
+            'FALTA###
+            SQL = "Select * from calendariof WHERE idcal = 1"
+            SQL = SQL & " AND Fecha >= '" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND Fecha <= '" & Format(FFin, FormatoFecha) & "'"
             SQL = SQL & " ORDER By FECHA"
             RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             While Not RT.EOF
@@ -520,44 +522,47 @@ Dim RecuperaEnSabado As Boolean
             Wend
             RT.Close
             
-            SQL = "select * from Subhorarios where idHorario=" & vIdIdHorario
-            RT.Open SQL, conn, , , adCmdText
-            If RT.EOF Then
-                
-                Else
-                    'En el SQL Meteremos los dias de las semana k son festivos
-                    'Es decir , empimaremos los dias k sean festivos
-                    ' Doming|Sabado|  por ejemplo, pero en numeros 5|6|
-                    SQL = ""
-                    While Not RT.EOF
-                        
-                        If RT!Festivo Then
-                           
-                            If RecuperaEnSabado Then
-                                If RT!DiaSemana <> 6 Then
+            'COOPIC no hace nada. SOLO deberia ser, cuando venga, PICASSENT
+            If vEmpresa.QueEmpresa <> 5 Then
+                SQL = "select * from Subhorarios where idHorario=" & vIdIdHorario
+                RT.Open SQL, conn, , , adCmdText
+                If RT.EOF Then
+                    
+                    Else
+                        'En el SQL Meteremos los dias de las semana k son festivos
+                        'Es decir , empimaremos los dias k sean festivos
+                        ' Doming|Sabado|  por ejemplo, pero en numeros 5|6|
+                        SQL = ""
+                        While Not RT.EOF
+                            
+                            If RT!Festivo Then
+                               
+                                If RecuperaEnSabado Then
+                                    If RT!DiaSemana <> 6 Then
+                                        SQL = SQL & RT!DiaSemana & "|"
+                                    End If
+                                Else
                                     SQL = SQL & RT!DiaSemana & "|"
                                 End If
-                            Else
-                                SQL = SQL & RT!DiaSemana & "|"
                             End If
-                        End If
-                        RT.MoveNext
-                    Wend
-                    
-                    
-                    FE = Fini
-                    While FE <= FFin
-                        d = Weekday(FE, vbMonday)
-                        Mens = d & "|"
-                        If InStr(1, SQL, Mens) > 0 Then
-                                FESTIVOS = FESTIVOS & Format(FE, "dd/mm/yyyy") & "|"
-                        End If
-                            
-                        'Dia mas
-                        FE = DateAdd("d", 1, FE)
-                    Wend
+                            RT.MoveNext
+                        Wend
+                        
+                        
+                        FE = Fini
+                        While FE <= FFin
+                            D = Weekday(FE, vbMonday)
+                            Mens = D & "|"
+                            If InStr(1, SQL, Mens) > 0 Then
+                                    FESTIVOS = FESTIVOS & Format(FE, "dd/mm/yyyy") & "|"
+                            End If
+                                
+                            'Dia mas
+                            FE = DateAdd("d", 1, FE)
+                        Wend
+                End If
+                RT.Close
             End If
-            RT.Close
             Set RT = Nothing
             'Comprobamos si es un dia festivo
             LeerDiasFestivos = FESTIVOS
@@ -589,7 +594,7 @@ Dim RT As ADODB.Recordset
 Dim HayHorarios As Boolean
 Dim EsFinD As Boolean 'Festivo de Fin de semana
 Dim FE As Date
-Dim d As Integer
+Dim D As Integer
 Dim MediosDias As String
 
     On Error GoTo Err3
@@ -624,8 +629,8 @@ Dim MediosDias As String
                     
                     FE = Fini
                     While FE <= FFin
-                        d = Weekday(FE, vbMonday)
-                        Mens = d & "|"
+                        D = Weekday(FE, vbMonday)
+                        Mens = D & "|"
                         If InStr(1, SQL, Mens) > 0 Then
                                 MediosDias = MediosDias & Format(FE, "dd/mm/yyyy") & "|"
                         End If

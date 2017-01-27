@@ -40,13 +40,13 @@ Public Function hex2(B As Byte) As String
 End Function
 
 Public Function CalcCRC(sTrama As String) As String
-  Dim I As Integer
+  Dim i As Integer
   Dim iCRC As Integer
   
   iCRC = 0
-  For I = 1 To Len(sTrama)
-    iCRC = (iCRC + Asc(Mid(sTrama, I, 1))) Mod 256
-  Next I
+  For i = 1 To Len(sTrama)
+    iCRC = (iCRC + Asc(Mid(sTrama, i, 1))) Mod 256
+  Next i
   CalcCRC = hex2(iCRC Mod 256)
 End Function
 
@@ -216,18 +216,18 @@ End Function
 'Public Function ObtenerSecuencia(db As BaseDatos) As Long
 Public Function ObtenerSecuencia(EsTablaRelojAuxiliar As Boolean) As Long
     Dim SQL As String
-    Dim Rs As ADODB.Recordset
+    Dim RS As ADODB.Recordset
     SQL = "select Max(Secuencia) from " & IIf(EsTablaRelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
     'Set Rs = db.cursor(SQL)
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not IsNull(Rs.Fields(0)) Then
-        ObtenerSecuencia = Rs.Fields(0) + 1
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not IsNull(RS.Fields(0)) Then
+        ObtenerSecuencia = RS.Fields(0) + 1
     Else
         ObtenerSecuencia = 1
     End If
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Function
 
 
@@ -239,24 +239,30 @@ End Function
 'Esto estaba en GESALB, en otro modulo
 Public Sub CargaComboSecciones(ByRef CBO As ComboBox, AñadirTodas As Boolean)
 Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 
     CBO.Clear
     SQL = "select IdSeccion,nombre from secciones order by NOMBRE"
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If AñadirTodas Then
         CBO.AddItem "Todas las secciones"
         CBO.ItemData(CBO.NewIndex) = -1
     End If
     
-    While Not Rs.EOF
-        CBO.AddItem Rs!Nombre & " (" & Rs!IdSeccion & ")"
-        CBO.ItemData(CBO.NewIndex) = Rs!IdSeccion
-        Rs.MoveNext
+    While Not RS.EOF
+        CBO.AddItem RS!Nombre & " (" & RS!IdSeccion & ")"
+        CBO.ItemData(CBO.NewIndex) = RS!IdSeccion
+        
+        If vEmpresa.QueEmpresa = 5 Then
+            If RS!IdSeccion = 1 Then CBO.ListIndex = CBO.NewIndex
+        End If
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
-    If AñadirTodas Then CBO.ListIndex = 0
+    RS.Close
+    Set RS = Nothing
     
+    If vEmpresa.QueEmpresa <> 5 Then
+        If AñadirTodas Then CBO.ListIndex = 0
+    End If
 End Sub

@@ -275,8 +275,8 @@ Option Explicit
 Private Const HoraM As Date = "08:00"   'PARA el horario nocturno
 Private Const HoraT As Date = "20:00"   '
 
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 Public ContadorSecuencia As Long
 Public Opcion As Byte
         'Con OPCION determinaremos lo k hacer:
@@ -290,7 +290,7 @@ Public Opcion As Byte
         '       Generando primero el fichero Fichajes
         
 'Private MiNF As Integer
-Dim PrimeraVez As Boolean
+Dim primeravez As Boolean
 Dim ImpFechaIni As String
 Dim ImpFechaFin As String
 
@@ -306,11 +306,7 @@ Dim Archivo As String
     
     If vEmpresa.reloj = vbRobotics Then
         'Para robotics vamos leyneod tooodos los archivos que se hayen en esa carpeta
-        If vEmpresa.QueEmpresa = 5 Then
-            CADENA = vEmpresa.DirMarcajes & "\" & vEmpresa.NomFich
-        Else
-            CADENA = vEmpresa.DirMarcajes & "\*.*"
-        End If
+        CADENA = vEmpresa.DirMarcajes & "\*.*"
     Else
         CADENA = vEmpresa.DirMarcajes & "\" & vEmpresa.NomFich
     End If
@@ -321,7 +317,12 @@ Dim Archivo As String
 
 
     
-    
+    If vEmpresa.QueEmpresa = 5 Then
+        If Not Label10.Visible Then
+            MsgBox "No hay ficheros disponibles", vbExclamation
+            Exit Sub
+        End If
+    End If
 
     If Opcion <> 1 Then
         Archivo = "Realizar la importacion de los  datos. ¿Continuar?"
@@ -337,6 +338,8 @@ Dim Archivo As String
 Dim Valores As String
 Dim MaxFecha As Date
 Dim vLeeBienCrLF As Boolean
+Dim ProcesamosElFichero As Boolean
+Dim YaHaSalidoElArchivoProhibido As Boolean   'Coopic. Hay un archio que no podemos procesar. Ext. DPK
 
     Screen.MousePointer = vbHourglass
     cmdAceptar.Visible = False
@@ -367,14 +370,9 @@ Dim vLeeBienCrLF As Boolean
     ' 0.- Todo correcto
     ' 1.- No existe el fichero o está vacio
     ' 2.- Algun fallo
-    If vEmpresa.reloj = vbRobotics Then
-        If vEmpresa.QueEmpresa = 5 Then
-            Archivo = Dir(vEmpresa.DirMarcajes & "\" & vEmpresa.NomFich, vbArchive)
-        Else
-            Archivo = Dir(vEmpresa.DirMarcajes & "\*.*", vbArchive)
-        End If
-    End If
-
+    If vEmpresa.reloj = vbRobotics Then Archivo = Dir(vEmpresa.DirMarcajes & "\*.*", vbArchive)
+    
+    YaHaSalidoElArchivoProhibido = False
         
     Do
         If vEmpresa.reloj <> vbRobotics Then
@@ -389,44 +387,64 @@ Dim vLeeBienCrLF As Boolean
         
         Label10.Caption = Archivo
         Label10.Refresh
-        valor = ProcesaFichero(Archivo, vLeeBienCrLF)
-        If valor <> 1 Then
-            'Ahora comprobamos si se han quedado entradas por procesar
-            valor = VaciarTemporales(CADENA)
-            If CADENA <> "" Then
-                If vEmpresa.reloj = vbRobotics Then
-                    Valores = Valores & "-->" & Archivo & vbCrLf & CADENA & vbCrLf & vbCrLf
-                Else
-                    MsgBox CADENA, vbExclamation
-                    Valores = CADENA
-                End If
+        
+        ProcesamosElFichero = True
+        If vEmpresa.QueEmpresa = 5 Then
+             If UCase(Right(Archivo, 3)) = UCase(vEmpresa.NomFich) Then
+                ProcesamosElFichero = False
+                YaHaSalidoElArchivoProhibido = True
             End If
-        Else
-            'Error en mover fichero
-            Archivo = ""
         End If
         
-        'Eliminamos el archivo que ya ha sido traspasado
-        If valor = 0 Then
-            If EliminarArchivo(Archivo) Then
-                
-                
-                If vEmpresa.reloj = vbRobotics Then
-                    If vEmpresa.QueEmpresa = 5 Then
-                        'Coopic
-                        Archivo = Dir(vEmpresa.DirMarcajes & "\" & vEmpresa.NomFich, vbArchive)
+        
+        If ProcesamosElFichero Then
+            valor = ProcesaFichero(Archivo, vLeeBienCrLF)
+            If valor <> 1 Then
+                'Ahora comprobamos si se han quedado entradas por procesar
+                valor = VaciarTemporales(CADENA)
+                If CADENA <> "" Then
+                    If vEmpresa.reloj = vbRobotics Then
+                        Valores = Valores & "-->" & Archivo & vbCrLf & CADENA & vbCrLf & vbCrLf
                     Else
+                        MsgBox CADENA, vbExclamation
+                        Valores = CADENA
+                    End If
+                End If
+            Else
+                'Error en mover fichero
+                Archivo = ""
+            End If
+            
+            'Eliminamos el archivo que ya ha sido traspasado
+            If valor = 0 Then
+                If EliminarArchivo(Archivo) Then
+                    
+                    
+                    If vEmpresa.reloj = vbRobotics Then
                         Archivo = Dir(vEmpresa.DirMarcajes & "\*.*", vbArchive)
+                        If UCase(Right(Archivo, 3)) = UCase(vEmpresa.NomFich) Then
+                            
+                            If YaHaSalidoElArchivoProhibido Then
+                                'Busco el siguiente. Si me da otra vez el archivo prohibido es que no hay mas
+                                'Y si no me da ninguno es que tampoco hay mas
+                                Archivo = Dir()
+                                If Archivo <> "" Then
+                                    If UCase(Right(Archivo, 3)) = UCase(vEmpresa.NomFich) Then Archivo = ""
+                                End If
+                            End If
+                        End If
+                    Else
+                        Archivo = ""
                     End If
                 Else
                     Archivo = ""
+                    Valores = "SALIR"
                 End If
-            Else
-                Archivo = ""
-                Valores = "SALIR"
             End If
-        End If
-    
+        Else
+            'No procesamos el fichero. Vamos con otro
+            Archivo = Dir()
+        End If 'ProcesamosElFichero
     
     
     Loop Until Archivo = ""
@@ -556,7 +574,7 @@ End Sub
 
 
 Private Sub Command1_Click()
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim vF As String
 Dim FE As Date
 
@@ -564,40 +582,40 @@ On Error GoTo ErrCom1
 Screen.MousePointer = vbHourglass
 
 vF = ""
-Set Rs = New ADODB.Recordset
-Rs.Open "Select MAX(Fecha) from EntradaFichajes", conn, , , adCmdText
-If Not Rs.EOF Then
-    If Not IsNull(Rs.Fields(0)) Then
-        FE = Rs.Fields(0)
+Set RS = New ADODB.Recordset
+RS.Open "Select MAX(Fecha) from EntradaFichajes", conn, , , adCmdText
+If Not RS.EOF Then
+    If Not IsNull(RS.Fields(0)) Then
+        FE = RS.Fields(0)
         vF = "'" & Format(FE, FormatoFecha) & "'"
     End If
-    Rs.Close
+    RS.Close
     'Ahora si VF<>"0:00:" entonces buscamos la hora
     If vF <> "" Then
-        Rs.Open "Select MAX(Hora) from EntradaFichajes where Fecha=" & vF, conn, , , adCmdText
-        If Not Rs.EOF Then
-            If Not IsNull(Rs.Fields(0)) Then
+        RS.Open "Select MAX(Hora) from EntradaFichajes where Fecha=" & vF, conn, , , adCmdText
+        If Not RS.EOF Then
+            If Not IsNull(RS.Fields(0)) Then
                 MsgBox "    Ultimo fichaje" & vbCrLf & _
                     "------------------------" & vbCrLf & vbCrLf & _
                     "Fecha:  " & Format(FE, "dd/mm/yyyy") & vbCrLf & _
-                    "Hora  :  " & Format(Rs.Fields(0), "hh:mm:ss"), vbInformation
+                    "Hora  :  " & Format(RS.Fields(0), "hh:mm:ss"), vbInformation
             End If
             Else
                 vF = ""
         End If
-        Rs.Close
+        RS.Close
     End If
 End If
 If vF = "" Then MsgBox "No hay registros para mostrar datos.", vbExclamation
-Set Rs = Nothing
+Set RS = Nothing
 ErrCom1:
     If Err.Number <> 0 Then MuestraError Err.Number
     Screen.MousePointer = vbDefault
 End Sub
 
 Private Sub Form_Activate()
-If PrimeraVez Then
-    PrimeraVez = False
+If primeravez Then
+    primeravez = False
     If Opcion = 1 Then
     
         cmdAceptar_Click
@@ -626,17 +644,25 @@ Dim L As Integer
 Dim Archivo As String
 
     On Error GoTo ectfic
+    
+    
+    'COOOPIC
+    'Todos los archivos, menos el de la extension seleccioanda, son suceptibles de importar
+    
     L = 0
-    Archivo = Dir(vEmpresa.DirMarcajes & "\" & vEmpresa.NomFich, vbArchive)
+    Archivo = Dir(vEmpresa.DirMarcajes & "\*.*", vbArchive)
     Do
        If Archivo <> "" Then
-            L = L + 1
+            If UCase(Right(Archivo, 3)) <> UCase(vEmpresa.NomFich) Then L = L + 1
+                
             Archivo = Dir()
         End If
     Loop Until Archivo = ""
     If L > 0 Then
         Label10.Visible = True
         Label10.Caption = "Ficheros: " & L
+    Else
+        Label10.Visible = False
     End If
     Exit Sub
 ectfic:
@@ -1026,30 +1052,30 @@ End Function
 
 'Segun sea un control normal, o un control tipo ALZICOOP
 Private Sub ObtenerPrimeraClave()
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim Cad As String
 
-Set Rs = New ADODB.Recordset
+Set RS = New ADODB.Recordset
 ContadorSecuencia = 1
 If vEmpresa.reloj = vbAlzira Then
         Cad = "SELECT MAX(secuencia) FROM TipoAlzicoop"
-        Rs.Open Cad, conn, , , adCmdText
-        If Not Rs.EOF Then
-            If Not IsNull(Rs.Fields(0)) Then
-                ContadorSecuencia = Rs.Fields(0) + 1
+        RS.Open Cad, conn, , , adCmdText
+        If Not RS.EOF Then
+            If Not IsNull(RS.Fields(0)) Then
+                ContadorSecuencia = RS.Fields(0) + 1
             End If
         End If
     'ELSE
     Else
         Cad = "SELECT MAX(secuencia) FROM TemporalFichajes"
-        Rs.Open Cad, conn, , , adCmdText
-        If Not Rs.EOF Then
-            If Not IsNull(Rs.Fields(0)) Then
-                ContadorSecuencia = Rs.Fields(0) + 1
+        RS.Open Cad, conn, , , adCmdText
+        If Not RS.EOF Then
+            If Not IsNull(RS.Fields(0)) Then
+                ContadorSecuencia = RS.Fields(0) + 1
             End If
         End If
 End If
-Rs.Close
+RS.Close
 End Sub
 
 
@@ -1304,7 +1330,7 @@ On Error Resume Next
 End Sub
 
 Private Sub Form_Load()
-PrimeraVez = True
+primeravez = True
 Me.FrameKimalid.Visible = (Opcion = 2)
 If vEmpresa.reloj = vbTCP3 Then Label5.Caption = "Procesando fichero"
 Label10.Caption = ""
@@ -1328,7 +1354,7 @@ Dim RFech As ADODB.Recordset
 Dim vSec As Long
 Dim Cod As Long
 Dim SQL As String
-Dim Rc As Byte
+Dim RC As Byte
 Dim HayMarcajes As Long
 Dim miM As CMarcajes
 
@@ -1357,21 +1383,21 @@ While Not RTarj.EOF
             '-----------------------------------------------------
             'Comprobamos si existen ya marcajes para esos valores
             HayMarcajes = YaExistenMarcajes(CInt(Cod), RFech.Fields(0))
-            Rc = vbYes
+            RC = vbYes
             If HayMarcajes > 0 Then
                 SQL = "Ya existen marcajes para el trabajador cod: " & Cod & "   y fecha: " & RFech.Fields(0) & vbCrLf
                 SQL = SQL & "  ¿ Quiere eliminar el antiguo marcaje. ?" & vbCrLf
                 SQL = SQL & "   .- Si --> Eliminamos los antiguos" & vbCrLf
                 SQL = SQL & "   .- No --> Dejamos de procesar estos datos" & vbCrLf
-                Rc = MsgBox(SQL, vbQuestion + vbYesNo)
+                RC = MsgBox(SQL, vbQuestion + vbYesNo)
                 'Si k eliminamos el anterior
-                If Rc = vbYes Then
+                If RC = vbYes Then
                     Set miM = New CMarcajes
                     If miM.Leer(HayMarcajes) = 0 Then miM.Eliminar
                     Set miM = Nothing
                 End If
             End If
-            If Rc = vbYes Then
+            If RC = vbYes Then
                 Label11.Caption = "Tarjeta: " & RTarj.Fields(0) & " - Fecha: " & RFech!Fecha
                 Label11.Refresh
                 GeneraUnmarcajeAlzicoop RTarj.Fields(0), Cod, RFech!Fecha, vSec
@@ -1395,17 +1421,17 @@ End Sub
 
 
 Private Function ObtnerNumSecuenciaEntradaMarcajes() As Long
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 
 ObtnerNumSecuenciaEntradaMarcajes = 1
-Set Rs = New ADODB.Recordset
-Rs.Open "Select MAX(Secuencia) from EntradaFichajes", conn, , , adCmdText
-If Not Rs.EOF Then
-    If Not IsNull(Rs.Fields(0)) Then _
-        ObtnerNumSecuenciaEntradaMarcajes = Rs.Fields(0) + 1
+Set RS = New ADODB.Recordset
+RS.Open "Select MAX(Secuencia) from EntradaFichajes", conn, , , adCmdText
+If Not RS.EOF Then
+    If Not IsNull(RS.Fields(0)) Then _
+        ObtnerNumSecuenciaEntradaMarcajes = RS.Fields(0) + 1
 End If
-Rs.Close
-Set Rs = Nothing
+RS.Close
+Set RS = Nothing
 End Function
 
 
@@ -1620,28 +1646,28 @@ End Sub
 Private Sub PonerFechaPequeña()
 Dim F1 As Date
 Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
     
     
     On Error GoTo EPonerFechaPequeña
     
     F1 = CDate("01/01/1900")
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     SQL = "Select Max(Fecha) FROM EntradaFichajes"
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not Rs.EOF Then
-        If Not IsNull(Rs.Fields(0)) Then F1 = Rs.Fields(0)
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not RS.EOF Then
+        If Not IsNull(RS.Fields(0)) Then F1 = RS.Fields(0)
     End If
-    Rs.Close
+    RS.Close
     
     SQL = "Select Max(Fecha) FROM EntradaMarcajes"
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not Rs.EOF Then
-        If Not IsNull(Rs.Fields(0)) Then
-            If F1 < Rs.Fields(0) Then F1 = Rs.Fields(0)
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not RS.EOF Then
+        If Not IsNull(RS.Fields(0)) Then
+            If F1 < RS.Fields(0) Then F1 = RS.Fields(0)
         End If
     End If
-    Rs.Close
+    RS.Close
     If F1 <> CDate("01/01/1900") Then
         F1 = DateAdd("d", 1, F1)
         txtFecha(0).Text = Format(F1, "dd/mm/yyyy")
@@ -1653,7 +1679,7 @@ Dim Rs As ADODB.Recordset
     End If
     
     txtFecha(1).Text = txtFecha(0).Text
-    Set Rs = Nothing
+    Set RS = Nothing
     Exit Sub
 EPonerFechaPequeña:
     MuestraError Err.Number
@@ -1671,7 +1697,7 @@ End Sub
 '
 '
 Private Function GeneraMarcajesKimaldi() As Boolean
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim RT As ADODB.Recordset
 Dim SQL As String
 Dim INSE As String
@@ -1688,7 +1714,7 @@ Dim NF As Integer
     GeneraMarcajesKimaldi = False
     On Error GoTo EGeneraMarcajesKimaldi
     'Los pasamos a tmpMarcajesKimaldi
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     Set RT = New ADODB.Recordset
     Label6.Caption = "Creando  tabla intermedia"
     Label6.Refresh
@@ -1708,12 +1734,12 @@ Dim NF As Integer
     ' Cuando encuentro "SALIDA" , y mientras encuentre trabajadores, inserto
     ' en entradamarcajes
     SQL = "Select Tarjeta from Tareas where Tipo=1"   'Salida masiva
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     CodTarea = ""
-    If Not Rs.EOF Then
-        If Not IsNull(Rs.Fields(0)) Then CodTarea = Rs.Fields(0)
+    If Not RS.EOF Then
+        If Not IsNull(RS.Fields(0)) Then CodTarea = RS.Fields(0)
     End If
-    Rs.Close
+    RS.Close
     If CodTarea <> "" Then
         'OK, hay una tarea k es ticada masiva de salida
         'Entre las fechas solicitadas. Buscaremos la tarea
@@ -1761,20 +1787,20 @@ Dim NF As Integer
     
     'Eliminando datos de tareas
     SQL = "Select * from tmpMarcajesKimaldi"
-    Rs.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     con = 0
-    While Not Rs.EOF
+    While Not RS.EOF
         
         Label6.Caption = "Registro: " & con
         Label6.Refresh
-        If Mid(Rs!Marcaje, 1, 1) <> vbDigitoTrabajadores Then
-            Rs.Delete
+        If Mid(RS!Marcaje, 1, 1) <> vbDigitoTrabajadores Then
+            RS.Delete
         Else
             con = con + 1
         End If
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
     
     If con = 0 Then
         MsgBox "ninguna entrada en este intervalo", vbExclamation
@@ -1794,18 +1820,18 @@ Dim NF As Integer
     SQL = SQL & " ORDER BY tmpMarcajesKimaldi.Fecha, tmpMarcajesKimaldi.Marcaje, tmpMarcajesKimaldi.Hora;"
     
     
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Dim Entrada As Boolean
 
-    If Rs.EOF Then
+    If RS.EOF Then
         '-------------->>>>>
         ' MAL. Nada se ha generado
         MsgBox "Cero entradas. Error", vbExclamation
-        Rs.Close
+        RS.Close
         Exit Function
     Else
         Hora = CDate("01/01/1900")
-        While Not Rs.EOF
+        While Not RS.EOF
             'Ej. linea
             '000320409090532470000021ILOC010........
             'tarjeta
@@ -1819,19 +1845,19 @@ Dim NF As Integer
             'tecla
             'vector(4) = 0
             
-            If Rs!Fecha <> Hora Then
-                Hora = Rs!Fecha
-                INSE = Rs!Marcaje
+            If RS!Fecha <> Hora Then
+                Hora = RS!Fecha
+                INSE = RS!Marcaje
                 Entrada = True
             End If
-            If INSE <> Rs!Marcaje Then
-                INSE = Rs!Marcaje
+            If INSE <> RS!Marcaje Then
+                INSE = RS!Marcaje
                 Entrada = True
             End If
-            Label6.Caption = Rs!Fecha & "    " & Rs!Marcaje
+            Label6.Caption = RS!Fecha & "    " & RS!Marcaje
             Label6.Refresh
             If Entrada = True Then
-                If Rs!tipomens = "S" Then
+                If RS!tipomens = "S" Then
                     Entrada = True
                 Else
                     Entrada = False
@@ -1841,7 +1867,7 @@ Dim NF As Integer
             
             Else
                 'SALIDA
-                If Rs!tipomens = "S" Then
+                If RS!tipomens = "S" Then
                     Insertar = True
                     Entrada = True
                 End If
@@ -1849,19 +1875,19 @@ Dim NF As Integer
             
             
             If Insertar Then
-                SQL = Right("0000" & Trim(Rs!Marcaje), 5) & Format(Rs!Fecha, "yymmdd")
-                SQL = SQL & Format(Rs!Hora, "hhmmss")
+                SQL = Right("0000" & Trim(RS!Marcaje), 5) & Format(RS!Fecha, "yymmdd")
+                SQL = SQL & Format(RS!Hora, "hhmmss")
                 SQL = SQL & "0002004ARIADNA........"
                 Print #NF, SQL
                 Insertar = False
             End If
             'Sig
-            Rs.MoveNext
+            RS.MoveNext
         Wend
     End If
     Close (NF)
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
     Set RT = Nothing
     GeneraMarcajesKimaldi = True
     Exit Function
@@ -1885,7 +1911,7 @@ End Function
 Private Function InsertarTicajesTeletaxi()
 Dim idTrabajador As Integer
 Dim Fecha As Date
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim Cad As String
 Dim Posterior8Mañana As Boolean
 Dim Anterior8Mañana As Boolean
@@ -1899,19 +1925,19 @@ Dim Tiene2359 As Boolean
   
     idTrabajador = -1
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     
     Label11.Caption = "Ajustando nocturnos"
     Me.Refresh
     
     
     Cad = "select max(fecha) from entradafichajes"
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    RS.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     Cad = ""
-    If Not Rs.EOF Then
-        If Not IsNull(Rs.Fields(0)) Then Cad = Rs.Fields(0)
+    If Not RS.EOF Then
+        If Not IsNull(RS.Fields(0)) Then Cad = RS.Fields(0)
     End If
-    Rs.Close
+    RS.Close
     If Cad = "" Then
         MsgBox "Error leyendo en entradafichajes para el ajuste nocturno", vbExclamation
         Exit Function
@@ -1921,20 +1947,20 @@ Dim Tiene2359 As Boolean
     
     
     Cad = "Select max(secuencia) from entradafichajes"
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     ContadorSecuencia = 0
-    If Not Rs.EOF Then ContadorSecuencia = DBLet(Rs.Fields(0), "N")
+    If Not RS.EOF Then ContadorSecuencia = DBLet(RS.Fields(0), "N")
     ContadorSecuencia = ContadorSecuencia + 1
-    Rs.Close
+    RS.Close
     espera 0.1
     
     Cad = "Select * from entradafichajes order by idtrabajador,fecha,hora"
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
            
     
-        If Rs!idTrabajador <> idTrabajador Then
+        If RS!idTrabajador <> idTrabajador Then
             If idTrabajador > 0 Then
                 'Comprobamos si insertamos
                 '----------------------------------
@@ -1959,13 +1985,13 @@ Dim Tiene2359 As Boolean
             'Nuevo trabajador.
             Fecha = "0:00:00"
             
-            idTrabajador = Rs!idTrabajador
+            idTrabajador = RS!idTrabajador
             'label catpiton
             Label11.Caption = "Ajuste nocturno: " & idTrabajador
             Label11.Refresh
         End If
     
-        If Fecha <> Rs!Fecha Then
+        If Fecha <> RS!Fecha Then
                 If Val(Fecha) <> 0 Then
                     If Fecha <> UltFecha Then
                         'Si tiene el ticaje a las 6 y , o bien no ha ticado luego, o el ticaje
@@ -1992,22 +2018,22 @@ Dim Tiene2359 As Boolean
             Posterior8Tarde = False
             Tiene0000 = False
             Tiene2359 = False
-            Fecha = Rs!Fecha
+            Fecha = RS!Fecha
             
         End If
         
         
-        If Rs!Hora < HoraM Then
+        If RS!Hora < HoraM Then
             
-            If Rs!Hora = "0:00:00" Then Tiene0000 = True
+            If RS!Hora = "0:00:00" Then Tiene0000 = True
             Anterior8Mañana = True
         Else
             Posterior8Mañana = True
-            If Rs!Hora < HoraT Then
+            If RS!Hora < HoraT Then
                 Anterior8Tarde = True
             Else
                 Posterior8Tarde = True
-                If Rs!Hora > "23:58:59" Then Tiene2359 = True
+                If RS!Hora > "23:58:59" Then Tiene2359 = True
                
             End If
         End If
@@ -2019,10 +2045,10 @@ Dim Tiene2359 As Boolean
 
 
         'Sig
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
     
     
     'Para el ultimo k hemos procesado

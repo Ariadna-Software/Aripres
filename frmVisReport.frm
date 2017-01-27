@@ -75,11 +75,20 @@ Dim PrimeraVez As Boolean
 Dim HayQueCerrar As Boolean
 
 
-'Private Sub CRViewer1_PrintButtonClicked(UseDefault As Boolean)
-'
-'    UseDefault = False
-'    mrpt.PrintOut False, 1
-'End Sub
+Private Sub CRViewer1_PrintButtonClicked(UseDefault As Boolean)
+
+    
+      UseDefault = False
+     
+      If mrpt.PrinterSetupEx(Me.Hwnd) = 0 Then
+         
+         mrpt.PrintOut False
+         
+     
+     End If
+    
+    
+End Sub
 
 Private Sub Form_Activate()
 

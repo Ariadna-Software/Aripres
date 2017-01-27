@@ -661,8 +661,8 @@ Public Event DatoSeleccionado(CadenaSeleccion As String)
 ' ****** Definir variables per a cridar a atres formularis *********
 Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 ' *****************************************************************
 
 Private Modo As Byte
@@ -676,7 +676,7 @@ Private Modo As Byte
 '   5.-  Manteniment Llinies
 
 '***Variables comuns a tots els formularis*****
-Dim PrimeraVez As Boolean
+Dim primeravez As Boolean
 Private ModoLineas As Byte
 Private CadenaConsulta As String 'SQL de la taula principal del formulari
 Private Ordenacion As String
@@ -691,7 +691,7 @@ Private HaDevueltoDatos As Boolean
 'de busqueda poner el valor de poblacion seleccionado y no volver a recuperar de la Base de Datos
 
 Dim btnPrimero As Byte 'Variable que indica el nº del Botó PrimerRegistro en la Toolbar1
-Dim Indice As Byte 'Indice del text1 donde se ponen los datos devueltos desde otros Formularios de Mtos
+Dim indice As Byte 'Indice del text1 donde se ponen los datos devueltos desde otros Formularios de Mtos
 Dim cad_meua As String
 Dim CadB As String
 
@@ -764,7 +764,7 @@ End Sub
 
 Private Sub Form_Activate()
     
-    If PrimeraVez Then
+    If primeravez Then
         
     End If
     Screen.MousePointer = vbDefault
@@ -781,7 +781,7 @@ End Sub
 Private Sub Form_Load()
 Dim I As Integer
 
-    PrimeraVez = True
+    primeravez = True
 
     ' ICONITOS DE LA BARRA
     btnPrimero = 16 'index del botó "primero"
@@ -1298,7 +1298,7 @@ Private Sub ToolAux_ButtonClick(Index As Integer, ByVal Button As MSComctlLib.Bu
             frmVerCalendario.CodigoTrab = 0
             frmVerCalendario.FeIni = vEmpresa.FechaInicio
             frmVerCalendario.FeFin = vEmpresa.FechaFin
-            frmVerCalendario.idCal = Val(Text1(0).Text)
+            frmVerCalendario.IdCal = Val(Text1(0).Text)
             frmVerCalendario.Texto = Text1(1).Text
             frmVerCalendario.Show vbModal
         Case 2, 4
@@ -1721,7 +1721,7 @@ Dim vWhere As String
 
 '    Conn.BeginTrans
     ' ***** canviar el nom de la clau primaria *******
-    vWhere = " WHERE idcal =" & Data1.Recordset!idCal
+    vWhere = " WHERE idcal =" & Data1.Recordset!IdCal
     ' ************************************************
               
     conn.Execute "Delete from " & NombreTabla & vWhere
@@ -1999,12 +1999,12 @@ Private Sub KeyPress(KeyAscii As Integer)
     End If
 End Sub
 
-Private Sub KEYBusqueda(KeyAscii As Integer, Indice As Integer)
+Private Sub KEYBusqueda(KeyAscii As Integer, indice As Integer)
     KeyAscii = 0
     'imgBuscar_Click (indice)
 End Sub
 
-Private Sub KEYFecha(KeyAscii As Integer, Indice As Integer)
+Private Sub KEYFecha(KeyAscii As Integer, indice As Integer)
     KeyAscii = 0
    ' imgFec_Click (Indice)
 End Sub
@@ -2209,14 +2209,14 @@ On Error GoTo ECarga
     
     DataGridAux(Index).AllowRowSizing = False
     DataGridAux(Index).RowHeight = 290
-    If PrimeraVez Then
+    If primeravez Then
         DataGridAux(Index).ClearFields
         DataGridAux(Index).ReBind
         DataGridAux(Index).Refresh
     End If
     
     'DataGridAux(Index).Enabled = b
-    PrimeraVez = False
+    primeravez = False
     
     Select Case Index
         Case 0 'Viajeros
@@ -2561,7 +2561,7 @@ End Sub
 
 
 Private Sub LLamaLineas(Index As Integer, xModo As Byte, Optional alto As Single)
-Dim jj As Integer
+Dim JJ As Integer
 Dim B As Boolean
 
     On Error GoTo ELLamaLin
@@ -2572,10 +2572,10 @@ Dim B As Boolean
     B = (xModo = 1 Or xModo = 2) 'Insertar o Modificar Lineas
     Select Case Index
         Case 0 'Viajeros
-            For jj = 1 To 2
-                txtAux(jj).Top = alto
-                txtAux(jj).Visible = B
-            Next jj
+            For JJ = 1 To 2
+                txtAux(JJ).Top = alto
+                txtAux(JJ).Visible = B
+            Next JJ
  '           cmbAux(0).Top = alto - 15
  '           cmbAux(0).Visible = b
     End Select
@@ -2593,7 +2593,7 @@ Dim F2 As Date
     F = DateAdd("m", -2, Now)
     F2 = DateAdd("m", 2, Now)
     miSQL = "Select * from calendariol where fecha >= '" & Format(F, FormatoFecha) & "'"
-    miSQL = miSQL & " and fecha <= '" & Format(F2, FormatoFecha) & "' and idcal =" & Data1.Recordset!idCal
+    miSQL = miSQL & " and fecha <= '" & Format(F2, FormatoFecha) & "' and idcal =" & Data1.Recordset!IdCal
     
     miSQL = miSQL & " order by fecha"
     miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText

@@ -1152,8 +1152,10 @@ Dim N As Byte
     miRsAux.Close
     
     If Len(Cad) <> 1 Then
-        MsgBox "Solo puede haber un calendario para la seccion. ", vbExclamation
-        Exit Sub
+        If vEmpresa.QueEmpresa <> 5 Then
+            MsgBox "Solo puede haber un calendario para la seccion. ", vbExclamation
+            Exit Sub
+        End If
     End If
     
     
@@ -1217,7 +1219,7 @@ Dim AuxTra As String
 Dim RT As ADODB.Recordset
 Dim Fin As Boolean
     
-Dim Hn As Currency
+Dim HN As Currency
 Dim HI As Currency
 Dim T1 As Currency
 Dim T2 As Currency
@@ -1340,7 +1342,7 @@ Dim HoraSabadoExtras As Date
                     Debug.Print miRsAux!idTrabajador
                     'FALTA####
                     'If miRsAux!idTrabajador = 9 Then Stop
-                    Hn = miRsAux!HorasTrabajadas
+                    HN = miRsAux!HorasTrabajadas
                     
                     HorasExceso = 0
                     
@@ -1349,7 +1351,7 @@ Dim HoraSabadoExtras As Date
                     Else
                         'Horas incidencia
                         HI = miRsAux!HorasIncid
-                        Hn = Hn - miRsAux!HorasIncid
+                        HN = HN - miRsAux!HorasIncid
                     End If
                     
                     
@@ -1386,10 +1388,10 @@ Dim HoraSabadoExtras As Date
                                 End If
                             End If
                             
-                            If T2 > Hn Then
+                            If T2 > HN Then
                                 MsgBox "NO puedo quitar mas horas", vbExclamation
                             Else
-                                Hn = Hn - T2
+                                HN = HN - T2
                             End If
                            
                            
@@ -1407,7 +1409,7 @@ Dim HoraSabadoExtras As Date
                     
                     'Las normales
                         
-                        conn.Execute Cad & "0," & DBSet(Hn, "N") & ")"   'normales
+                        conn.Execute Cad & "0," & DBSet(HN, "N") & ")"   'normales
                         
                         If HorasExceso > 0 Then conn.Execute Cad & "2," & DBSet(HorasExceso, "N") & ")"  'LS QUE VAN MAS ALLA SON EXTRA
                         If HI > 0 Then conn.Execute Cad & "1," & DBSet(HI, "N") & ")"   'LS QUE VAN MAS ALLA SON estruc
@@ -1638,8 +1640,8 @@ End Sub
 
 
 
-Private Sub PonerFrameVisible(ByRef Fr As Frame, He As Integer, Wi As Integer)
-        He = Fr.Height
+Private Sub PonerFrameVisible(ByRef Fr As Frame, HE As Integer, Wi As Integer)
+        HE = Fr.Height
         Wi = Fr.Width
         Fr.Top = 0
         Fr.Left = 120
@@ -1656,7 +1658,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Set frmc = New frmCal
     esq = imgFec(Index).Left
@@ -1682,12 +1684,12 @@ Private Sub imgFec_Click(Index As Integer)
     
     ' *** adrede ***
   '  If Index <> 49 Then
-        Set obj = imgFec(Index).Container
+        Set Obj = imgFec(Index).Container
 
-        While imgFec(Index).Parent.Name <> obj.Name
-            esq = esq + obj.Left
-            dalt = dalt + obj.Top
-            Set obj = obj.Container
+        While imgFec(Index).Parent.Name <> Obj.Name
+            esq = esq + Obj.Left
+            dalt = dalt + Obj.Top
+            Set Obj = Obj.Container
         Wend
 '    Else
 '        Set obj = btnFec(Index).Container

@@ -14,8 +14,16 @@ Begin VB.Form frmTareaActuaRelojAuxiliar
       Height          =   915
       Left            =   120
       TabIndex        =   1
-      Top             =   0
-      Width           =   10275
+      Top             =   120
+      Width           =   11235
+      Begin VB.CommandButton cmdResumen 
+         Caption         =   "Resumen"
+         Height          =   375
+         Left            =   9720
+         TabIndex        =   10
+         Top             =   360
+         Width           =   975
+      End
       Begin VB.CommandButton cmdfecha 
          Caption         =   "+"
          Height          =   255
@@ -35,9 +43,9 @@ Begin VB.Form frmTareaActuaRelojAuxiliar
          Width           =   255
       End
       Begin VB.CommandButton cmdImpimir 
-         Caption         =   "Imprimir"
+         Caption         =   "Listado"
          Height          =   375
-         Left            =   8760
+         Left            =   8400
          TabIndex        =   7
          Top             =   360
          Width           =   975
@@ -78,6 +86,24 @@ Begin VB.Form frmTareaActuaRelojAuxiliar
          Text            =   "Text1"
          Top             =   480
          Width           =   1455
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Informes"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   240
+         Index           =   0
+         Left            =   7200
+         TabIndex        =   11
+         Top             =   480
+         Width           =   900
       End
       Begin VB.Image imgFec 
          Height          =   240
@@ -241,14 +267,11 @@ Public QueFecha As Date
         
 Private WithEvents frmC As frmCal
 Attribute frmC.VB_VarHelpID = -1
-Private WithEvents frmHoras As frmHorasMarcajes
-Attribute frmHoras.VB_VarHelpID = -1
-Private WithEvents frmB As frmBuscaGrid
-Attribute frmB.VB_VarHelpID = -1
+
 Dim PrimeraVez As Boolean
 Dim Tamanyo As Long
 Dim Contador As Long
-Dim cad As String
+Dim Cad As String
 Dim Modifi As Boolean
 
 
@@ -274,131 +297,28 @@ End Sub
 
 Private Sub cmdImpimir_Click()
 
+    AbrirRpt 18
+    
+End Sub
 
-'    If ListView2.ListItems.Count = 0 Then
-'        MsgBox "Ningun dato a imprimir", vbExclamation
-'        Exit Sub
-'    End If
-'
-    
-    'Vamos a imprimir los datos
-'    Screen.MousePointer = vbHourglass
-'    ImprimirTicajeActual
-'
-'    If optTicaje(0).Value Then
-'        Cad = "pOrden= {tmpcombinada.idtrabajador}|"
-'    Else
-'        Cad = "pOrden= {trabajadores.nomtrabajador}|"
-'    End If
-'
-'    frmImprimir.Opcion = 32
-'    frmImprimir.FormulaSeleccion = "{tmpcombinada.codusu} = " & vUsu.Codigo
-'    frmImprimir.OtrosParametros = Cad
-'    frmImprimir.NumeroParametros = 1
-'    frmImprimir.Show vbModal
-'    Screen.MousePointer = vbDefault
-    
-    
+Private Sub AbrirRpt(Indice As Integer)
     CadenaDesdeOtroForm = Text1(1).Text
-    frmListado.Opcion = 18
+    frmListado.Opcion = Indice
     frmListado.Show vbModal
 End Sub
 
 
+Private Sub Command1_Click()
 
-
-Private Sub Command1_Click(Index As Integer)
-Dim valor As Long
-    
-    If Index > 0 Then
-        If ListView2.SelectedItem Is Nothing Then
-            MsgBox "Seleccione un trabajador", vbExclamation
-            Exit Sub
-        End If
-    End If
-    Modifi = False
-    Select Case Index
-    Case 0, 1
-        'INSERTAR
-        Contador = -1
-        Me.Tag = ""
-        
-        If Index = 1 Then
-            'Modificar
-            Contador = Val(ListView2.SelectedItem.Text)
-            Me.Tag = ListView2.SelectedItem.SubItems(1)
-        Else
-            ' INSERTAR
-            If Text1(1).Text = "" Then Exit Sub
-            If Not IsDate(Text1(1).Text) Then
-                MsgBox "Campo fecha incorrecto", vbExclamation
-                Exit Sub
-            End If
-            cad = "Codigo|idTrabajador|N|00000|15·"
-            cad = cad & "Nombre|nomtrabajador|T||60·"
-            cad = cad & "Tarjeta|numtarjeta|T||20·"
-            Set frmB = New frmBuscaGrid
-            frmB.vTabla = "Trabajadores"
-            frmB.vCampos = cad
-            frmB.vDevuelve = "0|1|"
-            frmB.vSelElem = 0
-            frmB.vTitulo = "TRABAJADORES"
-            frmB.Show vbModal
-                    
-            
-            
-            If Contador > 0 Then
-                cad = "Va a crear marcajes para el trabajador: " & Me.Tag
-                cad = cad & "   ¿Desea continuar?"
-                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
-            End If
-        End If
-        If Contador < 1 Then Exit Sub
-        valor = Contador
-        
-                        
-        
-    Case 2
-        'ELIMINAR
-                cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
-                cad = cad & "   ¿Desea continuar?"
-                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
-                    
-                cad = "DELETE from entradafichajauxliares WHERE idTrabajador=" & ListView2.SelectedItem.Text
-                cad = cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
-                conn.Execute cad
-                Modifi = True
-    End Select
-    If Modifi Then
-        Screen.MousePointer = vbHourglass
-        PonMarcajes
-        espera 0.5
-        'Volvemos a situarlo en donde estaba
-        Set ListView2.SelectedItem = Nothing
-        For Tamanyo = 1 To ListView2.ListItems.Count
-            If Val(ListView2.ListItems(Tamanyo).Text) = valor Then
-                Set ListView2.SelectedItem = ListView2.ListItems(Tamanyo)
-                ListView2.SelectedItem.EnsureVisible
-            Else
-                ListView2.ListItems(Tamanyo).Selected = False
-            End If
-        Next Tamanyo
-        
-        Screen.MousePointer = vbDefault
-    End If
-    Me.Tag = ""
 End Sub
 
-
-
+Private Sub cmdResumen_Click()
+    AbrirRpt 19
+End Sub
 
 Private Sub Command2_Click(Index As Integer)
     Screen.MousePointer = vbHourglass
-
-
-        PonMarcajes
-
-
+    PonMarcajes
     Screen.MousePointer = vbDefault
 End Sub
 
@@ -425,9 +345,9 @@ Private Sub Form_Load()
     
     'Fecha
     
-    cad = DevuelveDesdeBD("max(fecha)", "entradafichajauxliares", "1", "1")
-    If cad = "" Then cad = Format(Now, "dd/mm/yyyy")
-    QueFecha = CDate(cad)
+    Cad = DevuelveDesdeBD("max(fecha)", "entradafichajauxliares", "1", "1")
+    If Cad = "" Then Cad = Format(Now, "dd/mm/yyyy")
+    QueFecha = CDate(Cad)
     Text1(1).Text = Format(QueFecha, "dd/mm/yyyy")
 
 
@@ -478,7 +398,13 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
     Me.Tag = RecuperaValor(CadenaDevuelta, 2)
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub Form_Unload(Cancel As Integer)
+    conn.Close
+    Set conn = Nothing
+    End
+End Sub
+
+Private Sub frmc_Selec(vFecha As Date)
     Text1(CInt(imgFec(1).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -501,19 +427,19 @@ Private Sub imgFec_Click(Index As Integer)
    Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Set frmC = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
     
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
     
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -537,7 +463,7 @@ End Sub
 
 Private Sub ListView2_DblClick()
     If Not ListView2.SelectedItem Is Nothing Then
-        Command1_Click 1  'modificar
+  '      Command1_Click 1  'modificar
     End If
 End Sub
 
@@ -813,8 +739,8 @@ End Function
 
 Private Sub PonMarcajes()
     'Dos recordsets
-    Dim I As Integer
-    Dim Rs As ADODB.Recordset
+    Dim i As Integer
+    Dim RS As ADODB.Recordset
     Dim RT As ADODB.Recordset
     Dim SQL As String
     Dim Item As ListItem
@@ -834,9 +760,9 @@ Private Sub PonMarcajes()
         SQL = SQL & "  Trabajadores.NomTrabajador"
     End If
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     Set RT = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     
     SQL = "horareal"
@@ -848,15 +774,15 @@ Private Sub PonMarcajes()
     SQL = "Select entradafichajauxliares.*," & SQL
     SQL = SQL & " as acabalga FROM entradafichajauxliares WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
     SQL = SQL & " AND idTrabajador = "
-    While Not Rs.EOF
-        RT.Open SQL & Rs.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        I = 2
+    While Not RS.EOF
+        RT.Open SQL & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        i = 2
         
-        Set Item = ListView2.ListItems.Add(, , Rs.Fields(0))
-        Item.SubItems(1) = Rs.Fields(1)
+        Set Item = ListView2.ListItems.Add(, , RS.Fields(0))
+        Item.SubItems(1) = RS.Fields(1)
         While Not RT.EOF
             'If i < 8 Then  He puesto 2 mas
-            If I < 17 Then
+            If i < 17 Then
                 
                 'If RT!HoraReal > "23:59:59" Then
                 '    HoraPintar = DateAdd("h", -24, RT!HoraReal)
@@ -866,23 +792,23 @@ Private Sub PonMarcajes()
                 '    HoraPintar = RT!HoraReal
                 '
                 'End If
-                Item.SubItems(I) = Format(RT!acabalga, "hh:mm")
+                Item.SubItems(i) = Format(RT!acabalga, "hh:mm")
             End If
-            I = I + 1
+            i = i + 1
             RT.MoveNext
         Wend
         
         'El icono
-        If I Mod 2 = 0 Then
+        If i Mod 2 = 0 Then
             Item.SmallIcon = 3
         Else
             Item.SmallIcon = 4
         End If
         RT.Close
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
     Set RT = Nothing
 End Sub
 

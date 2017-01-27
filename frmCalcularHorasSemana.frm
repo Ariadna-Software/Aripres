@@ -323,7 +323,7 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
             Set IT = ListView1.ListItems.Add()
             IT.Text = miRsAux!idTrabajador
             IT.Tag = 0 'Trabajador
-            IT.SubItems(1) = miRsAux!nomtrabajador
+            IT.SubItems(1) = miRsAux!Nomtrabajador
             IT.SubItems(2) = " "
             'El hco de horas
             For J = 1 To CuantosTiposHoraTrabaja
@@ -343,20 +343,7 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
                 idTrabajador = miRsAux!idTrabajador
                 Fecha = "01/01/1900"
             
-            
-            'Agosto 2014
-            'Ya no tiene el computo anual, pero por si acaso, no lo borro
-            'Cad = "Select * from trabajadoresbolsahoras where ParaEmpresa = " & ParaLaCooperativa
-            'Cad = Cad & " AND IdTrabajador =" & idTrabajador
-            'miRs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-            'While Not miRs.EOF
-            '
-            '    J = miRs!tipohora
-            '    IT.SubItems(ColumnaDondeEmpiezanHoras + J) = Format(miRs!horasbolsa, "0.00")
-            '    Sumas(J) = miRs!horasbolsa
-            '     miRs.MoveNext
-            'Wend
-            'miRs.Close
+           
             '
             ' Y pongo este
             For J = 1 To CuantosTiposHoraTrabaja
@@ -611,12 +598,14 @@ Dim Laborable As Byte
     Cad = "INSERT INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) VALUES (" & Cad & ")"
     conn.Execute Cad
     
-    'Guardamos como estaba la bolsa antes del proceso
-    Cad = "select now(), IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa "
-    Cad = Cad & " from trabajadoresbolsahoras"
-    Cad = "insert into jornadassemanalesHcoBolsa(fecha,IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) " & Cad
-    conn.Execute Cad
-    
+
+    If vEmpresa.QueEmpresa = 2 Then
+        'COOPIC tiene proceso final bolsa horas
+        Cad = "select now(), IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa "
+        Cad = Cad & " from trabajadoresbolsahoras"
+        Cad = "insert into jornadassemanalesHcoBolsa(fecha,IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) " & Cad
+        conn.Execute Cad
+    End If
     
     'Insertamos en la que tendra que dia , que horas
     'Recorremos el LISTVIEW y haremos un insert con cada hora, bien sea nor estuct...
@@ -672,7 +661,7 @@ Dim Laborable As Byte
     
     
     'Mete los ajustes semanales y recalcula bolsas
-    HacerAjustesSobreBD
+    If vEmpresa.QueEmpresa = 2 Then HacerAjustesSobreBD
     
 
 End Sub
@@ -875,14 +864,18 @@ Dim C As String
 Dim Byt As Byte
 Dim difer As Currency
 Dim IdTr As Long
+Dim RBolsa As ADODB.Recordset
+Dim HAnterior As Currency
 
-    
+    Set RBolsa = New ADODB.Recordset
     
     For J = 1 To Me.ListView1.ListItems.Count
         
         If ListView1.ListItems(J).Tag = 3 Then
             'OK. Ha habido ajuste
+            
             'Lo que esta entre paraentesis es el trabajador
+            
             
             'Trabajador
             C = Mid(ListView1.ListItems(J).SubItems(2), InStr(1, ListView1.ListItems(J).SubItems(2), "(") + 1)
@@ -890,6 +883,11 @@ Dim IdTr As Long
             IdTr = Val(C)
             
             
+            'Leo bolsa horas
+            C = "select idtrabajador,sum(if(tipohora=1,HorasBolsa,0)) estruct,"
+            C = C & "sum(if(tipohora=2,HorasBolsa,0)) extra, sum(if(tipohora=3,HorasBolsa,0)) pactad from "
+            C = C & " trabajadoresbolsahoras where idtrabajador=" & IdTr & " and paraempresa=0 group by 1"
+            RBolsa.Open C, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             
             
            'Para la bolsa de horas
@@ -899,9 +897,14 @@ Dim IdTr As Long
             'El 0 son horas trabajadas
             For Byt = 1 To CuantosTiposHoraTrabaja - 1
                 
-                difer = ImporteFormateado(ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + Byt))
+                HAnterior = 0
+                If Not RBolsa.EOF Then HAnterior = DBLet(RBolsa.Fields(CInt(Byt)), "N")
                 
+                
+                difer = ImporteFormateado(ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + Byt))
+               
                 '        IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa"
+                difer = difer + HAnterior
                 If difer <> 0 Then Aux = Aux & ", (" & IdTr & ",0," & Byt & "," & DBSet(difer, "N") & ")"
                 
             Next Byt
@@ -911,11 +914,11 @@ Dim IdTr As Long
                 Aux = C & Aux
                 conn.Execute Aux
             End If
-            
+            RBolsa.Close
         End If
     Next
     '
-    
+    Set RBolsa = Nothing
 End Sub
 
 

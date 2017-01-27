@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmRevision 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Revisión marcajes"
@@ -1312,7 +1312,7 @@ Dim Ordenacion As String
 Dim btnPrimero As Byte 'Variable que indica el nº del Botó PrimerRegistro en la Toolbar1
 Dim Indice As Byte 'Indice del text1 donde se ponen los datos devueltos desde otros Formularios de Mtos
 Dim SQL As String
-Dim PrimeraVez As Boolean
+Dim primeravez As Boolean
 
 Private vH As CHorarios
 
@@ -1614,7 +1614,7 @@ Dim SQL As String
     '*************** canviar els noms i el DELETE **********************************
     SQL = "¿Seguro que desea eliminar el marcaje?"
     SQL = SQL & vbCrLf & "Código: " & Adodc2.Recordset!Entrada & "     -    " & Format(Adodc2.Recordset!Fecha, "dd/mm/yyyy")
-    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!nomtrabajador
+    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!Nomtrabajador
     
     If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
@@ -1706,7 +1706,7 @@ End Sub
 
 Private Sub cmdCorrecto_Click()
 Dim vM As CMarcajes
-Dim vHo As CHorarios
+Dim vHO As CHorarios
 Dim HoraS1 As Currency
 Dim Incide As Currency
 Dim Modificar As Boolean
@@ -1715,7 +1715,7 @@ Dim Control As Integer
         If adodc1.Recordset.EOF Then Exit Sub
 
        Set vM = New CMarcajes
-       Set vHo = New CHorarios
+       Set vHO = New CHorarios
        'Corregir
        If vM.Leer(adodc1.Recordset!Entrada) = 0 Then
             Control = 1
@@ -1740,7 +1740,7 @@ Dim Control As Integer
                 End If
             End If
             If Control = 0 Then
-                If vHo.Leer(vM.IdHorario, vM.Fecha, Adodc2.Recordset!idCal) = 0 Then
+                If vHO.Leer(vM.IdHorario, vM.Fecha, Adodc2.Recordset!IdCal) = 0 Then
                     Modificar = True
                     If vM.IncFinal <> 0 Then
                         Modificar = False
@@ -1756,7 +1756,7 @@ Dim Control As Integer
                         Incide = 0
                     End If
                     HoraS1 = vM.HorasTrabajadas - Incide
-                    If HoraS1 <> vHo.TotalHoras Then
+                    If HoraS1 <> vHO.TotalHoras Then
                         Control = DevuelveDesdeBD("control", "trabajadores", "idtrabajador", (Adodc2.Recordset!idTrabajador), "N")
                         If Control < 3 Then
                             SQL = "Existe diferencia de horas: " & vbCrLf & vbCrLf
@@ -1827,7 +1827,7 @@ Dim Control As Integer
        End If  'Del marcaje
        
        Set vM = Nothing
-       Set vHo = Nothing
+       Set vHO = Nothing
 End Sub
 
 Private Sub cmdRegresar_Click()
@@ -1865,8 +1865,8 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Form_Activate()
-    If PrimeraVez Then
-        PrimeraVez = False
+    If primeravez Then
+        primeravez = False
         'Si vienen datos o no
         'cargaremos o no
         'Qu carge a vacio
@@ -1946,7 +1946,7 @@ Private Sub Form_Load()
     TratarOrdenacion True
     SeparaValores
     LimpiarCampos
-    PrimeraVez = True
+    primeravez = True
     CadB = ""
     Set vH = New CHorarios
 End Sub
@@ -2061,10 +2061,11 @@ Private Sub frmc_Selec(vFecha As Date)
 End Sub
 
 Private Sub frmHoras_HayModificacion(SiNo As Boolean, vOpcion As Byte)
-Dim Bol As Boolean
+Dim bol As Boolean
 Dim TipoControl As Byte
 Dim Fin As Boolean
 Dim vM As CMarcajes
+Dim ModificaLasParadas As Boolean   'ALZIRA, no quire que una vez ajustadas las paradas, las vuelva a revisar
 
 
 Screen.MousePointer = vbHourglass
@@ -2078,7 +2079,7 @@ If SiNo Then
         'al igual que si todo esta correcto habra que refrescar el adodc1.recordset
         Set vM = New CMarcajes
         If vM.Leer(adodc1.Recordset!Entrada) = 1 Then
-            MsgBox "Error grave. Leyendo calase marcajes", vbExclamation
+            MsgBox "Error grave. Leyendo clase marcajes", vbExclamation
             Exit Sub
         End If
         
@@ -2099,7 +2100,7 @@ If SiNo Then
         TipoControl = DevuelveDesdeBD("control", "trabajadores", "idtrabajador", (Adodc2.Recordset!idTrabajador), "N")
         Select Case TipoControl
             Case 2
-                 ProcesarMarcaje_Tipo2 vM, vH, True, False, 0
+                 ProcesarMarcaje_Tipo2 vM, vH, True, IIf(vEmpresa.QueEmpresa = 2, False, True), 0
             Case 3
                  ProcesarMarcaje_Tipo3 vM, vH, True
             Case Else
@@ -2138,19 +2139,19 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
     If Modo = 4 Then Exit Sub
     Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
 
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
 
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -2618,7 +2619,7 @@ Dim LeerHorario As Boolean
             chkCorrecto.Value = 0
             cmdCorrecto.Visible = True
         End If
-        Text2.Text = !nomtrabajador
+        Text2.Text = !Nomtrabajador
         Text3.Text = !NomInci
         
         
@@ -2662,7 +2663,7 @@ Dim LeerHorario As Boolean
         Me.Refresh
         DoEvents
         
-        Indice = vH.Leer(Adodc2.Recordset!IdHorario, Adodc2.Recordset!Fecha, Adodc2.Recordset!idCal)
+        Indice = vH.Leer(Adodc2.Recordset!IdHorario, Adodc2.Recordset!Fecha, Adodc2.Recordset!IdCal)
         PonerHorario Indice = 0
     Else
         lblIndicador.Caption = ""
@@ -2992,11 +2993,11 @@ Dim I As Integer
                 I = RS!LaHora + I
                 
             End If
-            SQL = Format(I, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!Segundos, "00")
+            SQL = Format(I, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             
             Set IT = ListView1.ListItems.Add(, , SQL)
             If RS!idInci > 0 Then IT.SubItems(1) = RS!NomInci
-            IT.SubItems(2) = RS!LaHora & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!Segundos, "00")
+            IT.SubItems(2) = RS!LaHora & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             
             'Hora real
             '-----------------------

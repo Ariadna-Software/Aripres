@@ -32,7 +32,7 @@ Private mvarNocturno As Boolean
 Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
 Private RS As ADODB.Recordset
-Private Rc As Byte
+Private RC As Byte
 
 
 
@@ -347,6 +347,43 @@ Err3:
 End Function
 
 
+
+Public Function Leer2(idTRa As Long, Fec As Date) As Byte
+    On Error GoTo Err3
+    SQL = "SELECT * FROM Marcajes"
+    SQL = SQL & " WHERE "
+    SQL = SQL & " idTrabajador = " & idTRa
+    SQL = SQL & " AND Fecha = " & DBSet(Fec, "F")
+    RS.Open SQL, conn, , , adCmdText
+    If RS.EOF Then
+        Leer2 = 1
+        'ELSE
+        Else
+            mvarEntrada = RS!Entrada
+            mvaridTrabajador = RS!idTrabajador
+            mvarFecha = RS!Fecha
+            mvarCorrecto = RS!Correcto
+            mvarIncFinal = RS!IncFinal
+            mvarHorasTrabajadas = RS!HorasTrabajadas
+            mvarHorasIncid = RS!HorasIncid
+            Leer2 = 0
+    End If
+
+    RS.Close
+    Exit Function
+
+Err3:
+    Mens = "Se ha producido un error." & vbCrLf
+    Mens = Mens & "Número: " & Err.Number & vbCrLf
+    Mens = Mens & "Descripción: " & Err.Description
+    MsgBox Mens, vbExclamation
+    RS.Close
+    Leer2 = 1
+End Function
+
+
+
+
 '****   MODIFICAR  ***
 Public Function Modificar() As Byte
     On Error GoTo Err4
@@ -438,6 +475,37 @@ Err4:
     PonerCorrecta = 1
 
 End Function
+
+
+Public Function PonerDiaBaja() As Boolean
+
+    PonerDiaBaja = False
+    'si la incidencia es la de horaextra, y las horas trabajadas igual a la incidencia
+    'siginifca que se ha realizado el cambio por la baja
+    If mvarIncFinal = vEmpresa.IncHoraExtra And mvarHorasIncid = mvarHorasTrabajadas Then
+        MsgBox "Parece ser que ya ha sido aplicada la baja", vbExclamation
+        Exit Function
+    End If
+    
+    If MsgBox("Ajustar marcajes para baja?", vbQuestion + vbYesNo) = vbNo Then Exit Function
+    SQL = "Select * from incidencias where idinci = " & mvarIncFinal
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If RS!excesodefecto Then
+        mvarHorasTrabajadas = mvarHorasTrabajadas + mvarHorasIncid
+        
+   
+    Else
+        'NO ha trabajado todoas las horas. Las que trabaja son EXTRA
+        mvarIncFinal = vEmpresa.IncHoraExtra
+    End If
+    mvarHorasIncid = mvarHorasTrabajadas
+    RS.Close
+   
+    mvarCorrecto = True
+    PonerDiaBaja = True
+End Function
+
+
 
 
 Private Sub Class_Initialize()

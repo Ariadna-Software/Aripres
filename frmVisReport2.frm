@@ -91,7 +91,7 @@ Dim PrimeraVez As Boolean
 
 Private Sub CRViewer1_PrintButtonClicked(UseDefault As Boolean)
     UseDefault = False
-    If mrpt.PrinterSetupEx(0) = 0 Then
+    If mrpt.PrinterSetupEx(Me.Hwnd) = 0 Then
         mrpt.PrintOut False, 1
         EstaImpreso = True
     End If
@@ -110,7 +110,7 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_Load()
-Dim i As Integer
+Dim I As Integer
 Dim J As Integer
 On Error GoTo Err_Carga
     
@@ -122,17 +122,17 @@ On Error GoTo Err_Carga
        
        
    
-    For i = 1 To mrpt.Database.Tables.Count
-       mrpt.Database.Tables(i).SetLogOnInfo "Aripres4", ValorBD          ', vConfig.User, vConfig.Password
+    For I = 1 To mrpt.Database.Tables.Count
+       mrpt.Database.Tables(I).SetLogOnInfo "Aripres4", ValorBD          ', vConfig.User, vConfig.Password
 '       If InStr(1, Right(mrpt.Database.Tables(i).Name, 2), "_") = 0 Then
-       If InStr(1, mrpt.Database.Tables(i).Name, "_") = 0 Then
-               mrpt.Database.Tables(i).Location = ValorBD & "." & mrpt.Database.Tables(i).Name
-       ElseIf InStr(1, mrpt.Database.Tables(i).Name, "alias") <> 0 Then
-            J = InStr(1, mrpt.Database.Tables(i).Name, "_")
-            mrpt.Database.Tables(i).Location = ValorBD & "." & Mid(mrpt.Database.Tables(i).Name, 1, J - 1)
+       If InStr(1, mrpt.Database.Tables(I).Name, "_") = 0 Then
+               mrpt.Database.Tables(I).Location = ValorBD & "." & mrpt.Database.Tables(I).Name
+       ElseIf InStr(1, mrpt.Database.Tables(I).Name, "alias") <> 0 Then
+            J = InStr(1, mrpt.Database.Tables(I).Name, "_")
+            mrpt.Database.Tables(I).Location = ValorBD & "." & Mid(mrpt.Database.Tables(I).Name, 1, J - 1)
        End If
 
-    Next i
+    Next I
 
     If ConSubinforme Then AbrirSubreport
     
@@ -197,7 +197,7 @@ End Sub
 
 Private Sub CargaArgumentos()
 Dim Parametro As String
-Dim i As Integer
+Dim I As Integer
     'El primer parametro es el nombre de la empresa para todas las empresas
     ' Por lo tanto concaatenaremos con otros parametros
     ' Y sumaremos uno
@@ -212,37 +212,37 @@ Case 0
     '====Comenta: LAura
     'Solo se vacian los campos de formula que empiezan con "p" ya que estas
     'formulas se corresponden con paso de parametros al Report
-    For i = 1 To mrpt.FormulaFields.Count
-        If Left(Mid(mrpt.FormulaFields(i).Name, 3), 1) = "p" Then
-            mrpt.FormulaFields(i).Text = """"""
+    For I = 1 To mrpt.FormulaFields.Count
+        If Left(Mid(mrpt.FormulaFields(I).Name, 3), 1) = "p" Then
+            mrpt.FormulaFields(I).Text = """"""
         End If
-    Next i
+    Next I
     '====
 Case 1
     
-    For i = 1 To mrpt.FormulaFields.Count
-        Parametro = mrpt.FormulaFields(i).Name
+    For I = 1 To mrpt.FormulaFields.Count
+        Parametro = mrpt.FormulaFields(I).Name
         Parametro = Mid(Parametro, 3)  'Quitamos el {@
         Parametro = Mid(Parametro, 1, Len(Parametro) - 1) ' el } del final
         'Debug.Print Parametro
         If DevuelveValor(Parametro) Then
-            mrpt.FormulaFields(i).Text = Parametro
+            mrpt.FormulaFields(I).Text = Parametro
         Else
 '            mrpt.FormulaFields(I).Text = """"""
         End If
-    Next i
+    Next I
     
 Case Else
     'NumeroParametros = NumeroParametros + 1
     
-    For i = 1 To mrpt.FormulaFields.Count
-        Parametro = mrpt.FormulaFields(i).Name
+    For I = 1 To mrpt.FormulaFields.Count
+        Parametro = mrpt.FormulaFields(I).Name
         Parametro = Mid(Parametro, 3)  'Quitamos el {@
         Parametro = Mid(Parametro, 1, Len(Parametro) - 1) ' el } del final
         If DevuelveValor(Parametro) Then
-            mrpt.FormulaFields(i).Text = Parametro
+            mrpt.FormulaFields(I).Text = Parametro
         End If
-    Next i
+    Next I
 '    mrpt.RecordSelectionFormula
 End Select
 End Sub
@@ -255,17 +255,17 @@ End Sub
 
 
 Private Function DevuelveValor(ByRef valor As String) As Boolean
-Dim i As Integer
+Dim I As Integer
 Dim J As Integer
 
     valor = "|" & valor & "="
     DevuelveValor = False
-    i = InStr(1, OtrosParametros, valor, vbTextCompare)
-    If i > 0 Then
-        i = i + Len(valor)
-        J = InStr(i, OtrosParametros, "|")
+    I = InStr(1, OtrosParametros, valor, vbTextCompare)
+    If I > 0 Then
+        I = I + Len(valor)
+        J = InStr(I, OtrosParametros, "|")
         If J > 0 Then
-            valor = Mid(OtrosParametros, i, J - i)
+            valor = Mid(OtrosParametros, I, J - I)
             If valor = "" Then
                 valor = " "
             Else
@@ -280,19 +280,19 @@ End Function
 Private Sub CompruebaComillas(ByRef Valor1 As String)
 Dim Aux As String
 Dim J As Integer
-Dim i As Integer
+Dim I As Integer
 
     If Mid(Valor1, 1, 1) = Chr(34) Then
         'Tiene comillas. Con lo cual tengo k poner las dobles
         Aux = Mid(Valor1, 2, Len(Valor1) - 2)
-        i = -1
+        I = -1
         Do
-            J = i + 2
-            i = InStr(J, Aux, """")
-            If i > 0 Then
-              Aux = Mid(Aux, 1, i - 1) & """" & Mid(Aux, i)
+            J = I + 2
+            I = InStr(J, Aux, """")
+            If I > 0 Then
+              Aux = Mid(Aux, 1, I - 1) & """" & Mid(Aux, I)
             End If
-        Loop Until i = 0
+        Loop Until I = 0
         Aux = """" & Aux & """"
         Valor1 = Aux
     End If
@@ -309,18 +309,18 @@ Private Sub Exportar()
 End Sub
 
 Private Sub PonerMargen()
-Dim cad As String
-Dim i As Integer
+Dim Cad As String
+Dim I As Integer
     On Error GoTo EPon
-    cad = Dir(App.Path & "\*.mrg")
-    If cad <> "" Then
-        i = InStr(1, cad, ".")
-        If i > 0 Then
-            cad = Mid(cad, 1, i - 1)
-            If IsNumeric(cad) Then
-                If Val(cad) > 4000 Then cad = "4000"
-                If Val(cad) > 0 Then
-                    mrpt.BottomMargin = mrpt.BottomMargin + Val(cad)
+    Cad = Dir(App.Path & "\*.mrg")
+    If Cad <> "" Then
+        I = InStr(1, Cad, ".")
+        If I > 0 Then
+            Cad = Mid(Cad, 1, I - 1)
+            If IsNumeric(Cad) Then
+                If Val(Cad) > 4000 Then Cad = "4000"
+                If Val(Cad) > 0 Then
+                    mrpt.BottomMargin = mrpt.BottomMargin + Val(Cad)
                 End If
             End If
         End If
@@ -349,7 +349,7 @@ Dim crxObject As Object
 
 Dim crxSubreportObject As CRAXDRT.SubreportObject
 Dim smrpt
-Dim i As Byte
+Dim I As Byte
 
  
 
@@ -363,17 +363,17 @@ Dim i As Byte
 
                 Set smrpt = mrpt.OpenSubreport(crxSubreportObject.SubreportName)
 
-                For i = 1 To smrpt.Database.Tables.Count 'para cada tabla
+                For I = 1 To smrpt.Database.Tables.Count 'para cada tabla
 
                     '------ Añade Laura: 09/06/2005
 
  '                   If smrpt.Database.Tables(i).ConnectionProperties.Item("DSN") = "Aripres4" Then
 
-                        smrpt.Database.Tables(i).SetLogOnInfo "Aripres4", ValorBD
+                        smrpt.Database.Tables(I).SetLogOnInfo "Aripres4", ValorBD
 
-                        If (InStr(1, smrpt.Database.Tables(i).Name, "_") = 0) Then
+                        If (InStr(1, smrpt.Database.Tables(I).Name, "_") = 0) Then
 
-                           smrpt.Database.Tables(i).Location = ValorBD & "." & smrpt.Database.Tables(i).Name
+                           smrpt.Database.Tables(I).Location = ValorBD & "." & smrpt.Database.Tables(I).Name
 
                         End If
 
@@ -391,7 +391,7 @@ Dim i As Byte
 
                     '------
 
-                Next i
+                Next I
 
              End If
 

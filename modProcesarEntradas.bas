@@ -416,7 +416,7 @@ Dim k As Integer
               If IncremeHora <> 0 Then
                 'Acabalgada
                 'LaHora,minute(hora) minutos,second(hora) segundos
-                HoraAnt = Format(vRs!LaHora + IncremeHora, "00") & ":" & vRs!Minutos & ":" & vRs!Segundos
+                HoraAnt = Format(vRs!LaHora + IncremeHora, "00") & ":" & vRs!Minutos & ":" & vRs!segundos
               End If
               
               If (I Mod 2) = 0 Then
@@ -712,8 +712,8 @@ Dim ValorModificadoParadas As Currency
         SQL = "Select control,fecbaja,idcal from trabajadores WHERE idtrabajador=" & RS!idTrabajador
         RTra.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Control = DBLet(RTra!Control, "N")
-        SQL = DBLet(RTra!fecbaja, "T")
-        CalAux = RTra!idCal
+        SQL = DBLet(RTra!FecBaja, "T")
+        CalAux = RTra!IdCal
         If SQL <> "" Then
             FechaBaja = CDate(SQL)
         Else
@@ -1437,8 +1437,8 @@ Dim TotalH As Currency
 Dim HoE As Currency
 Dim IncManual As Integer
 
-
-Dim PuedeQuitarAlmuerzoMerienda2 As Boolean
+'ALZIRA  no quiere que se cambien las paradas cuando revisa desde "Marcajes correctos"
+Dim PuedeQuitarAlmuerzoMerienda As Boolean
 
 'ENERO 2015
 ' Fichadas acabalgadas
@@ -1503,14 +1503,21 @@ If (NumTikadas Mod 2) > 0 Then
 
         
         PrimerTicaje = Format(Rss!Hora, "hh:nn:ss") 'Almacenamos el primer ticaje  siempre es entre las 00y las 24
-        PuedeQuitarAlmuerzoMerienda2 = True
+        PuedeQuitarAlmuerzoMerienda = True
+        If vEmpresa.QueEmpresa = 2 Then
+            'ALZIRA. Desde Revision de marcajes
+            If RevisionEnMarcajes Then
+                PuedeQuitarAlmuerzoMerienda = False
+                TotalParadas2 = vMar.HorasDto   'Las que tuviere
+            End If
+        End If
         For I = 1 To N
         
             
             If Rss!LaHora < 0 Or Rss!LaHora > 23 Then
                 IncreHora = 1
-                HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!Segundos, "00")
-                PuedeQuitarAlmuerzoMerienda2 = False
+                HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
+                PuedeQuitarAlmuerzoMerienda = False
             Else
                 IncreHora = 0
                 HoraPintar = Format(Rss!Hora, "hh:nn:ss")
@@ -1523,9 +1530,9 @@ If (NumTikadas Mod 2) > 0 Then
             Rss.MoveNext
             If Rss!LaHora < 0 Or Rss!LaHora > 23 Then
                 IncreHora = 1
-                HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!Segundos, "00")
+                HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
                 UltimoTicaje = "23:59:59"
-                PuedeQuitarAlmuerzoMerienda2 = False
+                PuedeQuitarAlmuerzoMerienda = False
             Else
                 IncreHora = 0
                 
@@ -1559,9 +1566,9 @@ If (NumTikadas Mod 2) > 0 Then
         '******************************************************
         'Comprobamos si hay que quitar los minutos del almuerzo
         
-        If ModificaLasParadas Then PuedeQuitarAlmuerzoMerienda2 = True   'Fuerza la parada
+        If ModificaLasParadas Then PuedeQuitarAlmuerzoMerienda = True   'Fuerza la parada
         
-        If PuedeQuitarAlmuerzoMerienda2 Then
+        If PuedeQuitarAlmuerzoMerienda Then
         
             'Si viene forazado que el valor q
             If ModificaLasParadas Then
@@ -1586,8 +1593,9 @@ If (NumTikadas Mod 2) > 0 Then
             End If
             
             
+        Else
             
-            
+            TotalH = TotalH - TotalParadas2
         End If
             
             
@@ -1680,7 +1688,7 @@ End If
                 Stop
             Else
                 If Rss!LaHora > 23 Then
-                    HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!Segundos, "00")
+                    HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
                 Else
                     HoraPintar = Format(Rss!Hora, "hh:nn:ss")
                 End If
@@ -2315,12 +2323,12 @@ Dim RT As ADODB.Recordset
             If vH.IdHorario <> RS!IdHorario Then
                 l1.Caption = "Dia: " & Fecha & "    Horario: " & RS!IdHorario
                 DoEvents
-                vH.Leer RS!IdHorario, Fecha, RS!idCal
+                vH.Leer RS!IdHorario, Fecha, RS!IdCal
                 espera 0.3
                 
             Else
                 'Veremos si es festivo
-                If vH.idCal <> RS!idCal Then vH.CambioCalendario RS!idCal
+                If vH.IdCal <> RS!IdCal Then vH.CambioCalendario RS!IdCal
             End If
         
                     
@@ -2483,11 +2491,11 @@ Dim FESTIVOS As String
                 End If
                 
                 If vH.IdHorario <> Val(SQL) Then
-                    vH.Leer CInt(SQL), Fecha, RS!idCal
+                    vH.Leer CInt(SQL), Fecha, RS!IdCal
                 Else
-                    If vH.idCal <> RS!idCal Then
+                    If vH.IdCal <> RS!IdCal Then
                         'Vuelvo a leer faltara esto
-                        vH.CambioCalendario RS!idCal
+                        vH.CambioCalendario RS!IdCal
                     End If
                 End If
                 
