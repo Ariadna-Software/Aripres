@@ -588,16 +588,16 @@ End Sub
 '   Cogemos un numero formateado: 1.256.256,98  y deevolvemos 1256256,98
 '   Tiene que venir numérico
 Public Function ImporteFormateado(Importe As String) As Currency
-Dim I As Integer
+Dim i As Integer
 
     If Importe = "" Then
         ImporteFormateado = 0
     Else
         'Primero quitamos los puntos
         Do
-            I = InStr(1, Importe, ".")
-            If I > 0 Then Importe = Mid(Importe, 1, I - 1) & Mid(Importe, I + 1)
-        Loop Until I = 0
+            i = InStr(1, Importe, ".")
+            If i > 0 Then Importe = Mid(Importe, 1, i - 1) & Mid(Importe, i + 1)
+        Loop Until i = 0
         ImporteFormateado = Importe
     End If
 End Function
@@ -605,44 +605,44 @@ End Function
 'Cambia los puntos de los numeros decimales
 'por comas
 Public Function TransformaComasPuntos(CADENA As String) As String
-Dim I As Integer
+Dim i As Integer
     Do
-        I = InStr(1, CADENA, ",")
-        If I > 0 Then
-            CADENA = Mid(CADENA, 1, I - 1) & "." & Mid(CADENA, I + 1)
+        i = InStr(1, CADENA, ",")
+        If i > 0 Then
+            CADENA = Mid(CADENA, 1, i - 1) & "." & Mid(CADENA, i + 1)
         End If
-    Loop Until I = 0
+    Loop Until i = 0
     TransformaComasPuntos = CADENA
 End Function
 
 'Para los nombre que pueden tener ' . Para las comillas habra que hacer dentro otro INSTR
 Public Sub NombreSQL(ByRef CADENA As String)
 Dim J As Integer
-Dim I As Integer
+Dim i As Integer
 Dim Aux As String
     
     
     'Buscamos los \
     J = 1
     Do
-        I = InStr(J, CADENA, "\")
-        If I > 0 Then
-            CADENA = Mid(CADENA, 1, I) & "\" & Mid(CADENA, I + 1)
-            J = I + 2
+        i = InStr(J, CADENA, "\")
+        If i > 0 Then
+            CADENA = Mid(CADENA, 1, i) & "\" & Mid(CADENA, i + 1)
+            J = i + 2
         End If
-    Loop Until I = 0
+    Loop Until i = 0
     
     
     
     J = 1
     Do
-        I = InStr(J, CADENA, "'")
-        If I > 0 Then
-            Aux = Mid(CADENA, 1, I - 1) & "\"
-            CADENA = Aux & Mid(CADENA, I)
-            J = I + 2
+        i = InStr(J, CADENA, "'")
+        If i > 0 Then
+            Aux = Mid(CADENA, 1, i - 1) & "\"
+            CADENA = Aux & Mid(CADENA, i)
+            J = i + 2
         End If
-    Loop Until I = 0
+    Loop Until i = 0
     
     
 
@@ -977,7 +977,7 @@ End Function
 
 
 Public Function EsEntero(Texto As String) As Boolean
-Dim I As Integer
+Dim i As Integer
 Dim C As Integer
 Dim L As Integer
 Dim res As Boolean
@@ -992,24 +992,24 @@ Dim res As Boolean
         C = 0
         L = 1
         Do
-            I = InStr(L, Texto, ".")
-            If I > 0 Then
-                L = I + 1
+            i = InStr(L, Texto, ".")
+            If i > 0 Then
+                L = i + 1
                 C = C + 1
             End If
-        Loop Until I = 0
+        Loop Until i = 0
         If C > 1 Then res = False
         
         'Si ha puesto mas de una coma y no tiene puntos
         If C = 0 Then
             L = 1
             Do
-                I = InStr(L, Texto, ",")
-                If I > 0 Then
-                    L = I + 1
+                i = InStr(L, Texto, ",")
+                If i > 0 Then
+                    L = i + 1
                     C = C + 1
                 End If
-            Loop Until I = 0
+            Loop Until i = 0
             If C > 1 Then res = False
         End If
         
@@ -1018,26 +1018,26 @@ Dim res As Boolean
 End Function
 
 Public Function TransformaPuntosComas(CADENA As String) As String
-    Dim I As Integer
+    Dim i As Integer
     Do
-        I = InStr(1, CADENA, ".")
-        If I > 0 Then
-            CADENA = Mid(CADENA, 1, I - 1) & "," & Mid(CADENA, I + 1)
+        i = InStr(1, CADENA, ".")
+        If i > 0 Then
+            CADENA = Mid(CADENA, 1, i - 1) & "," & Mid(CADENA, i + 1)
         End If
-        Loop Until I = 0
+        Loop Until i = 0
     TransformaPuntosComas = CADENA
 End Function
 
 
 
 Public Function TransformaPunto2Puntos(CADENA As String) As String
-    Dim I As Integer
+    Dim i As Integer
     Do
-        I = InStr(1, CADENA, ".")
-        If I > 0 Then
-            CADENA = Mid(CADENA, 1, I - 1) & ":" & Mid(CADENA, I + 1)
+        i = InStr(1, CADENA, ".")
+        If i > 0 Then
+            CADENA = Mid(CADENA, 1, i - 1) & ":" & Mid(CADENA, i + 1)
         End If
-        Loop Until I = 0
+        Loop Until i = 0
     TransformaPunto2Puntos = CADENA
 End Function
 
@@ -1092,7 +1092,7 @@ Dim SQL As String
     RS.Open SQL, conn, , , adCmdText
     If Not RS.EOF Then
             DevuelveTextoIncidencia = RS.Fields(1)
-            If RS!excesodefecto Then
+            If RS!ExcesoDefecto Then
                 vSigno = -1
                 Else
                 vSigno = 1
@@ -1187,21 +1187,25 @@ Dim C As Long
 End Function
 
 Public Function ImporteFormateadoAmoneda(ByVal Texto As String) As Currency
-Dim I As Integer
+Dim i As Integer
 
     ImporteFormateadoAmoneda = 0
     Do
-        I = InStr(1, Texto, ".")
-        If I > 0 Then Texto = Mid(Texto, 1, I - 1) & Mid(Texto, I + 1)
-    Loop Until I = 0
+        i = InStr(1, Texto, ".")
+        If i > 0 Then Texto = Mid(Texto, 1, i - 1) & Mid(Texto, i + 1)
+    Loop Until i = 0
     'Ahora solo queda con el punto
-    ImporteFormateadoAmoneda = CCur(Texto)
+    If Trim(Texto) = "" Then
+        ImporteFormateadoAmoneda = 0
+    Else
+        ImporteFormateadoAmoneda = CCur(Texto)
+    End If
     
 End Function
 
 
 
-Public Sub Keypress(ByRef KeyAscii As Integer)
+Public Sub KeyPress(ByRef KeyAscii As Integer)
     If KeyAscii = 13 Then
         KeyAscii = 0
         SendKeys "{tab}"

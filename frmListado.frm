@@ -16,18 +16,38 @@ Begin VB.Form frmListado
    ScaleWidth      =   14880
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FrameA3 
-      Height          =   2295
+      Height          =   2895
       Left            =   120
       TabIndex        =   298
       Top             =   0
       Visible         =   0   'False
       Width           =   6015
+      Begin VB.CheckBox chkA3 
+         Caption         =   "Excel dias NO trabajados"
+         Height          =   195
+         Index           =   1
+         Left            =   3000
+         TabIndex        =   301
+         Top             =   1680
+         Value           =   1  'Checked
+         Width           =   2415
+      End
+      Begin VB.CheckBox chkA3 
+         Caption         =   "Fichero integración"
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   300
+         Top             =   1680
+         Value           =   1  'Checked
+         Width           =   2175
+      End
       Begin VB.CommandButton cmdGenNominaA3 
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3000
-         TabIndex        =   300
-         Top             =   1680
+         TabIndex        =   302
+         Top             =   2280
          Width           =   1215
       End
       Begin VB.CommandButton cmdCancelar 
@@ -35,8 +55,8 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   20
          Left            =   4440
-         TabIndex        =   301
-         Top             =   1680
+         TabIndex        =   303
+         Top             =   2280
          Width           =   1215
       End
       Begin VB.TextBox txtFec 
@@ -74,7 +94,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   13
          Left            =   840
-         TabIndex        =   303
+         TabIndex        =   305
          Top             =   360
          Width           =   4335
       End
@@ -93,7 +113,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   31
          Left            =   1680
-         TabIndex        =   302
+         TabIndex        =   304
          Top             =   1080
          Width           =   735
       End
@@ -3809,6 +3829,10 @@ ET:
 End Function
 
 
+Private Sub chkA3_KeyPress(Index As Integer, KeyAscii As Integer)
+    KeyPress KeyAscii
+End Sub
+
 Private Sub chkCorrec_KeyDown(KeyCode As Integer, Shift As Integer)
     If KeyCode = 112 Then HacerAccion
 End Sub
@@ -4080,17 +4104,39 @@ End Function
 
 Private Sub cmdGenNominaA3_Click()
     If txtFec(20).Text = "" Then Exit Sub
-    
+    If chkA3(0).Value = 0 And chkA3(1).Value = 0 Then
+        MsgBox "Seleccione alguna opcion de exportacion", vbExclamation
+        Exit Sub
+    End If
     Screen.MousePointer = vbHourglass
     
     If generarDatosNominas Then
-        GeneraNominaA3 CDate(Me.txtFec(20).Text)
+    
+        If Me.chkA3(0).Value Then
+    
+            GeneraNominaA3 CDate(Me.txtFec(20).Text)
         
-        If vEmpresa.QueEmpresa = 5 Then
-            'COOPIC lo copiamos en c:\Ariadna\enlaces
-            CopiarFicheroAEnlaces
+            If vEmpresa.QueEmpresa = 5 Then
+                'COOPIC lo copiamos en c:\Ariadna\enlaces
+                CopiarFicheroAEnlaces
+            End If
+            
+        
         End If
-        MsgBox "Proceso finalizado", vbExclamation
+        If Me.chkA3(1).Value Then
+            
+        
+            Screen.MousePointer = vbHourglass
+            
+            'Lanzamos el programa de EXCEL
+            If Dir(App.Path & "\gestoriaCoopic.exe", vbArchive) = "" Then
+                MsgBox "No existe programa enlace EXCEL", vbCritical
+            Else
+                vSQL = App.Path & "\gestoriaCoopic.exe"
+                Lanza_EXE_Y_Espera vSQL
+            End If
+            Screen.MousePointer = vbDefault
+        End If
         Unload Me
     End If
     Screen.MousePointer = vbDefault
@@ -4194,7 +4240,11 @@ Dim F1 As Date
     
     Else
         'Desglose trabajador
-        Cad = "AlzHorasTrabajador.rpt"
+        If vEmpresa.QueEmpresa = 5 Then
+            Cad = "picHorasTrabajador.rpt"
+        Else
+            Cad = "AlzHorasTrabajador.rpt"
+        End If
     End If
     
     With frmImprimir
@@ -5016,7 +5066,7 @@ Dim IndiceCancelar As Integer
         W = FrameA3.Width
         vSQL = DevuelveDesdeBD("max(fecha)", "nominas", "1", "1")
         If vSQL = "" Then vSQL = Now
-        
+        Caption = "Exportación"
         txtFec(20).Text = Format(vSQL, "dd/mm/yyyy")
 
     End Select
@@ -6989,7 +7039,10 @@ Dim J As Integer
         i = i + 1
         VectorDiasTrab = CStr(DiasTrabajadosPorMes)  'Lo copio
        
-       
+        
+       ' If miRsAux!idTrabajador = 20468 Then Stop
+        
+        
         'Veremos si ha trabajado algun dia festivo fesivos.. FESTIVO
         'Eso implicara que
         diasTrabajados = miRsAux!Dias
@@ -7033,14 +7086,18 @@ Dim J As Integer
             RS.Close
             
             'Comprobemos que no esta de baja
-            For J = 1 To DiasDelMes
-                If Mid(VectorDiasTrab, J, 1) = "N" Then
-                    'ESTE ES EL QUE COMPENSAMOS
-                    VectorDiasTrab = Mid(VectorDiasTrab, 1, J - 1) & "S" & Mid(VectorDiasTrab, J + 1)
-                    k = k - 1
-                    If k = 0 Then Exit For
-                End If
-            Next
+            If k > 0 Then
+                For J = 1 To DiasDelMes
+                    If Mid(VectorDiasTrab, J, 1) = "N" Then
+                        'ESTE ES EL QUE COMPENSAMOS
+                        VectorDiasTrab = Mid(VectorDiasTrab, 1, J - 1) & "S" & Mid(VectorDiasTrab, J + 1)
+                        k = k - 1
+                        If k = 0 Then Exit For
+                    End If
+                Next
+            Else
+               ' If diasTrabajados <> DiasOficiales Then Stop
+            End If
             
             If k > 0 Then
                 MsgBox "Mal,. NO ha compensado todos los dias", vbExclamation
@@ -7050,20 +7107,17 @@ Dim J As Integer
         
         
         'DAtos para insertar en tmp
-        ''tmppagosmes   idTrabajador,Nombre,IRPF,SS,importe1,importe2 IRPF
+        '----------------------------------
+        
+        
+        
+        'Coopic.
         H = 0
-        If miRsAux!hp > 0 Then
-            H = miRsAux!hp * miRsAux!preciohe
-            Importe = (miRsAux!Antiguedad * H) / 100
-            H = H + Importe
-            Importe = ((miRsAux!IRPF + miRsAux!SSEmpr) * H) / 100
-            
-            H = H - Importe 'Importe a porgrama de horas extra
-            H = Round(H, 2)
-        End If
-        Importe = miRsAux!anticipos - H
+        If miRsAux!hp > 0 Then H = miRsAux!hp * miRsAux!preciohe
+        If miRsAux!HC > 0 Then H = H + miRsAux!HC * miRsAux!preciohc
+        H = Round(H, 2)
         
-        
+        Importe = miRsAux!HN * miRsAux!preciohn
         Cad = ", (" & miRsAux!idTrabajador & ",'" & VectorDiasTrab & "'," & miRsAux!Dias & ",'',"
         Cad = Cad & DBSet(Importe, "N") & "," & DBSet(H, "N") & ")"
         vSQL = vSQL & Cad

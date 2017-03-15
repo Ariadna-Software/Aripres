@@ -1,7 +1,7 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmListadoAnticipos 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Listado pagos banco"
@@ -446,29 +446,29 @@ Dim PrimeraVez As Boolean
 
 
 Private Sub PonerModo(vModo)
-Dim b As Boolean
-Dim I As Byte
+Dim B As Boolean
+Dim i As Byte
 
     Modo = vModo
     
-    b = (Modo = 2) Or Modo = 0
-    If b Then
+    B = (Modo = 2) Or Modo = 0
+    If B Then
         Me.lblIndicador.Caption = PonerContRegistros(Me.adodc1)
     Else
         PonerIndicador lblIndicador, Modo
     End If
     
-    For I = 0 To Me.txtAux.Count - 1
-        txtAux(I).Visible = Not b
-        If I < 2 Then Combo1(I).Visible = Not b
+    For i = 0 To Me.txtAux.Count - 1
+        txtAux(i).Visible = Not B
+        If i < 2 Then Combo1(i).Visible = Not B
     Next
     
-    cmdAceptar.Visible = Not b
-    cmdCancelar.Visible = Not b
-    DataGrid1.Enabled = b
+    cmdAceptar.Visible = Not B
+    cmdCancelar.Visible = Not B
+    DataGrid1.Enabled = B
     
     'Si es regresar
-    If DatosADevolverBusqueda <> "" Then cmdRegresar.Visible = b
+    If DatosADevolverBusqueda <> "" Then cmdRegresar.Visible = B
     
     PonerLongCampos
     PonerModoOpcionesMenu 'Activar/Desact botones de menu segun Modo
@@ -480,29 +480,29 @@ End Sub
 
 Private Sub PonerModoOpcionesMenu()
 'Activa/Desactiva botons de la toolbar i del menu, según el modo en que estiguem
-Dim b As Boolean
+Dim B As Boolean
 
-    b = (Modo = 2) Or Modo = 0
+    B = (Modo = 2) Or Modo = 0
     'Búsqueda
-    Toolbar1.Buttons(2).Enabled = b
-    Me.mnBuscar.Enabled = b
+    Toolbar1.Buttons(2).Enabled = B
+    Me.mnBuscar.Enabled = B
     'Vore Tots
-    Toolbar1.Buttons(3).Enabled = b
-    Me.mnVerTodos.Enabled = b
+    Toolbar1.Buttons(3).Enabled = B
+    Me.mnVerTodos.Enabled = B
     
     'Insertar
     Toolbar1.Buttons(6).Enabled = True 'b And Not DeConsulta
     Me.mnNuevo.Enabled = True 'b And Not DeConsulta
     
-    b = (b And Not adodc1.Recordset.EOF) And Not DeConsulta
+    B = (B And Not adodc1.Recordset.EOF) And Not DeConsulta
     'Modificar
-    Toolbar1.Buttons(7).Enabled = b
-    Me.mnModificar.Enabled = b
+    Toolbar1.Buttons(7).Enabled = B
+    Me.mnModificar.Enabled = B
     'Eliminar
-    Toolbar1.Buttons(8).Enabled = b
-    Me.mnEliminar.Enabled = b
+    Toolbar1.Buttons(8).Enabled = B
+    Me.mnEliminar.Enabled = B
     'Imprimir
-    Toolbar1.Buttons(11).Enabled = b
+    Toolbar1.Buttons(11).Enabled = B
 
 End Sub
 
@@ -568,7 +568,7 @@ End Sub
 
 Private Sub BotonModificar()
     Dim anc As Single
-    Dim I As Integer
+    Dim i As Integer
 
     If adodc1.Recordset.EOF Then Exit Sub
     If adodc1.Recordset.RecordCount < 1 Then Exit Sub
@@ -579,8 +579,8 @@ Private Sub BotonModificar()
     If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
-        I = DataGrid1.Bookmark - DataGrid1.FirstRow
-        DataGrid1.Scroll 0, I
+        i = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, i
         DataGrid1.Refresh
     End If
 
@@ -598,8 +598,8 @@ Private Sub BotonModificar()
     
  
     
-    I = adodc1.Recordset!Tipo
-    PosicionarCombo Combo1(0), I
+    i = adodc1.Recordset!Tipo
+    PosicionarCombo Combo1(0), i
     
     LLamaLineas anc, 4
 
@@ -692,8 +692,12 @@ Private Sub btnBuscar_Click(Index As Integer)
     If Modo = 4 Then BLOQUEADesdeFormulario2 Me, Me.adodc1, 1
 End Sub
 
+Private Sub adodc1_WillMove(ByVal adReason As ADODB.EventReasonEnum, adStatus As ADODB.EventStatusEnum, ByVal pRecordset As ADODB.Recordset)
+
+End Sub
+
 Private Sub cmdAceptar_Click()
-Dim I As Integer
+Dim i As Integer
 
     Select Case Modo
         Case 3 'INSERTAR
@@ -718,7 +722,7 @@ Dim I As Integer
             If DatosOk Then
                 If ModificaDesdeFormulario(Me) Then
                     TerminaBloquear
-                    I = adodc1.Recordset.Fields(0)
+                    i = adodc1.Recordset.Fields(0)
                     PonerModo 2
                     If CadB <> "" Then
                         CargaGrid CadB
@@ -727,7 +731,7 @@ Dim I As Integer
                         CargaGrid
                         lblIndicador.Caption = ""
                     End If
-                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & I)
+                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & i)
                 End If
             End If
            
@@ -768,34 +772,34 @@ End Sub
 
 
 Private Sub cmdRegresar_Click()
-Dim cad As String
-Dim I As Integer
-Dim j As Integer
+Dim Cad As String
+Dim i As Integer
+Dim J As Integer
 Dim Aux As String
 
     If adodc1.Recordset.EOF Then
         MsgBox "Ningún registro devuelto.", vbExclamation
         Exit Sub
     End If
-    cad = ""
-    I = 0
+    Cad = ""
+    i = 0
     Do
-        j = I + 1
-        I = InStr(j, DatosADevolverBusqueda, "|")
-        If I > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, j, I - j)
-            j = Val(Aux)
-            cad = cad & adodc1.Recordset.Fields(j) & "|"
+        J = i + 1
+        i = InStr(J, DatosADevolverBusqueda, "|")
+        If i > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, i - J)
+            J = Val(Aux)
+            Cad = Cad & adodc1.Recordset.Fields(J) & "|"
         End If
-    Loop Until I = 0
-    RaiseEvent DatoSeleccionado(cad)
+    Loop Until i = 0
+    RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
 
 
 
 Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub DataGrid1_DblClick()
@@ -803,7 +807,7 @@ Private Sub DataGrid1_DblClick()
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -933,16 +937,16 @@ Private Sub CargaGrid(Optional vSQL As String)
     DataGrid1.ScrollBars = dbgAutomatic
 End Sub
 
-Private Sub txtAux_GotFocus(Index As Integer)
+Private Sub txtaux_GotFocus(Index As Integer)
     ConseguirFocoLin txtAux(Index)
 End Sub
 
-Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
+Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
     If Index = 2 And KeyAscii = teclaBuscar Then
         KeyAscii = 0
         btnBuscar_Click (0)
     Else
-        KEYpress KeyAscii
+        KeyPress KeyAscii
     End If
 End Sub
 
@@ -961,10 +965,10 @@ End Sub
 
 Private Function DatosOk() As Boolean
 Dim Datos As String
-Dim b As Boolean
+Dim B As Boolean
 
-    b = CompForm(Me)
-    If Not b Then Exit Function
+    B = CompForm(Me)
+    If Not B Then Exit Function
 
 
     'No puede existir el codigo de tarjeta
@@ -995,7 +999,7 @@ Dim b As Boolean
         '*************************************************************************************
     End If
 
-    DatosOk = b
+    DatosOk = B
 End Function
 
 
@@ -1015,7 +1019,7 @@ Private Function SepuedeBorrar(ByRef C As String) As Boolean
 End Function
 
 
-Private Sub KEYpress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

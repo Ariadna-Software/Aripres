@@ -587,7 +587,7 @@ Private Sub cmdGeneraAlz_Click()
 End Sub
 
 Private Sub cmdGenHoras_Click()
-Dim D As Integer
+Dim d As Integer
 Dim FI As Date
 Dim FF As Date
 
@@ -607,8 +607,8 @@ Dim FF As Date
         
     SQL = "/" & Combo1.ListIndex + 1 & "/" & Text1.Text
     FI = CDate("01" & SQL)
-    D = DiasMes(Combo1.ListIndex + 1, CInt(Text1.Text))
-    FF = CDate(D & "/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
+    d = DiasMes(Combo1.ListIndex + 1, CInt(Text1.Text))
+    FF = CDate(d & "/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
         
         
     If ComprobarMarcajesCorrectos(FI, FF, True) = 0 Then
@@ -670,7 +670,11 @@ Dim idCal As Integer
         
         If Horas > 0 Then
             'Insertamos en tmp HORAS
-            conn.Execute "INSERT INTO tmpHorasMesHorario(idHorario,Horas,Dias) VALUES (" & RS.Fields(0) & "," & TransformaComasPuntos(CStr(Horas)) & "," & Dias & ")"
+            'Antes febrero2017
+            'conn.Execute "INSERT INTO tmpHorasMesHorario(idHorario,Horas,Dias) VALUES (" & RS.Fields(0) & "," & TransformaComasPuntos(CStr(Horas)) & "," & Dias & ")"
+            'Ahora
+            conn.Execute "INSERT INTO tmpHorasMesHorario(idHorario,Horas,Dias) VALUES (" & idCal & "," & TransformaComasPuntos(CStr(Horas)) & "," & Dias & ")"
+            
         End If
         RS.MoveNext
     Wend
@@ -770,7 +774,7 @@ End Sub
 
 
 Private Sub cmdGenHorasAlzi_Click()
-Dim D As Integer
+Dim d As Integer
 Dim FI As Date
 Dim FF As Date
 
@@ -793,8 +797,8 @@ Dim FF As Date
         
     SQL = "/" & Combo2.ListIndex + 1 & "/" & Text2.Text
     FI = CDate("01" & SQL)
-    D = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
-    FF = CDate(D & "/" & Combo2.ListIndex + 1 & "/" & Text2.Text)
+    d = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
+    FF = CDate(d & "/" & Combo2.ListIndex + 1 & "/" & Text2.Text)
         
         
     If ComprobarMarcajesCorrectos(FI, FF, True) = 0 Then
@@ -1439,7 +1443,7 @@ Dim Cantidad2 As Currency
             If RS!diasTrabajados = 0 Then
                 J = 3
             Else
-                If RS!bolsaperiodo <> 0 Then
+                If RS!extras <> 0 Then
                     J = 4
                 Else
                     If RS!saldodias > 0 Then
@@ -1472,7 +1476,7 @@ Dim Cantidad2 As Currency
         If Cantidad1 < 0 Then
             Cantidad1 = 0
             'Veremos si ha utilizado bolsa de horas, si no, pintaremos cero igualmente
-            Cantidad2 = RS!BolsaAntes - RS!BolsaDespues
+            Cantidad2 = RS!bolsaantes - RS!bolsadespues
             If Cantidad2 < 0 Then
                 MsgBox "Debe horas y aunmenta bolsa. Comprobar trabajador " & RS!nomtrabajador, vbExclamation
             Else
@@ -1490,8 +1494,8 @@ Dim Cantidad2 As Currency
         
         '
         'Bolsa
-        i.SubItems(11) = RS!BolsaAntes
-        i.SubItems(12) = Format(RS!BolsaDespues, "0.00")
+        i.SubItems(11) = RS!bolsaantes
+        i.SubItems(12) = Format(RS!bolsadespues, "0.00")
         
         Importe1 = RS!anticipos + RS!plus
         i.SubItems(13) = Format(Importe1, "0.00")
@@ -1883,6 +1887,7 @@ Private Function genNominas() As Boolean
 Dim i As Integer
 Dim Cad As String
 Dim Importe As Currency
+Dim Horas As Currency
 Dim RS As ADODB.Recordset
 Dim Aux As String
 
@@ -1890,7 +1895,7 @@ On Error GoTo EGenerarNominas
     genNominas = False
 
     SQL = "INSERT INTO Nominas (Fecha,IdTrabajador,Dias,HN,HC,Plus,HP,BolsaDespues,BolsaAntes"
-    SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE) VALUES ('"
+    SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE ) VALUES ('"
     i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
     SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
     
@@ -1904,21 +1909,27 @@ On Error GoTo EGenerarNominas
     Set RS = New ADODB.Recordset
     RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
-        'IdTrabajador,Dias,HN,
-        Cad = RS!Trabajador & "," & RS!diasperiodo & "," & TransformaComasPuntos(RS!horasn)
+        Debug.Print RS!Trabajador
+    
+    
+        'IdTrabajador,Dias
+        Cad = RS!Trabajador & "," & RS!diasperiodo & ","
         
-        'HC,Plus,HP,
+        'HN,HC,HP   -> Las horas compensables seran aquellas que superen las horas de las horas mensuales, las que iran a bolsa, pero ahora se pagan
+        Horas = RS!saldoh
+        If Horas < 0 Then Horas = 0
+        '                                                                         Plus. de momento cero. Eso es si quitarn bolsa, pero habria que verlo
+        Cad = Cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!horasc, "N")) & ","
         
-        
-        
-        Cad = Cad & ",0,0," & TransformaComasPuntos(DBLet(RS!horasc, "N")) & ","
+
 
         
         'BolsaDespues,BolsaAntes,brutodespues,netodespues,importedelbote,brutoantes,netoan
-        Cad = Cad & DBSet(RS!BolsaDespues, "N") & "," & DBSet(RS!BolsaAntes, "N") & ","
+        Cad = Cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
         
-        Importe = RS!anticipos
-        Cad = Cad & TransformaComasPuntos(DBLet(RS!anticipos, "N"))
+        'Ahora nO anticipmaos como hacia Picassent
+        Importe = 0
+        Cad = Cad & TransformaComasPuntos(DBLet(Importe, "N"))
         
         'Antiguedad,IRPF,SSEmpr
         Cad = Cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
@@ -1939,7 +1950,7 @@ On Error GoTo EGenerarNominas
         
         
         Cad = "REPLACE INTO trabajadoresbolsahoras(IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) VALUES ("
-        Cad = Cad & RS!Trabajador & ",0,1," & DBSet(RS!BolsaDespues, "N") & ")"
+        Cad = Cad & RS!Trabajador & ",0,1," & DBSet(RS!bolsadespues, "N") & ")"
         conn.Execute Cad
         
         

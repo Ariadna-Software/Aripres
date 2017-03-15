@@ -73,7 +73,7 @@ End Function
 'Para las bajas.
 'Puede ser que un trabajador tenga varias bajas el mismo mes.
 'Tendremos que enviar cual fue el utlimo miercoles trabajado
-Public Function CalculaHorasHorarioBaja(idCal As Integer, IdHor As Integer, ByRef Dias As Integer, Fini As Date, FFin As Date, ByRef UltimoMiercolesTrabajado As Integer) As Currency
+Public Function CalculaHorasHorarioBaja(idCal As Integer, IdHor As Integer, ByRef Dias As Integer, Fini As Date, FFin As Date) As Currency
 Dim Sum As Currency
 Dim vH As CHorarios
 Dim F As Date
@@ -86,30 +86,20 @@ Dim Semana As Integer
     d = 0
     F = Fini
     
-    'Para cada dia del mes
+    'De lunes a domingo  5 dias. Festivos saba y domingo
     
     Do
         If vH.Leer(IdHor, F, idCal) = 1 Then Exit Function
         
         If Not vH.EsDiaFestivo Then
-            If vH.DiaNomina = 0.5 Then
-                
-                    'medio dia
-                    Semana = Format(F, "ww")
-                    If Weekday(F) = 4 Then
-                        UltimoMiercolesTrabajado = Semana
-                        d = d + 1
-                    Else
-                        If UltimoMiercolesTrabajado <> Semana Then d = d + 1
-                    End If
             
- 
-            Else
-                d = d + vH.DiaNomina
-            End If
-            Sum = Sum + vH.TotalHoras
+            Semana = Format(F, "w")
+            If Semana <= 6 Then
+               d = d + 1
+    
+               Sum = Sum + vH.TotalHoras
 
-        
+            End If
             
        End If
        F = DateAdd("d", 1, F)
@@ -232,7 +222,7 @@ Dim Rs2 As ADODB.Recordset
 Dim Dias As Currency
 Dim Trabajador As Long
 Dim Aux As String
-Dim Sql As String
+Dim SQL As String
 Dim vH As CHorarios
 Dim FESTIVOS2 As String
 Dim MEDIODIA As String
@@ -273,34 +263,34 @@ Dim idCal As Integer
     
     'COOPIC. Las normales y esctructurales van JUNTAS
     
-    Sql = "INSERT INTO tmpHoras(trabajador,HorasT) "
-    Sql = Sql & " SELECT  jornadassemanalesalz.idtrabajador,sum(if(tipohoras<2,horastrabajadas,0)) "
-    Sql = Sql & " from jornadassemanalesalz ,trabajadores where jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador"
-    Sql = Sql & " AND jornadassemanalesalz.Fecha >= " & DBSet(Fini, "F")
-    Sql = Sql & " and jornadassemanalesalz.Fecha <= " & DBSet(FFin, "F")
-    Sql = Sql & strControlNomina
-    Sql = Sql & " GROUP BY jornadassemanalesalz.idTrabajador;"
-    conn.Execute Sql
+    SQL = "INSERT INTO tmpHoras(trabajador,HorasT) "
+    SQL = SQL & " SELECT  jornadassemanalesalz.idtrabajador,sum(if(tipohoras<2,horastrabajadas,0)) "
+    SQL = SQL & " from jornadassemanalesalz ,trabajadores where jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador"
+    SQL = SQL & " AND jornadassemanalesalz.Fecha >= " & DBSet(Fini, "F")
+    SQL = SQL & " and jornadassemanalesalz.Fecha <= " & DBSet(FFin, "F")
+    SQL = SQL & strControlNomina
+    SQL = SQL & " GROUP BY jornadassemanalesalz.idTrabajador;"
+    conn.Execute SQL
     
     
     
     
     'Las horas EXTRA
-    Sql = "SELECT  jornadassemanalesalz.idtrabajador,sum(if(tipohoras=2,horastrabajadas,0)) sumadehoras "
-    Sql = Sql & " from jornadassemanalesalz ,trabajadores where jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador"
-    Sql = Sql & " AND jornadassemanalesalz.Fecha >= " & DBSet(Fini, "F")
-    Sql = Sql & " and jornadassemanalesalz.Fecha <= " & DBSet(FFin, "F")
-    Sql = Sql & strControlNomina
-    Sql = Sql & " GROUP BY jornadassemanalesalz.idTrabajador;"
+    SQL = "SELECT  jornadassemanalesalz.idtrabajador,sum(if(tipohoras=2,horastrabajadas,0)) sumadehoras "
+    SQL = SQL & " from jornadassemanalesalz ,trabajadores where jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador"
+    SQL = SQL & " AND jornadassemanalesalz.Fecha >= " & DBSet(Fini, "F")
+    SQL = SQL & " and jornadassemanalesalz.Fecha <= " & DBSet(FFin, "F")
+    SQL = SQL & strControlNomina
+    SQL = SQL & " GROUP BY jornadassemanalesalz.idTrabajador;"
     
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         If DBLet(RS!sumadehoras, "N") <> 0 Then
-            Sql = "UPDATE tmpHoras Set HorasC = " & TransformaComasPuntos(RS!sumadehoras)
-            Sql = Sql & " WHERE Trabajador = " & RS!idTrabajador
+            SQL = "UPDATE tmpHoras Set HorasC = " & TransformaComasPuntos(RS!sumadehoras)
+            SQL = SQL & " WHERE Trabajador = " & RS!idTrabajador
         
-            conn.Execute Sql
+            conn.Execute SQL
         End If
         RS.MoveNext
     Wend
@@ -316,12 +306,12 @@ Dim idCal As Integer
     '       -Para cada dia trabajado, para cada trabajador, veremos
     '       - Si los dias trabajados es un festivo o unidad fraccionarai
     
-    Sql = "SELECT idHorario,idcal "
-    Sql = Sql & " FROM calendariol"
-    Sql = Sql & " Where calendariol.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " and calendariol.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
-    Sql = Sql & " GROUP BY idHorario,idcal;"
-    RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    SQL = "SELECT idHorario,idcal "
+    SQL = SQL & " FROM calendariol"
+    SQL = SQL & " Where calendariol.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " and calendariol.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
+    SQL = SQL & " GROUP BY idHorario,idcal;"
+    RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     
     
     While Not RS.EOF
@@ -345,23 +335,23 @@ Dim idCal As Integer
     
 
             
-            Sql = "SELECT jornadassemanalesalz.idTrabajador,jornadassemanalesalz.fecha"
-            Sql = Sql & " FROM Trabajadores INNER JOIN jornadassemanalesalz ON Trabajadores.IdTrabajador = jornadassemanalesalz.idTrabajador "
-            Sql = Sql & " WHERE jornadassemanalesalz.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " and jornadassemanalesalz.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
-            Sql = Sql & strControlNomina
-            Sql = Sql & " AND idcal = " & idCal
-            Sql = Sql & " GROUP BY jornadassemanalesalz.idTrabajador, Fecha"
-            Sql = Sql & " ORDER BY jornadassemanalesalz.idTrabajador, Fecha"
+            SQL = "SELECT jornadassemanalesalz.idTrabajador,jornadassemanalesalz.fecha"
+            SQL = SQL & " FROM Trabajadores INNER JOIN jornadassemanalesalz ON Trabajadores.IdTrabajador = jornadassemanalesalz.idTrabajador "
+            SQL = SQL & " WHERE jornadassemanalesalz.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " and jornadassemanalesalz.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
+            SQL = SQL & strControlNomina
+            SQL = SQL & " AND idcal = " & idCal
+            SQL = SQL & " GROUP BY jornadassemanalesalz.idTrabajador, Fecha"
+            SQL = SQL & " ORDER BY jornadassemanalesalz.idTrabajador, Fecha"
             Set Rs2 = New ADODB.Recordset
-            Rs2.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            Rs2.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             
             
             If Not Rs2.EOF Then
                 Trabajador = -1
                 Do
                    
-                
+                          
                 
                    If Trabajador <> Rs2!idTrabajador Then
                          
@@ -369,15 +359,15 @@ Dim idCal As Integer
                          
                         If Trabajador > 0 Then
                             
-                            Sql = "UPDATE tmpHoras Set Dias = "
+                            SQL = "UPDATE tmpHoras Set Dias = "
                             If Dias > Int(Dias) Then
                                 Dias = Int(Dias) + 1
                             Else
                                 Dias = Int(Dias)
                             End If
-                            Sql = Sql & Int(Dias)
-                            Sql = Sql & " WHERE Trabajador = " & Trabajador
-                            conn.Execute Sql
+                            SQL = SQL & Int(Dias)
+                            SQL = SQL & " WHERE Trabajador = " & Trabajador
+                            conn.Execute SQL
                         End If
                    
                    
@@ -448,15 +438,15 @@ Dim idCal As Integer
                 
                 
                 'Ahora faltara por hacer el ultimo trabajador
-                Sql = "UPDATE tmpHoras Set Dias = "
+                SQL = "UPDATE tmpHoras Set Dias = "
                 If Dias > Int(Dias) Then
                     Dias = Int(Dias) + 1
                 Else
                     Dias = Int(Dias)
                 End If
-                Sql = Sql & Int(Dias)
-                Sql = Sql & " WHERE Trabajador = " & Trabajador
-                conn.Execute Sql
+                SQL = SQL & Int(Dias)
+                SQL = SQL & " WHERE Trabajador = " & Trabajador
+                conn.Execute SQL
             End If
         End If
         RS.MoveNext 'Siguiente horario
@@ -473,9 +463,9 @@ Dim idCal As Integer
         
         
     'Por si acaso algun trabajador tiene numeros negativos
-    Sql = "UPDATE tmpHoras Set Dias = 0"
-    Sql = Sql & " WHERE Dias < 0 "
-    conn.Execute Sql
+    SQL = "UPDATE tmpHoras Set Dias = 0"
+    SQL = SQL & " WHERE Dias < 0 "
+    conn.Execute SQL
     
     
     Set RS = Nothing
@@ -491,7 +481,7 @@ Dim RS As ADODB.Recordset
 Dim Horas As Currency
 Dim d As Integer
 Dim Aux As String
-Dim Sql As String
+Dim SQL As String
 Dim strControlNomina As String
 Dim D22 As Integer
 Dim h22 As Currency
@@ -502,6 +492,7 @@ Dim HorasBaja As Currency
 Dim UltMierTrabajado As Integer
 
 Dim idCal As Integer
+Dim varHorario As Integer
 
     'IMPORTANTE
     'Ahora hay un control nomina mas, k es el 2
@@ -537,13 +528,13 @@ Dim idCal As Integer
     
     'Creamos todos los trabajadores con las horas y dias k
     'Deberian haber trabajado en el mes completo( y no esten de baja)
-    Sql = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra)"
-    Sql = Sql & " SELECT " & Month(Fini) & ", Trabajadores.IdTrabajador, tmpHorasMesHorario.Horas, tmpHorasMesHorario.Dias"   ', Trabajadores.FecBaja"
-    Sql = Sql & " ,idcal FROM Trabajadores INNER JOIN tmpHorasMesHorario ON Trabajadores.idcal = tmpHorasMesHorario.idHorario"
-    Sql = Sql & " WHERE (Trabajadores.FecBaja Is Null) "
-    Sql = Sql & strControlNomina
-    Sql = Sql & " AND (Trabajadores.FecAlta < '" & Format(Fini, FormatoFecha) & "')"
-    conn.Execute Sql
+    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra)"
+    SQL = SQL & " SELECT " & Month(Fini) & ", Trabajadores.IdTrabajador, tmpHorasMesHorario.Horas, tmpHorasMesHorario.Dias"   ', Trabajadores.FecBaja"
+    SQL = SQL & " ,idcal FROM Trabajadores INNER JOIN tmpHorasMesHorario ON Trabajadores.idcal = tmpHorasMesHorario.idHorario"
+    SQL = SQL & " WHERE (Trabajadores.FecBaja Is Null) "
+    SQL = SQL & strControlNomina
+    SQL = SQL & " AND (Trabajadores.FecAlta < '" & Format(Fini, FormatoFecha) & "')"
+    conn.Execute SQL
 
 
     Set RS = New ADODB.Recordset
@@ -552,15 +543,15 @@ Dim idCal As Integer
     'Ahora vemo los k entraron a trabajar este periodo.
     '¡Descontaremos de las horas laborables los dias k no han trabajado
     'o dicho de otra forma. Le contamos solo las horas k debia haber trabajado en fechas de alta
-    Sql = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
-    Sql = Sql & " fecalta >='" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " and fecalta <='" & Format(FFin, FormatoFecha) & "'"
-    Sql = Sql & strControlNomina
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    Sql = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
+    SQL = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
+    SQL = SQL & " fecalta >='" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " and fecalta <='" & Format(FFin, FormatoFecha) & "'"
+    SQL = SQL & strControlNomina
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
     While Not RS.EOF
     
-        
+                
     
         If IsNull(RS!FecBaja) Then
             FAux = FFin
@@ -572,24 +563,24 @@ Dim idCal As Integer
         
         
         Aux = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
-        conn.Execute Sql & Aux
+        conn.Execute SQL & Aux
         RS.MoveNext
     Wend
     RS.Close
     
     
     'AHora vemos los k se han dado de baja en este periodo
-    Sql = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
-    Sql = Sql & " fecalta <'" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " AND fecbaja >='" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " AND fecbaja <='" & Format(FFin, FormatoFecha) & "'"
-    Sql = Sql & strControlNomina
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    Sql = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
+    SQL = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
+    SQL = SQL & " fecalta <'" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " AND fecbaja >='" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " AND fecbaja <='" & Format(FFin, FormatoFecha) & "'"
+    SQL = SQL & strControlNomina
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
     While Not RS.EOF
         Horas = CalculaHorasHorario(idCal, RS!idCal, d, Fini, RS!FecBaja, True)
         Aux = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
-        conn.Execute Sql & Aux
+        conn.Execute SQL & Aux
         RS.MoveNext
     Wend
     RS.Close
@@ -602,12 +593,12 @@ Dim idCal As Integer
         'no los que le faltban para completar el mes y leugo restar
     Aux = ""
     If True Then  'por empresas?
-        Sql = "Select bajas.*,trabajadores.idcal from bajas,trabajadores where idtrab=idTrabajador"
-        Sql = Sql & strControlNomina
-        Sql = Sql & " AND fechabaja >='" & Format(Fini, FormatoFecha) & "'"
-        Sql = Sql & " AND fechabaja <='" & Format(FFin, FormatoFecha) & "'"
-        Sql = Sql & " ORDER BY idtrabajador"
-        RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+        SQL = "Select bajas.*,trabajadores.idcal from bajas,trabajadores where idtrab=idTrabajador"
+        SQL = SQL & strControlNomina
+        SQL = SQL & " AND fechabaja >='" & Format(Fini, FormatoFecha) & "'"
+        SQL = SQL & " AND fechabaja <='" & Format(FFin, FormatoFecha) & "'"
+        SQL = SQL & " ORDER BY idtrabajador"
+        RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
         
         d = 0
         While Not RS.EOF
@@ -627,17 +618,17 @@ Dim idCal As Integer
         If d = 0 Then
             Aux = ""
         Else
-            Sql = "Select bajas.*,trabajadores.idHorario,trabajadores.fecalta  from bajas,trabajadores where idtrab=idTrabajador"
-            Sql = Sql & strControlNomina
-            Sql = Sql & " AND fechabaja >='" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " AND fechabaja <='" & Format(FFin, FormatoFecha) & "' AND idtrab = "
-            Sql = Sql & Mid(Aux, 1, d - 1)
-            Sql = Sql & " ORDER BY fechabaja"
+            SQL = "Select bajas.*,trabajadores.idcal,trabajadores.fecalta  from bajas,trabajadores where idtrab=idTrabajador"
+            SQL = SQL & strControlNomina
+            SQL = SQL & " AND fechabaja >='" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND fechabaja <='" & Format(FFin, FormatoFecha) & "' AND idtrab = "
+            SQL = SQL & Mid(Aux, 1, d - 1)
+            SQL = SQL & " ORDER BY fechabaja"
             
             'If Mid(Aux, 1, D - 1) = 31 Then MsgBox "Stop-----"   'Stop
             
             Aux = Mid(Aux, d + 1)
-            RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+            RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
             FAux = Fini
             If Not IsNull(RS!FecAlta) Then
                 If RS!FecAlta > Fini Then FAux = RS!FecAlta
@@ -646,8 +637,15 @@ Dim idCal As Integer
             h22 = 0
             HorasBaja = 0
             UltMierTrabajado = -1
+            varHorario = -1
+            
             While Not RS.EOF
-                IDH = RS!IdHorario
+                If varHorario < 0 Then
+                    SQL = DevuelveDesdeBD("idhorario", "calendariol", "idcal", CStr(RS!idCal))
+                    If SQL = "" Then SQL = "1"
+                    varHorario = SQL
+                End If
+                IDH = varHorario
                 IDT = RS!idTrab
                 'Tramo anterior a la baja
                 If RS!FechaBaja > FAux Then
@@ -655,7 +653,8 @@ Dim idCal As Integer
                     
                     
                     
-                    Horas = CalculaHorasHorarioBaja(idCal, RS!IdHorario, d, FAux, FAux2, UltMierTrabajado)
+                    Horas = CalculaHorasHorarioBaja(idCal, IDH, d, FAux, FAux2)
+                   
                     h22 = h22 + Horas
                     D22 = D22 + d
                 End If
@@ -677,9 +676,9 @@ Dim idCal As Integer
                     
                 
                 'Insertamos en temporal de bajas para comprobar luego quien ha estado
-                Sql = "INSERT INTO tmpCombinada(idTrabajador,Fecha,H1) VALUES (" & IDT
-                Sql = Sql & ",'" & Format(RS!FechaBaja, FormatoFecha) & "','" & Format(FAux2, FormatoFecha) & "')"
-                conn.Execute Sql
+                SQL = "INSERT INTO tmpCombinada(idTrabajador,Fecha,H1) VALUES (" & IDT
+                SQL = SQL & ",'" & Format(RS!FechaBaja, FormatoFecha) & "','" & Format(FAux2, FormatoFecha) & "')"
+                conn.Execute SQL
                         
                 'Pongo la fecha aux a la fecha baja
                 FAux = DateAdd("d", 1, FAux2)
@@ -694,22 +693,22 @@ Dim idCal As Integer
                 'Significa que aun trabaja algo a final del mes
                 FAux = DateAdd("d", 1, FAux2)
                 FAux2 = FFin
-                Horas = CalculaHorasHorarioBaja(idCal, IDH, d, FAux, FAux2, UltMierTrabajado)
+                Horas = CalculaHorasHorarioBaja(idCal, IDH, d, FAux, FAux2)
                 'Horas = CalculaHorasHorario(IDH, D, FAux, FAux2, False)   CalculaHorasHorarioBaja
                 h22 = h22 + Horas
                 D22 = D22 + d
             End If
 
-            Sql = "UPDATE tmpDatosMes SET meshoras= " & TransformaComasPuntos(CStr(h22))
-            Sql = Sql & " , mesdias = " & D22
+            SQL = "UPDATE tmpDatosMes SET meshoras= " & TransformaComasPuntos(CStr(h22))
+            SQL = SQL & " , mesdias = " & D22
             'If horas de baja >0 siginifica que trabajo. Luego tiene que tener +hc y -hn
             If HorasBaja > 0 Then
-                Sql = Sql & " , HorasN = horasN - " & TransformaComasPuntos(CStr(HorasBaja))
-                Sql = Sql & " , HorasC = horasC - " & TransformaComasPuntos(CStr(HorasBaja))
+                SQL = SQL & " , HorasN = horasN - " & TransformaComasPuntos(CStr(HorasBaja))
+                SQL = SQL & " , HorasC = horasC - " & TransformaComasPuntos(CStr(HorasBaja))
                 
             End If
-            Sql = Sql & " WHERE mes= " & Month(Fini) & " AND Trabajador =" & IDT
-            conn.Execute Sql
+            SQL = SQL & " WHERE mes= " & Month(Fini) & " AND Trabajador =" & IDT
+            conn.Execute SQL
             'Debug.Print "Tra      " & IDT & "     " & D22 & "    Horas " & h22
         End If
     Wend
@@ -720,12 +719,12 @@ Dim idCal As Integer
     'Y se dieron de alta en el mes de calculo
     Aux = ""
     If True Then  'MiEmpresa.QueEmpresa = 0
-            Sql = "Select bajas.*,trabajadores.idcal,fechaalta as altaTrabajador from bajas,trabajadores where idtrab=idTrabajador"
-            Sql = Sql & strControlNomina
-            Sql = Sql & " AND fechabaja <'" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " AND fechaalta >='" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " AND fechaalta <='" & Format(FFin, FormatoFecha) & "'"
-            RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+            SQL = "Select bajas.*,trabajadores.idcal,fechaalta as altaTrabajador from bajas,trabajadores where idtrab=idTrabajador"
+            SQL = SQL & strControlNomina
+            SQL = SQL & " AND fechabaja <'" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND fechaalta >='" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND fechaalta <='" & Format(FFin, FormatoFecha) & "'"
+            RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
             d = 0
             While Not RS.EOF
                 If d <> RS!idTrab Then
@@ -747,14 +746,18 @@ Dim idCal As Integer
         Else
     
             'Empieza a trabajar este mes despues de una baja. No hacemos nada
-            Sql = "Select bajas.*,trabajadores.idHorario,FecAlta as altaTrabajador from bajas,trabajadores where idtrab=idTrabajador"
-            Sql = Sql & strControlNomina
-            Sql = Sql & " AND fechabaja <'" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " AND fechaalta >='" & Format(Fini, FormatoFecha) & "'"
-            Sql = Sql & " AND fechaalta <='" & Format(FFin, FormatoFecha) & "'"
-            Sql = Sql & " AND idtrab = " & Mid(Aux, 1, d - 1)
-            RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
-            IDH = RS!IdHorario
+            SQL = "Select bajas.*,trabajadores.idHorario,FecAlta as altaTrabajador from bajas,trabajadores where idtrab=idTrabajador"
+            SQL = SQL & strControlNomina
+            SQL = SQL & " AND fechabaja <'" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND fechaalta >='" & Format(Fini, FormatoFecha) & "'"
+            SQL = SQL & " AND fechaalta <='" & Format(FFin, FormatoFecha) & "'"
+            SQL = SQL & " AND idtrab = " & Mid(Aux, 1, d - 1)
+            RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+            
+            
+            
+            'FALTA###
+            IDH = 1 'RS!IdHorario
             IDT = RS!idTrab
             
             
@@ -775,15 +778,15 @@ Dim idCal As Integer
                 Horas = CalculaHorasHorario(idCal, IDH, d, FAux, FAux2, True)
             
     
-                Sql = "INSERT INTO tmpCombinada(idTrabajador,Fecha,H1) VALUES (" & IDT
-                Sql = Sql & ",'" & Format(FAux, FormatoFecha) & "','" & Format(FAux2, FormatoFecha) & "')"
-                Ejecuta Sql
+                SQL = "INSERT INTO tmpCombinada(idTrabajador,Fecha,H1) VALUES (" & IDT
+                SQL = SQL & ",'" & Format(FAux, FormatoFecha) & "','" & Format(FAux2, FormatoFecha) & "')"
+                Ejecuta SQL
                 
     
-                Sql = "UPDATE tmpDatosMes SET meshoras= meshoras - " & TransformaComasPuntos(CStr(Horas))
-                Sql = Sql & " , mesdias =mesdias - " & d
-                Sql = Sql & " WHERE mes= " & Month(Fini) & " AND Trabajador =" & IDT
-                conn.Execute Sql
+                SQL = "UPDATE tmpDatosMes SET meshoras= meshoras - " & TransformaComasPuntos(CStr(Horas))
+                SQL = SQL & " , mesdias =mesdias - " & d
+                SQL = SQL & " WHERE mes= " & Month(Fini) & " AND Trabajador =" & IDT
+                conn.Execute SQL
             End If
         End If
       
@@ -823,9 +826,9 @@ Dim idCal As Integer
     Set RS = Nothing
 End Sub
 
-Private Sub Ejecuta(Sql As String)
+Private Sub Ejecuta(SQL As String)
     On Error Resume Next
-    conn.Execute Sql
+    conn.Execute SQL
     If Err.Number <> 0 Then MuestraError Err.Number, Err.Description & vbCrLf & "El proceso continua"
 End Sub
 
@@ -838,28 +841,31 @@ Dim i As Integer
 Dim Tot As Currency
 'Dim Importe As Currency
 Dim Aux As String
-Dim Sql As String
+Dim SQL As String
 Dim Rs2 As ADODB.Recordset
 
     Set RS = New ADODB.Recordset
-    Sql = "Select Trabajador,MEsDias from tmpDatosMes "
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = "Select Trabajador,MEsDias from tmpDatosMes "
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     
-    Sql = "SELECT tmpHoras.trabajador, tmpHoras.HorasT, tmpHoras.HorasC, tmpHoras.HorasE, tmpHoras.Dias, trabajadoresbolsahoras.HorasBolsa"
-    Sql = Sql & " FROM  tmpHoras left join trabajadoresbolsahoras ON trabajadoresbolsahoras.IdTrabajador = tmpHoras.trabajador and"
-    Sql = Sql & " tipohora=1 " 'No deberia tener bolsa horas extra
-    Sql = Sql & " WHERE tmpHoras.trabajador = "
+    SQL = "SELECT tmpHoras.trabajador, tmpHoras.HorasT, tmpHoras.HorasC, tmpHoras.HorasE, tmpHoras.Dias, trabajadoresbolsahoras.HorasBolsa"
+    SQL = SQL & " FROM  tmpHoras left join trabajadoresbolsahoras ON trabajadoresbolsahoras.IdTrabajador = tmpHoras.trabajador and"
+    SQL = SQL & " tipohora=1 " 'No deberia tener bolsa horas extra
+    SQL = SQL & " WHERE tmpHoras.trabajador = "
 
     Set RT = New ADODB.Recordset
     While Not RS.EOF
-        RT.Open Sql & RS.Fields(0), conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        'If RS!Trabajador = 20313 Then Stop
+        
+        RT.Open SQL & RS.Fields(0), conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
         If Not RT.EOF Then
             Aux = "UPDATE tmpDatosMes Set HorasN=" & TransformaComasPuntos(CStr(RT!horast))
             Aux = Aux & " ,HorasC=" & TransformaComasPuntos(CStr(RT!horasc))
             Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!horase))
-            Tot = RT!horasc + RT!horast
+            'Tot = RT!horasc + RT!horast  extras mas normales
+            Tot = RT!horast
             Aux = Aux & " ,HorasT=" & TransformaComasPuntos(CStr(Tot))
             i = RS!MesDias - RT!Dias
             If i < 0 Then
@@ -884,11 +890,13 @@ Dim Rs2 As ADODB.Recordset
         
             
             RT.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-            If DBLet(RT!horasbolsa, "N") > 0 Then
-                Aux = "UPDATE tmpDatosMes SET "
-                Aux = Aux & " BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
-                Aux = Aux & " WHERE trabajador = " & RS.Fields(0)
-                conn.Execute Aux
+            If Not RT.EOF Then
+                If DBLet(RT!horasbolsa, "N") > 0 Then
+                    Aux = "UPDATE tmpDatosMes SET "
+                    Aux = Aux & " BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
+                    Aux = Aux & " WHERE trabajador = " & RS.Fields(0)
+                    conn.Execute Aux
+                End If
             End If
         End If
         RT.Close
@@ -949,11 +957,11 @@ End Sub
 Public Sub CalculoDatosACompensar()
 Dim RS As ADODB.Recordset
 Dim i As Integer
-Dim Sql As String
+Dim SQL As String
 Dim Diferencia As Currency
-    Sql = "Select * from tmpDatosMes"
+    SQL = "Select * from tmpDatosMes"
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     While Not RS.EOF
         Diferencia = RS!horast - RS!meshoras
         If Diferencia < 0 Then
@@ -985,7 +993,7 @@ Dim HPaBolsa As Currency
 Dim DiasOF As Integer
 Dim HorasOf As Currency
 Dim H As Currency
-Dim Sql As String
+Dim SQL As String
 Dim ModoCompensacion_2 As String
 Dim HorasJornadaRecuperacion As Currency
 Dim Horario As Integer
@@ -1007,15 +1015,15 @@ Dim Canti As Currency
     '   3 .- Picassen cotubre 2008.
     '           -Compensaran por semana /dia con cuidado a los miercoles sabados
     '           -si trabaja una hora un dia, el resto de horas NO las tiene que compensar para la nomina
-    Sql = "HorasJornada"
-    ModoCompensacion_2 = DevuelveDesdeBD("RecuperacionDias", "Empresas", "idEmpresa", "1", "N", Sql)
+    SQL = "HorasJornada"
+    ModoCompensacion_2 = DevuelveDesdeBD("RecuperacionDias", "Empresas", "idEmpresa", "1", "N", SQL)
     
 
     If Val(ModoCompensacion_2) = 0 Then
         ModoCompensacion_2 = "0"
         HorasJornadaRecuperacion = 0
     Else
-        HorasJornadaRecuperacion = CCur(Sql)
+        HorasJornadaRecuperacion = CCur(SQL)
     End If
     
     
@@ -1047,16 +1055,16 @@ Dim Canti As Currency
     End If
 
   
-    Sql = "Select tmpDatosMes.*,idHorarioTra idHorario,FecAlta,FecBaja,controlnomina,NomTrabajador from tmpDatosMes,Trabajadores"
-    Sql = Sql & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
-    Sql = Sql & " ORDER BY idHorario"
+    SQL = "Select tmpDatosMes.*,idHorarioTra idHorario,FecAlta,FecBaja,controlnomina,NomTrabajador from tmpDatosMes,Trabajadores"
+    SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
+    SQL = SQL & " ORDER BY idHorario"
     Horario = -1
     FESTIVOS = ""
     Set RS = New ADODB.Recordset
     
    
     
-    RS.Open Sql, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     
     While Not RS.EOF
     
@@ -1282,31 +1290,31 @@ Dim Canti As Currency
         End If 'de compensa solo solo dias
 
         'Updateamos con los valores calculados
-        Sql = "UPDATE tmpDatosMes SET"
+        SQL = "UPDATE tmpDatosMes SET"
        
         
-        Sql = Sql & "  BolsaDespues =" & TransformaComasPuntos(CStr(HPaBolsa))
-        Sql = Sql & ", HorasPeriodo = " & TransformaComasPuntos(CStr(HorasOf))
+        SQL = SQL & "  BolsaDespues =" & TransformaComasPuntos(CStr(HPaBolsa))
+        SQL = SQL & ", HorasPeriodo = " & TransformaComasPuntos(CStr(HorasOf))
         
         If DiasReajusteXSTrabajados > 0 Then
             'Debug.Print "Dias reajus trabajador: " & RS!Trabajador
-            Sql = Sql & ", DiasTrabajados  = DiasTrabajados - " & DiasReajusteXSTrabajados
+            SQL = SQL & ", DiasTrabajados  = DiasTrabajados - " & DiasReajusteXSTrabajados
             'El saldo de dias se incrementa
-            Sql = Sql & ", SaldoDias  = SaldoDias + " & DiasReajusteXSTrabajados
+            SQL = SQL & ", SaldoDias  = SaldoDias + " & DiasReajusteXSTrabajados
             DiasOF = DiasOF - DiasReajusteXSTrabajados
-            Sql = Sql & ", DiasPeriodo  = " & TransformaComasPuntos(CStr(DiasOF))
+            SQL = SQL & ", DiasPeriodo  = " & TransformaComasPuntos(CStr(DiasOF))
         Else
-            Sql = Sql & ", DiasPeriodo  = " & TransformaComasPuntos(CStr(DiasOF))
+            SQL = SQL & ", DiasPeriodo  = " & TransformaComasPuntos(CStr(DiasOF))
         End If
         'Para PICASSENT, machaco los datos
-        Sql = Sql & ", HorasN = " & TransformaComasPuntos(CStr(HorasOf))
+        SQL = SQL & ", HorasN = " & TransformaComasPuntos(CStr(HorasOf))
         
         'Las horas extras
         If HCompMes < 0 Then HCompMes = 0
-        Sql = Sql & ", Extras = " & TransformaComasPuntos(CStr(HCompMes))
+        SQL = SQL & ", Extras = " & TransformaComasPuntos(CStr(HCompMes))
         'Trabajador
-        Sql = Sql & " WHERE Trabajador = " & RS!Trabajador
-        conn.Execute Sql
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
+        conn.Execute SQL
         
         
         
@@ -1336,31 +1344,37 @@ Dim Canti As Currency
     
     'AHora obtenemos los anticpos en NOMINA
     '-----------------------------------------
-    Sql = "SELECT Trabajador,tmpDatosMEs.HorasN, tmpDatosMEs.extras,horasc, Categorias.Importe1, Categorias.Importe2,Importe3, Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad"
-    Sql = Sql & " FROM tmpDatosMEs INNER JOIN (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) ON tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = "SELECT Trabajador,tmpDatosMEs.HorasN, tmpDatosMEs.extras,horasc, Categorias.Importe1, Categorias.Importe2,Importe3, Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,saldoH"
+    SQL = SQL & " FROM tmpDatosMEs INNER JOIN (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) ON tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
-        'De momento estan en las HORASC las extras
-        'HorasOf = (RS!horasn * RS!Importe1) + (RS!extras * RS!Importe2)
-        HorasOf = (RS!horasn * RS!Importe1) + (RS!horasc * RS!Importe3)
+    
+  
+    
+        'Se pagan TODAS las horas
+        ' Las que vayan a bolsa, se pagan tambien
+        ' En saldoH tenemos las que iran a bolsa. Siempre que sean positivas
+        H = RS!saldoh
+        If H < 0 Then H = 0
+        HorasOf = (RS!horasn * RS!Importe1) + (H * RS!Importe2) + (RS!horasc * RS!Importe3)
         
         
         'Mas antiguedad
         H = 0
         If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
-        H = (HorasOf * H) / 100
+        H = Round((HorasOf * H) / 100, 2)
         HorasOf = HorasOf + H
         
         'Quitamos IRPF y SS
         H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
         H = Round((H / 100), 2)
         HorasOf = HorasOf - H
-        Sql = "UPDATE tmpDatosMes SET"
-        Sql = Sql & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
+        SQL = "UPDATE tmpDatosMes SET"
+        SQL = SQL & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
         'Trabajador
-        Sql = Sql & " WHERE Trabajador = " & RS!Trabajador
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
     
-        conn.Execute Sql
+        conn.Execute SQL
     
         'Sig
         RS.MoveNext
@@ -1413,7 +1427,7 @@ End Function
 
 Private Function CompensacionesDiaTrabajado(Dias As Integer, HorasCompensar As Currency, ByRef Rec As Recordset, ByRef FEST As String, ByVal FI As Date, ByVal FF As Date, ByRef vHO As CHorarios, HorasMinimoDia As Currency) As Integer
 Dim RF As ADODB.Recordset
-Dim cad As String
+Dim Cad As String
 Dim Fin  As Boolean
 Dim Horas As Currency
 Dim Sig As Boolean
@@ -1431,13 +1445,13 @@ On Error GoTo ECompensacionesDiaTrabajado
         If Rec!FecBaja < FF Then FF = Rec!FecBaja
     End If
 
-    cad = "Select distinct(fecha) from marcajes"
-    cad = cad & " WHERE Fecha >='" & Format(FI, FormatoFecha) & "'"
-    cad = cad & " AND Fecha <='" & Format(FF, FormatoFecha) & "'"
-    cad = cad & " AND idTrabajador = " & Rec!Trabajador
+    Cad = "Select distinct(fecha) from marcajes"
+    Cad = Cad & " WHERE Fecha >='" & Format(FI, FormatoFecha) & "'"
+    Cad = Cad & " AND Fecha <='" & Format(FF, FormatoFecha) & "'"
+    Cad = Cad & " AND idTrabajador = " & Rec!Trabajador
 
     Set RF = New ADODB.Recordset
-    RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Horas = 0
     DiaC = 0
     Fin = False
@@ -1532,19 +1546,19 @@ End Function
 
 
 Public Sub AjustaDatosBajaMesEntero()
-Dim Sql As String
-    Sql = "UPDATE tmpDatosMes SET "
-    Sql = Sql & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0, BolsaDespues=0, DiasPeriodo=0"
-    Sql = Sql & " WHERE (((tmpDatosMEs.DiasTrabajados)=0) AND ((tmpDatosMEs.HorasN)=0) AND ((tmpDatosMEs.HorasC)=0) AND ((tmpDatosMEs.bolsaAntes)=0)) ;"
-    conn.Execute Sql
+Dim SQL As String
+    SQL = "UPDATE tmpDatosMes SET "
+    SQL = SQL & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0, BolsaDespues=0, DiasPeriodo=0"
+    SQL = SQL & " WHERE (((tmpDatosMEs.DiasTrabajados)=0) AND ((tmpDatosMEs.HorasN)=0) AND ((tmpDatosMEs.HorasC)=0) AND ((tmpDatosMEs.bolsaAntes)=0)) ;"
+    conn.Execute SQL
 End Sub
 
 Public Sub AjustaDatosBajaMesEnteroTrabajador(T As Long)
-Dim Sql As String
-    Sql = "UPDATE tmpDatosMes SET "
-    Sql = Sql & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0"
-    Sql = Sql & " WHERE tmpDatosMEs.trabajador= " & T
-    conn.Execute Sql
+Dim SQL As String
+    SQL = "UPDATE tmpDatosMes SET "
+    SQL = SQL & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0"
+    SQL = SQL & " WHERE tmpDatosMEs.trabajador= " & T
+    conn.Execute SQL
 End Sub
 
 
@@ -1552,16 +1566,16 @@ End Sub
 'Un trabajador, entre unas fechas, si ha trabajado
 Public Function HaTrabajadoConBaja(ByRef R As ADODB.Recordset) As Boolean
 Dim Rec As ADODB.Recordset
-Dim Sql As String
+Dim SQL As String
 
     HaTrabajadoConBaja = False
-    Sql = "Select * from Marcajes WHERE"
-    Sql = Sql & " idTrabajador =" & R!idTrabajador
-    Sql = Sql & " AND fecha >='" & Format(R!Fecha, FormatoFecha) & "'"
+    SQL = "Select * from Marcajes WHERE"
+    SQL = SQL & " idTrabajador =" & R!idTrabajador
+    SQL = SQL & " AND fecha >='" & Format(R!Fecha, FormatoFecha) & "'"
     'Ambos inclusive de baja
-    Sql = Sql & " AND fecha <='" & Format(R!H1, FormatoFecha) & "'"
+    SQL = SQL & " AND fecha <='" & Format(R!H1, FormatoFecha) & "'"
     Set Rec = New ADODB.Recordset
-    Rec.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Rec.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not Rec.EOF Then HaTrabajadoConBaja = True
     Rec.Close
     Set Rec = Nothing
@@ -1580,7 +1594,7 @@ Dim Rs2 As ADODB.Recordset
 Dim Dias As Currency
 Dim Trab As Long
 Dim Aux As String
-Dim Sql As String
+Dim SQL As String
 Dim vH As CHorarios
 Dim FESTIVOS As String
 Dim MEDIODIA As String
@@ -1628,30 +1642,30 @@ Dim HE As Currency
     
     'Calculamos las horas para el mes
     'Primero las normales con un simple insert into
-    Sql = "INSERT INTO tmpHoras(trabajador,HorasT) "
-    Sql = Sql & "SELECT Marcajes.idTrabajador, Sum(Marcajes.HorasTrabajadas) AS SumaDeHorasTrabajadas"
-    Sql = Sql & " FROM Trabajadores INNER JOIN Marcajes ON Trabajadores.IdTrabajador = Marcajes.idTrabajador"
-    Sql = Sql & " Where Marcajes.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " and Marcajes.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
+    SQL = "INSERT INTO tmpHoras(trabajador,HorasT) "
+    SQL = SQL & "SELECT Marcajes.idTrabajador, Sum(Marcajes.HorasTrabajadas) AS SumaDeHorasTrabajadas"
+    SQL = SQL & " FROM Trabajadores INNER JOIN Marcajes ON Trabajadores.IdTrabajador = Marcajes.idTrabajador"
+    SQL = SQL & " Where Marcajes.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " and Marcajes.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
     
-    Sql = Sql & strControlNomina
-    Sql = Sql & " GROUP BY Marcajes.idTrabajador;"
-    conn.Execute Sql
+    SQL = SQL & strControlNomina
+    SQL = SQL & " GROUP BY Marcajes.idTrabajador;"
+    conn.Execute SQL
     
     
     
     '----HORAS COMPENSAR
     'Las horas para la bolsa de trabajor
-    Sql = "SELECT Marcajes.idTrabajador,Marcajes.Horasincid,Fecha,Trabajadores.idHorario,IncFinal"
-    Sql = Sql & " FROM Trabajadores INNER JOIN Marcajes ON Trabajadores.IdTrabajador = Marcajes.idTrabajador"
-    Sql = Sql & " Where Marcajes.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
-    Sql = Sql & " and Marcajes.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
-    Sql = Sql & strControlNomina
+    SQL = "SELECT Marcajes.idTrabajador,Marcajes.Horasincid,Fecha,Trabajadores.idHorario,IncFinal"
+    SQL = SQL & " FROM Trabajadores INNER JOIN Marcajes ON Trabajadores.IdTrabajador = Marcajes.idTrabajador"
+    SQL = SQL & " Where Marcajes.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
+    SQL = SQL & " and Marcajes.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
+    SQL = SQL & strControlNomina
     
 
-    Sql = Sql & " ORDER BY idHorario,Marcajes.idTrabajador,Fecha"
+    SQL = SQL & " ORDER BY idHorario,Marcajes.idTrabajador,Fecha"
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Horario = -1
     Trab = -1
     Set vH = New CHorarios
@@ -1808,24 +1822,24 @@ Dim HE As Currency
 '
         
     'Por si acaso algun trabajador tiene numeros negativos
-    Sql = "UPDATE tmpHoras Set Dias = 0"
-    Sql = Sql & " WHERE Dias < 0 "
-    conn.Execute Sql
+    SQL = "UPDATE tmpHoras Set Dias = 0"
+    SQL = SQL & " WHERE Dias < 0 "
+    conn.Execute SQL
     
     Set RS = Nothing
 End Sub
 
 Private Sub UpdateaHoras(ByRef vHC As Currency, ByRef vHE As Currency, ByRef vDias As Currency, ByRef T As Long)
-Dim Sql As String
+Dim SQL As String
 
-        Sql = "UPDATE tmpHoras Set HorasC = " & TransformaComasPuntos(CStr(vHC))
-        Sql = Sql & " ,HorasE =  " & TransformaComasPuntos(CStr(vHE))
-        Sql = Sql & " ,Dias =  " & vDias
+        SQL = "UPDATE tmpHoras Set HorasC = " & TransformaComasPuntos(CStr(vHC))
+        SQL = SQL & " ,HorasE =  " & TransformaComasPuntos(CStr(vHE))
+        SQL = SQL & " ,Dias =  " & vDias
         '
         vHC = vHC + vHE
-        Sql = Sql & " ,HorasT = HorasT - " & TransformaComasPuntos(CStr(vHC))
-        Sql = Sql & " WHERE Trabajador = " & T
-        conn.Execute Sql
+        SQL = SQL & " ,HorasT = HorasT - " & TransformaComasPuntos(CStr(vHC))
+        SQL = SQL & " WHERE Trabajador = " & T
+        conn.Execute SQL
 End Sub
 
 
@@ -2152,7 +2166,7 @@ End Sub
 'las horas a compensar se pasan por referencia
 Private Function CompensacionesDiaTrabajadoYSemana(Dias As Integer, ByRef Rec As Recordset, ByRef FEST As String, ByVal FI As Date, ByVal FF As Date, ByRef vHO As CHorarios, HorasMinimoDia2 As Currency, ByRef HorasCompensarQueUtiliza As Currency, ByRef DiasQueReajusteXSTrabajados As Integer, ByRef EstaDeBajaTodoElMes As Boolean) As Integer
 Dim RF As ADODB.Recordset
-Dim cad As String
+Dim Cad As String
 Dim Fin  As Boolean
 Dim Horas As Currency
 Dim Sig As Boolean
@@ -2209,8 +2223,8 @@ On Error GoTo ECompensacionesDiaTrabajado
     
     'Las bajas
     
-    cad = "Select * from tmpcombinada where idtrabajador=" & Rec!Trabajador
-    RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select * from tmpcombinada where idtrabajador=" & Rec!Trabajador
+    RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     BAJAS = ""
     If Not RF.EOF Then
         
@@ -2227,12 +2241,12 @@ On Error GoTo ECompensacionesDiaTrabajado
     RF.Close
 
 
-    cad = "Select fecha,horastrabajadas,horasincid from marcajes"
-    cad = cad & " WHERE Fecha >='" & Format(FI, FormatoFecha) & "'"
-    cad = cad & " AND Fecha <='" & Format(FF, FormatoFecha) & "'"
-    cad = cad & " AND idTrabajador = " & Rec!Trabajador
-    cad = cad & " ORDER BY fecha"
-    RF.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    Cad = "Select fecha,horastrabajadas,horasincid from marcajes"
+    Cad = Cad & " WHERE Fecha >='" & Format(FI, FormatoFecha) & "'"
+    Cad = Cad & " AND Fecha <='" & Format(FF, FormatoFecha) & "'"
+    Cad = Cad & " AND idTrabajador = " & Rec!Trabajador
+    Cad = Cad & " ORDER BY fecha"
+    RF.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
     
     
     
@@ -2343,15 +2357,15 @@ On Error GoTo ECompensacionesDiaTrabajado
                     'Ha trabajado. Veremos si se lo cuento como trabajado o no
                     'Comprobaremos con el sQL si le cuento como trabajado o no
                         If DiaSem = 3 Then
-                            cad = "Select max(hora) from entradamarcajes where fecha = '"
-                            cad = cad & Format(FI, FormatoFecha) & "' AND idTrabajador = " & Rec!Trabajador
+                            Cad = "Select max(hora) from entradamarcajes where fecha = '"
+                            Cad = Cad & Format(FI, FormatoFecha) & "' AND idTrabajador = " & Rec!Trabajador
                         Else
-                            cad = "Select min(hora) from entradamarcajes where fecha = '"
-                            cad = cad & Format(FI, FormatoFecha) & "' AND idTrabajador = " & Rec!Trabajador
+                            Cad = "Select min(hora) from entradamarcajes where fecha = '"
+                            Cad = Cad & Format(FI, FormatoFecha) & "' AND idTrabajador = " & Rec!Trabajador
                         End If
-                        Rhoras.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                        Rhoras.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                         If Rhoras.EOF Then
-                            MsgBox "Error grave: " & cad, vbExclamation
+                            MsgBox "Error grave: " & Cad, vbExclamation
                             End
                         End If
                         
@@ -2578,19 +2592,19 @@ On Error GoTo ECompensacionesDiaTrabajado
     Else   'rt.eof
     
         RF.Close
-        cad = "Select * from bajas where idtrab = " & Rec!Trabajador
-        cad = cad & " AND fechaalta is null and fechabaja < '" & Format(FI, FormatoFecha) & "'"
-        RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        cad = ""
+        Cad = "Select * from bajas where idtrab = " & Rec!Trabajador
+        Cad = Cad & " AND fechaalta is null and fechabaja < '" & Format(FI, FormatoFecha) & "'"
+        RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = ""
         If Not RF.EOF Then
             If Not IsNull(RF!idTrab) Then
-                cad = "BAJA"
+                Cad = "BAJA"
                 EstaDeBajaTodoElMes = True
             End If
         End If
         
         'NO HA TRABAJADO, pero tiene Horas de otros meses
-        If cad = "" Then
+        If Cad = "" Then
                 DiaC = Int(HorasCompensar2) \ 8    'Cuantos dias de 8 horas le entran
                 
                 If DiaC > Dias Then DiaC = Dias
@@ -2765,7 +2779,7 @@ End Sub
 
 
 Private Sub RecalculoHorasMiercolesSabados(F1 As Date, F2 As Date, vLbl As Label, Miercoles As Boolean)
-Dim cad As String
+Dim Cad As String
 Dim RF As ADODB.Recordset
 Dim Trab As Long
 Dim HT As Currency
@@ -2778,20 +2792,20 @@ Dim Horas As Currency
     Else
         Trab = 7
     End If
-    cad = "SELECT EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha, Weekday([Fecha]) AS Expr1"
-    cad = cad & " From EntradaMarcajes"
-    cad = cad & " Where EntradaMarcajes.Fecha >= #" & Format(F1, FormatoFecha) & "# And"
-    cad = cad & " EntradaMarcajes.Fecha <= #" & Format(F2, FormatoFecha) & "# And "
-    cad = cad & " Weekday([Fecha]) = " & Trab & " And Hora "
+    Cad = "SELECT EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha, Weekday([Fecha]) AS Expr1"
+    Cad = Cad & " From EntradaMarcajes"
+    Cad = Cad & " Where EntradaMarcajes.Fecha >= #" & Format(F1, FormatoFecha) & "# And"
+    Cad = Cad & " EntradaMarcajes.Fecha <= #" & Format(F2, FormatoFecha) & "# And "
+    Cad = Cad & " Weekday([Fecha]) = " & Trab & " And Hora "
     If Miercoles Then
-        cad = cad & " <"
+        Cad = Cad & " <"
     Else
-        cad = cad & " >"
+        Cad = Cad & " >"
     End If
-    cad = cad & " #14:00:00# group by  EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha,  Weekday([Fecha])"
-    cad = cad & " ORDER BY EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha"
+    Cad = Cad & " #14:00:00# group by  EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha,  Weekday([Fecha])"
+    Cad = Cad & " ORDER BY EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha"
     Set RF = New ADODB.Recordset
-    RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Trab = -1
     While Not RF.EOF
     
@@ -2823,17 +2837,17 @@ Dim Horas As Currency
 End Sub
 
 Private Sub UpdateaNuevosValoresMiercolesSabado(idTRa As Long, Hor As Currency, KMes As Integer)
-Dim cad As String
+Dim Cad As String
 
 
-    cad = "UPDATE tmpDatosMes SET horasN= horasN - " & TransformaComasPuntos(CStr(Hor))
-    cad = cad & " , horasc=horasc +  " & TransformaComasPuntos(CStr(Hor))
-    cad = cad & " WHERE mes= " & KMes & " AND Trabajador =" & idTRa
-    conn.Execute cad
+    Cad = "UPDATE tmpDatosMes SET horasN= horasN - " & TransformaComasPuntos(CStr(Hor))
+    Cad = Cad & " , horasc=horasc +  " & TransformaComasPuntos(CStr(Hor))
+    Cad = Cad & " WHERE mes= " & KMes & " AND Trabajador =" & idTRa
+    conn.Execute Cad
     
     'Updateamos en tmpPagosMes, para que luego se las compense en nomina
-    cad = "INSERT INTO tmpPagosMes (idTrabajador,nombre,HT) VALUES (" & idTRa & ",'Compensaciones'," & TransformaComasPuntos(CStr(Hor)) & ")"
-    conn.Execute cad
+    Cad = "INSERT INTO tmpPagosMes (idTrabajador,nombre,HT) VALUES (" & idTRa & ",'Compensaciones'," & TransformaComasPuntos(CStr(Hor)) & ")"
+    conn.Execute Cad
     Debug.Print "Nuevos vlaores XyS:" & idTRa
 End Sub
 
@@ -3050,7 +3064,7 @@ Dim HPaBolsa As Currency
 Dim DiasOF As Integer
 Dim HorasOf As Currency
 Dim H As Currency
-Dim Sql As String
+Dim SQL As String
 Dim Horario As Integer
 Dim vH As CHorarios
 Dim FESTIVOS As String
@@ -3082,13 +3096,13 @@ Dim RtAnticipos As ADODB.Recordset
         TrabajadoresDepuracion = "|"
         
         Do
-            Sql = InputBox("Cod. trabajador a depurar?" & vbCrLf & "(Vacio=Fin)", "Depuracion")
-            If Sql <> "" Then
-                If IsNumeric(Sql) Then
-                    If InStr(1, TrabajadoresDepuracion, "|" & Sql & "|") = 0 Then TrabajadoresDepuracion = TrabajadoresDepuracion & Sql & "|"
+            SQL = InputBox("Cod. trabajador a depurar?" & vbCrLf & "(Vacio=Fin)", "Depuracion")
+            If SQL <> "" Then
+                If IsNumeric(SQL) Then
+                    If InStr(1, TrabajadoresDepuracion, "|" & SQL & "|") = 0 Then TrabajadoresDepuracion = TrabajadoresDepuracion & SQL & "|"
                 End If
             End If
-        Loop Until Sql = ""
+        Loop Until SQL = ""
         If TrabajadoresDepuracion = "|" Then Depuracion = False
     End If
         
@@ -3126,13 +3140,13 @@ Dim RtAnticipos As ADODB.Recordset
     
     
     'Incializamos el array
-    Sql = "Select tmpDatosMes.*,idHorario,FecAlta,FecBaja,controlnomina,nomtrabajador from tmpDatosMes,Trabajadores"
-    Sql = Sql & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
-    Sql = Sql & " ORDER BY idHorario,idtrabajador"
+    SQL = "Select tmpDatosMes.*,idHorario,FecAlta,FecBaja,controlnomina,nomtrabajador from tmpDatosMes,Trabajadores"
+    SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
+    SQL = SQL & " ORDER BY idHorario,idtrabajador"
     Horario = -1
     FESTIVOS = ""
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     
     If Depuracion Then FichDepuracion True
     While Not RS.EOF
@@ -3209,37 +3223,37 @@ Dim RtAnticipos As ADODB.Recordset
         End If
 
         'Updateamos con los valores calculados
-        Sql = "UPDATE tmpDatosMes SET"
+        SQL = "UPDATE tmpDatosMes SET"
         If RS!ControlNomina = 2 Then
             'No puede tener horas en bolsa
             HPaBolsa = 0
         End If
         
-        Sql = Sql & "  BolsaDespues =" & TransformaComasPuntos(CStr(cT.HBolsa))
+        SQL = SQL & "  BolsaDespues =" & TransformaComasPuntos(CStr(cT.HBolsa))
         'SQL = SQL & ", HorasPeriodo = " & TransformaComasPuntos(CStr(cT.HEReales))
-        Sql = Sql & ", DiasPeriodo = " & TransformaComasPuntos(CStr(Dias))  ' Dias = cT.DiasCompensables + cT.DiasReales
+        SQL = SQL & ", DiasPeriodo = " & TransformaComasPuntos(CStr(Dias))  ' Dias = cT.DiasCompensables + cT.DiasReales
     
         'Para PICASSENT, machaco los datos
-        Sql = Sql & ", HorasN = " & TransformaComasPuntos(CStr(cT.HNReales))
-        Sql = Sql & ", HorasC = " & TransformaComasPuntos(CStr(cT.HEReales))
+        SQL = SQL & ", HorasN = " & TransformaComasPuntos(CStr(cT.HNReales))
+        SQL = SQL & ", HorasC = " & TransformaComasPuntos(CStr(cT.HEReales))
         
         
         'Si los dias va benne
         If Dias >= cT.DiasReales_ And cT.DiasReales_ <= cT.DiasOficiales Then
-            Sql = Sql & ", DiasTrabajados = " & cT.DiasReales_
+            SQL = SQL & ", DiasTrabajados = " & cT.DiasReales_
         Else
             
             MsgBox "Dias reales: " & cT.DiasReales_, vbExclamation
         End If
         
         'Reseteo estos campos
-        Sql = Sql & ", SaldoDias = " & cT.DiasCompensables  'ahora pongo los dias que le compenso
-        Sql = Sql & ", SaldoH = 0"
+        SQL = SQL & ", SaldoDias = " & cT.DiasCompensables  'ahora pongo los dias que le compenso
+        SQL = SQL & ", SaldoH = 0"
         
-        Sql = Sql & ", Extras = " & TransformaComasPuntos(CStr(cT.HorasCompensadasNomina))
+        SQL = SQL & ", Extras = " & TransformaComasPuntos(CStr(cT.HorasCompensadasNomina))
         'Trabajador
-        Sql = Sql & " WHERE Trabajador = " & RS!Trabajador
-        conn.Execute Sql
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
+        conn.Execute SQL
         
         
         
@@ -3273,9 +3287,9 @@ Dim RtAnticipos As ADODB.Recordset
     '-----------------------------------------
     
     Set RtAnticipos = New ADODB.Recordset
-    Sql = "SELECT Trabajador,tmpDatosMEs.HorasN, tmpDatosMEs.extras, Categorias.Importe1, Categorias.Importe2, Trabajadores.PorcSS, Trabajadores.PorcIRPF,embargado"
-    Sql = Sql & " FROM tmpDatosMEs INNER JOIN (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) ON tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    SQL = "SELECT Trabajador,tmpDatosMEs.HorasN, tmpDatosMEs.extras, Categorias.Importe1, Categorias.Importe2, Trabajadores.PorcSS, Trabajadores.PorcIRPF,embargado"
+    SQL = SQL & " FROM tmpDatosMEs INNER JOIN (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) ON tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
 
         'Ajustes ponemos HN las que tiene menos las que sean extra
@@ -3291,11 +3305,11 @@ Dim RtAnticipos As ADODB.Recordset
         HorasOf = HorasOf - H
         
         'sql=devuelvedesdebd("sum(
-        Sql = "Select sum(importe) from pagos where trabajador = " & RS!Trabajador
+        SQL = "Select sum(importe) from pagos where trabajador = " & RS!Trabajador
         'SQL = SQL & " AND tipo <=1 " 'pago o anticipo nomina
-        Sql = Sql & " AND Fecha >= #" & Format(FInicio, FormatoFecha) & "#"
-        Sql = Sql & " AND Fecha <= #" & Format(FFin, FormatoFecha) & "#"
-        RtAnticipos.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        SQL = SQL & " AND Fecha >= #" & Format(FInicio, FormatoFecha) & "#"
+        SQL = SQL & " AND Fecha <= #" & Format(FFin, FormatoFecha) & "#"
+        RtAnticipos.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         SumatorioAux = 0
         If Not RtAnticipos.EOF Then
             If Not IsNull(RtAnticipos.Fields(0)) Then SumatorioAux = RtAnticipos.Fields(0)
@@ -3307,12 +3321,12 @@ Dim RtAnticipos As ADODB.Recordset
             
         End If
         
-        Sql = "UPDATE tmpDatosMes SET"
-        Sql = Sql & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
+        SQL = "UPDATE tmpDatosMes SET"
+        SQL = SQL & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
         'Trabajador
-        Sql = Sql & " WHERE Trabajador = " & RS!Trabajador
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
     
-        conn.Execute Sql
+        conn.Execute SQL
     
         'Sig
         RS.MoveNext
@@ -3350,7 +3364,7 @@ Dim HC As Currency
 Dim RF As ADODB.Recordset
 Dim BAJAS As String
 Dim NumeroDiasMes As Integer
-Dim cad As String
+Dim Cad As String
 Dim FechaReferencia As Date
 Dim FinalCompensar As Boolean
 Dim UltDiaSemana As Integer
@@ -3394,8 +3408,8 @@ Dim CadenaDiasMes As String
         vMEs(i).DiaSemana = (J + i) Mod 7  'L,M,X,J,
         'Debug.Print I & ": " & I + 1 & "  " & vMes(I).DiaSemana
         vMEs(i).Festivo = vMEs(i).DiaSemana = 0   'Los domingos son festivos SEGURO
-        cad = Format(i + 1 & BAJAS, "dd/mm/yyyy")
-        If InStr(1, FESTIVOS, cad) > 0 Then
+        Cad = Format(i + 1 & BAJAS, "dd/mm/yyyy")
+        If InStr(1, FESTIVOS, Cad) > 0 Then
             
             vMEs(i).Festivo = True
         End If
@@ -3426,8 +3440,8 @@ Dim CadenaDiasMes As String
     
     'Las bajas
     
-    cad = "Select * from tmpcombinada where idtrabajador=" & cT.Codigo
-    RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select * from tmpcombinada where idtrabajador=" & cT.Codigo
+    RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     BAJAS = ""
     If Not RF.EOF Then
         
@@ -3449,9 +3463,9 @@ Dim CadenaDiasMes As String
 
 
 
-    cad = "Select * from bajas where idtrab=" & cT.Codigo & " AND fechabaja <= #" & Format(FI, FormatoFecha) & "# "
-    cad = cad & " AND ( fechaalta is null )"
-    RF.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    Cad = "Select * from bajas where idtrab=" & cT.Codigo & " AND fechabaja <= #" & Format(FI, FormatoFecha) & "# "
+    Cad = Cad & " AND ( fechaalta is null )"
+    RF.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
     If Not RF.EOF Then
         'Trabajador de BAJA
         BajaTodoElMes2 = True
@@ -3464,12 +3478,12 @@ Dim CadenaDiasMes As String
 
 
 
-    cad = "Select fecha,horastrabajadas,horasincid from marcajes"
-    cad = cad & " WHERE Fecha >=#" & Format(FI, FormatoFecha) & "#"
-    cad = cad & " AND Fecha <=#" & Format(FF, FormatoFecha) & "#"
-    cad = cad & " AND idTrabajador = " & cT.Codigo
-    cad = cad & " ORDER BY fecha"
-    RF.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    Cad = "Select fecha,horastrabajadas,horasincid from marcajes"
+    Cad = Cad & " WHERE Fecha >=#" & Format(FI, FormatoFecha) & "#"
+    Cad = Cad & " AND Fecha <=#" & Format(FF, FormatoFecha) & "#"
+    Cad = Cad & " AND idTrabajador = " & cT.Codigo
+    Cad = Cad & " ORDER BY fecha"
+    RF.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
 
     
 
@@ -3533,27 +3547,27 @@ Dim CadenaDiasMes As String
             If vMEs(N).Baja Then
                 If vMEs(N).HT_Reales > 0 Then
                     HN = vMEs(N).HT_Reales  'Guardo las T
-                    cad = "Trabaja baja : " & N + 1 & "   HT: " & vMEs(N).HT_Reales & " /" & vMEs(N).HE_Reales
-                    cad = cad & vbCrLf & "       HComp(antes/despues)=" & cT.HEReales & "/"
+                    Cad = "Trabaja baja : " & N + 1 & "   HT: " & vMEs(N).HT_Reales & " /" & vMEs(N).HE_Reales
+                    Cad = Cad & vbCrLf & "       HComp(antes/despues)=" & cT.HEReales & "/"
                     cT.HEReales = cT.HEReales + HN   'le sumo a las comepnsables del mes las de este dia
-                    cad = cad & cT.HEReales
-                    cad = cad & vbCrLf & "       Trabajadas(antes/despues)=" & cT.HNReales & "/"
+                    Cad = Cad & cT.HEReales
+                    Cad = Cad & vbCrLf & "       Trabajadas(antes/despues)=" & cT.HNReales & "/"
                     cT.HNReales = cT.HNReales - HN
-                    cad = cad & cT.HNReales
+                    Cad = Cad & cT.HNReales
     
                     
                     vMEs(N).HE_Reales = vMEs(N).HT_Reales + vMEs(N).HE_Reales
                     vMEs(N).HT_Reales = 0  'tot reales=0
                 Else
                     
-                    cad = "Trabaja baja. NO tiene horas. Dia : " & N + 1
+                    Cad = "Trabaja baja. NO tiene horas. Dia : " & N + 1
                     
                 End If
             Else
                 'Es festivo. Lo indicamos en el depur
-                cad = "Trabaja festivo.  " & N + 1
+                Cad = "Trabaja festivo.  " & N + 1
             End If
-            If TrabajadorDepuracion > 0 Then cDep2.Add cad
+            If TrabajadorDepuracion > 0 Then cDep2.Add Cad
             vMEs(N).DiaNomina = 0
             vMEs(N).SabadoSiHabiaTrabajado = False
         End If
@@ -3587,7 +3601,7 @@ Dim CadenaDiasMes As String
     
     'Para todas las senamas del mes
     For N = 1 To NUmeroSemanasMes
-        cad = ""  'para depurar
+        Cad = ""  'para depurar
         DiasPartidos = 0
         HorPart = 0 'ht para mierco y sabado
     
@@ -3623,8 +3637,8 @@ Dim CadenaDiasMes As String
                         SabadoSemanaProcesando2 = i
                     End If
                     HorasCambiadasMierSab = 0
-                    cad = ""
-                    FijarHorasMiercolesSabadoPicassent cT, vMEs(i), CDate(CStr(i + 1) & Format(FI, "/mm/yyyy")), cad, HorasCambiadasMierSab
+                    Cad = ""
+                    FijarHorasMiercolesSabadoPicassent cT, vMEs(i), CDate(CStr(i + 1) & Format(FI, "/mm/yyyy")), Cad, HorasCambiadasMierSab
                     
                     If vMEs(i).HT_Reales > 0 Then
                         HorPart = HorPart + vMEs(i).HT_Reales
@@ -3642,14 +3656,14 @@ Dim CadenaDiasMes As String
                         cT.HNReales = cT.HNReales - HorasCambiadasMierSab
                     End If
                     
-                    If TrabajadorDepuracion > 0 Then VariablesDepuracion_Dias = VariablesDepuracion_Dias & cad
+                    If TrabajadorDepuracion > 0 Then VariablesDepuracion_Dias = VariablesDepuracion_Dias & Cad
                 End If
             End If
         Next i
     
          
         'Ahora ya vamos a ver si necesitan horas extra  para completar
-        cad = ""
+        Cad = ""
         ElOtroProcesado = True
         
         If Dia < UltDiaSemana Then
@@ -3671,7 +3685,7 @@ Dim CadenaDiasMes As String
                 If HorPart < 3.5 Then
                     HN = 3.5 - HorPart
                     HC = HC - HN
-                    cad = "XyS semana : " & Dia + 1 & " - " & UltDiaSemana + 1 & "      Falta " & HN & vbCrLf
+                    Cad = "XyS semana : " & Dia + 1 & " - " & UltDiaSemana + 1 & "      Falta " & HN & vbCrLf
                     cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HN 'Cuantas compenso en nomina
                 Else
                     'Ha trbajado sificiente
@@ -3701,7 +3715,7 @@ Dim CadenaDiasMes As String
                                 'Utilizamos horas para compensar
                                 HN = 3.5 - vMEs(i).HT_Reales
                                 HC = HC - HN
-                                cad = cad & "Dia : " & i + 1 & " Falta " & HN & vbCrLf
+                                Cad = Cad & "Dia : " & i + 1 & " Falta " & HN & vbCrLf
                                 
                                 
                                 cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HN
@@ -3709,7 +3723,7 @@ Dim CadenaDiasMes As String
                                 'NO tiene bastante para compensar
                                 HN = vMEs(i).HE_Reales + vMEs(i).HT_Reales
                                 
-                                cad = cad & "Dia : " & i + 1 & "   a compensar.  " & HN & ". Antes " & vMEs(i).HE_Reales
+                                Cad = Cad & "Dia : " & i + 1 & "   a compensar.  " & HN & ". Antes " & vMEs(i).HE_Reales
                                 
                                 vMEs(i).HT_Reales = 0
                                 vMEs(i).HE_Reales = HN
@@ -3719,7 +3733,7 @@ Dim CadenaDiasMes As String
                                 cT.HEReales = cT.HEReales + HN
                                 'cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HN
                                 'LAs compensables
-                                cad = cad & "       Variable(HC):" & HC & " --> " & HC + HN & vbCrLf
+                                Cad = Cad & "       Variable(HC):" & HC & " --> " & HC + HN & vbCrLf
                                 HC = HC + HN
                             End If
                         End If
@@ -3727,7 +3741,7 @@ Dim CadenaDiasMes As String
                 End If
             
         Next i
-        If TrabajadorDepuracion > 0 And cad <> "" Then cDep2.Add cad
+        If TrabajadorDepuracion > 0 And Cad <> "" Then cDep2.Add Cad
         Dia = UltDiaSemana + 1
         If Dia > 30 Then N = 9 'QUe se salga
     Next
@@ -3739,18 +3753,18 @@ Dim CadenaDiasMes As String
    'If cT.Codigo = 4 Then Stop
    J = 0
    HN = 0
-   cad = ""
+   Cad = ""
    N = vMEs(0).DiaSemana
    If N = 1 Then
         N = 7
    Else
     If N = 0 Then
         N = 1
-         cad = Space(6 * 8)
+         Cad = Space(6 * 8)
     Else
         N = 7 - vMEs(0).DiaSemana  'ult dia semana
         N = N + 1
-        cad = Space(CInt((vMEs(0).DiaSemana) - 1) * 8)
+        Cad = Space(CInt((vMEs(0).DiaSemana) - 1) * 8)
     End If
    
    End If
@@ -3759,7 +3773,7 @@ Dim CadenaDiasMes As String
    For i = 0 To NumeroDiasMes
         If i = N Then
             N = i + 7
-            cad = cad & vbCrLf
+            Cad = Cad & vbCrLf
         End If
         If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
             FinalCompensar = True
@@ -3770,11 +3784,11 @@ Dim CadenaDiasMes As String
             FinalCompensar = False
             
         End If
-        cad = cad & PintaDia(i, vMEs(i), FinalCompensar)
+        Cad = Cad & PintaDia(i, vMEs(i), FinalCompensar)
         
     Next i
     CadenaDiasMes = ""
-    If TrabajadorDepuracion > 0 Then CadenaDiasMes = cad
+    If TrabajadorDepuracion > 0 Then CadenaDiasMes = Cad
 
     
     
@@ -3793,13 +3807,13 @@ Dim CadenaDiasMes As String
     J = cT.DiasOficiales - J
     If J < 0 Then
         If TrabajadorDepuracion > 0 Then
-            cad = "Dias oficiales= " & cT.DiasOficiales & "  Trabajados: " & cT.DiasOficiales + J
-            cDep2.Add cad
+            Cad = "Dias oficiales= " & cT.DiasOficiales & "  Trabajados: " & cT.DiasOficiales + J
+            cDep2.Add Cad
         End If
         J = 0
     End If
     
-    cad = ""
+    Cad = ""
     Dia = 0
     N = 0
     
@@ -3873,16 +3887,16 @@ Dim CadenaDiasMes As String
                             'Mayo 2012
                             'Existe la posibilidad que sea <0
                             If HC - HN < 0 Then
-                                cad = "         <0.  Quedan:" & HC & "  Necesito:" & HN
+                                Cad = "         <0.  Quedan:" & HC & "  Necesito:" & HN
                                 
                                 cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HC
                                 HC = 0
                             Else
-                                cad = ""
+                                Cad = ""
                                 HC = HC - HN
                                 cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HN
                             End If
-                            VariablesDepuracion_Dias = VariablesDepuracion_Dias & " Compensa dia xs " & Dia + 1 & " al " & Dia + 7 & " (" & HN & ")" & "     #" & HC & cad & vbCrLf
+                            VariablesDepuracion_Dias = VariablesDepuracion_Dias & " Compensa dia xs " & Dia + 1 & " al " & Dia + 7 & " (" & HN & ")" & "     #" & HC & Cad & vbCrLf
                         End If
                     End If
                     
@@ -3937,25 +3951,25 @@ Dim CadenaDiasMes As String
     
     
    If cT.DiasCompensables > 0 And TrabajadorDepuracion > 0 Then
-       cad = ""
+       Cad = ""
        N = vMEs(0).DiaSemana
        If N = 1 Then
             N = 7
        Else
         If N = 0 Then
             N = 1
-             cad = Space(6 * 8)
+             Cad = Space(6 * 8)
         Else
             N = 7 - vMEs(0).DiaSemana  'ult dia semana
             N = N + 1
-            cad = Space(CInt((vMEs(0).DiaSemana) - 1) * 8)
+            Cad = Space(CInt((vMEs(0).DiaSemana) - 1) * 8)
         End If
        
        End If
        For i = 0 To NumeroDiasMes
             If i = N Then
                 N = i + 7
-                cad = cad & vbCrLf
+                Cad = Cad & vbCrLf
             End If
             If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
                 FinalCompensar = True
@@ -3965,14 +3979,14 @@ Dim CadenaDiasMes As String
             Else
                 FinalCompensar = False
             End If
-            cad = cad & PintaDia(i, vMEs(i), FinalCompensar)
+            Cad = Cad & PintaDia(i, vMEs(i), FinalCompensar)
             
         Next i
     
         cDep2.Add ""
         cDep2.Add CadenaDiasMes
         cDep2.Add vbCrLf & vbCrLf
-        cDep2.Add cad
+        cDep2.Add Cad
     End If
     
     
@@ -4316,11 +4330,11 @@ End Sub
 
 
 Public Function DiasLaborablesSemana(Horario As Integer) As Integer
-Dim Sql As String
+Dim SQL As String
 Dim RS As ADODB.Recordset
-    Sql = "SELECT Count(*) From SubHorarios Where SubHorarios.IdHorario = " & Horario & " And SubHorarios.Festivo = False"
+    SQL = "SELECT Count(*) From SubHorarios Where SubHorarios.IdHorario = " & Horario & " And SubHorarios.Festivo = False"
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If RS.EOF Then
         DiasLaborablesSemana = -1
     Else

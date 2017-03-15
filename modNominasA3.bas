@@ -45,7 +45,7 @@ Dim FecPag As String
     
         Regs = Regs + 1
         
-        ' importe bruto
+        ' Salario base
         Importe = Format(Int(DBLet(Rs2!Importe1, "N")), "00000") & Format((DBLet(Rs2!Importe1, "N") - Int(DBLet(Rs2!Importe1, "N"))) * 100, "00")
         If DBLet(Rs2!Importe1, "N") >= 0 Then
             Importe = Importe & "+"
@@ -64,7 +64,7 @@ Dim FecPag As String
         RegDias = cad & Format(Rs2!idTrabajador, "000000") & FecPag & "016" & Format(Dias, "00") & "00" & DBLet(VectorDias, "T") & "00000000000000" 'cad+codtraba+fecha+016+dias+00+SSNNS..+"
         Print #NFic, RegDias
         
-        '22:   DATOS DEVENGO PAGAS EXTRAS
+        'CONCEPTO 17 Importe producitvad o plus productividad
         Importe = Format(Int(DBLet(Rs2!Importe2, "N")), "00000") & Format((DBLet(Rs2!Importe2, "N") - Int(DBLet(Rs2!Importe2, "N"))) * 100, "00")
         If DBLet(Rs2!Importe2, "N") >= 0 Then
             Importe = Importe & "+"
@@ -74,7 +74,7 @@ Dim FecPag As String
         
         Importe = Importe & "000000000+"
         
-        RegImpBruto = cad & Format(Rs2!idTrabajador, "000000") & FecPag & "001" & "001" & Importe 'cad+codtraba+fecha+incidencia+001+importe bruto
+        RegImpBruto = cad & Format(Rs2!idTrabajador, "000000") & FecPag & "001" & "017" & Importe 'cad+codtraba+fecha+incidencia+001+importe bruto
         Print #NFic, RegImpBruto
         
         
