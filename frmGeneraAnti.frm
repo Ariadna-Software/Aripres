@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmGeneraAnti 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Generación anticipos"
@@ -387,7 +387,7 @@ End Sub
 
 
 Private Sub CargaDatosModo1()
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim Importe As Currency
 Dim Importe2 As Currency
@@ -397,33 +397,33 @@ Dim itmX As ListItem
     ListView1.ColumnHeaders(12).Width = 0
     ListView1.ColumnHeaders(13).Width = 0
     ListView1.ColumnHeaders(14).Width = 0
-    SQL = "SELECT Trabajadores.IdTrabajador, Trabajadores.NomTrabajador, "
-    SQL = SQL & " tmpHoras.HorasT, Categorias.Importe1,[HorasT]*[Importe1] AS T1,"
-    SQL = SQL & " tmpHoras.HorasC, Categorias.Importe2,[HorasC]*[Importe2] AS T2 "
+    Sql = "SELECT Trabajadores.IdTrabajador, Trabajadores.NomTrabajador, "
+    Sql = Sql & " tmpHoras.HorasT, Categorias.Importe1,[HorasT]*[Importe1] AS T1,"
+    Sql = Sql & " tmpHoras.HorasC, Categorias.Importe2,[HorasC]*[Importe2] AS T2 "
     'SQL = SQL & " tmpHoras.HorasE, Categorias.Importe3,[HorasE]*[Importe2] AS T3 "
-    SQL = SQL & " ,Trabajadores.PorcSS, Trabajadores.PorcIRPF, Trabajadores.ControlNomina"
-    SQL = SQL & " FROM (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) INNER JOIN tmpHoras ON Trabajadores.IdTrabajador = tmpHoras.trabajador"
-    SQL = SQL & " ORDER BY "
+    Sql = Sql & " ,Trabajadores.PorcSS, Trabajadores.PorcIRPF, Trabajadores.ControlNomina"
+    Sql = Sql & " FROM (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) INNER JOIN tmpHoras ON Trabajadores.IdTrabajador = tmpHoras.trabajador"
+    Sql = Sql & " ORDER BY "
     If Option1(0).Value Then
-        SQL = SQL & "idTrabajador "
+        Sql = Sql & "idTrabajador "
     Else
-        SQL = SQL & "nomtrabajador"
+        Sql = Sql & "nomtrabajador"
     End If
     Set RS = New ADODB.Recordset
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         Set itmX = ListView1.ListItems.Add(, , RS.Fields(0))
         itmX.SubItems(1) = RS!nomtrabajador
         itmX.SubItems(2) = Format(RS!horast, FormatoImporte)
-        Importe = Round(RS!importe1 * RS!horast, 2)
-        itmX.SubItems(3) = Format(RS!importe1, FormatoImporte)
+        Importe = Round(RS!Importe1 * RS!horast, 2)
+        itmX.SubItems(3) = Format(RS!Importe1, FormatoImporte)
 
         'itmX.SubItems(3) = Format(Importe, FormatoImporte)
         
-        itmX.SubItems(4) = Format(RS!horasc, FormatoImporte)
+        itmX.SubItems(4) = Format(RS!HorasC, FormatoImporte)
         
         
-        If RS!controlnomina = 2 Then
+        If RS!ControlNomina = 2 Then
             Importe = 0
 
         Else
@@ -435,13 +435,13 @@ Dim itmX As ListItem
         itmX.SubItems(7) = Format(RS!PorcIRPF, FormatoImporte)
         
 
-        Importe = Round(RS!importe1 * RS!horast, 2)
-        itmX.SubItems(3) = Format(RS!importe1, FormatoImporte)
+        Importe = Round(RS!Importe1 * RS!horast, 2)
+        itmX.SubItems(3) = Format(RS!Importe1, FormatoImporte)
 
         Importe = RS!T1
         itmX.SubItems(11) = Importe
         
-        If RS!controlnomina = 2 Then
+        If RS!ControlNomina = 2 Then
             Importe2 = 0
         Else
             Importe2 = RS!T2
@@ -454,7 +454,7 @@ Dim itmX As ListItem
         itmX.SubItems(13) = Importe
         
         'Iconito en funcion del tipo de control de nominas
-        If RS!controlnomina = 2 Then
+        If RS!ControlNomina = 2 Then
             itmX.SmallIcon = 2
         Else
             itmX.SmallIcon = 1
@@ -481,7 +481,7 @@ End Sub
 
 
 Private Function CrearAnticipos() As Boolean
-Dim I As Integer
+Dim i As Integer
 'Dim Aux As String
 'Dim SQL As String
 
@@ -507,12 +507,12 @@ Dim idTrabajador As Long
 
     'Generaremos los anticipos
     If Antiguedad2 = 0 Then
-        For I = 1 To ListView1.ListItems.Count
+        For i = 1 To ListView1.ListItems.Count
             'Aux = SQL & ListView1.ListItems(I).Text & ","
             'Aux = Aux & TransformaComasPuntos(CStr(ImporteFormateado(ListView1.ListItems(I).SubItems(10)))) & ",1)"   '1 de anticipo
            '
            ' conn.Execute Aux
-        Next I
+        Next i
     Else
         'Antiguedad
         'Si son abonos separados
@@ -524,30 +524,30 @@ Dim idTrabajador As Long
         conn.Execute CadenaDesdeOtroForm
         
         idTrabajador = 0
-        For I = 1 To ListView2.ListItems.Count
+        For i = 1 To ListView2.ListItems.Count
             'El trabajador es el mismo
-            If Trim(Me.ListView2.ListItems(I).Text) <> "" Then
-                If Val(Me.ListView2.ListItems(I).Text) <> idTrabajador Then
+            If Trim(Me.ListView2.ListItems(i).Text) <> "" Then
+                If Val(Me.ListView2.ListItems(i).Text) <> idTrabajador Then
                     
                     If idTrabajador > 0 Then InsertaEnPagos idTrabajador, Importe, Importe2
                     Importe = 0
                     Importe2 = 0
-                    idTrabajador = Val(ListView2.ListItems(I).Text)
+                    idTrabajador = Val(ListView2.ListItems(i).Text)
                 End If
             End If
-            If Trim(ListView2.ListItems(I).SubItems(8)) <> "" Then
-                i2 = ImporteFormateado(ListView2.ListItems(I).SubItems(8))
+            If Trim(ListView2.ListItems(i).SubItems(8)) <> "" Then
+                i2 = ImporteFormateado(ListView2.ListItems(i).SubItems(8))
             Else
                 i2 = 0
             End If
-            If ListView2.ListItems(I).Tag <> "" Then
-                If ListView2.ListItems(I).Tag = 0 Then
+            If ListView2.ListItems(i).Tag <> "" Then
+                If ListView2.ListItems(i).Tag = 0 Then
                     Importe = Importe + i2
                 Else
                     Importe2 = Importe2 + i2
                 End If
             End If
-        Next I
+        Next i
         If idTrabajador > 0 Then InsertaEnPagos idTrabajador, Importe, Importe2
     End If
     
@@ -563,7 +563,7 @@ End Function
 
 
 Private Sub InsertaEnPagos(idTrabajador As Long, ImporteN As Currency, ImporteE As Currency)
-Dim SQL As String
+Dim Sql As String
 
     If ImporteN + ImporteE = 0 Then Exit Sub
 
@@ -571,24 +571,24 @@ Dim SQL As String
         ImporteN = ImporteN + ImporteE
         ImporteE = 0
     End If
-    SQL = ""
+    Sql = ""
     If ImporteN <> 0 Then
-        SQL = ", (" & DBSet(Me.txtFec(2).Text, "F") & ",'Anticipo:  " & Format(txtFec(0).Text, "dd/mm/yy") & " - " & Format(txtFec(1).Text, "dd/mm/yy") & "',0,"
-        SQL = SQL & idTrabajador & "," & TransformaComasPuntos(CStr(ImporteN)) & ",1)"  '1 anticpo normal
+        Sql = ", (" & DBSet(Me.txtFec(2).Text, "F") & ",'Anticipo:  " & Format(txtFec(0).Text, "dd/mm/yy") & " - " & Format(txtFec(1).Text, "dd/mm/yy") & "',0,"
+        Sql = Sql & idTrabajador & "," & TransformaComasPuntos(CStr(ImporteN)) & ",1)"  '1 anticpo normal
     End If
     
     
     If ImporteE <> 0 Then
-        SQL = SQL & ", (" & DBSet(Me.txtFec(2).Text, "F") & ",'Anticipo:  " & Format(txtFec(0).Text, "dd/mm/yy") & " - " & Format(txtFec(1).Text, "dd/mm/yy") & "',0,"
-        SQL = SQL & idTrabajador & "," & TransformaComasPuntos(CStr(ImporteE)) & ",3)"   '3 anticpo extras
+        Sql = Sql & ", (" & DBSet(Me.txtFec(2).Text, "F") & ",'Anticipo:  " & Format(txtFec(0).Text, "dd/mm/yy") & " - " & Format(txtFec(1).Text, "dd/mm/yy") & "',0,"
+        Sql = Sql & idTrabajador & "," & TransformaComasPuntos(CStr(ImporteE)) & ",3)"   '3 anticpo extras
     End If
-    If SQL = "" Then
-        'Stop
+    If Sql = "" Then
+        '
     Else
-        SQL = Mid(SQL, 2)
+        Sql = Mid(Sql, 2)
     
-        SQL = "INSERT INTO Pagos (Fecha,Observaciones,Pagado,Trabajador,Importe,Tipo) VALUES " & SQL
-        conn.Execute SQL
+        Sql = "INSERT INTO Pagos (Fecha,Observaciones,Pagado,Trabajador,Importe,Tipo) VALUES " & Sql
+        conn.Execute Sql
     End If
 End Sub
 
@@ -606,7 +606,7 @@ End Sub
 
 
 Private Sub CargaDatosAntiguedadNominas()
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim Importe As Currency
 Dim Importe2 As Currency
@@ -623,32 +623,32 @@ Dim Lineas As Byte
 
 
    Set RCat = New ADODB.Recordset
-   SQL = "Select importe1,importe2,importe3,IdCategoria from categorias"   'UNO POR CADA TIPODE HORA
-   RCat.Open SQL, conn, adOpenKeyset, adLockPessimistic
+   Sql = "Select importe1,importe2,importe3,IdCategoria from categorias"   'UNO POR CADA TIPODE HORA
+   RCat.Open Sql, conn, adOpenKeyset, adLockPessimistic
    
 
-    SQL = "select jornadassemanalesalz.idtrabajador,tipohoras,NomTrabajador,idCategoria,PorcSS, Trabajadores.PorcIRPF "
-    SQL = SQL & " ,Trabajadores.PorcAntiguedad,controlnomina,DescTipoHora,sum(horastrabajadas) lashoras"
-    SQL = SQL & " from jornadassemanalesalz ,tiposhora,trabajadores where "
-    SQL = SQL & " tiposhora.TipoHora = jornadassemanalesalz.tipohoras "
-    SQL = SQL & " AND jornadassemanalesalz.idtrabajador = trabajadores.idtrabajador "
-    SQL = SQL & " AND fecha >=" & DBSet(Me.txtFec(0).Text, "F") & " AND fecha <=" & DBSet(Me.txtFec(1).Text, "F")
+    Sql = "select jornadassemanalesalz.idtrabajador,tipohoras,NomTrabajador,idCategoria,PorcSS, Trabajadores.PorcIRPF "
+    Sql = Sql & " ,Trabajadores.PorcAntiguedad,controlnomina,DescTipoHora,sum(horastrabajadas) lashoras"
+    Sql = Sql & " from jornadassemanalesalz ,tiposhora,trabajadores where "
+    Sql = Sql & " tiposhora.TipoHora = jornadassemanalesalz.tipohoras "
+    Sql = Sql & " AND jornadassemanalesalz.idtrabajador = trabajadores.idtrabajador "
+    Sql = Sql & " AND fecha >=" & DBSet(Me.txtFec(0).Text, "F") & " AND fecha <=" & DBSet(Me.txtFec(1).Text, "F")
     'Seccion
-    SQL = SQL & " And seccion = " & Me.cboSeccion.ItemData(cboSeccion.ListIndex)
+    Sql = Sql & " And seccion = " & Me.cboSeccion.ItemData(cboSeccion.ListIndex)
     
     
     
-    SQL = SQL & " group by 1,2 order by "
+    Sql = Sql & " group by 1,2 order by "
     If Option1(0).Value Then
-        SQL = SQL & "1,2 "
+        Sql = Sql & "1,2 "
     Else
-        SQL = SQL & "3,2"
+        Sql = Sql & "3,2"
     End If
     Set RS = New ADODB.Recordset
     
     Trabajador = -1
     
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         'List 2
         
@@ -663,7 +663,7 @@ Dim Lineas As Byte
             IndiceNombreTrabajador = ListView2.ListItems.Count
             
             'Iconito en funcion del tipo de control de nominas
-            If RS!controlnomina = 2 Then
+            If RS!ControlNomina = 2 Then
                 itmX.SmallIcon = 6
             Else
                 itmX.SmallIcon = 7
@@ -732,7 +732,7 @@ End Sub
 
 
 Private Sub CargaDatosAntiguedadDesdeMarcajes()
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim itmX As ListItem
 Dim RCat As ADODB.Recordset
@@ -750,33 +750,33 @@ Dim Importe3 As Currency
 
 
    Set RCat = New ADODB.Recordset
-   SQL = "Select importe1,importe2,importe3,IdCategoria from categorias"   'UNO POR CADA TIPODE HORA
-   RCat.Open SQL, conn, adOpenKeyset, adLockPessimistic
+   Sql = "Select importe1,importe2,importe3,IdCategoria from categorias"   'UNO POR CADA TIPODE HORA
+   RCat.Open Sql, conn, adOpenKeyset, adLockPessimistic
    
 
 
-    SQL = "select marcajes.idtrabajador,0,NomTrabajador,idCategoria,PorcSS, Trabajadores.PorcIRPF"
-    SQL = SQL & " ,Trabajadores.PorcAntiguedad,controlnomina,DescTipoHora,sum(horastrabajadas) lashoras from"
-    SQL = SQL & " marcajes,tiposhora,trabajadores where"
-    SQL = SQL & " tiposhora.TipoHora = 0  AND"
-    SQL = SQL & " marcajes.idtrabajador = trabajadores.idtrabajador  "
-    SQL = SQL & " AND fecha >=" & DBSet(Me.txtFec(0).Text, "F") & " AND fecha <=" & DBSet(Me.txtFec(1).Text, "F")
+    Sql = "select marcajes.idtrabajador,0,NomTrabajador,idCategoria,PorcSS, Trabajadores.PorcIRPF"
+    Sql = Sql & " ,Trabajadores.PorcAntiguedad,controlnomina,DescTipoHora,sum(horastrabajadas) lashoras from"
+    Sql = Sql & " marcajes,tiposhora,trabajadores where"
+    Sql = Sql & " tiposhora.TipoHora = 0  AND"
+    Sql = Sql & " marcajes.idtrabajador = trabajadores.idtrabajador  "
+    Sql = Sql & " AND fecha >=" & DBSet(Me.txtFec(0).Text, "F") & " AND fecha <=" & DBSet(Me.txtFec(1).Text, "F")
     'Seccion
-    SQL = SQL & " And seccion = " & Me.cboSeccion.ItemData(cboSeccion.ListIndex)
+    Sql = Sql & " And seccion = " & Me.cboSeccion.ItemData(cboSeccion.ListIndex)
     
     
     
-    SQL = SQL & " group by 1 order by "
+    Sql = Sql & " group by 1 order by "
     If Option1(0).Value Then
-        SQL = SQL & "1 "
+        Sql = Sql & "1 "
     Else
-        SQL = SQL & "2"
+        Sql = Sql & "2"
     End If
     Set RS = New ADODB.Recordset
     
     Trabajador = -1
     
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         'List 2
         
@@ -789,7 +789,7 @@ Dim Importe3 As Currency
         IndiceNombreTrabajador = ListView2.ListItems.Count
         
         'Iconito en funcion del tipo de control de nominas
-        If RS!controlnomina = 2 Then
+        If RS!ControlNomina = 2 Then
             itmX.SmallIcon = 6
         Else
             itmX.SmallIcon = 7
@@ -947,8 +947,8 @@ Private Sub Form_Load()
     
     miRsAux.Open "select * from secciones where idseccion in (select seccion from trabajadores) ORDER BY nombre", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        cboSeccion.AddItem miRsAux!Nombre & " (" & miRsAux!idSeccion & ")"
-        cboSeccion.ItemData(cboSeccion.NewIndex) = miRsAux!idSeccion
+        cboSeccion.AddItem miRsAux!Nombre & " (" & miRsAux!IdSeccion & ")"
+        cboSeccion.ItemData(cboSeccion.NewIndex) = miRsAux!IdSeccion
         miRsAux.MoveNext
     Wend
     miRsAux.Close
@@ -964,19 +964,19 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
     
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
     
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -1005,7 +1005,7 @@ End Sub
 
 
 Private Sub txtFec_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtFec_LostFocus(Index As Integer)
@@ -1018,7 +1018,7 @@ Private Sub txtFec_LostFocus(Index As Integer)
     End If
 End Sub
 
-Private Sub KEYpress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1027,7 +1027,7 @@ Private Sub KEYpress(KeyAscii As Integer)
 End Sub
 
 Private Sub RealizaSumatorio(ByRef IT As ListItem, Inicio As Integer)
-Dim I As Integer
+Dim i As Integer
 Dim Aux As Currency
 Dim columna As Byte
     Set IT = ListView2.ListItems.Add(, , " ")
@@ -1040,11 +1040,11 @@ Dim columna As Byte
         
     For columna = 3 To 8
         Aux = 0
-        For I = Inicio To Me.ListView2.ListItems.Count - 1
-            If Trim(Me.ListView2.ListItems(I).SubItems(columna)) <> "" Then
-                If Me.ListView2.ListItems(I).SubItems(columna) <> "0,00" Then Aux = Aux + ImporteFormateado(ListView2.ListItems(I).SubItems(columna))
+        For i = Inicio To Me.ListView2.ListItems.Count - 1
+            If Trim(Me.ListView2.ListItems(i).SubItems(columna)) <> "" Then
+                If Me.ListView2.ListItems(i).SubItems(columna) <> "0,00" Then Aux = Aux + ImporteFormateado(ListView2.ListItems(i).SubItems(columna))
             End If
-        Next I
+        Next i
         If Aux = 0 Then
             IT.SubItems(columna) = " "
         Else
@@ -1077,7 +1077,7 @@ Dim Nominas As Boolean
  
     If Antiguedad2 = 0 Then
     
-        Stop
+        
         
     
     Else

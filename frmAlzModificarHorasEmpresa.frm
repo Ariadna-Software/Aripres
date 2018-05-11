@@ -14,6 +14,14 @@ Begin VB.Form frmAlzModificarHorasEmpresa
    ScaleWidth      =   7695
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox chkAlziraPermiteNoSumarOk 
+      Caption         =   "Permitir cambiar suma final"
+      Height          =   375
+      Left            =   240
+      TabIndex        =   15
+      Top             =   1440
+      Width           =   4815
+   End
    Begin VB.CommandButton Command1 
       Cancel          =   -1  'True
       Caption         =   "Cancelar"
@@ -284,7 +292,7 @@ Public Fecha As Date
 
 
 
-Dim SQL As String
+Dim Sql As String
 Dim TotalHoras As Currency
 Dim Incremento As Currency
 Dim Laborable As Byte  'Cuando salga tiene que sumar este adato.
@@ -316,14 +324,18 @@ End Sub
 Private Sub Form_Activate()
     
     
-    If SQL <> "" Then Exit Sub
+    If Sql <> "" Then Exit Sub
     Label2.Visible = False
     Text1(0).Text = Format(Fecha, "dd/mm/yyyy")
+    
+    chkAlziraPermiteNoSumarOk.Value = 0
+    chkAlziraPermiteNoSumarOk.Visible = vEmpresa.QueEmpresa = 2
+    
     Set miRsAux = New ADODB.Recordset
-    SQL = "Select * from jornadassemanalesalz where idtrabajador = " & idTrabajador
-    SQL = SQL & " AND tipohoras= " & TipoHora & " AND fecha =" & DBSet(Fecha, "F")
-    SQL = SQL & " ORDER by ParaEmpresa"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select * from jornadassemanalesalz where idtrabajador = " & idTrabajador
+    Sql = Sql & " AND tipohoras= " & TipoHora & " AND fecha =" & DBSet(Fecha, "F")
+    Sql = Sql & " ORDER by ParaEmpresa"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     If miRsAux.EOF Then
         Unload Me
@@ -370,7 +382,7 @@ End Sub
 Private Sub Form_Load()
     Me.Icon = frmMain.Icon
     Incremento = 0.25
-    SQL = ""
+    Sql = ""
 
 End Sub
 
@@ -394,6 +406,7 @@ Private Sub Text1_LostFocus(Index As Integer)
         If Not PonerFormatoDecimal(Text1(1), 2) Then
             H1 = TotalHoras - h2
         Else
+            If Me.chkAlziraPermiteNoSumarOk.Value = 1 Then Exit Sub
             H1 = ImporteFormateado(Text1(1).Text)
             If H1 > TotalHoras Then H1 = TotalHoras
             h2 = TotalHoras - H1
@@ -406,6 +419,7 @@ Private Sub Text1_LostFocus(Index As Integer)
         If Not PonerFormatoDecimal(Text1(2), 2) Then
             h2 = TotalHoras - H1
         Else
+            If Me.chkAlziraPermiteNoSumarOk.Value = 1 Then Exit Sub
             h2 = ImporteFormateado(Text1(2).Text)
             If h2 > TotalHoras Then h2 = TotalHoras
             H1 = TotalHoras - h2
@@ -468,14 +482,25 @@ End Sub
 
 Private Function HacerModificaciones() As Boolean
 Dim QueAjuste As Integer
+Dim TotalMenteManual As Boolean
 
     On Error GoTo eHacerModificaciones
     HacerModificaciones = False
+    TotalMenteManual = False
     H1 = ImporteFormateado(Text1(1).Text)
     h2 = ImporteFormateado(Text1(2).Text)
     If H1 + h2 <> TotalHoras Then
-        MsgBox "Error en sumas de horas", vbExclamation
-        Exit Function
+        If Me.chkAlziraPermiteNoSumarOk.Value = 0 Then
+            MsgBox "Error en sumas de horas", vbExclamation
+            Exit Function
+    
+        Else
+            Sql = String(30, "*") & vbCrLf
+            Sql = Sql & "Sumatorio de horas no coincide." & vbCrLf & "Anterior: " & TotalHoras & vbCrLf & "Actual: " & H1 + h2 & vbCrLf & "¿CONTINUAR?" & vbCrLf & Sql
+            If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Function
+            TotalMenteManual = True
+        End If
+    
     End If
     
     'AJUSTE
@@ -485,36 +510,36 @@ Dim QueAjuste As Integer
     '       3.- Se modifico la que  estaba sin ajustar en proc horas
     '       4.- "            " del proceso de calculo de horas
     '       5.- "               la creada a mano
-    
+    '       7: TotalMenteManual Se ha cambiado sin respetar sumatorios
     'jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste)
     '------------------------------------------------------------------------------------
     'Las de fruixeresa
     QueAjuste = -1
     If Label1(6).Caption = "-1" Then
         'NUEVO. NO estaba creado
-        SQL = " VALUES (" & idTrabajador & "," & DBSet(Fecha, "F") & "," & TipoHora & ","
-        SQL = SQL & DBSet(H1, "N") & ",0,2," & Laborable & ")"
+        Sql = " VALUES (" & idTrabajador & "," & DBSet(Fecha, "F") & "," & TipoHora & ","
+        Sql = Sql & DBSet(H1, "N") & ",0,2," & Laborable & ")"
         If Laborable > 0 Then Laborable = 0
-        SQL = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable)" & SQL
+        Sql = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable)" & Sql
     Else
         If Val(Label1(6).Caption) < 3 Then QueAjuste = Val(Label1(6).Caption) + 3
-    
-        SQL = "UPDATE jornadassemanalesalz SET horastrabajadas =" & DBSet(H1, "N")
-        If QueAjuste > 0 Then SQL = SQL & ", ajuste =" & QueAjuste
+        If TotalMenteManual Then QueAjuste = 7
+        Sql = "UPDATE jornadassemanalesalz SET horastrabajadas =" & DBSet(H1, "N")
+        If QueAjuste > 0 Then Sql = Sql & ", ajuste =" & QueAjuste
         If Laborable > 0 Then
             If H1 = 0 Then
-                SQL = SQL & ", Laborable  =0"  'se lo pondre a las horas cooperativas
+                Sql = Sql & ", Laborable  =0"  'se lo pondre a las horas cooperativas
             Else
-                SQL = SQL & ", Laborable  =" & Laborable
+                Sql = Sql & ", Laborable  =" & Laborable
                 Laborable = 0
             End If
             
         End If
-        SQL = SQL & " WHERE idTrabajador = " & idTrabajador & " AND fecha ="
-        SQL = SQL & DBSet(Fecha, "F") & " AND ParaEmpresa=0  AND TipoHoras=" & TipoHora
+        Sql = Sql & " WHERE idTrabajador = " & idTrabajador & " AND fecha ="
+        Sql = Sql & DBSet(Fecha, "F") & " AND ParaEmpresa=0  AND TipoHoras=" & TipoHora
         
     End If
-    conn.Execute SQL
+    conn.Execute Sql
     
     
     '------------------------------------------------------------------------------------
@@ -522,20 +547,20 @@ Dim QueAjuste As Integer
     QueAjuste = -1
     If Label1(7).Caption = "-1" Then
         'NUEVO. NO estaba creado
-        SQL = " VALUES (" & idTrabajador & "," & DBSet(Fecha, "F") & "," & TipoHora & ","
-        SQL = SQL & DBSet(h2, "N") & ",1,2," & Laborable & ")"
-        SQL = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable)" & SQL
+        Sql = " VALUES (" & idTrabajador & "," & DBSet(Fecha, "F") & "," & TipoHora & ","
+        Sql = Sql & DBSet(h2, "N") & ",1," & IIf(TotalMenteManual, 7, 2) & "," & Laborable & ")"
+        Sql = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable)" & Sql
     Else
         If Val(Label1(7).Caption) < 3 Then QueAjuste = Val(Label1(7).Caption) + 3
     
-        SQL = "UPDATE jornadassemanalesalz SET horastrabajadas =" & DBSet(h2, "N")
-        If QueAjuste > 0 Then SQL = SQL & ", ajuste =" & QueAjuste
-        SQL = SQL & ", Laborable  =" & Laborable
-        SQL = SQL & " WHERE idTrabajador = " & idTrabajador & " AND fecha ="
-        SQL = SQL & DBSet(Fecha, "F") & " AND ParaEmpresa=1  AND TipoHoras=" & TipoHora
+        Sql = "UPDATE jornadassemanalesalz SET horastrabajadas =" & DBSet(h2, "N")
+        If QueAjuste > 0 Then Sql = Sql & ", ajuste =" & QueAjuste
+        Sql = Sql & ", Laborable  =" & Laborable
+        Sql = Sql & " WHERE idTrabajador = " & idTrabajador & " AND fecha ="
+        Sql = Sql & DBSet(Fecha, "F") & " AND ParaEmpresa=1  AND TipoHoras=" & TipoHora
         
     End If
-    conn.Execute SQL
+    conn.Execute Sql
     
     HacerModificaciones = True
 eHacerModificaciones:

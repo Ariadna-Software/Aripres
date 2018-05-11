@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmAcabalgados 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Verificar horas entre dias"
@@ -140,25 +140,26 @@ Option Explicit
 Public Fecha As Date
 
 Dim PrimVez As Boolean
-Dim Cad As String
+Dim cad As String
 
 Private Sub Command1_Click(Index As Integer)
     Screen.MousePointer = vbHourglass
     If Index = 0 Then
-        Cad = ""
+        cad = ""
         For NumRegElim = 1 To ListView1.ListItems.Count
             If Not ListView1.ListItems(NumRegElim).Checked Then
-                Cad = Cad & ", " & ListView1.ListItems(NumRegElim).Text
+                cad = cad & ", " & ListView1.ListItems(NumRegElim).Text
             End If
             
         Next
-        If Cad <> "" Then
-            Cad = " WHERE  idtra IN (" & Mid(Cad, 2) & ")"
-            conn.Execute "DELETE from tmpnotrabajo " & Cad
+        If cad <> "" Then
+            cad = " WHERE  idtra IN (" & Mid(cad, 2) & ")"
+            conn.Execute "DELETE from tmpnotrabajo " & cad
                         
             espera 1
-            CadenaDesdeOtroForm = "OK"
+            
         End If
+        CadenaDesdeOtroForm = "OK"  'se por un tema U otro tiene que devolver true
     End If
     Unload Me
 End Sub
@@ -166,9 +167,11 @@ End Sub
 Private Sub Form_Activate()
 Dim IT As ListItem
 Dim Tr As Long
-Dim I As Integer
+Dim i As Integer
 Dim TieneUnoMayorHoraMenos8 As Boolean
 Dim H1 As Date
+Dim UnoDelDiaDeAntes As Boolean
+Dim B As Boolean
 
     If PrimVez Then
         PrimVez = False
@@ -177,40 +180,72 @@ Dim H1 As Date
         
         H1 = DateAdd("h", -8, vEmpresa.AcabalgadoHora)
         
-        Cad = "select idtra,nomtrabajador,concat(hora,'')HoraText,if(hora>'23:59:59','23:59:59',hora) laHora"
-        Cad = Cad & " from tmpnotrabajo,trabajadores ,entradafichajes where "
-        Cad = Cad & " tmpnotrabajo.idtra=trabajadores.idtrabajador and trabajadores.idtrabajador ="
-        Cad = Cad & " entradafichajes.idtrabajador AND fecha = " & DBSet(Fecha, "F") & " ORDER BY idtra,hora asc"
-        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = "select idtra,nomtrabajador,concat(hora,'')HoraText,if(hora>'23:59:59','23:59:59',hora) laHora"
+        cad = cad & " ,if(hora<'0:00:00',1,0) HoraNegativa,hora from tmpnotrabajo,trabajadores ,entradafichajes where "
+        cad = cad & " tmpnotrabajo.idtra=trabajadores.idtrabajador and trabajadores.idtrabajador ="
+        cad = cad & " entradafichajes.idtrabajador AND fecha = " & DBSet(Fecha, "F") & " ORDER BY idtra,hora asc"
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Tr = -1
         While Not miRsAux.EOF
-            If miRsAux!IdTra <> Tr Then
+            If miRsAux!idTRa <> Tr Then
             
                 If Tr >= 0 Then
-                    If Not TieneUnoMayorHoraMenos8 Then
+                    If vEmpresa.AcabalgadoDiaInicio Then TieneUnoMayorHoraMenos8 = Not TieneUnoMayorHoraMenos8
+                    
+                    If TieneUnoMayorHoraMenos8 Then
                         IT.Checked = True
                         IT.Bold = True
                         IT.ListSubItems(1).ForeColor = vbRed
                     End If
                 End If
-                Tr = miRsAux!IdTra
+                Tr = miRsAux!idTRa
                 Set IT = ListView1.ListItems.Add()
                 IT.Text = Format(Tr, "0000")
                 IT.SubItems(1) = miRsAux!nomtrabajador
-                I = 2
+                i = 2
                 TieneUnoMayorHoraMenos8 = False
+                UnoDelDiaDeAntes = False
             End If
-            If CDate(miRsAux!LaHora) >= H1 And CDate(miRsAux!LaHora) < vEmpresa.AcabalgadoHora Then TieneUnoMayorHoraMenos8 = True
-        
-            IT.SubItems(I) = miRsAux!HoraText
-            I = I + 1
+            
+            If miRsAux!HoraNegativa Then
+                
+                cad = Horas_Quitar24(miRsAux!Hora, True)
+                IT.SubItems(i) = cad
+                UnoDelDiaDeAntes = True
+            Else
+                If vEmpresa.AcabalgadoDiaInicio Then
+                    If CDate(miRsAux!LaHora) >= H1 And CDate(miRsAux!LaHora) < vEmpresa.AcabalgadoHora Then TieneUnoMayorHoraMenos8 = True
+                    
+                   
+                    
+                Else
+                    'Si el primer marcaje es mayor que las hora acabalgamiento, entonces lo pasamos
+                    If CDate(miRsAux!LaHora) > vEmpresa.AcabalgadoHora Then
+                        'Si es el primero entonces
+                        If i = 2 Then
+                            TieneUnoMayorHoraMenos8 = True
+                        Else
+                            
+                            If UnoDelDiaDeAntes Then TieneUnoMayorHoraMenos8 = True
+                        End If
+                    End If
+                End If
+                IT.SubItems(i) = miRsAux!HoraText
+            End If
+            
+            i = i + 1
             miRsAux.MoveNext
         Wend
         miRsAux.Close
-        If Not TieneUnoMayorHoraMenos8 Then
-            IT.Checked = True
-            IT.Bold = True
-            IT.ListSubItems(1).ForeColor = vbRed
+        
+        If Not IT Is Nothing Then
+            If vEmpresa.AcabalgadoDiaInicio Then TieneUnoMayorHoraMenos8 = Not TieneUnoMayorHoraMenos8
+            
+            If TieneUnoMayorHoraMenos8 Then
+                IT.Checked = True
+                IT.Bold = True
+                IT.ListSubItems(1).ForeColor = vbRed
+            End If
         End If
         Set miRsAux = Nothing
         Screen.MousePointer = vbDefault

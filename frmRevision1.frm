@@ -1311,8 +1311,8 @@ Dim Ordenacion As String
 
 Dim btnPrimero As Byte 'Variable que indica el nº del Botó PrimerRegistro en la Toolbar1
 Dim Indice As Byte 'Indice del text1 donde se ponen los datos devueltos desde otros Formularios de Mtos
-Dim SQL As String
-Dim primeravez As Boolean
+Dim Sql As String
+Dim PrimeraVez As Boolean
 
 Private vH As CHorarios
 
@@ -1492,20 +1492,20 @@ End Sub
 
 
 Private Sub MandaBusquedaPrevia(CadB As String)
-Dim Cad As String
+Dim cad As String
 
         'Llamamos a al form
         ' **************** arreglar-ho per a vore lo que es desije ****************
-        Cad = ""
-        Cad = Cad & ParaGrid(Text1(0), 10, "Cód.")
-        Cad = Cad & ParaGrid(Text1(1), 26, "Nombre")
-        Cad = Cad & ParaGrid(Text1(2), 32, "1º Apellido")
-        Cad = Cad & ParaGrid(Text1(3), 32, "2º Apellido")
+        cad = ""
+        cad = cad & ParaGrid(Text1(0), 10, "Cód.")
+        cad = cad & ParaGrid(Text1(1), 26, "Nombre")
+        cad = cad & ParaGrid(Text1(2), 32, "1º Apellido")
+        cad = cad & ParaGrid(Text1(3), 32, "2º Apellido")
         
-        If Cad <> "" Then
+        If cad <> "" Then
             Screen.MousePointer = vbHourglass
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = Cad
+            frmB.vCampos = cad
             'frmB.vTabla = NomTabla
             frmB.vSQL = CadB
 
@@ -1529,11 +1529,11 @@ End Sub
 Private Sub PonerCadenaBusqueda()
     Screen.MousePointer = vbHourglass
     On Error GoTo EEPonerBusq
-    SQL = "Select * from marcajes"
+    Sql = "Select * from marcajes"
     If Me.mnTrabajador.Checked Then
-        SQL = SQL & " ORDER BY idtrabajador,fecha"
+        Sql = Sql & " ORDER BY idtrabajador,fecha"
     Else
-        SQL = SQL & " ORDER BY fecha,idtrabajador"
+        Sql = Sql & " ORDER BY fecha,idtrabajador"
     End If
         
     CargaDatos
@@ -1598,7 +1598,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim SQL As String
+Dim Sql As String
 
     On Error GoTo EEliminar
     
@@ -1612,24 +1612,24 @@ Dim SQL As String
     If Not SepuedeBorrar Then Exit Sub
     
     '*************** canviar els noms i el DELETE **********************************
-    SQL = "¿Seguro que desea eliminar el marcaje?"
-    SQL = SQL & vbCrLf & "Código: " & Adodc2.Recordset!Entrada & "     -    " & Format(Adodc2.Recordset!Fecha, "dd/mm/yyyy")
-    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!Nomtrabajador
+    Sql = "¿Seguro que desea eliminar el marcaje?"
+    Sql = Sql & vbCrLf & "Código: " & Adodc2.Recordset!Entrada & "     -    " & Format(Adodc2.Recordset!Fecha, "dd/mm/yyyy")
+    Sql = Sql & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!nomtrabajador
     
-    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         Screen.MousePointer = vbHourglass
         
         NumRegElim = adodc1.Recordset.AbsolutePosition
         
-        SQL = "DELETE FROM incidenciasgeneradas where entradamarcaje=" & adodc1.Recordset!Entrada
-        conn.Execute SQL
+        Sql = "DELETE FROM incidenciasgeneradas where entradamarcaje=" & adodc1.Recordset!Entrada
+        conn.Execute Sql
         
-        SQL = "DELETE FROM entradamarcajes where idmarcaje=" & adodc1.Recordset!Entrada
-        conn.Execute SQL
+        Sql = "DELETE FROM entradamarcajes where idmarcaje=" & adodc1.Recordset!Entrada
+        conn.Execute Sql
         
-        SQL = "DELETE FROM marcajes where entrada=" & adodc1.Recordset!Entrada
-        conn.Execute SQL
+        Sql = "DELETE FROM marcajes where entrada=" & adodc1.Recordset!Entrada
+        conn.Execute Sql
         
         If SituarDataTrasEliminar(adodc1, NumRegElim) Then
             EnlazaAdo True
@@ -1735,12 +1735,12 @@ Dim Control As Integer
             If Control = 1 Then
                 'Hay error
                 If Not Me.FrameMultiRev.Visible Then
-                    SQL = "Número de marcajes incorrecto. ¿Continuar?"
-                    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then Control = 0
+                    Sql = "Número de marcajes incorrecto. ¿Continuar?"
+                    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then Control = 0
                 End If
             End If
             If Control = 0 Then
-                If vHO.Leer(vM.IdHorario, vM.Fecha, Adodc2.Recordset!IdCal) = 0 Then
+                If vHO.Leer(vM.IdHorario, vM.Fecha, Adodc2.Recordset!idCal) = 0 Then
                     Modificar = True
                     If vM.IncFinal <> 0 Then
                         Modificar = False
@@ -1759,20 +1759,20 @@ Dim Control As Integer
                     If HoraS1 <> vHO.TotalHoras Then
                         Control = DevuelveDesdeBD("control", "trabajadores", "idtrabajador", (Adodc2.Recordset!idTrabajador), "N")
                         If Control < 3 Then
-                            SQL = "Existe diferencia de horas: " & vbCrLf & vbCrLf
-                            SQL = SQL & " -Trabajadas :     " & Format(vM.HorasTrabajadas, "0.00") & vbCrLf
-                            SQL = SQL & " -Incidencia  :      " & Format(vM.HorasIncid, "0.00") & vbCrLf
-                            SQL = SQL & " -Suma           :    " & Format(HoraS1, "0.00") & vbCrLf & vbCrLf
-                            SQL = SQL & " -Total horas:     " & Format(vH.TotalHoras, "0.00") & vbCrLf
-                            SQL = SQL & " --------------------------------- " & vbCrLf
-                            SQL = SQL & " -Diferencia :     " & Format(vH.TotalHoras - HoraS1, "0.00") & vbCrLf & vbCrLf
-                            SQL = SQL & vbCrLf & "¿Continuar?"
+                            Sql = "Existe diferencia de horas: " & vbCrLf & vbCrLf
+                            Sql = Sql & " -Trabajadas :     " & Format(vM.HorasTrabajadas, "0.00") & vbCrLf
+                            Sql = Sql & " -Incidencia  :      " & Format(vM.HorasIncid, "0.00") & vbCrLf
+                            Sql = Sql & " -Suma           :    " & Format(HoraS1, "0.00") & vbCrLf & vbCrLf
+                            Sql = Sql & " -Total horas:     " & Format(vH.TotalHoras, "0.00") & vbCrLf
+                            Sql = Sql & " --------------------------------- " & vbCrLf
+                            Sql = Sql & " -Diferencia :     " & Format(vH.TotalHoras - HoraS1, "0.00") & vbCrLf & vbCrLf
+                            Sql = Sql & vbCrLf & "¿Continuar?"
                             If Me.FrameMultiRev.Visible Then
                                 'ESTAMOS REVISANDO A PIÑON. NO dejo pasar
                                 Modificar = False
                             Else
                                 Modificar = False
-                                If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then Modificar = True
+                                If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then Modificar = True
                             End If
                             
                         Else
@@ -1865,8 +1865,8 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub Form_Activate()
-    If primeravez Then
-        primeravez = False
+    If PrimeraVez Then
+        PrimeraVez = False
         'Si vienen datos o no
         'cargaremos o no
         'Qu carge a vacio
@@ -1946,7 +1946,7 @@ Private Sub Form_Load()
     TratarOrdenacion True
     SeparaValores
     LimpiarCampos
-    primeravez = True
+    PrimeraVez = True
     CadB = ""
     Set vH = New CHorarios
 End Sub
@@ -1955,7 +1955,7 @@ End Sub
 
 Private Sub TratarOrdenacion(Leer As Boolean)
 Dim Traba As Boolean
-Dim I As Integer
+Dim i As Integer
 
     If Leer Then
         
@@ -1967,10 +1967,10 @@ Dim I As Integer
         Traba = Me.mnTrabajador.Checked
         If Traba Then
             If Dir(App.Path & "\Ordtra.dat", vbArchive) = "" Then
-                I = FreeFile
-                Open App.Path & "\Ordtra.dat" For Output As #I
-                Print #I, Now
-                Close #I
+                i = FreeFile
+                Open App.Path & "\Ordtra.dat" For Output As #i
+                Print #i, Now
+                Close #i
                 
             End If
         Else
@@ -2085,13 +2085,13 @@ If SiNo Then
         
         '
         'Elimno las incidencias generadas
-        SQL = "DELETE from incidenciasgeneradas where EntradaMarcaje =" & vM.Entrada
-        EjecutaSQL SQL
+        Sql = "DELETE from incidenciasgeneradas where EntradaMarcaje =" & vM.Entrada
+        EjecutaSQL Sql
         
         FijarCodigoIncidenciaGenerada 1
-        SQL = "Select max(id) from incidenciasgeneradas "
+        Sql = "Select max(id) from incidenciasgeneradas "
         Set miRsAux = New ADODB.Recordset
-        miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If Not miRsAux.EOF Then
             If Not IsNull(miRsAux.Fields(0)) Then FijarCodigoIncidenciaGenerada CLng(miRsAux.Fields(0))
         End If
@@ -2100,7 +2100,7 @@ If SiNo Then
         TipoControl = DevuelveDesdeBD("control", "trabajadores", "idtrabajador", (Adodc2.Recordset!idTrabajador), "N")
         Select Case TipoControl
             Case 2
-                 ProcesarMarcaje_Tipo2 vM, vH, True, IIf(vEmpresa.QueEmpresa = 2, False, True), 0
+                 ProcesarMarcaje_Tipo2 vM, vH, True, IIf(vEmpresa.QueEmpresa = 2, False, True), vM.HorasDto
             Case 3
                  ProcesarMarcaje_Tipo3 vM, vH, True
             Case Else
@@ -2219,7 +2219,7 @@ Dim Carga As Boolean
 End Sub
 
 Private Sub imgZoom_Click(Index As Integer)
-Dim Cad As String
+Dim cad As String
 Dim LeerHorario As Boolean
 
     If Index = 2 Then
@@ -2242,10 +2242,10 @@ Dim LeerHorario As Boolean
             'Llamamos a al form
             ' **************** arreglar-ho per a vore lo que es desije ****************
             'Cod Diag.|idDiag|N|Formato|10·
-            Cad = "Codigo|idtrabajador|N||20·"
-            Cad = Cad & "Nombre|nomtrabajador|T||60·"
-            Cad = Cad & "Tarjeta|numtarjeta|N||20·"
-            frmB.vCampos = Cad
+            cad = "Codigo|idtrabajador|N||20·"
+            cad = cad & "Nombre|nomtrabajador|T||60·"
+            cad = cad & "Tarjeta|numtarjeta|N||20·"
+            frmB.vCampos = cad
             frmB.vTabla = "trabajadores"
             frmB.vSQL = ""
             
@@ -2257,9 +2257,9 @@ Dim LeerHorario As Boolean
             'INCIDENCIAS
             
             'Cod Diag.|idDiag|N|Formato|10·
-            Cad = "Codigo|idinci|N||20·"
-            Cad = Cad & "Descripcion|nominci|T||70·"
-            frmB.vCampos = Cad
+            cad = "Codigo|idinci|N||20·"
+            cad = cad & "Descripcion|nominci|T||70·"
+            frmB.vCampos = cad
             frmB.vTabla = "incidencias"
             frmB.vSQL = ""
             
@@ -2272,9 +2272,9 @@ Dim LeerHorario As Boolean
     Case 2
             'HORARIO
     
-            Cad = "Codigo|idhorario|N||20·"
-            Cad = Cad & "Descripcion|NomHorario|T||70·"
-            frmB.vCampos = Cad
+            cad = "Codigo|idhorario|N||20·"
+            cad = cad & "Descripcion|NomHorario|T||70·"
+            frmB.vCampos = cad
             frmB.vTabla = "Horarios"
             frmB.vSQL = ""
             
@@ -2349,10 +2349,10 @@ Private Sub mnRevisionmultiple_Click()
 
     If adodc1.Recordset.EOF Then Exit Sub
     
-    SQL = "Va a revisar los marcajes de forma automática." & vbCrLf & vbCrLf
-    SQL = SQL & "El proceso puede llevar mucho tiempo. ¿Desea continuar?"
-    If MsgBox(SQL, vbQuestion + vbYesNo) = vbNo Then Exit Sub
-    SQL = ""
+    Sql = "Va a revisar los marcajes de forma automática." & vbCrLf & vbCrLf
+    Sql = Sql & "El proceso puede llevar mucho tiempo. ¿Desea continuar?"
+    If MsgBox(Sql, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+    Sql = ""
     
     Screen.MousePointer = vbHourglass
     FormRevisionMultiple True
@@ -2442,16 +2442,16 @@ Dim BuscarHorario As Boolean
     
         Case 1 'codigo trab
             If Text1(1).Text = "" Then
-                SQL = ""
+                Sql = ""
                 BuscarHorario = True
             Else
                 If Not PonerFormatoEntero(Text1(1)) Then
                     Text1(1).Text = ""
-                    SQL = ""
+                    Sql = ""
                     BuscarHorario = True
                 Else
-                    SQL = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", Text1(1).Text, "N")
-                    If SQL = "" Then
+                    Sql = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", Text1(1).Text, "N")
+                    If Sql = "" Then
                         MsgBox "No existe el trabajador: " & Text1(1).Text, vbExclamation
                         Text1(1).Text = ""
                         PonerFoco Text1(1)
@@ -2459,7 +2459,7 @@ Dim BuscarHorario As Boolean
                     If Text1(3).Text <> "" Then BuscarHorario = True
                 End If
             End If
-            Text2.Text = SQL
+            Text2.Text = Sql
         
         Case 2  'incdi
             If Text1(2).Text = "" Then
@@ -2468,17 +2468,17 @@ Dim BuscarHorario As Boolean
             End If
             
             If PonerFormatoEntero(Text1(2)) Then
-                SQL = DevuelveDesdeBD("nominci", "incidencias", "idinci", Text1(2).Text, "N")
-                If SQL = "" Then
+                Sql = DevuelveDesdeBD("nominci", "incidencias", "idinci", Text1(2).Text, "N")
+                If Sql = "" Then
                     MsgBox "No existe la incidencia: " & Text1(2).Text, vbExclamation
                     Text1(2).Text = ""
                     PonerFoco Text1(2)
                 End If
             Else
                 Text1(2).Text = ""
-                SQL = ""
+                Sql = ""
             End If
-            Text3.Text = SQL
+            Text3.Text = Sql
         
         Case 3
             'Fecha
@@ -2529,9 +2529,9 @@ Dim B As Boolean
                 PonerHorario False
             Else
                 Set miRsAux = New ADODB.Recordset
-                SQL = "Select * from calendariot where idtrabajador = " & Text1(1).Text
-                SQL = SQL & " AND Fecha ='" & Format(Text1(3).Text, FormatoFecha) & "'"
-                miRsAux.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+                Sql = "Select * from calendariot where idtrabajador = " & Text1(1).Text
+                Sql = Sql & " AND Fecha ='" & Format(Text1(3).Text, FormatoFecha) & "'"
+                miRsAux.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
                 If Not miRsAux.EOF Then
                     If Text1(7).Text <> "" Then
                         If Val(Text1(7).Text) <> miRsAux!IdHorario Then Text1(7).Text = ""
@@ -2619,7 +2619,7 @@ Dim LeerHorario As Boolean
             chkCorrecto.Value = 0
             cmdCorrecto.Visible = True
         End If
-        Text2.Text = !Nomtrabajador
+        Text2.Text = !nomtrabajador
         Text3.Text = !NomInci
         
         
@@ -2663,7 +2663,7 @@ Dim LeerHorario As Boolean
         Me.Refresh
         DoEvents
         
-        Indice = vH.Leer(Adodc2.Recordset!IdHorario, Adodc2.Recordset!Fecha, Adodc2.Recordset!IdCal)
+        Indice = vH.Leer(Adodc2.Recordset!IdHorario, Adodc2.Recordset!Fecha, Adodc2.Recordset!idCal)
         PonerHorario Indice = 0
     Else
         lblIndicador.Caption = ""
@@ -2707,13 +2707,13 @@ Dim SumaH2 As Currency
     'AHora veremos algunas cosillas
     If Modo = 3 Then
         Set miRsAux = New ADODB.Recordset
-        SQL = "Select idtrabajador from marcajes where fecha = '" & Format(Text1(3).Text, FormatoFecha)
-        SQL = SQL & "' AND idtrabajador = " & Text1(1).Text
-        miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        If miRsAux.EOF Then SQL = ""
+        Sql = "Select idtrabajador from marcajes where fecha = '" & Format(Text1(3).Text, FormatoFecha)
+        Sql = Sql & "' AND idtrabajador = " & Text1(1).Text
+        miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        If miRsAux.EOF Then Sql = ""
         miRsAux.Close
         Set miRsAux = Nothing
-        If SQL <> "" Then
+        If Sql <> "" Then
             MsgBox "El trabajador ya tiene un marcaje para ese dia", vbExclamation
             Exit Function
         End If
@@ -2729,12 +2729,12 @@ Dim SumaH2 As Currency
         SumaH2 = Adodc2.Recordset!HorasTrabajadas + DBLet(Adodc2.Recordset!HorasIncid, "N") + DBLet(Adodc2.Recordset!HorasDto, "N")
         
         
-        SQL = "Error en total horas.  (Trabajadas/Incidencia/Paradas)" & vbCrLf & vbCrLf
-        SQL = SQL & "Total incial: " & SumaH2 & vbCrLf & "Total actual: " & SumaHoras & vbCrLf & vbCrLf
-        SQL = SQL & "Inicial: " & Adodc2.Recordset!HorasTrabajadas & "  /   " & DBLet(Adodc2.Recordset!HorasIncid, "N") & "   /    " & DBLet(Adodc2.Recordset!HorasDto, "N")
-        SQL = SQL & vbCrLf & "Actual: " & Text1(4).Text & "  /   " & Text1(5).Text & "   /    " & Text1(6).Text
-        SQL = SQL & vbCrLf & vbCrLf & "¿Continuar de igual modo?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then B = False
+        Sql = "Error en total horas.  (Trabajadas/Incidencia/Paradas)" & vbCrLf & vbCrLf
+        Sql = Sql & "Total incial: " & SumaH2 & vbCrLf & "Total actual: " & SumaHoras & vbCrLf & vbCrLf
+        Sql = Sql & "Inicial: " & Adodc2.Recordset!HorasTrabajadas & "  /   " & DBLet(Adodc2.Recordset!HorasIncid, "N") & "   /    " & DBLet(Adodc2.Recordset!HorasDto, "N")
+        Sql = Sql & vbCrLf & "Actual: " & Text1(4).Text & "  /   " & Text1(5).Text & "   /    " & Text1(6).Text
+        Sql = Sql & vbCrLf & vbCrLf & "¿Continuar de igual modo?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then B = False
     End If
     
     DatosOk = B
@@ -2831,10 +2831,10 @@ End Sub
 
 
 Private Sub PosicionarData()
-Dim Cad As String, Indicador As String
+Dim cad As String, Indicador As String
 
-    Cad = "(codguiav=" & Text1(0).Text & ")"
-    If SituarData(Me.adodc1, Cad, Indicador) Then
+    cad = "(codguiav=" & Text1(0).Text & ")"
+    If SituarData(Me.adodc1, cad, Indicador) Then
         PonerModo 2
         lblIndicador.Caption = Indicador
     Else
@@ -2868,45 +2868,45 @@ Private Sub printNou()
 End Sub
 
 Private Sub SeparaValores()
-Dim Cad As String
+Dim cad As String
 
 
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 1)
-    If Cad = "" Then Cad = "01/01/1900"
-    FI = CDate(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 1)
+    If cad = "" Then cad = "01/01/1900"
+    FI = CDate(cad)
     
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 2)
-    If Cad = "" Then Cad = "01/01/2900"
-    FF = CDate(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 2)
+    If cad = "" Then cad = "01/01/2900"
+    FF = CDate(cad)
     
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 3)
-    If Cad = "" Then Cad = "-1"
-    DTra = Val(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 3)
+    If cad = "" Then cad = "-1"
+    DTra = Val(cad)
     
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 4)
-    If Cad = "" Then Cad = "100000000"
-    HTra = Val(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 4)
+    If cad = "" Then cad = "100000000"
+    HTra = Val(cad)
 
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 5)
-    If Cad = "" Then Cad = "-1"
-    DInci = Val(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 5)
+    If cad = "" Then cad = "-1"
+    DInci = Val(cad)
     
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 6)
-    If Cad = "" Then Cad = "32200"
-    HInci = Val(Cad)
+    cad = RecuperaValor(CadenaDesdeOtroForm, 6)
+    If cad = "" Then cad = "32200"
+    HInci = Val(cad)
 
 
 
     'Correctos o incorrectos
-    Cad = RecuperaValor(CadenaDesdeOtroForm, 7)
-    If Val(Cad) > 2 Then Cad = "0"
-    CorrectosIncorrectos = CByte(Val(Cad))
+    cad = RecuperaValor(CadenaDesdeOtroForm, 7)
+    If Val(cad) > 2 Then cad = "0"
+    CorrectosIncorrectos = CByte(Val(cad))
     
 End Sub
 
 
 Private Sub MontaSQL()
-    SQL = "Select entrada from marcajes where"
+    Sql = "Select entrada from marcajes where"
     'LA select
     
     'Public FI As Date
@@ -2914,30 +2914,30 @@ Private Sub MontaSQL()
     'Public DTra As Integer
     'Public HTra As Integer
     'Public CorrectosIncorrectos As Byte  '0.- Ambos  1.- Correctos  2.-Incorrectos
-    SQL = SQL & " fecha >='" & Format(FI, FormatoFecha) & "'"
-    SQL = SQL & " AND fecha <='" & Format(FF, FormatoFecha) & "'"
-    SQL = SQL & " AND idtrabajador >= " & DTra
-    SQL = SQL & " AND idtrabajador <= " & HTra
+    Sql = Sql & " fecha >='" & Format(FI, FormatoFecha) & "'"
+    Sql = Sql & " AND fecha <='" & Format(FF, FormatoFecha) & "'"
+    Sql = Sql & " AND idtrabajador >= " & DTra
+    Sql = Sql & " AND idtrabajador <= " & HTra
     
-    SQL = SQL & " AND incfinal >= " & DInci
-    SQL = SQL & " AND incfinal <= " & HInci
+    Sql = Sql & " AND incfinal >= " & DInci
+    Sql = Sql & " AND incfinal <= " & HInci
     
     
     If CorrectosIncorrectos = 1 Then
-        SQL = SQL & " AND correcto = 1"
+        Sql = Sql & " AND correcto = 1"
     Else
-        If CorrectosIncorrectos = 2 Then SQL = SQL & " AND correcto = 0"
+        If CorrectosIncorrectos = 2 Then Sql = Sql & " AND correcto = 0"
     End If
     
-    If CadB <> "" Then SQL = SQL & " AND " & CadB
+    If CadB <> "" Then Sql = Sql & " AND " & CadB
     
     
     
     'Ordenacion
     If Me.mnTrabajador.Checked Then
-        SQL = SQL & " ORDER BY idtrabajador,fecha"
+        Sql = Sql & " ORDER BY idtrabajador,fecha"
     Else
-        SQL = SQL & " ORDER BY fecha,idtrabajador"
+        Sql = Sql & " ORDER BY fecha,idtrabajador"
     End If
     
 End Sub
@@ -2947,7 +2947,7 @@ Private Sub CargaDatos()
     
     MontaSQL
     Me.adodc1.ConnectionString = conn
-    Me.adodc1.RecordSource = SQL
+    Me.adodc1.RecordSource = Sql
     Me.adodc1.Refresh
     EnlazaAdo Not adodc1.Recordset.EOF
 
@@ -2957,15 +2957,15 @@ End Sub
 Private Sub EnlazaAdo(Si As Boolean)
     
     If Si Then
-        SQL = "select marcajes.*,nomtrabajador,nominci,excesodefecto,idcal from marcajes,trabajadores,incidencias"
-        SQL = SQL & " Where marcajes.idtrabajador = trabajadores.idtrabajador And marcajes.incfinal = incidencias.idinci"
-        SQL = SQL & " AND entrada = " & adodc1.Recordset!Entrada
+        Sql = "select marcajes.*,nomtrabajador,nominci,excesodefecto,idcal from marcajes,trabajadores,incidencias"
+        Sql = Sql & " Where marcajes.idtrabajador = trabajadores.idtrabajador And marcajes.incfinal = incidencias.idinci"
+        Sql = Sql & " AND entrada = " & adodc1.Recordset!Entrada
     Else
-        SQL = "Select * from marcajes where entrada = -1 "
+        Sql = "Select * from marcajes where entrada = -1 "
     End If
     
     Me.Adodc2.ConnectionString = conn
-    Me.Adodc2.RecordSource = SQL
+    Me.Adodc2.RecordSource = Sql
     Me.Adodc2.Refresh
     
     
@@ -2975,41 +2975,53 @@ End Sub
 Private Sub CargaDatosMarcajes(SoloIncidenciasGeneradas As Boolean)
 Dim RS As ADODB.Recordset
 Dim IT As ListItem
-Dim I As Integer
+Dim i As Integer
+Dim cad As String
+Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     Set RS = New ADODB.Recordset
     If Not SoloIncidenciasGeneradas Then
-        SQL = "select hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
-        SQL = SQL & ",hour(horareal) lahorar,minute(horareal) minutosr,second(horareal) segundosr"
-        SQL = SQL & " ,entradamarcajes.idInci ,nominci from entradamarcajes,incidencias where entradamarcajes.idinci=incidencias.idinci AND "
-        SQL = SQL & " idmarcaje=" & adodc1.Recordset!Entrada & " ORDER BY hora"
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "select hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
+        Sql = Sql & ",hour(horareal) lahorar,minute(horareal) minutosr,second(horareal) segundosr"
+        Sql = Sql & " ,entradamarcajes.idInci ,nominci,if(hora<'0:00:00',1,0) Negativa,hora horabd,horareal "
+        Sql = Sql & " from entradamarcajes,incidencias where entradamarcajes.idinci=incidencias.idinci AND "
+        Sql = Sql & " idmarcaje=" & adodc1.Recordset!Entrada & " ORDER BY hora"
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not RS.EOF
         
-            If RS!LaHora >= 0 And RS!LaHora <= 23 Then
-                I = RS!LaHora
+            FueraIntervaloHoras = 0
+            If RS!Negativa Then
+               Sql = Horas_Quitar24(RS!horabd, True)
+               
             Else
-                I = 24
-                If RS!LaHora > 23 Then I = -24
-                I = RS!LaHora + I
-                
-            End If
-            SQL = Format(I, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
+                If RS!LaHora <= 23 Then
+                    i = RS!LaHora
+                Else
+                    If RS!LaHora > 23 Then i = -24
+                    i = RS!LaHora + i
+                End If
+                Sql = Format(i, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             
-            Set IT = ListView1.ListItems.Add(, , SQL)
-            If RS!idInci > 0 Then IT.SubItems(1) = RS!NomInci
+            End If
+            
+            Set IT = ListView1.ListItems.Add(, , Sql)
+            If RS!IdInci > 0 Then IT.SubItems(1) = RS!NomInci
             IT.SubItems(2) = RS!LaHora & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
+            IT.Tag = RS!Negativa
             
             'Hora real
             '-----------------------
-            If RS!LaHora >= 0 And RS!LaHora <= 23 Then
-                I = RS!lahorar
+            If RS!Negativa = 1 Then
+                Sql = Horas_Quitar24(RS!HoraReal, True)
             Else
-                I = 24
-                If RS!lahorar > 23 Then I = -24
-                I = RS!lahorar + I
+            If RS!LaHora <= 23 Then
+                i = RS!lahorar
+            Else
+                i = -24
+                i = RS!lahorar + i
             End If
-            SQL = Format(I, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
-            Set IT = ListView3.ListItems.Add(, , SQL)
+            Sql = Format(i, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
+            End If
+            Set IT = ListView3.ListItems.Add(, , Sql)
             
             RS.MoveNext
         Wend
@@ -3018,14 +3030,14 @@ Dim I As Integer
         
         
     'Las incidencias generadas
-    SQL = "Select incidenciasgeneradas.horas,incidencias.nominci,id,idinci from incidenciasgeneradas,incidencias where idinci=incidencia and entradamarcaje ="
-    SQL = SQL & Adodc2.Recordset!Entrada & " ORDER BY id"
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select incidenciasgeneradas.horas,incidencias.nominci,id,idinci from incidenciasgeneradas,incidencias where idinci=incidencia and entradamarcaje ="
+    Sql = Sql & Adodc2.Recordset!Entrada & " ORDER BY id"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         Set IT = ListView2.ListItems.Add(, , RS!NomInci)
         IT.SubItems(1) = DevuelveHora(RS!Horas)
         IT.SubItems(2) = Format(RS!Horas, "0.00")
-        IT.SubItems(3) = RS!idInci
+        IT.SubItems(3) = RS!IdInci
         IT.Tag = RS!Id
         RS.MoveNext
     Wend
@@ -3036,10 +3048,10 @@ End Sub
 
 Private Sub CalculaHoras()
 Dim g As Integer
-Dim I As Integer
+Dim i As Integer
 Dim Horas As Single
 Dim v As Single
-Dim FInter As Boolean
+Dim FInter As Byte
 Dim T1 As Single
 Dim T2 As Single
 g = ListView1.ListItems.Count
@@ -3052,17 +3064,29 @@ End If
 TextHt(2).Text = g
 g = g \ 2
 Horas = 0
-For I = 1 To g
-    FInter = HoraFueraIntervalo(ListView1.ListItems((I * 2)).SubItems(2))
-    T1 = DevuelveValorHora2(FInter, ListView1.ListItems((I * 2)).SubItems(2))
+
+
+
+For i = 1 To g
     
-    FInter = HoraFueraIntervalo(ListView1.ListItems((I * 2) - 1).SubItems(2))
-    T2 = DevuelveValorHora2(FInter, ListView1.ListItems((I * 2) - 1).SubItems(2))
+    If ListView1.ListItems((i * 2)).Tag = 1 Then
+        FInter = 1
+    Else
+        FInter = HoraFueraInterval(ListView1.ListItems((i * 2)).SubItems(2))
+    End If
+    T1 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2)).SubItems(2))
+    
+    If ListView1.ListItems((i * 2) - 1).Tag = 1 Then
+        FInter = 1
+    Else
+        FInter = HoraFueraInterval(ListView1.ListItems((i * 2) - 1).SubItems(2))
+    End If
+    T2 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2) - 1).SubItems(2))
     v = T1 - T2
     
     'v = DevuelveValorHora(CDate(ListView1.ListItems((I * 2))) - CDate(ListView1.ListItems((I * 2) - 1)))
     Horas = Horas + v
-Next I
+Next i
 TextHt(0).Text = Round(Horas, 2)
 TextHt(1).Text = DevuelveHora(Horas)
 
@@ -3146,15 +3170,15 @@ Dim InsertaEnCalendario As Boolean
     If InsertaEnCalendario Then
         Set miRsAux = New ADODB.Recordset
         
-        SQL = "SELECT tipodia from calendariot where idtrabajador =" & vM.idTrabajador & " AND fecha = '" & Format(vM.Fecha, FormatoFecha) & "'"
-        miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        SQL = "0"
-        If Not miRsAux.EOF Then SQL = DBLet(miRsAux!tipodia, "N")
+        Sql = "SELECT tipodia from calendariot where idtrabajador =" & vM.idTrabajador & " AND fecha = '" & Format(vM.Fecha, FormatoFecha) & "'"
+        miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "0"
+        If Not miRsAux.EOF Then Sql = DBLet(miRsAux!tipodia, "N")
         miRsAux.Close
         conn.Execute "Delete from calendariot where idtrabajador =" & vM.idTrabajador & " AND fecha = '" & Format(vM.Fecha, FormatoFecha) & "'"
         
-        SQL = "INSERT INTO calendariot(idtrabajador, fecha, idhorario, TipoDia) VALUES (" & vM.idTrabajador & ",'" & Format(vM.Fecha, FormatoFecha) & "'," & vM.IdHorario & "," & Val(SQL) & ")"
-        conn.Execute SQL
+        Sql = "INSERT INTO calendariot(idtrabajador, fecha, idhorario, TipoDia) VALUES (" & vM.idTrabajador & ",'" & Format(vM.Fecha, FormatoFecha) & "'," & vM.IdHorario & "," & Val(Sql) & ")"
+        conn.Execute Sql
         
         
         Adodc2.Refresh

@@ -16,42 +16,59 @@ End Function
 
 
 
-'Enero 2015
-'Dada una hora devuelve un numero en formato Single
-Public Function DevuelveValorHora2(FueraIntervalo As Boolean, vHora As String) As Single
+'2017
+'  0. Normal
+'  1- Hora menor que 0
+'  2- Hora mayor= que 24
+Public Function DevuelveValorHora3(FueraIntervalo As Byte, vHora As String) As Single
 Dim Aux As Single
 Dim C
 Dim H As Date
 Dim Incre As Integer
-    
-    If FueraIntervalo Then
-        'Demomento es +24
-        Aux = Mid(vHora, 1, 2)
-        If Aux > 23 Then
+        
+        
+    If FueraIntervalo = 1 Then
+        'negativo
+        H = vHora
+        C = Minute(H)
+        Aux = C / 60
+        DevuelveValorHora3 = Hour(H) + Round(Aux, 2)
+        
+        DevuelveValorHora3 = -DevuelveValorHora3
+           
+    Else
+        If FueraIntervalo = 2 Then
+            Aux = Mid(vHora, 1, 2)
             Aux = Aux - 24
             Incre = 24
+            H = CDate(Format(Val(Aux), "00") & Mid(vHora, 3))
         Else
-            Stop
+            'Normal
+            H = CDate(vHora)
+            Incre = 0
         End If
-        H = CDate(Format(Val(Aux), "00") & Mid(vHora, 3))
-    Else
-        H = CDate(vHora)
-        Incre = 0
+         C = Minute(H)
+        Aux = C / 60
+        DevuelveValorHora3 = Hour(H) + Incre + Round(Aux, 2)
     End If
     
-    C = Minute(H)
-    Aux = C / 60
-    DevuelveValorHora2 = Hour(H) + Incre + Round(Aux, 2)
+   
 End Function
 
 'Una hora formateada en formato "hh:mm" nos dira si hour() es menor que cero o mayor que 23
-Public Function HoraFueraIntervalo(CadenaHora As String) As Boolean
-Dim k As Integer
+Public Function HoraFueraInterval(CadenaHora As String) As Byte
+    Dim k As Integer
 Dim H As Integer
     
     k = InStr(1, CadenaHora, ":")
     H = Mid(CadenaHora, 1, k - 1)
-    HoraFueraIntervalo = H < 0 Or H > 23
+    HoraFueraInterval = 0
+    If H < 0 Then
+        HoraFueraInterval = 1
+    Else
+        If H > 23 Then HoraFueraInterval = 2
+    End If
+            
 End Function
 
 
@@ -60,7 +77,7 @@ End Function
 Public Function DevuelveHora(vHora As Single) As Date
 Dim X
 Dim Y
-Dim Cad As String
+Dim cad As String
 
     vHora = Abs(Round(vHora, 2))
     X = Int(vHora)
@@ -68,8 +85,8 @@ Dim Cad As String
     'En y esta la parte centesimal de una hora
     Y = Round(Y * 60, 0)
     X = X Mod 24
-    Cad = X & ":" & Y & ":00"
-    DevuelveHora = CDate(Cad)
+    cad = X & ":" & Y & ":00"
+    DevuelveHora = CDate(cad)
 End Function
 
 
@@ -97,12 +114,50 @@ End Function
 'Cambia los puntos de los numeros decimales
 'por comas
 Public Function TransformaPuntosHoras(CADENA As String) As String
-Dim I As Integer
+Dim i As Integer
 Do
-    I = InStr(1, CADENA, ".")
-    If I > 0 Then
-        CADENA = Mid(CADENA, 1, I - 1) & ":" & Mid(CADENA, I + 1)
+    i = InStr(1, CADENA, ".")
+    If i > 0 Then
+        CADENA = Mid(CADENA, 1, i - 1) & ":" & Mid(CADENA, i + 1)
     End If
-    Loop Until I = 0
+    Loop Until i = 0
 TransformaPuntosHoras = CADENA
+End Function
+
+
+
+Public Function Horas_Quitar24(Hora As Date, QuitarSigno As Boolean) As String
+Dim Resultado As String
+Dim Num As Integer
+Dim R As Integer
+    
+    
+
+    Resultado = ""
+    'Minutos
+    If Second(Hora) = 0 Then
+        Resultado = "00"
+        R = 0
+    Else
+        Resultado = Format(60 - Second(Hora), "00")
+        R = 1
+    End If
+    Resultado = ":" & Resultado
+    
+    Num = Minute(Hora) + R
+    If Num = 0 Then
+        R = 0
+    Else
+        R = 60 - Num
+    End If
+    Resultado = ":" & Format(R, "00") & Resultado
+    If R > 0 Then R = 1
+    Num = Hour(Hora) + R
+    If R > 23 Then Err.Raise 513, , "Campo hora mayor que 24"
+        
+    Num = 24 - Num
+    Horas_Quitar24 = ""
+    If Not QuitarSigno Then Horas_Quitar24 = "-"
+    Horas_Quitar24 = Horas_Quitar24 & Format(Num, "00") & Resultado
+    
 End Function

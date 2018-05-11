@@ -443,7 +443,7 @@ Dim PrimeraVez As Boolean
 
 Private Sub PonerModo(vModo)
 Dim B As Boolean
-Dim I As Byte
+Dim i As Byte
 
     Modo = vModo
     
@@ -454,9 +454,9 @@ Dim I As Byte
         PonerIndicador lblIndicador, Modo
     End If
     
-    For I = 0 To Me.txtAux.Count - 1
-        txtAux(I).Visible = Not B
-        If I = 0 Or I = 2 Then Text2(I).Visible = Not B
+    For i = 0 To Me.txtAux.Count - 1
+        txtAux(i).Visible = Not B
+        If i = 0 Or i = 2 Then Text2(i).Visible = Not B
     Next
     Combo1.Visible = Not B
     
@@ -569,7 +569,7 @@ End Sub
 
 Private Sub BotonModificar()
     Dim anc As Single
-    Dim I As Integer
+    Dim i As Integer
 
     If adodc1.Recordset.EOF Then Exit Sub
     If adodc1.Recordset.RecordCount < 1 Then Exit Sub
@@ -580,8 +580,8 @@ Private Sub BotonModificar()
     If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
-        I = DataGrid1.Bookmark - DataGrid1.FirstRow
-        DataGrid1.Scroll 0, I
+        i = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, i
         DataGrid1.Refresh
     End If
 
@@ -597,7 +597,7 @@ Private Sub BotonModificar()
     txtAux(1).Text = DataGrid1.Columns(1).Text
     txtAux(2).Text = DataGrid1.Columns(2).Text
     
-    Stop
+     
     Combo1.ListIndex = 0
 
     
@@ -630,7 +630,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim SQL As String
+Dim Sql As String
 'Dim temp As Boolean
 
 
@@ -641,20 +641,20 @@ Dim SQL As String
     On Error GoTo Error2
     'Ciertas comprobaciones
     If adodc1.Recordset.EOF Then Exit Sub
-    If Not SepuedeBorrar(SQL) Then Exit Sub
+    If Not SepuedeBorrar(Sql) Then Exit Sub
 
     'El registre de codi 0 no es pot Modificar ni Eliminar
     'If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     '*************** canviar els noms i el DELETE **********************************
-    SQL = "¿Seguro que desea eliminar la tarea?"
-    SQL = SQL & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(0), FormatoCampo(txtAux(0)))
-    SQL = SQL & vbCrLf & "Descripción: " & adodc1.Recordset.Fields(1)
-    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
+    Sql = "¿Seguro que desea eliminar la tarea?"
+    Sql = Sql & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(0), FormatoCampo(txtAux(0)))
+    Sql = Sql & vbCrLf & "Descripción: " & adodc1.Recordset.Fields(1)
+    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         NumRegElim = adodc1.Recordset.AbsolutePosition
-        SQL = "Delete from tareas where idtarea=" & adodc1.Recordset!idtarea
-        conn.Execute SQL
+        Sql = "Delete from tareas where idtarea=" & adodc1.Recordset!idtarea
+        conn.Execute Sql
         If CadB <> "" Then
             CargaGrid2 True, CadB
             lblIndicador.Caption = PonerContRegistros(Me.adodc1)
@@ -687,7 +687,7 @@ End Sub
 
 
 Private Sub cmdAceptar_Click()
-Dim I As Integer
+Dim i As Integer
 
     Select Case Modo
         Case 3 'INSERTAR
@@ -764,7 +764,7 @@ End Sub
 
 Private Sub cmdRegresar_Click()
 Dim cad As String
-Dim I As Integer
+Dim i As Integer
 Dim J As Integer
 Dim Aux As String
 
@@ -773,16 +773,16 @@ Dim Aux As String
         Exit Sub
     End If
     cad = ""
-    I = 0
+    i = 0
     Do
-        J = I + 1
-        I = InStr(J, DatosADevolverBusqueda, "|")
-        If I > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, J, I - J)
+        J = i + 1
+        i = InStr(J, DatosADevolverBusqueda, "|")
+        If i > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, i - J)
             J = Val(Aux)
             cad = cad & adodc1.Recordset.Fields(J) & "|"
         End If
-    Loop Until I = 0
+    Loop Until i = 0
     RaiseEvent DatoSeleccionado(cad)
     Unload Me
 End Sub
@@ -807,14 +807,14 @@ Dim F1 As Date
             
                     frmAlzModificarHorasEmpresa.idTrabajador = adodc1.Recordset!idTrabajador
                     frmAlzModificarHorasEmpresa.Fecha = adodc1.Recordset!Fecha
-                    frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!tipohoras
+                    frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!TipoHoras
                     frmAlzModificarHorasEmpresa.Label1(0).Caption = adodc1.Recordset!nomtrabajador
-                    frmAlzModificarHorasEmpresa.Label1(3).Caption = adodc1.Recordset!DescTipoHora
+                    frmAlzModificarHorasEmpresa.Label1(3).Caption = adodc1.Recordset!Desctipohora
                     frmAlzModificarHorasEmpresa.Show vbModal
                           
                     If CadenaDesdeOtroForm <> "" Then
                         
-                        cadSeleccion = adodc1.Recordset!idTrabajador & "|" & adodc1.Recordset!Fecha & "|" & adodc1.Recordset!tipohoras & "|"
+                        cadSeleccion = adodc1.Recordset!idTrabajador & "|" & adodc1.Recordset!Fecha & "|" & adodc1.Recordset!TipoHoras & "|"
                     
                         'Ha modificado algo
                         'Ahora encesitamos ver las dos horas(fruixeresa y alzicoop)
@@ -854,7 +854,7 @@ Dim F1 As Date
                                         NumRegElim = 2
                                     Else
                                         If adodc1.Recordset!Fecha = F1 Then
-                                            If adodc1.Recordset!tipohoras = Val(CadB) Then NumRegElim = 2
+                                            If adodc1.Recordset!TipoHoras = Val(CadB) Then NumRegElim = 2
                                         End If
                                     End If
                                 End If
@@ -1003,19 +1003,19 @@ End Sub
 
 
 Private Sub CargaGrid2(MontaElSelect As Boolean, vSQL As String)
-    Dim SQL As String
+    Dim Sql As String
     Dim tots As String
     
 '    adodc1.ConnectionString = Conn
     If MontaElSelect Then
-        SQL = DevuelveSQL(vSQL)
+        Sql = DevuelveSQL(vSQL)
     Else
-        SQL = vSQL
+        Sql = vSQL
     End If
     
     
     
-    CargaGridGnral Me.DataGrid1, Me.adodc1, SQL, False
+    CargaGridGnral Me.DataGrid1, Me.adodc1, Sql, False
     
     'tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Nombre|3080|;S|txtAux(2)|T|Pob.|800|;S|btnBuscar(0)|B||0|;S|txtAux2(2)|T|Población|2200|;"
     
@@ -1146,7 +1146,7 @@ Private Sub DataGrid1_Lostfocus()
 End Sub
 
 
-Private Function DevuelveSQL(SQL As String) As String
+Private Function DevuelveSQL(Sql As String) As String
 
 
     DevuelveSQL = "select jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,"
@@ -1161,6 +1161,6 @@ Private Function DevuelveSQL(SQL As String) As String
     
     'Si cambiamos el WHERE este, hay que tener cuidado que la regresar de editar horas busco el ultimo trozo , hasta aqui
     
-    If SQL <> "" Then DevuelveSQL = DevuelveSQL & " AND " & SQL
+    If Sql <> "" Then DevuelveSQL = DevuelveSQL & " AND " & Sql
     DevuelveSQL = DevuelveSQL & " ORDER BY jornadassemanalesalz.idTrabajador,fecha,tipohoras,paraempresa"
 End Function

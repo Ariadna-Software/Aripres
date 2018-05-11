@@ -803,8 +803,8 @@ Attribute frmc.VB_VarHelpID = -1
 
 
 Dim FInicioSeccion As Date
-Dim I As Integer
-Dim Cad As String
+Dim i As Integer
+Dim cad As String
 
 Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
@@ -825,21 +825,21 @@ Private Sub cboSeccion_Click()
     If Opcion = 4 Then
         '-------------------  Proceso nominas
     
-            Cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-            cboSeccion.Tag = Val(Cad)
+            cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            cboSeccion.Tag = Val(cad)
             FInicioSeccion = "01/01/2001"
-            Cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-            If Cad <> "" Then
-                Me.txtFecha(5).Text = Format(Cad, "dd/mm/yyyy")
+            cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            If cad <> "" Then
+                Me.txtFecha(5).Text = Format(cad, "dd/mm/yyyy")
                 Me.txtFecha(5).Text = DateAdd("d", 1, CDate(Me.txtFecha(5).Text))
                 FInicioSeccion = CDate(txtFecha(5).Text)
                 
                 'seccion.nominas =1
                 If cboSeccion.Tag = 1 Then
                     'Sera desde hasta el domingo de esa semana
-                    I = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
-                    I = 7 - I
-                    Me.txtFecha(6).Text = Format(DateAdd("d", I, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
+                    i = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
+                    i = 7 - i
+                    Me.txtFecha(6).Text = Format(DateAdd("d", i, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
                 Else
                     Me.txtFecha(6).Text = ""
                 End If
@@ -849,21 +849,21 @@ Private Sub cboSeccion_Click()
         'Solo ALzira
         'Es generar datos para FRUXERESA
         'ESTOY AQUIIIIIII
-            Cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-            cboSeccion.Tag = Val(Cad)
+            cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            cboSeccion.Tag = Val(cad)
             FInicioSeccion = "01/01/2001"
-            Cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
-            If Cad <> "" Then
-                Me.txtFecha(5).Text = Format(Cad, "dd/mm/yyyy")
+            cad = DevuelveDesdeBD("max(fechafin)", "jornadassemanalesproceso", "seccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
+            If cad <> "" Then
+                Me.txtFecha(5).Text = Format(cad, "dd/mm/yyyy")
                 Me.txtFecha(5).Text = DateAdd("d", 1, CDate(Me.txtFecha(5).Text))
                 FInicioSeccion = CDate(txtFecha(5).Text)
                 
                 'seccion.nominas =1
                 If cboSeccion.Tag = 1 Then
                     'Sera desde hasta el domingo de esa semana
-                    I = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
-                    I = 7 - I
-                    Me.txtFecha(6).Text = Format(DateAdd("d", I, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
+                    i = Format(CDate(Me.txtFecha(5).Text), "w", vbMonday)
+                    i = 7 - i
+                    Me.txtFecha(6).Text = Format(DateAdd("d", i, CDate(Me.txtFecha(5).Text)), "dd/mm/yyyy")
                 Else
                     Me.txtFecha(6).Text = ""
                 End If
@@ -939,8 +939,8 @@ Private Function DevuelveFechaUltimoProcesado() As Date
     'COMPROBAMOS QUE NO SE metan vacaciones en dias YA procesados
     'Veamos cual es la fecha de ultimo proceso
     DevuelveFechaUltimoProcesado = "01/01/2001"
-    Cad = "Select max(fecha) from marcajes"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "Select max(fecha) from marcajes"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not miRsAux.EOF Then
         If Not IsNull(miRsAux.Fields(0)) Then DevuelveFechaUltimoProcesado = miRsAux.Fields(0)
     End If
@@ -962,16 +962,16 @@ Dim F2 As Date
         'AHora veremos si las fecha de vacaciones YA hay dias procesados
         If Year(vEmpresa.FechaInicio) = Year(vEmpresa.FechaFin) Then
                 'AÑOS NATURALES. Vamos, como en la conta
-                I = Year(vEmpresa.FechaInicio)
-                If Me.optPeriodo(1).Value Then I = I + 1
+                i = Year(vEmpresa.FechaInicio)
+                If Me.optPeriodo(1).Value Then i = i + 1
                     
         Else
             'Años partidos
-            I = Year(vEmpresa.FechaFin)
-            If Not (vEmpresa.FechaFin <= FechaUltimoProcesado) Then I = I + 1
+            i = Year(vEmpresa.FechaFin)
+            If Not (vEmpresa.FechaFin <= FechaUltimoProcesado) Then i = i + 1
                 
         End If
-        txtFecha(3).Text = "01/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & I
+        txtFecha(3).Text = "01/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & i
     End If
     If CDate(txtFecha(3).Text) <= FechaUltimoProcesado Then
         'Vuelvo a poner la txt en blanco
@@ -982,9 +982,9 @@ Dim F2 As Date
     
     
     If MesEntero Then
-        F1 = CDate("01/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & I)
-        I = DiasMes(cmbFecha.ItemData(cmbFecha.ListIndex), I)
-        F2 = I & "/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & Year(F1)
+        F1 = CDate("01/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & i)
+        i = DiasMes(cmbFecha.ItemData(cmbFecha.ListIndex), i)
+        F2 = i & "/" & cmbFecha.ItemData(cmbFecha.ListIndex) & "/" & Year(F1)
         
     Else
         'Son dias de intervalo
@@ -992,10 +992,10 @@ Dim F2 As Date
         F2 = CDate(txtFecha(4).Text)
     End If
 
-    Cad = "UPDATE calendariot Set tipodia = 2 WHERE  idTrabajador =  " & Val(RecuperaValor(Parametros, 2))
-    Cad = Cad & " AND fecha = '"
+    cad = "UPDATE calendariot Set tipodia = 2 WHERE  idTrabajador =  " & Val(RecuperaValor(Parametros, 2))
+    cad = cad & " AND fecha = '"
     While F1 <= F2
-        EjecutaSQL Cad & Format(F1, FormatoFecha) & "'"
+        EjecutaSQL cad & Format(F1, FormatoFecha) & "'"
         F1 = DateAdd("d", 1, F1)
     Wend
     
@@ -1007,32 +1007,43 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
     
     
      'Muuuchas cosas a comprobar
-    Cad = ""
-    If txtFecha(5).Text = "" Or txtFecha(6).Text = "" Then Cad = "Ponga las fechas"
+    cad = ""
+    If txtFecha(5).Text = "" Or txtFecha(6).Text = "" Then cad = "Ponga las fechas"
         
-    If cboSeccion.ListIndex < 0 Then Cad = "Falta sección" & vbCrLf & Cad
-
-    If Cad <> "" Then
-        MsgBox Cad, vbExclamation
+    If cboSeccion.ListIndex < 0 Then
+        If vEmpresa.QueEmpresa = 4 Then
+            cboSeccion.Tag = 1
+            
+            'Procesamos todas las secciones a la vez
+            
+            FInicioSeccion = txtFecha(5).Text
+           
+            
+        Else
+            cad = "Falta sección" & vbCrLf & cad
+        End If
+    End If
+    If cad <> "" Then
+        MsgBox cad, vbExclamation
         Exit Sub
     End If
 
 
     'Faltara ver si esta la semana completa o es final de semana
-    Cad = ""
+    cad = ""
     If Not IsDate(txtFecha(5).Text) Or Not IsDate(txtFecha(6).Text) Then
-        Cad = "Fechas incorrectas"
+        cad = "Fechas incorrectas"
     Else
         'VA POR SEMANAS
         If Me.cboSeccion.Tag = 1 Then
     
             If DateDiff("d", txtFecha(5).Text, txtFecha(6).Text) > 6 Then
                 'VA por semanas
-                 Cad = "Mas de una semana seleccionada"
+                 cad = "Mas de una semana seleccionada"
                 
             ElseIf Format(CDate(txtFecha(5).Text), "ww", vbMonday) <> Format(CDate(txtFecha(6).Text), "ww", vbMonday) Then
                 'Procesamos de semana en semana. Deben pertenecer a la misma semana
-                Cad = "Semanas distintas"
+                cad = "Semanas distintas"
             Else
                 'OK. Faltara ver mas casos
                 
@@ -1042,46 +1053,49 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
                 'Las semanas
                 'La fecha inicio NO puede ser inferior a la que le corresponde, que esta guardado en FInicioSeccion
                 If CDate(txtFecha(5).Text) < FInicioSeccion Then
-                   Cad = "Intervalo ya procesado. Inicio debe ser: " & FInicioSeccion
+                   cad = "Intervalo ya procesado. Inicio debe ser: " & FInicioSeccion
                 Else
                     'Si no procesa desde qyue le corresponde
                     'veremos si hay datos pendientes de procesar
                      If CDate(txtFecha(5).Text) > FInicioSeccion Then
                           'Si la fecha es mayor a la que ponen como inicio del intervalor, veremos si ya hay procesados
                           'para esas fechas y esa seccion
-                          Cad = "fecha >=" & DBSet(FInicioSeccion, "F") & " AND fecha <" & DBSet(txtFecha(5).Text, "F")
-                          Cad = Cad & " AND idtrabajador IN (select idtrabajador from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
-                          Cad = Cad & ") AND 1"
-                          Cad = DevuelveDesdeBD("count(*)", "jornadassemanalesalz", Cad, "1")
-                          If Val(Cad) > 0 Then
-                               Cad = "Existen datos procesados entre: " & FInicioSeccion & " y " & txtFecha(5).Text
+                          cad = "fecha >=" & DBSet(FInicioSeccion, "F") & " AND fecha <" & DBSet(txtFecha(5).Text, "F")
+                          cad = cad & " AND idtrabajador IN (select idtrabajador from trabajadores  "
+                          
+                          If cboSeccion.ListIndex > 0 Then cad = cad & " WHERE Seccion = " & cboSeccion.ItemData(cboSeccion.ListIndex)
+                          
+                          cad = cad & ") AND 1"
+                          cad = DevuelveDesdeBD("count(*)", "jornadassemanalesalz", cad, "1")
+                          If Val(cad) > 0 Then
+                               cad = "Existen datos procesados entre: " & FInicioSeccion & " y " & txtFecha(5).Text
                           Else
-                               Cad = ""
+                               cad = ""
                           End If
                     
                            'Veremos sy hay marcajes pendientes de procesar en ese periodo que es
                            'desde que le corresponde hasta donde empieza
-                          If Cad = "" Then
-                             Cad = "fecha >=" & DBSet(FInicioSeccion, "F") & " AND fecha <" & DBSet(txtFecha(5).Text, "F")
-                             Cad = Cad & " AND idtrabajador IN (select idtrabajador from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
-                             Cad = Cad & ") AND 1"
-                             Cad = DevuelveDesdeBD("count(*)", "marcajes", Cad, "1")
-                             If Val(Cad) > 0 Then
-                                  Cad = "Existen marcajes entre: " & FInicioSeccion & " y " & txtFecha(5).Text & " que no entran en el intervalo para procesar"
+                          If cad = "" Then
+                             cad = "fecha >=" & DBSet(FInicioSeccion, "F") & " AND fecha <" & DBSet(txtFecha(5).Text, "F")
+                             cad = cad & " AND idtrabajador IN (select idtrabajador from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+                             cad = cad & ") AND 1"
+                             cad = DevuelveDesdeBD("count(*)", "marcajes", cad, "1")
+                             If Val(cad) > 0 Then
+                                  cad = "Existen marcajes entre: " & FInicioSeccion & " y " & txtFecha(5).Text & " que no entran en el intervalo para procesar"
                              Else
-                                  Cad = ""
+                                  cad = ""
                              End If
                         
                           End If
                        
                        
                           'Febrero 2015
-                          If Cad = "" Then
+                          If cad = "" Then
                                 'Comrpobacion una. que el dia es menor que jueves
-                                I = Weekday(txtFecha(5).Text, vbMonday)
-                                If I >= 5 Then
+                                i = Weekday(txtFecha(5).Text, vbMonday)
+                                If i >= 5 Then
                                     'Es viernes. Por lo tanto, el dia hasta tiene que ser domingo
-                                    If Weekday(CDate(txtFecha(6).Text), vbMonday) <> 7 Then Cad = "Fecha final de intervalo debe ser domingo. Proceso semana completo"
+                                    If Weekday(CDate(txtFecha(6).Text), vbMonday) <> 7 Then cad = "Fecha final de intervalo debe ser domingo. Proceso semana completo"
                                         
                                 End If
                           End If
@@ -1094,8 +1108,8 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
             End If
         End If  'de por semanas
     End If
-    If Cad <> "" Then
-        MsgBox Cad, vbExclamation
+    If cad <> "" Then
+        MsgBox cad, vbExclamation
         Exit Sub
     End If
     
@@ -1142,16 +1156,19 @@ Dim N As Byte
     'Una comprobacion
     'Luego lee los festivos del calendario, y estamos procesando una seccion
     'es decir NO dejo pasar si para la seccion hay mas de una calendario
-    Cad = "select distinct(idcal) from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic
-    Cad = ""
-    While Not miRsAux.EOF
-        Cad = Cad & "1"
-        miRsAux.MoveNext
-    Wend
-    miRsAux.Close
-    
-    If Len(Cad) <> 1 Then
+    If cboSeccion.ListIndex > 0 Then
+        cad = "select distinct(idcal) from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic
+        cad = ""
+        While Not miRsAux.EOF
+            cad = cad & "1"
+            miRsAux.MoveNext
+        Wend
+        miRsAux.Close
+    Else
+        cad = "1"
+    End If
+    If Len(cad) <> 1 Then
         If vEmpresa.QueEmpresa <> 5 Then
             MsgBox "Solo puede haber un calendario para la seccion. ", vbExclamation
             Exit Sub
@@ -1163,35 +1180,36 @@ Dim N As Byte
     
     Set ColTraba = New Collection
     
-    Cad = "Select marcajes.idtrabajador FROM marcajes,trabajadores WHERE marcajes.idtrabajador=trabajadores.idtrabajador AND"
-    Cad = Cad & TipoAlziraEntreFechas
-    Cad = Cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
-    Cad = Cad & " GROUP BY 1"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "Select marcajes.idtrabajador FROM marcajes,trabajadores WHERE marcajes.idtrabajador=trabajadores.idtrabajador AND"
+    cad = cad & TipoAlziraEntreFechas
+    If cboSeccion.ListIndex > 0 Then cad = cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+    cad = cad & " GROUP BY 1"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     NumRegElim = 0
-    Cad = ""
+    cad = ""
     While Not miRsAux.EOF
-        Cad = Cad & ", " & miRsAux!idTrabajador
+        cad = cad & ", " & miRsAux!idTrabajador
         NumRegElim = NumRegElim + 1
         If NumRegElim > 50 Then
-            ColTraba.Add Mid(Cad, 2)
-            Cad = ""
+            ColTraba.Add Mid(cad, 2)
+            cad = ""
             NumRegElim = 0
         End If
         miRsAux.MoveNext
     Wend
     miRsAux.Close
     
-    If NumRegElim > 0 Then ColTraba.Add Mid(Cad, 2)
+    If NumRegElim > 0 Then ColTraba.Add Mid(cad, 2)
     
     '
-    Cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
-    conn.Execute Cad
+    cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
+    conn.Execute cad
     
     For N = 1 To ColTraba.Count
         If Me.cboSeccion.Tag = 1 Then
             'Proceso de horas. Horas normales, extra, extrucutrales...
             ProcesoCalculaHorasTipoAlzira " AND idtrabajador in (" & ColTraba.Item(N) & ")"
+            
         Else
             'Proceso de calculo de horas por conteo (sums)
             'Este calculo es sencillo ya que los trabajadores de estas secciones
@@ -1204,7 +1222,7 @@ Dim N As Byte
     
     
     Set miRsAux = Nothing
-    CadenaDesdeOtroForm = txtFecha(5).Text & "|" & txtFecha(6).Text & "|"
+    CadenaDesdeOtroForm = txtFecha(5).Text & "|" & txtFecha(6).Text & "|" & IIf(Me.cboSeccion.ListIndex < 0, 1, 0) & "|"
     Unload Me
 End Sub
 
@@ -1229,8 +1247,10 @@ Dim HorasmaximoNormalesDia As Integer
 Dim HoraSabadoExtras As Date
 
     
+    
+        
     HorasmaximoNormalesDia = 9
-
+    If vEmpresa.QueEmpresa = 4 Then HorasmaximoNormalesDia = 8
     
     
     Insert = "INSERT INTO tmphorastipoalzira(codusu,idtrabajador,diasem,fecha,TipoHoras,horastrabajadas) "
@@ -1238,42 +1258,43 @@ Dim HoraSabadoExtras As Date
     'Varios pasos
     'Primero los domingos y festivos ENTRAN Con todas las horas extras
     '----------------------------------------------------------------
-    Cad = 2 'HORA EXTRA
-    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas"
-    Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
-    Cad = Cad & ListaTrabajadores & " AND "
+    cad = 2 'HORA EXTRA
+    cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",horastrabajadas"
+    cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+    cad = cad & ListaTrabajadores & " AND "
     
     
-    conn.Execute Insert & Cad & " date_format(fecha,'%w')=0" 'domingos
+    conn.Execute Insert & cad & " date_format(fecha,'%w')=0" 'domingos
     
-    conn.Execute Insert & Cad & " Festivo = 1 and date_format(fecha,'%w')<>0"  'festivos que no sean domingos
-    
-    
-    'Resto de dias menos sabados
-    Cad = 0 'HORA normales
-    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
-    Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
-    Cad = Cad & ListaTrabajadores & " AND "
-    conn.Execute Insert & Cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND    Festivo = 0"
-    
-    'Las que se pasen de 9 (HorasmaximoNormalesDia) van a horas estrcutrales
-    Cad = 1 'HORA estrucutrales
-    Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas-" & HorasmaximoNormalesDia
-    Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
-    Cad = Cad & ListaTrabajadores & " AND "
-    Cad = Cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND Festivo = 0 AND horastrabajadas>" & HorasmaximoNormalesDia
-    conn.Execute Insert & Cad
+    conn.Execute Insert & cad & " Festivo = 1 and date_format(fecha,'%w')<>0"  'festivos que no sean domingos
     
     
+    
+        
+        cad = 0 'HORA normales
+        cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
+        cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+        cad = cad & ListaTrabajadores & " AND "
+        conn.Execute Insert & cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND    Festivo = 0"
+        
+        'Las que se pasen de 9 (HorasmaximoNormalesDia) van a horas estrcutrales
+        cad = 1 'HORA estrucutrales
+        cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",horastrabajadas-" & HorasmaximoNormalesDia
+        cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+        cad = cad & ListaTrabajadores & " AND "
+        cad = cad & " date_format(fecha,'%w') in (1,2,3,4,5) AND Festivo = 0 AND horastrabajadas>" & HorasmaximoNormalesDia
+        conn.Execute Insert & cad
+        
+        
     
     
     'ALZRIRA
     'Los sabados, a partir de las 14:30 son extras
     '------------------------------------------------
     'Los sabados, que no sean festivos
-    Cad = "select fecha from marcajes where " & TipoAlziraEntreFechas
-    Cad = Cad & ListaTrabajadores & " and date_format(fecha,'%w')=6 and festivo=0 GROUP BY 1"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "select fecha from marcajes where " & TipoAlziraEntreFechas
+    cad = cad & ListaTrabajadores & " and date_format(fecha,'%w')=6 and festivo=0 GROUP BY 1"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Set ColSabados = New Collection
     While Not miRsAux.EOF
         ColSabados.Add CStr(miRsAux!Fecha)
@@ -1285,17 +1306,21 @@ Dim HoraSabadoExtras As Date
     If vEmpresa.QueEmpresa = 5 Then
         HoraSabadoExtras = "13:30:00"
     Else
-        HoraSabadoExtras = "14:30:00"
+        If vEmpresa.QueEmpresa = 4 Then
+            HoraSabadoExtras = "14:00:00"
+        Else
+            HoraSabadoExtras = "14:30:00"
+        End If
     End If
     
     
     
-    For I = 1 To ColSabados.Count
+    For i = 1 To ColSabados.Count
                 
             'Veremos que trabajadores tienen un fichaje mas alla de las 14:30(HoraSabadoExtras )
-            Cad = "select idtrabajador from  entradamarcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " and hora>" & DBSet(HoraSabadoExtras, "H")
-            Cad = Cad & ListaTrabajadores & " GROUP BY 1"
-            miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            cad = "select idtrabajador from  entradamarcajes where fecha=" & DBSet(ColSabados.Item(i), "F") & " and hora>" & DBSet(HoraSabadoExtras, "H")
+            cad = cad & ListaTrabajadores & " GROUP BY 1"
+            miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             AuxTra = ""
             While Not miRsAux.EOF
                 AuxTra = AuxTra & ", " & miRsAux!idTrabajador
@@ -1306,27 +1331,27 @@ Dim HoraSabadoExtras As Date
             'YA tengo los trabadores que el SABADO ha trabajado mas alla de las HoraSabadoExtras
             
             'Los que NO han ido mas alla HoraSabadoExtras
-                Cad = 1 'HORA estrucutrales
-                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas>" & HorasmaximoNormalesDia
-                Cad = Cad & ListaTrabajadores
+                cad = 1 'HORA estrucutrales
+                cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
+                cad = cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(i), "F") & " AND horastrabajadas>" & HorasmaximoNormalesDia
+                cad = cad & ListaTrabajadores
                 If AuxTra <> "" Then
                     AuxTra = Mid(AuxTra, 2)
                     'En auxtra estan los que han trabajado mas alla de las 14:30
-                    Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
+                    cad = cad & " and not idtrabajador in  (" & AuxTra & ")"
     
                 End If
-                conn.Execute Insert & Cad
+                conn.Execute Insert & cad
                 
-                Cad = 0 'HORA normales
-                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas<=" & HorasmaximoNormalesDia
-                Cad = Cad & ListaTrabajadores
+                cad = 0 'HORA normales
+                cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & cad & ",horastrabajadas"
+                cad = cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(i), "F") & " AND horastrabajadas<=" & HorasmaximoNormalesDia
+                cad = cad & ListaTrabajadores
                 If AuxTra <> "" Then
                     'En auxtra estan los que han trabajado mas alla de las  HoraSabadoExtras
-                    Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
+                    cad = cad & " and not idtrabajador in  (" & AuxTra & ")"
                 End If
-                conn.Execute Insert & Cad
+                conn.Execute Insert & cad
                 
           
                 
@@ -1336,29 +1361,34 @@ Dim HoraSabadoExtras As Date
                 Set RT = New ADODB.Recordset
                 
                 'REESTABLECEMOS LAS HORAS PARA AQUELLOS  han trabajado mas alla de las HoraSabadoExtras
-                Cad = "Select marcajes.*,ExcesoDefecto from marcajes,incidencias where idinci=IncFinal AND fecha=" & DBSet(ColSabados.Item(I), "F") & " and idtrabajador in  (" & AuxTra & ")"
-                miRsAux.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+                cad = "Select marcajes.*,ExcesoDefecto from marcajes,incidencias where idinci=IncFinal AND fecha=" & DBSet(ColSabados.Item(i), "F") & " and idtrabajador in  (" & AuxTra & ")"
+                miRsAux.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
                 While Not miRsAux.EOF
                     Debug.Print miRsAux!idTrabajador
                     'FALTA####
-                    'If miRsAux!idTrabajador = 9 Then Stop
+                    'If miRsAux!idTrabajador = 9 Then St op
                     HN = miRsAux!HorasTrabajadas
                     
                     HorasExceso = 0
                     
-                    If miRsAux!excesodefecto = 0 Then
+                    If vEmpresa.QueEmpresa = 4 Then
+                        'En catadau, son normales las 8 primeras
                         HI = 0
+                    
                     Else
-                        'Horas incidencia
-                        HI = miRsAux!HorasIncid
-                        HN = HN - miRsAux!HorasIncid
+                        If miRsAux!ExcesoDefecto = 0 Then
+                            HI = 0
+                        Else
+                            'Horas incidencia
+                            HI = miRsAux!HorasIncid
+                            HN = HN - miRsAux!HorasIncid
+                        End If
                     End If
                     
-                    
                     'Vere las fichadas de ese dia que superen las HoraSabadoExtras
-                    Cad = "Select * from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
-                    Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
-                    RT.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                    cad = "Select * from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
+                    cad = cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
+                    RT.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                     Fin = False
                     Do
                         T1 = CCur(DevuelveValorHora(RT!Hora))
@@ -1403,16 +1433,16 @@ Dim HoraSabadoExtras As Date
                     'Insertamos en la tmp
                     'Normales
                     'tmphorastipoalzira(codusu,idtrabajador,diasem,fecha,TipoHoras,horastrabajadas)
-                    Cad = " VALUES (" & vUsu.Codigo & "," & miRsAux!idTrabajador & ",5," & DBSet(miRsAux!Fecha, "F") & ","
+                    cad = " VALUES (" & vUsu.Codigo & "," & miRsAux!idTrabajador & ",5," & DBSet(miRsAux!Fecha, "F") & ","
                     
-                    Cad = Insert & Cad
+                    cad = Insert & cad
                     
                     'Las normales
                         
-                        conn.Execute Cad & "0," & DBSet(HN, "N") & ")"   'normales
+                        conn.Execute cad & "0," & DBSet(HN, "N") & ")"   'normales
                         
-                        If HorasExceso > 0 Then conn.Execute Cad & "2," & DBSet(HorasExceso, "N") & ")"  'LS QUE VAN MAS ALLA SON EXTRA
-                        If HI > 0 Then conn.Execute Cad & "1," & DBSet(HI, "N") & ")"   'LS QUE VAN MAS ALLA SON estruc
+                        If HorasExceso > 0 Then conn.Execute cad & "2," & DBSet(HorasExceso, "N") & ")"  'LS QUE VAN MAS ALLA SON EXTRA
+                        If HI > 0 Then conn.Execute cad & "1," & DBSet(HI, "N") & ")"   'LS QUE VAN MAS ALLA SON estruc
 
                     
                     RT.Close
@@ -1426,7 +1456,7 @@ Dim HoraSabadoExtras As Date
                     
     
                 
-    Next I
+    Next i
     
         'Si los sabados fueran proceso normal seria el trozo de aqui abajo
         'COOPIC. Sabados, proceso normal  correinte
@@ -1448,8 +1478,8 @@ Dim HoraSabadoExtras As Date
     
     
     
-    Cad = "Delete FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo & " AND horastrabajadas=0"
-    conn.Execute Cad
+    cad = "Delete FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo & " AND horastrabajadas=0"
+    conn.Execute cad
     
     
     
@@ -1479,7 +1509,7 @@ End Function
 
 
 Private Sub Command1_Click()
-    I = 0
+    i = 0
     CadenaDesdeOtroForm = ""
     If Me.txtDecimal(1).Text <> "" Then
         If ImporteFormateado(txtDecimal(1).Text) > 0 Then
@@ -1495,8 +1525,8 @@ Private Sub Command1_Click()
         CadenaDesdeOtroForm = txtDecimal(1).Tag
     End If
     If Not Me.txtDecimal(0).Visible Then
-        Cad = "Desea asignar como horas de parada: " & txtDecimal(1).Text & "  a :" & vbCrLf & Parametros
-        If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        cad = "Desea asignar como horas de parada: " & txtDecimal(1).Text & "  a :" & vbCrLf & Parametros
+        If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
     Unload Me
 End Sub
@@ -1582,25 +1612,67 @@ Dim W As Integer
         End If
         
         
-        Cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
-        conn.Execute Cad
+        cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
+        conn.Execute cad
         
         
         cboSeccion.Clear
         Set miRsAux = New ADODB.Recordset
-        miRsAux.Open "select * from secciones where idseccion in (select seccion from trabajadores) ORDER BY nombre", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = "select * from secciones where idseccion in (select seccion from trabajadores) "
+        If Opcion = 4 Then cad = cad & " and nominas=1"
+        cad = cad & " ORDER BY nombre"
+        
+        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        
+
         While Not miRsAux.EOF
             cboSeccion.AddItem miRsAux!Nombre & " (" & miRsAux!IdSeccion & ")"
             cboSeccion.ItemData(cboSeccion.NewIndex) = miRsAux!IdSeccion
             miRsAux.MoveNext
         Wend
         miRsAux.Close
+        
+        
+        
+        
+        If vEmpresa.QueEmpresa = 4 Then
+                    
+            cad = "select seccion,max(fechaini) fi,max(fechafin) ff from jornadassemanalesproceso  group by 1"
+            miRsAux.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+            cad = ""
+            
+            While Not miRsAux.EOF
+                If cad = "" Then
+                    cad = Format(IIf(IsNull(miRsAux!FI), "01/01/1900", miRsAux!FI), "dd/mm/yyyy") & Format(IIf(IsNull(miRsAux!FF), "01/01/1900", miRsAux!FF), "dd/mm/yyyy")
+                Else
+                    CadenaDesdeOtroForm = Format(IIf(IsNull(miRsAux!FI), "01/01/19000", miRsAux!FI), "dd/mm/yyyy") & Format(IIf(IsNull(miRsAux!FF), "01/01/19000", miRsAux!FF), "dd/mm/yyyy")
+                    If cad <> CadenaDesdeOtroForm Then
+                        cad = "MAL"
+                        miRsAux.MoveLast
+                    End If
+                End If
+                miRsAux.MoveNext
+            Wend
+            miRsAux.Close
+            If cad <> "" Then
+                If cad = "MAL" Then
+                    MsgBox "Distintas fechas en la generacion por secciones", vbExclamation
+                Else
+                    
+                    FInicioSeccion = CDate(Mid(cad, 11, 10))
+                    FInicioSeccion = DateAdd("d", 1, FInicioSeccion)
+                    txtFecha(5).Text = Format(FInicioSeccion, "dd/mm/yyyy")
+                    i = Weekday(FInicioSeccion, vbMonday)
+                    i = 7 - i
+                    If i > 0 Then txtFecha(6).Text = Format(DateAdd("d", i, FInicioSeccion), "dd/mm/yyyy")
+                    
+                            
+                    
+                End If
+            End If
+            CadenaDesdeOtroForm = ""
+        End If
         Set miRsAux = Nothing
-        
-        
-        
-        
-        
     Case 5
         'Pedir mes
         PonerFrameVisible FramePedirMes, H, W
@@ -1613,21 +1685,21 @@ Dim W As Integer
         Caption = "Ajuste paradas"
         PonerFrameVisible FrameAjusteparadas, H, W
         
-        I = RecuperaValor(Parametros, 1)  'Vemos si es uno o mas de uno
-        txtDecimal(0).Visible = I = 1
-        Label3(12).Visible = I = 1
+        i = RecuperaValor(Parametros, 1)  'Vemos si es uno o mas de uno
+        txtDecimal(0).Visible = i = 1
+        Label3(12).Visible = i = 1
         
         txtDecimal(0).Text = RecuperaValor(Parametros, 2)
-        Cad = Trim(RecuperaValor(Parametros, 3))
-        If Cad = "" Then Cad = "0"
-        txtDecimal(1).Tag = ImporteFormateado(Cad)
+        cad = Trim(RecuperaValor(Parametros, 3))
+        If cad = "" Then cad = "0"
+        txtDecimal(1).Tag = ImporteFormateado(cad)
         txtDecimal(1).Text = Format(txtDecimal(1).Tag, FormatoImporte)
             
         Parametros = RecuperaValor(Parametros, 4) 'Dejo el listado de trabajadores
-        If I = 1 Then
+        If i = 1 Then
             Label4(4).Caption = Parametros
         Else
-            Label4(4).Caption = "Trabajadores seleccionados: " & I
+            Label4(4).Caption = "Trabajadores seleccionados: " & i
         End If
         
         
@@ -1650,7 +1722,7 @@ End Sub
 
 Private Sub frmc_Selec(vFecha As Date)
     'Me.Caption = vFecha & "   ind: " & imgFec(0).Tag
-    Cad = Format(vFecha, "dd/mm/yyyy")
+    cad = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
 
@@ -1719,13 +1791,13 @@ Private Sub imgFec_Click(Index As Integer)
     ' *** repasar si el camp es txtAux o Text1 ***
     If txtFecha(Index).Text <> "" Then frmc.NovaData = txtFecha(Index).Text
     ' ********************************************
-    Cad = ""
+    cad = ""
     frmc.Show vbModal
     Set frmc = Nothing
     
-    If Cad <> "" Then
+    If cad <> "" Then
         'Me.Caption = Cad
-        txtFecha(Index).Text = Cad
+        txtFecha(Index).Text = cad
     
         ' *** repasar si el camp es txtAux o Text1 ***
         PonerFoco txtFecha(Index) '<===
@@ -1736,14 +1808,14 @@ End Sub
 Private Sub imgFechasSueltas_Click()
     With frmAsignaHorario
         If optPeriodo(0).Value Then
-            I = 0
+            i = 0
         Else
-            I = 1
+            i = 1
         End If
         
         .OtrosDatos = Parametros & DevuelveFechaUltimoProcesado & "|"
-        .FeIni = DateAdd("yyyy", I, vEmpresa.FechaInicio)
-        .FeFin = DateAdd("yyyy", I, vEmpresa.FechaFin)
+        .FeIni = DateAdd("yyyy", i, vEmpresa.FechaInicio)
+        .FeFin = DateAdd("yyyy", i, vEmpresa.FechaFin)
         .Opcion = 3
         .Show vbModal
         
@@ -1823,38 +1895,38 @@ Private Sub CargaCombo(Cual As Integer)
         
         If Year(vEmpresa.FechaInicio) = Year(vEmpresa.FechaFin) Then
             'AÑOS NATURALES
-            For I = 1 To 12
-                Cad = Format(CDate("01/" & I & "/2000"), "mmmm")
-                cmbFecha.AddItem Cad
-                cmbFecha.ItemData(cmbFecha.NewIndex) = I
-            Next I
+            For i = 1 To 12
+                cad = Format(CDate("01/" & i & "/2000"), "mmmm")
+                cmbFecha.AddItem cad
+                cmbFecha.ItemData(cmbFecha.NewIndex) = i
+            Next i
         Else
             'Años partidos
-            For I = Month(vEmpresa.FechaInicio) To Month(vEmpresa.FechaFin) + 12
-                If (I Mod 12) = 0 Then
-                    Cad = Format(CDate("01/12/2000"), "mmmm")
+            For i = Month(vEmpresa.FechaInicio) To Month(vEmpresa.FechaFin) + 12
+                If (i Mod 12) = 0 Then
+                    cad = Format(CDate("01/12/2000"), "mmmm")
                 Else
-                    Cad = Format(CDate("01/" & (I Mod 12) & "/2000"), "mmmm")
+                    cad = Format(CDate("01/" & (i Mod 12) & "/2000"), "mmmm")
                 End If
-                cmbFecha.AddItem Cad
-                cmbFecha.ItemData(cmbFecha.NewIndex) = I
-            Next I
+                cmbFecha.AddItem cad
+                cmbFecha.ItemData(cmbFecha.NewIndex) = i
+            Next i
         
         End If
         
     Case 1
         Me.cboMes(0).Clear
-        For I = 1 To 12
-            Cad = Format(CDate("01/" & I & "/2000"), "mmmm")
-            cboMes(0).AddItem Cad
-            cboMes(0).ItemData(cboMes(0).NewIndex) = I 'NO HACE FALTA
-        Next I
-        I = Month(Now)
-        If I = 1 Then
+        For i = 1 To 12
+            cad = Format(CDate("01/" & i & "/2000"), "mmmm")
+            cboMes(0).AddItem cad
+            cboMes(0).ItemData(cboMes(0).NewIndex) = i 'NO HACE FALTA
+        Next i
+        i = Month(Now)
+        If i = 1 Then
             Me.cboMes(0).ListIndex = 11
             Me.txtNumero(0).Text = Year(Now) - 1
         Else
-            Me.cboMes(0).ListIndex = I - 1 - 1
+            Me.cboMes(0).ListIndex = i - 1 - 1
             Me.txtNumero(0).Text = Year(Now)
         End If
         
@@ -1893,9 +1965,9 @@ Dim C As String
 'INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste)
 
     C = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste) VALUES"
-    Cad = "select idtrabajador,fecha," & Cad & ",if(horastrabajadas>9,9,horastrabajadas)"
-    Cad = Cad & " from marcajes where " & TipoAlziraEntreFechas
-    Cad = Cad & ListaTrabajadores
+    cad = "select idtrabajador,fecha," & cad & ",if(horastrabajadas>9,9,horastrabajadas)"
+    cad = cad & " from marcajes where " & TipoAlziraEntreFechas
+    cad = cad & ListaTrabajadores
     
 End Sub
 

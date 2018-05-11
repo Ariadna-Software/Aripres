@@ -1,8 +1,8 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomctl.ocx"
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
 Object = "{BDC217C8-ED16-11CD-956C-0000C04E4C0A}#1.1#0"; "TABCTL32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmHorario 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Horarios"
@@ -312,8 +312,8 @@ Begin VB.Form frmHorario
       TabCaption(1)   =   "Paradas"
       TabPicture(1)   =   "frmHorario.frx":0028
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Label8"
-      Tab(1).Control(1)=   "Frame1(1)"
+      Tab(1).Control(0)=   "Frame1(1)"
+      Tab(1).Control(1)=   "Label8"
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Rectificación"
       TabPicture(2)   =   "frmHorario.frx":0044
@@ -324,9 +324,9 @@ Begin VB.Form frmHorario
       Tab(2).ControlCount=   3
       Begin VB.Frame FrameAux0 
          Height          =   4575
-         Left            =   -71160
+         Left            =   -71040
          TabIndex        =   105
-         Top             =   360
+         Top             =   240
          Width           =   7095
          Begin VB.TextBox txtAux2 
             Alignment       =   1  'Right Justify
@@ -476,19 +476,19 @@ Begin VB.Form frmHorario
          End
          Begin MSDataGridLib.DataGrid DataGridAux 
             Bindings        =   "frmHorario.frx":0060
-            Height          =   3015
+            Height          =   3855
             Index           =   0
-            Left            =   1920
+            Left            =   1440
             TabIndex        =   108
             Top             =   480
-            Width           =   4080
-            _ExtentX        =   7197
-            _ExtentY        =   5318
+            Width           =   5280
+            _ExtentX        =   9313
+            _ExtentY        =   6800
             _Version        =   393216
             AllowUpdate     =   0   'False
             BorderStyle     =   0
             HeadLines       =   1
-            RowHeight       =   15
+            RowHeight       =   19
             BeginProperty HeadFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
                Name            =   "MS Sans Serif"
                Size            =   8.25
@@ -499,8 +499,8 @@ Begin VB.Form frmHorario
                Strikethrough   =   0   'False
             EndProperty
             BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-               Name            =   "MS Sans Serif"
-               Size            =   8.25
+               Name            =   "Verdana"
+               Size            =   9.75
                Charset         =   0
                Weight          =   400
                Underline       =   0   'False
@@ -1905,15 +1905,15 @@ Dim Indice As Byte 'Indice del text1 donde se ponen los datos devueltos desde ot
 
 Dim RS As ADODB.Recordset
 Dim CadB As String
-Dim I As Integer
+Dim i As Integer
 
 Dim HanCambiadoSubHorarios As Boolean
 
 Private Sub CheckF_Click(Index As Integer)
 Dim v As Integer
     If CheckF(Index).Value = 1 Then
-        I = (Index * 5) + 3
-        For v = I To I + 4
+        i = (Index * 5) + 3
+        For v = i To i + 4
             txtAux(v).Text = ""
         Next v
         'Recalculamos la horas
@@ -1923,7 +1923,7 @@ Dim v As Integer
 End Sub
 
 Private Sub CheckF_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub cmdAceptar_Click()
@@ -1937,9 +1937,9 @@ Private Sub cmdAceptar_Click()
         Case 3 'INSERTAR
             'SI NO LLEVA LABORAL tiene oculto los campos de dia nomina
             If Not vEmpresa.laboral Then
-                For I = 38 To 44
-                    txtAux(I).Text = "1"
-                Next I
+                For i = 38 To 44
+                    txtAux(i).Text = "1"
+                Next i
             End If
             If DatosOk Then
                 If InsertarDesdeForm(Me) Then
@@ -1992,7 +1992,7 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -2028,8 +2028,8 @@ Private Sub Form_Load()
     End With
       
     'ICONITOS DE LOS GRIDS DE LINEAS
-    For I = 0 To ToolAux.Count - 1
-        With Me.ToolAux(I)
+    For i = 0 To ToolAux.Count - 1
+        With Me.ToolAux(i)
             '.ImageList = frmPpal.imgListComun_VELL
             .HotImageList = frmPpal.imgListComun_OM16
             .DisabledImageList = frmPpal.imgListComun_BN16
@@ -2038,12 +2038,12 @@ Private Sub Form_Load()
             .Buttons(2).Image = 4   'Modificar
             .Buttons(3).Image = 5   'Borrar
         End With
-    Next I
+    Next i
       
     Me.Label4(6).Visible = vEmpresa.laboral
-    For I = 38 To 44
-        txtAux(I).Visible = vEmpresa.laboral
-    Next I
+    For i = 38 To 44
+        txtAux(i).Visible = vEmpresa.laboral
+    Next i
       
     LimpiarCampos   'Limpia los campos TextBox
     
@@ -2056,7 +2056,7 @@ Private Sub Form_Load()
     'chkVistaPrevia(0).Value = CheckValueLeer(Name)
     
     'ASignamos un SQL al DATA1
-    Data1.ConnectionString = Conn
+    Data1.ConnectionString = conn
     Data1.RecordSource = "Select * from " & NombreTabla & " where idhorario=-1"
     Data1.Refresh
           
@@ -2078,9 +2078,9 @@ Private Sub LimpiarCampos()
 
     Limpiar Me   'Metodo general: Limpia los controles TextBox
     lblIndicador.Caption = ""
-    For I = 0 To CheckF.Count - 1
-        CheckF(I).Value = 0
-    Next I
+    For i = 0 To CheckF.Count - 1
+        CheckF(i).Value = 0
+    Next i
     Me.Combo1(0).ListIndex = -1
     
     If Err.Number <> 0 Then Err.Clear
@@ -2164,14 +2164,14 @@ Dim B As Boolean
                 
                 
     B = (Modo = 4) Or (Modo = 2)
-    For I = 0 To DataGridAux.Count - 1
-        DataGridAux(I).Enabled = B
-    Next I
+    For i = 0 To DataGridAux.Count - 1
+        DataGridAux(i).Enabled = B
+    Next i
                
     If (Modo < 2) Or (Modo = 3) Then
-        For I = 0 To DataGridAux.Count - 1
-            CargaGrid I, False
-        Next I
+        For i = 0 To DataGridAux.Count - 1
+            CargaGrid i, False
+        Next i
     End If
                 
                 
@@ -2233,12 +2233,12 @@ Dim Baux As Boolean
     Toolbar1.Buttons(12).Enabled = B
     ' ********************************************************************************
     B = (Modo = 4 Or Modo = 2)
-    For I = 0 To ToolAux.Count - 1
-        ToolAux(I).Buttons(1).Enabled = B
-        If B Then Baux = (B And Me.AdoAux(I).Recordset.RecordCount > 0)
-        ToolAux(I).Buttons(2).Enabled = Baux
-        ToolAux(I).Buttons(3).Enabled = Baux
-    Next I
+    For i = 0 To ToolAux.Count - 1
+        ToolAux(i).Buttons(1).Enabled = B
+        If B Then Baux = (B And Me.AdoAux(i).Recordset.RecordCount > 0)
+        ToolAux(i).Buttons(2).Enabled = Baux
+        ToolAux(i).Buttons(3).Enabled = Baux
+    Next i
 
 
     
@@ -2317,21 +2317,21 @@ End Sub
 Private Sub Text2_LostFocus(Index As Integer)
     If Modo < 3 Then Exit Sub
     
-    I = InStr(1, Text2(Index).Text, ".")
-    If I > 0 Then Text2(Index).Text = Mid(Text2(Index).Text, 1, I - 1) & ":" & Mid(Text2(Index).Text, I + 1)
+    i = InStr(1, Text2(Index).Text, ".")
+    If i > 0 Then Text2(Index).Text = Mid(Text2(Index).Text, 1, i - 1) & ":" & Mid(Text2(Index).Text, i + 1)
     If Right(Text2(Index), 1) = ":" Then Text2(Index).Text = Text2(Index).Text & "00"
     
     If IsDate(Text2(Index).Text) Then Text2(Index).Text = Format(Text2(Index).Text, "hh:mm")
 
     
     
-    I = 3
-    If Index = 1 Then I = 5
+    i = 3
+    If Index = 1 Then i = 5
     If Not IsDate(Text2(Index).Text) Then
         Text2(0).Text = ""
-        Text1(I).Text = ""
+        Text1(i).Text = ""
     Else
-        Text1(I).Text = DevuelveValorHora(CDate(Text2(Index).Text))
+        Text1(i).Text = DevuelveValorHora(CDate(Text2(Index).Text))
     End If
 End Sub
 
@@ -2416,17 +2416,17 @@ Private Sub HacerBusqueda()
 End Sub
 
 Private Sub MandaBusquedaPrevia(CadB As String)
-Dim Cad As String
+Dim cad As String
         'Llamamos a al form
         ' **************** arreglar-ho per a vore lo que es desije ****************
-        Cad = ""
-        Cad = Cad & ParaGrid(Text1(0), 10, "Cód.")
-        Cad = Cad & ParaGrid(Text1(1), 50, "Descripcion")
-        Cad = Cad & ParaGrid(Text1(2), 40, "Horas")
-        If Cad <> "" Then
+        cad = ""
+        cad = cad & ParaGrid(Text1(0), 10, "Cód.")
+        cad = cad & ParaGrid(Text1(1), 50, "Descripcion")
+        cad = cad & ParaGrid(Text1(2), 40, "Horas")
+        If cad <> "" Then
             Screen.MousePointer = vbHourglass
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = Cad
+            frmB.vCampos = cad
             frmB.vTabla = NombreTabla
             frmB.vSQL = CadB
             HaDevueltoDatos = False
@@ -2450,7 +2450,7 @@ Dim Cad As String
 End Sub
 
 Private Sub cmdRegresar_Click()
-Dim Cad As String
+Dim cad As String
 Dim Aux As String
 Dim J As Integer
 
@@ -2459,18 +2459,18 @@ Dim J As Integer
         Exit Sub
     End If
     
-    Cad = ""
-    I = 0
+    cad = ""
+    i = 0
     Do
-        J = I + 1
-        I = InStr(J, DatosADevolverBusqueda, "|")
-        If I > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, J, I - J)
+        J = i + 1
+        i = InStr(J, DatosADevolverBusqueda, "|")
+        If i > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, i - J)
             J = Val(Aux)
-            Cad = Cad & Text1(J).Text & "|"
+            cad = cad & Text1(J).Text & "|"
         End If
-    Loop Until I = 0
-    RaiseEvent DatoSeleccionado(Cad)
+    Loop Until i = 0
+    RaiseEvent DatoSeleccionado(cad)
     Unload Me
 End Sub
 
@@ -2548,7 +2548,7 @@ Private Sub BotonModificar()
 End Sub
 
 Private Sub BotonEliminar()
-Dim Cad As String
+Dim cad As String
 
     On Error GoTo EEliminar
 
@@ -2561,15 +2561,15 @@ Dim Cad As String
     'If EsCodigoCero(CStr(Data1.Recordset.Fields(0).Value), FormatoCampo(Text1(0))) Then Exit Sub
 
     ' *************** canviar els noms, els formats i el DELETE ****************                  "
-    Cad = Cad & "¿Seguro que desea eliminar el horario?"
-    Cad = Cad & vbCrLf & "  Código: " & Format(Data1.Recordset.Fields(0), FormatoCampo(Text1(0)))
-    Cad = Cad & vbCrLf & "  Descripción: " & Data1.Recordset.Fields(1)
+    cad = cad & "¿Seguro que desea eliminar el horario?"
+    cad = cad & vbCrLf & "  Código: " & Format(Data1.Recordset.Fields(0), FormatoCampo(Text1(0)))
+    cad = cad & vbCrLf & "  Descripción: " & Data1.Recordset.Fields(1)
     
     
     ' **************************************************************************
     
     'Borramos
-    If MsgBox(Cad, vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox(cad, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         On Error GoTo EEliminar
         Screen.MousePointer = vbHourglass
@@ -2603,17 +2603,17 @@ Private Sub PonerCampos()
     ' *******************************************************************
     PonerSubHorarios
     
-    I = Data1.Recordset!Rectificar
-    PosicionarCombo Combo1(0), I
+    i = Data1.Recordset!Rectificar
+    PosicionarCombo Combo1(0), i
 
     
     'Los datagrid
-    For I = 0 To DataGridAux.Count - 1
-        CargaGrid I, True
+    For i = 0 To DataGridAux.Count - 1
+        CargaGrid i, True
         'Poner Formato campos de la Lineas
 '        If Not AdoAux(i).Recordset.EOF Then _
 '            PonerCamposForma2 Me, AdoAux(i), 2, "FrameAux" & i
-    Next I
+    Next i
 
     
     
@@ -2728,9 +2728,9 @@ Dim valor As Integer
     
     'Comrpobaciones horas etc etc
     valor = 0
-    For I = 0 To 6
-        If CheckF(I).Value = 0 Then
-            J = (I * 5) + 3
+    For i = 0 To 6
+        If CheckF(i).Value = 0 Then
+            J = (i * 5) + 3
             'Entrada 1
             If Not FechaOk(txtAux(J).Text) Then
                 valor = 1
@@ -2762,7 +2762,7 @@ Dim valor As Integer
                 
             
         End If
-    Next I
+    Next i
     
     'Error
     If valor > 0 Then
@@ -2782,7 +2782,7 @@ Dim valor As Integer
             miSQL = "La cantidad de horas/dias"
         End If
         'La semana del 1 al 7 de mayo de 2006 es lunes a domingo
-        If I < 7 Then miSQL = miSQL & " del " & Format(I + 1 & "/05/2006", "dddd")
+        If i < 7 Then miSQL = miSQL & " del " & Format(i + 1 & "/05/2006", "dddd")
         miSQL = miSQL & " es incorrecta"
         MsgBox miSQL, vbExclamation
         miSQL = ""
@@ -2791,7 +2791,7 @@ Dim valor As Integer
     'Comprobamos los datos de los dtos
     'ALMUERZO
     If Text1(3).Text = "" Then Text1(3).Text = 0
-    If Text1(3).Text = "0" Then
+    If Text1(3).Text = "0" Or Text1(3).Text = "0,00" Then
         Text1(4).Text = ""
         Text1(4).Text = ""
         
@@ -2814,7 +2814,7 @@ Dim valor As Integer
     
     'MERIENDA
     If Text1(5).Text = "" Then Text1(5).Text = 0
-    If Text1(5).Text = "0" Then
+    If Text1(5).Text = "0" Or Text1(5).Text = "0,00" Then
         Text1(6).Text = ""
         Text1(6).Text = ""
         
@@ -2836,18 +2836,18 @@ Dim valor As Integer
     End If
     
     
-    For I = 38 To 44
-        txtAux(I).Text = Trim(txtAux(I).Text)
-        J = I - 38
+    For i = 38 To 44
+        txtAux(i).Text = Trim(txtAux(i).Text)
+        J = i - 38
         valor = Abs(CheckF(J).Value)
-        If txtAux(I).Text <> "" Then
+        If txtAux(i).Text <> "" Then
             'Tiene puesto datos en el text
             If valor = 0 Then
-                If Not IsNumeric(txtAux(I).Text) Then
+                If Not IsNumeric(txtAux(i).Text) Then
                     MsgBox "Dias / Nomina   debe ser numérico.", vbExclamation
                     Exit Function
                 End If
-                If Val(txtAux(I).Text) > 1 Then
+                If Val(txtAux(i).Text) > 1 Then
                     MsgBox "Valor maximo Dia/nomina es 1", vbExclamation
                     Exit Function
                 End If
@@ -2861,7 +2861,7 @@ Dim valor As Integer
                 End If
             End If
         End If
-    Next I
+    Next i
         
     
     
@@ -2900,13 +2900,13 @@ End Function
 
 
 Private Sub PosicionarData()
-Dim Cad As String, Indicador As String
+Dim cad As String, Indicador As String
 
     ' *** canviar-ho per la clua primaria ***
-    Cad = "(idhorario=" & Val(Text1(0).Text) & ")"
+    cad = "(idhorario=" & Val(Text1(0).Text) & ")"
     ' ***************************************
     
-    If SituarData(Data1, Cad, Indicador) Then
+    If SituarData(Data1, cad, Indicador) Then
        PonerModo 2
        lblIndicador.Caption = Indicador
     Else
@@ -2926,9 +2926,9 @@ Dim vWhere As String
     ' ************************************************
     
     'Borramos los modificarfichajes
-    Conn.Execute "DELETE FROM modificarfichajes" & vWhere
-    Conn.Execute "DELETE FROM subhorarios" & vWhere
-    Conn.Execute "DELETE FROM " & NombreTabla & vWhere
+    conn.Execute "DELETE FROM modificarfichajes" & vWhere
+    conn.Execute "DELETE FROM subhorarios" & vWhere
+    conn.Execute "DELETE FROM " & NombreTabla & vWhere
     
 FinEliminar:
     If Err.Number <> 0 Then
@@ -2965,16 +2965,16 @@ Dim Nuevo As Boolean
 
         Case 3, 5
             PonerFormatoDecimal Text1(Index), 4
-            I = 0
-            If Index = 5 Then I = 1
+            i = 0
+            If Index = 5 Then i = 1
             If Text1(Index).Text = "" Then
-                Text2(I).Text = ""
+                Text2(i).Text = ""
             Else
-                Text2(I).Text = DevuelveHora(CSng(Text1(Index).Text))
+                Text2(i).Text = DevuelveHora(CSng(Text1(Index).Text))
             End If
         Case 4, 6
-            I = InStr(1, Text1(Index).Text, ".")
-            If I > 0 Then Text1(Index).Text = Mid(Text1(Index).Text, 1, I - 1) & ":" & Mid(Text1(Index).Text, I + 1)
+            i = InStr(1, Text1(Index).Text, ".")
+            If i > 0 Then Text1(Index).Text = Mid(Text1(Index).Text, 1, i - 1) & ":" & Mid(Text1(Index).Text, i + 1)
             If Right(Text1(Index), 1) = ":" Then Text1(Index).Text = Text1(Index).Text & "00"
     
             If IsDate(Text1(Index).Text) Then Text1(Index).Text = Format(Text1(Index).Text, "hh:mm")
@@ -3180,7 +3180,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
                 End Select
             End If
         Else
-            KEYpress KeyAscii
+            KeyPress KeyAscii
         End If
     End If
 End Sub
@@ -3190,7 +3190,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
     If Not Text1(Index).MultiLine Then KEYdown KeyCode
 End Sub
 
-Private Sub KEYpress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -3262,26 +3262,26 @@ End Function
 
 
 Private Sub PonerSubHorarios()
-Dim Cad As String
+Dim cad As String
 Dim valor As Integer
-Dim I As Integer
-    Cad = "Select * From SubHorarios Where IdHorario=" & Data1.Recordset.Fields(0)
-    Cad = Cad & " ORDER BY DiaSemana"
+Dim i As Integer
+    cad = "Select * From SubHorarios Where IdHorario=" & Data1.Recordset.Fields(0)
+    cad = cad & " ORDER BY DiaSemana"
     Set RS = New ADODB.Recordset
-    RS.Open Cad, Conn, , , adCmdText
+    RS.Open cad, conn, , , adCmdText
     valor = 0
     While Not RS.EOF
         valor = RS.Fields!DiaSemana - 1
         
-        I = (valor * 5) + 3
+        i = (valor * 5) + 3
         txtAux(38 + valor).Text = ""
         If RS!Festivo = 0 Then
             CheckF(valor).Value = 0
-            txtAux(I).Text = Format(DBLet(RS.Fields!HEntrada1), "hh:mm")
-            txtAux(I + 1).Text = Format(DBLet(RS.Fields!HSalida1), "hh:mm")
-            txtAux(I + 2).Text = Format(DBLet(RS.Fields!HEntrada2), "hh:mm")
-            txtAux(I + 3).Text = Format(DBLet(RS.Fields!HSalida2), "hh:mm")
-            txtAux(I + 4).Text = DBLet(RS.Fields!HorasDia)
+            txtAux(i).Text = Format(DBLet(RS.Fields!HEntrada1), "hh:mm")
+            txtAux(i + 1).Text = Format(DBLet(RS.Fields!HSalida1), "hh:mm")
+            txtAux(i + 2).Text = Format(DBLet(RS.Fields!hentrada2), "hh:mm")
+            txtAux(i + 3).Text = Format(DBLet(RS.Fields!HSalida2), "hh:mm")
+            txtAux(i + 4).Text = DBLet(RS.Fields!HorasDia)
         
             'Dias nomina
             If Not IsNull(RS.Fields!DiaNomina) Then
@@ -3296,11 +3296,11 @@ Dim I As Integer
         
         Else
             CheckF(valor).Value = 1
-            txtAux(I).Text = ""
-            txtAux(I + 1).Text = ""
-            txtAux(I + 2).Text = ""
-            txtAux(I + 3).Text = ""
-            txtAux(I + 4).Text = ""
+            txtAux(i).Text = ""
+            txtAux(i + 1).Text = ""
+            txtAux(i + 2).Text = ""
+            txtAux(i + 3).Text = ""
+            txtAux(i + 4).Text = ""
             
 
         End If
@@ -3315,12 +3315,12 @@ Private Sub txtaux_Change(Index As Integer)
     HanCambiadoSubHorarios = True
 End Sub
 
-Private Sub txtAux_GotFocus(Index As Integer)
+Private Sub txtaux_GotFocus(Index As Integer)
     ConseguirFoco txtAux(Index), Modo
 End Sub
 
-Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtAux_LostFocus(Index As Integer)
@@ -3371,15 +3371,15 @@ If Modo > 2 Then
                 'Cambiamos puntos por dos puntos
                 If Index <> (valor + 4) Then
                     
-                    I = InStr(1, txtAux(Index).Text, ".")
-                    If I > 0 Then txtAux(Index).Text = Mid(txtAux(Index).Text, 1, I - 1) & ":" & Mid(txtAux(Index).Text, I + 1)
+                    i = InStr(1, txtAux(Index).Text, ".")
+                    If i > 0 Then txtAux(Index).Text = Mid(txtAux(Index).Text, 1, i - 1) & ":" & Mid(txtAux(Index).Text, i + 1)
                     If Right(txtAux(Index), 1) = ":" Then txtAux(Index).Text = txtAux(Index).Text & "00"
             
                     If IsDate(txtAux(Index).Text) Then txtAux(Index).Text = Format(txtAux(Index).Text, "hh:mm")
                 End If
                 
             End If
-            I = (Index - 3) Mod 5
+            i = (Index - 3) Mod 5
             If Index = (valor + 4) Then
                 If Not IsNumeric(txtAux(Index).Text) Then
                     txtAux(Index).Text = ""
@@ -3393,7 +3393,7 @@ If Modo > 2 Then
                 If ((Index - 2) Mod 5) <> 0 Then
                 'If txtaux(Valor + 4).Text = "" Then SoloSemanales = False
                 'CalculaHorasDia Valor, I, SoloSemanales
-                    CalculaHorasDia valor, I, False
+                    CalculaHorasDia valor, i, False
                 End If
             End If
    
@@ -3442,12 +3442,12 @@ End If
 'Recalcularemos las horas totales semanales
 
 T2 = 0
-For I = 0 To 6
-    If txtAux(7 + (5 * I)).Text <> "" Then
-        T1 = CSng(txtAux(7 + (5 * I)).Text)
+For i = 0 To 6
+    If txtAux(7 + (5 * i)).Text <> "" Then
+        T1 = CSng(txtAux(7 + (5 * i)).Text)
         T2 = T2 + T1
     End If
-Next I
+Next i
 If T2 > 0 Then
     Text1(2).Text = T2
     Else
@@ -3467,20 +3467,20 @@ Private Function SubHorariosAbd(idHora As Integer)
 Dim J As Integer
 Dim k As Integer
     miSQL = "Delete  from SubHorarios where idHorario=" & idHora
-    Conn.Execute miSQL
+    conn.Execute miSQL
     
     'INSERT INTO subhorarios (IdHorario, DiaSemana, Festivo, HEntrada1,
     'HSalida1, HEntrada2, HSalida2, N_Tikadas, HorasDia, DiaNomina) VALUES (
     
-    For I = 0 To 6
-        miSQL = idHora & "," & I + 1
-        If CheckF(I).Value = 1 Then
+    For i = 0 To 6
+        miSQL = idHora & "," & i + 1
+        If CheckF(i).Value = 1 Then
             'Es festivo
             miSQL = miSQL & ",1,NULL,NULL,NULL,NULL,0,0,0)"
         
         Else
             miSQL = miSQL & ",0"
-            J = (I * 5) + 3
+            J = (i * 5) + 3
             'Introducimos los subhorarios para cada dia
             For k = 0 To 3
                 miSQL = miSQL & DevuelveFecha(txtAux(J + k).Text)
@@ -3488,28 +3488,28 @@ Dim k As Integer
             
             
             k = 0
-            For J = ((I * 5) + 3) To ((I * 5) + 3 + 3)
+            For J = ((i * 5) + 3) To ((i * 5) + 3 + 3)
                 If txtAux(J).Text <> "" Then k = k + 1
             Next J
             miSQL = miSQL & "," & k & ","
             
             'Horas al dia
-            J = ((I * 5) + 3 + 4)
+            J = ((i * 5) + 3 + 4)
             miSQL = miSQL & TransformaComasPuntos(txtAux(J).Text) & ","
             
             
             
             
-            J = I + 38
+            J = i + 38
             If txtAux(J).Text = "" Then txtAux(J).Text = 0
             miSQL = miSQL & TransformaComasPuntos(txtAux(J).Text) & ")"
             
         End If
         miSQL = "INSERT INTO subhorarios (IdHorario, DiaSemana, Festivo, HEntrada1,HSalida1, HEntrada2, HSalida2, N_Tikadas, HorasDia, DiaNomina) VALUES (" & miSQL
         Debug.Print miSQL
-        Conn.Execute miSQL
+        conn.Execute miSQL
     
-    Next I
+    Next i
     
 
 End Function
@@ -3638,14 +3638,14 @@ On Error GoTo EDatosOKLlin
             miSQL = miSQL & " ( inicio <='" & Format(txtAux2(2).Text, "hh:mm:ss") & "' AND fin >= '"
             miSQL = miSQL & Format(txtAux2(2).Text, "hh:mm:ss") & "'))  "
             Set miRs = New ADODB.Recordset
-            miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-            I = 0
+            miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            i = 0
             If Not miRs.EOF Then
-                I = DBLet(miRs.Fields(0), "N")
+                i = DBLet(miRs.Fields(0), "N")
             End If
             miRs.Close
             Set miRs = Nothing
-            If I > 0 Then
+            If i > 0 Then
                 MsgBox "El intervalo esta comprendido entre otros", vbExclamation
                 Exit Function
             End If
@@ -3665,7 +3665,7 @@ Dim tots As String
 On Error GoTo ECarga
 
       
-    AdoAux(Index).ConnectionString = Conn
+    AdoAux(Index).ConnectionString = conn
     AdoAux(Index).RecordSource = MontaSQLCarga(Index, enlaza)
     AdoAux(Index).CursorType = adOpenDynamic
     AdoAux(Index).LockType = adLockPessimistic
@@ -3709,7 +3709,7 @@ Private Sub BotonAnyadirLinea(Index As Integer)
 Dim NumF As String
 Dim vWhere As String, vTabla As String
 Dim anc As Single
-Dim I As Integer
+Dim i As Integer
     
     'Si no estaba modificando lineas salimos
     ' Es decir, si estaba insertando linea no podemos hacer otra cosa
@@ -3796,9 +3796,9 @@ Dim I As Integer
             
         Case 0 'Viajeros
             
-            For I = 1 To 3
-                txtAux2(I).Text = ""
-            Next I
+            For i = 1 To 3
+                txtAux2(i).Text = ""
+            Next i
             txtAux2(0).Text = Data1.Recordset!IdHorario
             BloquearTxt txtAux2(1), False
             PonerFoco txtAux2(1)
@@ -3808,7 +3808,7 @@ End Sub
 
 Private Sub BotonModificarLinea(Index As Integer)
     Dim anc As Single
-    Dim I As Integer
+    Dim i As Integer
     Dim J As Integer
     
     ModoLineas = 2 'Modificar llínia
@@ -3827,8 +3827,8 @@ Private Sub BotonModificarLinea(Index As Integer)
 '    Me.lblIndicador.Caption = "MODIFICAR LINEA"
     
     If DataGridAux(Index).Bookmark < DataGridAux(Index).FirstRow Or DataGridAux(Index).Bookmark > (DataGridAux(Index).FirstRow + DataGridAux(Index).VisibleRows - 1) Then
-        I = DataGridAux(Index).Bookmark - DataGridAux(Index).FirstRow
-        DataGridAux(Index).Scroll 0, I
+        i = DataGridAux(Index).Bookmark - DataGridAux(Index).FirstRow
+        DataGridAux(Index).Scroll 0, i
         DataGridAux(Index).Refresh
     End If
       
@@ -3907,7 +3907,7 @@ End Sub
 
 
 Private Sub LLamaLineas(Index As Integer, xModo As Byte, Optional alto As Single)
-Dim jj As Integer
+Dim JJ As Integer
 Dim B As Boolean
 
     On Error GoTo ELLamaLin
@@ -3918,10 +3918,10 @@ Dim B As Boolean
     B = (xModo = 1 Or xModo = 2) 'Insertar o Modificar Lineas
     Select Case Index
         Case 0 'Viajeros
-            For jj = 1 To 3
-                txtAux2(jj).Top = alto
-                txtAux2(jj).Visible = B
-            Next jj
+            For JJ = 1 To 3
+                txtAux2(JJ).Top = alto
+                txtAux2(JJ).Visible = B
+            Next JJ
            
            
     End Select
@@ -3943,7 +3943,7 @@ Private Function MontaSQLCarga(Index As Integer, enlaza As Boolean) As String
 ' Si ENLAZA -> Enlaza con el data1
 '           -> Si no lo cargamos sin enlazar a ningun campo
 '--------------------------------------------------------------------
-Dim SQL As String
+Dim Sql As String
 Dim Tabla As String
     
     Select Case Index
@@ -3972,15 +3972,15 @@ Dim Tabla As String
 '            SQL = SQL & " ORDER BY provdpto.numlinea"
 
         Case 0 'Viajeros del expediente
-            SQL = "Select idhorario,inicio,fin,modificada FROM modificarfichajes"
+            Sql = "Select idhorario,inicio,fin,modificada FROM modificarfichajes"
             If enlaza Then
-                SQL = SQL & ObtenerWhereCab(True)
+                Sql = Sql & ObtenerWhereCab(True)
             Else
-                SQL = SQL & " WHERE idhorario = -1"
+                Sql = Sql & " WHERE idhorario = -1"
             End If
-            SQL = SQL & " ORDER BY inicio "
+            Sql = Sql & " ORDER BY inicio "
     End Select
-    MontaSQLCarga = SQL
+    MontaSQLCarga = Sql
 End Function
 
 
@@ -3998,35 +3998,35 @@ Private Sub txtAux2_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtAux2_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtAux2_LostFocus(Index As Integer)
-    I = 0
+    i = 0
     txtAux2(Index).Text = Trim(txtAux2(Index).Text)
     If txtAux2(Index).Text <> "" Then
     
     
-        I = InStr(1, txtAux2(Index), ".")
-        If I > 0 Then
-            miSQL = Mid(txtAux2(Index).Text, I + 1)
+        i = InStr(1, txtAux2(Index), ".")
+        If i > 0 Then
+            miSQL = Mid(txtAux2(Index).Text, i + 1)
             If miSQL = "" Then miSQL = "00"
-            txtAux2(Index).Text = Mid(txtAux2(Index).Text, 1, I - 1) & ":" & miSQL & ":00"
+            txtAux2(Index).Text = Mid(txtAux2(Index).Text, 1, i - 1) & ":" & miSQL & ":00"
         End If
         If IsDate(txtAux2(Index).Text) Then
             txtAux2(Index) = Format(txtAux2(Index), "hh:mm:ss")
-            I = 0
+            i = 0
         Else
             
             MsgBox "Campo hora incorrecto:" & txtAux2(Index).Text, vbExclamation
             txtAux2(Index).Text = ""
             PonerFoco txtAux2(Index)
-            I = 1
+            i = 1
         End If
         
     
     End If
-    If I = 0 Then
+    If i = 0 Then
         If Index = 3 Then PonerFocoBtn Me.cmdAceptar
     End If
 End Sub
@@ -4046,7 +4046,7 @@ End Sub
 
 
 Private Sub BotonEliminarLinea(Index As Integer)
-Dim SQL As String
+Dim Sql As String
 Dim vWhere As String
 Dim VEliminar As Boolean
 
@@ -4071,16 +4071,16 @@ Dim VEliminar As Boolean
     ' canviar els noms, els formats i el DELETE *****
     Select Case Index
         Case 0 'cltebanc
-            SQL = "¿Seguro que desea eliminar la rectificación?" & vbCrLf
-            For I = 1 To 3
+            Sql = "¿Seguro que desea eliminar la rectificación?" & vbCrLf
+            For i = 1 To 3
             
-                SQL = SQL & DataGridAux(0).Columns(I).Caption & " : "
-                SQL = SQL & Space(30 - Len(DataGridAux(0).Columns(I).Caption)) & DataGridAux(0).Columns(I).Text & vbCrLf
-            Next I
-            If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
+                Sql = Sql & DataGridAux(0).Columns(i).Caption & " : "
+                Sql = Sql & Space(30 - Len(DataGridAux(0).Columns(i).Caption)) & DataGridAux(0).Columns(i).Text & vbCrLf
+            Next i
+            If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
                 VEliminar = True
-                SQL = "DELETE FROM modificarfichajes"
-                SQL = SQL & vWhere & " AND inicio= '" & Format(AdoAux(Index).Recordset!Inicio, "hh:mm:ss") & "'"
+                Sql = "DELETE FROM modificarfichajes"
+                Sql = Sql & vWhere & " AND inicio= '" & Format(AdoAux(Index).Recordset!Inicio, "hh:mm:ss") & "'"
             End If
             
     End Select
@@ -4088,7 +4088,7 @@ Dim VEliminar As Boolean
     If VEliminar Then
         NumRegElim = AdoAux(Index).Recordset.AbsolutePosition
         TerminaBloquear
-        Conn.Execute SQL
+        conn.Execute Sql
         ' *** si n'hi han tabs sense datagrid, posar l'If ***
         If Index <> 3 Then _
             CargaGrid Index, True

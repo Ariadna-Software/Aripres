@@ -111,14 +111,14 @@ Option Explicit
 Public Fecha As Date
 
 Dim cad As String
-Dim I As Long
+Dim i As Long
 
 
 
 Private Sub cmdAceptar_Click()
     cad = ""
-    For I = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(I).Tag = 2 Then cad = cad & "X"
+    For i = 1 To ListView1.ListItems.Count
+        If ListView1.ListItems(i).Tag = 2 Then cad = cad & "X"
     Next
     
     If cad <> "" Then
@@ -130,9 +130,9 @@ Private Sub cmdAceptar_Click()
         
         
         cad = ""
-        For I = 1 To ListView1.ListItems.Count
-            If ListView1.ListItems(I).Tag = 2 Then
-                cad = cad & ", (" & vUsu.Codigo & "," & ListView1.ListItems(I).Text & "," & TransformaComasPuntos(ListView1.ListItems(I).SubItems(5)) & ")"
+        For i = 1 To ListView1.ListItems.Count
+            If ListView1.ListItems(i).Tag = 2 Then
+                cad = cad & ", (" & vUsu.Codigo & "," & ListView1.ListItems(i).Text & "," & TransformaComasPuntos(ListView1.ListItems(i).SubItems(5)) & ")"
             End If
         Next
         cad = Mid(cad, 2)
@@ -175,7 +175,7 @@ End Sub
 
 Private Sub CargarColumnas()
 Dim L As Collection
-Dim I As Integer
+Dim i As Integer
 Dim C As ColumnHeader
 
     ListView1.ColumnHeaders.Clear
@@ -195,17 +195,17 @@ Dim C As ColumnHeader
     'Puede quitar almuerzo
     L.Add "PuedeQuitarAlm|0|"
 
-    For I = 1 To 8
-        L.Add "H" & I & "|800|"
+    For i = 1 To 8
+        L.Add "H" & i & "|800|"
     Next
     
     'TOTAL..... 11 campos
-    For I = 1 To L.Count
-        Set C = ListView1.ColumnHeaders.Add(, "C" & I)
-        C.Text = RecuperaValor(L.Item(I), 1)
-        C.Width = RecuperaValor(L.Item(I), 2)
-        If I > 2 Then ListView1.ColumnHeaders(I).Alignment = lvwColumnRight
-    Next I
+    For i = 1 To L.Count
+        Set C = ListView1.ColumnHeaders.Add(, "C" & i)
+        C.Text = RecuperaValor(L.Item(i), 1)
+        C.Width = RecuperaValor(L.Item(i), 2)
+        If i > 2 Then ListView1.ColumnHeaders(i).Alignment = lvwColumnRight
+    Next i
     
     
 End Sub
@@ -216,7 +216,7 @@ Private Function CargaDatos()
     On Error GoTo eCargadatos
     Set miRsAux = New ADODB.Recordset
 Dim IT As ListItem
-Dim SQL As String
+Dim Sql As String
 
 Dim vHora As Integer
 
@@ -243,32 +243,32 @@ Dim InicioHoras As Byte
     ListView1.ListItems.Clear
     InicioHoras = 7
 
-    SQL = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
-    conn.Execute SQL
+    Sql = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
+    conn.Execute Sql
     Set vH = New CHorarios
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
-    SQL = "select entradafichajes.idtrabajador,nomtrabajador,control,seccion from entradafichajes,trabajadores"
-    SQL = SQL & " where trabajadores.idtrabajador=entradafichajes.idtrabajador and  fecha=" & DBSet(Fecha, "F")
-    SQL = SQL & " group by 1 order by "
+    Sql = "select entradafichajes.idtrabajador,nomtrabajador,control,seccion from entradafichajes,trabajadores"
+    Sql = Sql & " where trabajadores.idtrabajador=entradafichajes.idtrabajador and  fecha=" & DBSet(Fecha, "F")
+    Sql = Sql & " group by 1 order by "
     If Me.Option1(0).Value Then
-        SQL = SQL & " seccion,idtrabajador"
+        Sql = Sql & " seccion,idtrabajador"
     Else
-        SQL = SQL & " idtrabajador"
+        Sql = Sql & " idtrabajador"
     End If
     
     
     Set RT = New ADODB.Recordset
     Set miRsAux = New ADODB.Recordset
     
-    RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RT.EOF
         
-        SQL = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
-        SQL = SQL & ",Control,seccion,nomtrabajador from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
-        SQL = SQL & " AND fecha ='" & Format(Fecha, FormatoFecha) & "' and entradafichajes.idtrabajador=" & RT!idTrabajador & " ORDER BY hora"
+        Sql = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
+        Sql = Sql & ",Control,seccion,nomtrabajador from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
+        Sql = Sql & " AND fecha ='" & Format(Fecha, FormatoFecha) & "' and entradafichajes.idtrabajador=" & RT!idTrabajador & " ORDER BY hora"
         
        
-        miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
         
     
@@ -292,12 +292,12 @@ Dim InicioHoras As Byte
         If PuedeQuitarParadas Then
              'Veamos el horario para el trabajador, dia
               cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(miRsAux!Fecha, "F") & " and idtrabajador"
-              SQL = "trabajadores.idcal"
-              cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(miRsAux!idTrabajador), "N", SQL)
+              Sql = "trabajadores.idcal"
+              cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(miRsAux!idTrabajador), "N", Sql)
               If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
               
               If Val(cad) <> vH.IdHorario Then
-                  If vH.Leer(CInt(cad), miRsAux!Fecha, CInt(SQL)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
+                  If vH.Leer(CInt(cad), miRsAux!Fecha, CInt(Sql)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
               End If
               
               'Si puede quitar paradas, y el horario lo tiene:
@@ -316,9 +316,9 @@ Dim InicioHoras As Byte
                
        End If
  
-        'If It.Text = "0006" Then Stop
+        'If It.Text = "0006" Then St op
     
-        SQL = ""
+        Sql = ""
         HF = "0:00:00"
         While Not miRsAux.EOF
         
@@ -328,20 +328,20 @@ Dim InicioHoras As Byte
                    
                    
                If miRsAux!LaHora >= 0 And miRsAux!LaHora <= 23 Then
-                   I = miRsAux!LaHora
+                   i = miRsAux!LaHora
                    FueraIntervalo_ = 0
                Else
                    FueraIntervalo_ = 24
                    If miRsAux!LaHora < 0 Then Stop  'De momento NO deberia entrar aqui
-                   I = miRsAux!LaHora - FueraIntervalo_
+                   i = miRsAux!LaHora - FueraIntervalo_
                End If
                
-               SQL = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-               IT.SubItems(vHora + InicioHoras) = Mid(SQL, 1, 5)
+               Sql = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+               IT.SubItems(vHora + InicioHoras) = Mid(Sql, 1, 5)
                If FueraIntervalo_ <> 0 Then IT.ListSubItems(vHora + InicioHoras).ForeColor = vbBlue
                
                If Not Entrada Then
-                   HF = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+                   HF = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                    difer = DateDiff("n", HI, HF)
                    If FueraIntervalo_ > 0 Then difer = difer + 1440
                    
@@ -359,7 +359,7 @@ Dim InicioHoras As Byte
                
                
                 Else
-                    HI = Format(I, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+                    HI = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                     If Minutos > 0 Then
                         HIAustada = HoraRectificada(HI, vEmpresa.AjusteSalida, Minutos)
                     Else
@@ -404,18 +404,18 @@ Dim InicioHoras As Byte
         
         
         'Horas calculadas y ajustadas, y paradas
-        SQL = " "
+        Sql = " "
         vHora = vHora + InicioHoras
-        For I = vHora To ListView1.ColumnHeaders.Count - 1
-            IT.SubItems(I) = SQL
+        For i = vHora To ListView1.ColumnHeaders.Count - 1
+            IT.SubItems(i) = Sql
         Next
         
         
         If Not Entrada Then
             
-            IT.SubItems(3) = SQL
-            IT.SubItems(4) = SQL
-            IT.SubItems(5) = SQL
+            IT.SubItems(3) = Sql
+            IT.SubItems(4) = Sql
+            IT.SubItems(5) = Sql
             IT.Tag = 0
         Else
             IT.Tag = 1
@@ -458,11 +458,11 @@ Dim Hor As Currency
 Dim Par As Currency
     cad = ""
     CadenaDesdeOtroForm = ""
-    For I = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(I).Selected Then
+    For i = 1 To ListView1.ListItems.Count
+        If ListView1.ListItems(i).Selected Then
             cad = cad & "X"
-            CadenaDesdeOtroForm = CadenaDesdeOtroForm & Replace(ListView1.ListItems(I).SubItems(1), "|", "") & vbCrLf
-            NumRegElim = I   'me guardo cua les el itm a modificar
+            CadenaDesdeOtroForm = CadenaDesdeOtroForm & Replace(ListView1.ListItems(i).SubItems(1), "|", "") & vbCrLf
+            NumRegElim = i   'me guardo cua les el itm a modificar
         End If
     Next
         
@@ -488,14 +488,14 @@ Dim Par As Currency
         If CadenaDesdeOtroForm <> "" Then
             HorasP = CCur(CadenaDesdeOtroForm)
             
-             For I = 1 To ListView1.ListItems.Count
-                If ListView1.ListItems(I).Selected Then
+             For i = 1 To ListView1.ListItems.Count
+                If ListView1.ListItems(i).Selected Then
                     
-                    Hor = ImporteFormateado(ListView1.ListItems(I).SubItems(4))
-                    If Trim(ListView1.ListItems(I).SubItems(5)) = "" Then
+                    Hor = ImporteFormateado(ListView1.ListItems(i).SubItems(4))
+                    If Trim(ListView1.ListItems(i).SubItems(5)) = "" Then
                         Par = 0
                     Else
-                        Par = ImporteFormateado(ListView1.ListItems(I).SubItems(5))
+                        Par = ImporteFormateado(ListView1.ListItems(i).SubItems(5))
                     End If
                     
                     If Hor + Par < HorasP Then
@@ -506,10 +506,10 @@ Dim Par As Currency
                         Par = HorasP
                         Hor = Hor - Par
                     End If
-                    ListView1.ListItems(I).Bold = True
-                    ListView1.ListItems(I).SubItems(4) = Format(Hor, FormatoImporte)
-                    ListView1.ListItems(I).SubItems(5) = Format(Par, FormatoImporte)
-                    ListView1.ListItems(I).Tag = 2
+                    ListView1.ListItems(i).Bold = True
+                    ListView1.ListItems(i).SubItems(4) = Format(Hor, FormatoImporte)
+                    ListView1.ListItems(i).SubItems(5) = Format(Par, FormatoImporte)
+                    ListView1.ListItems(i).Tag = 2
                 End If
             Next
         End If

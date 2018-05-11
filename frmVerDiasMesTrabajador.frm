@@ -15,6 +15,17 @@ Begin VB.Form frmVerDiasMesTrabajador3
    ScaleWidth      =   9540
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox Text4 
+      Alignment       =   1  'Right Justify
+      Enabled         =   0   'False
+      Height          =   285
+      Index           =   2
+      Left            =   6360
+      TabIndex        =   46
+      Text            =   "0"
+      Top             =   7440
+      Width           =   855
+   End
    Begin VB.OptionButton Option1 
       Caption         =   "Ajuste semanal"
       Height          =   255
@@ -700,7 +711,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
-        
+        Text4(2).Visible = vEmpresa.QueEmpresa = 4
         Text3.Text = ""
         CargaGrid
         Label1.Caption = RecuperaValor(Trabajador, 1)
@@ -715,7 +726,7 @@ End Sub
 
 
 Private Sub CargaGrid()
-Dim Cad As String
+Dim cad As String
 Dim RS As ADODB.Recordset
 Dim itmX As ListItem
 Dim i As Integer
@@ -726,7 +737,7 @@ Dim Dias As Currency
 Dim Semana As Integer
 Dim ContadorMier As Byte
 Dim ContadorSab As Byte
-Dim k As Integer
+Dim K As Integer
 Dim H As Currency
 
 Dim IdInci As Integer
@@ -740,10 +751,10 @@ Dim ExcesoDefecto As Boolean
     If Me.Option1(0).Value Then
         'Coge los datos de marcajes
            
-        Cad = "Select *,Incidencias.ExcesoDefecto"
-        Cad = Cad & " FROM Marcajes INNER JOIN Incidencias ON Marcajes.IncFinal = Incidencias.IdInci    "
-        Cad = Cad & " Where idTrabajador = " & RecuperaValor(Trabajador, 2)
-        Cad = Cad & " AND Fecha >= " & DBSet(FechaIni, "F")
+        cad = "Select *,Incidencias.ExcesoDefecto"
+        cad = cad & " FROM Marcajes INNER JOIN Incidencias ON Marcajes.IncFinal = Incidencias.IdInci    "
+        cad = cad & " Where idTrabajador = " & RecuperaValor(Trabajador, 2)
+        cad = cad & " AND Fecha >= " & DBSet(FechaIni, "F")
         If TodoElMEs = 0 Then
             FFin = DateAdd("m", 1, FechaIni)
             FFin = DateAdd("d", -1, FFin)
@@ -751,18 +762,31 @@ Dim ExcesoDefecto As Boolean
             'Es una semana
             FFin = DateAdd("d", TodoElMEs, FechaIni)
         End If
-        Cad = Cad & " AND Fecha <= " & DBSet(FFin, "F")
-        Cad = Cad & " ORDER By Fecha"
+        cad = cad & " AND Fecha <= " & DBSet(FFin, "F")
+        cad = cad & " ORDER By Fecha"
     
     
     Else
         'Semanas procesadas. Alzira y coopic
-        Cad = "select fecha,sum(if (tipohoras<2,horastrabajadas,0)) norm"
-        Cad = Cad & ",sum(if (tipohoras=2,horastrabajadas,0)) extr"
-        Cad = Cad & " "
-        Cad = Cad & " , 1 Correcto From jornadassemanalesalz"
-        Cad = Cad & " Where idTrabajador = " & RecuperaValor(Trabajador, 2)
-        Cad = Cad & " AND Fecha >= " & DBSet(FechaIni, "F")
+        If vEmpresa.QueEmpresa = 4 Then
+            
+            cad = "select fecha,sum(if (tipohoras=0,horastrabajadas,0)) norm"
+            cad = cad & ",sum(if (tipohoras=1,horastrabajadas,0)) estr"
+            cad = cad & ",sum(if (tipohoras=2,horastrabajadas,0)) extr"
+            cad = cad & " "
+            cad = cad & " , 1 Correcto From jornadassemanalesalz"
+            
+        
+        Else
+        
+            cad = "select fecha,sum(if (tipohoras<2,horastrabajadas,0)) norm"
+            cad = cad & ",sum(if (tipohoras=2,horastrabajadas,0)) extr"
+            cad = cad & " "
+            cad = cad & " , 1 Correcto From jornadassemanalesalz"
+        
+        End If
+        cad = cad & " Where idTrabajador = " & RecuperaValor(Trabajador, 2)
+        cad = cad & " AND Fecha >= " & DBSet(FechaIni, "F")
         If TodoElMEs = 0 Then
             FFin = DateAdd("m", 1, FechaIni)
             FFin = DateAdd("d", -1, FFin)
@@ -770,16 +794,16 @@ Dim ExcesoDefecto As Boolean
             'Es una semana
             FFin = DateAdd("d", TodoElMEs, FechaIni)
         End If
-        Cad = Cad & " AND Fecha <= " & DBSet(FFin, "F")
-        Cad = Cad & " group by 1"
-        Cad = Cad & " ORDER By Fecha"
+        cad = cad & " AND Fecha <= " & DBSet(FFin, "F")
+        cad = cad & " group by 1"
+        cad = cad & " ORDER By Fecha"
         
     End If
     
     
     Set RS = New ADODB.Recordset
  
-    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     'a 0
     For i = 0 To Me.Text1.Count - 1
         Text1(i).Tag = 0
@@ -790,9 +814,8 @@ Dim ExcesoDefecto As Boolean
     While Not RS.EOF
         'Dias trbajados
         Text1(0).Tag = Text1(0).Tag + 1
-        Debug.Print Text1(0).Tag
         Set itmX = ListView1.ListItems.Add
-        Cad = Format(RS!Fecha, "dd/mm/yyyy")
+        cad = Format(RS!Fecha, "dd/mm/yyyy")
         i = Val(Format(RS!Fecha, "ww"))
         
         
@@ -802,26 +825,26 @@ Dim ExcesoDefecto As Boolean
         End If
         'Medios dias o para nomina
         Dias = 1
-        If InStr(1, FESTIVOS, Cad) = 0 Then
+        If InStr(1, FESTIVOS, cad) = 0 Then
             'Si no es festivo
-            If InStr(1, MediosDias, Cad) > 0 Then
+            If InStr(1, MediosDias, cad) > 0 Then
                 
                 
-                Dias = Weekday(CDate(Cad), vbMonday)
+                Dias = Weekday(CDate(cad), vbMonday)
                 If Dias = 3 Then
                     ContadorMier = ContadorMier + 1
                 Else
                     If Dias = 6 Then ContadorSab = ContadorSab + 1
                 End If
                 Dias = 0.5
-                Cad = Cad & " *"
+                cad = cad & " *"
             End If
         Else
             Dias = 0
         End If
         Text1(6).Tag = CCur(Text1(6).Tag) + Dias
 
-        itmX.Text = Cad
+        itmX.Text = cad
         
         If RS!Correcto = 1 Then
             
@@ -861,20 +884,44 @@ Dim ExcesoDefecto As Boolean
                         
                         
                     Else
-                        If IdInci = 1 Then
-                            'Tiene horas extras
-                            itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
-                            itmX.SubItems(2) = Format(RS!extr, FormatoImporte)
+                        If vEmpresa.QueEmpresa = 4 Then
+                            'CATADAU
+                            If IdInci = 1 Then
+                                'Tiene horas extras
+                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                                itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
+                                itmX.SubItems(3) = Format(RS!extr, FormatoImporte)
+                            Else
+                            
+                                'Importe = RS!norm - vEmpresa.HorasJornada
+                                'itmX.SubItems(1) = Format(vEmpresa.HorasJornada, FormatoImporte)
+                                'itmX.SubItems(2) = Format(Importe, FormatoImporte)
+                                
+                                Importe = 0
+                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                                itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
+                                itmX.SubItems(3) = " "
+                            End If
+                            
+                            
+                            
                         Else
-                        
-                            'Importe = RS!norm - vEmpresa.HorasJornada
-                            'itmX.SubItems(1) = Format(vEmpresa.HorasJornada, FormatoImporte)
-                            'itmX.SubItems(2) = Format(Importe, FormatoImporte)
+                            'COOPIC ALZIRA
+                            If IdInci = 1 Then
+                                'Tiene horas extras
+                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                                itmX.SubItems(2) = Format(RS!extr, FormatoImporte)
+                            Else
                             
-                            Importe = 0
-                            itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
-                            itmX.SubItems(2) = Format(Importe, FormatoImporte)
-                            
+                                'Importe = RS!norm - vEmpresa.HorasJornada
+                                'itmX.SubItems(1) = Format(vEmpresa.HorasJornada, FormatoImporte)
+                                'itmX.SubItems(2) = Format(Importe, FormatoImporte)
+                                
+                                Importe = 0
+                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                                itmX.SubItems(2) = Format(Importe, FormatoImporte)
+                                
+                            End If
                         End If
                     End If
                     Icono = 1
@@ -908,7 +955,7 @@ Dim ExcesoDefecto As Boolean
                     
                 End If
                 
-                If InStr(1, FESTIVOS, Cad) > 0 Then
+                If InStr(1, FESTIVOS, cad) > 0 Then
                     Icono = 5
                     Text1(5).Tag = Text1(5).Tag + 1
                 End If
@@ -926,16 +973,23 @@ Dim ExcesoDefecto As Boolean
         
         Text1(2).Tag = Text1(2).Tag + ImporteFormateadoAmoneda(CStr(itmX.SubItems(1)))
         
-        
+         
         If Option1(0).Value Then
             H = RS!HorasTrabajadas
-        Else
-            H = RS!norm + RS!extr
-        End If
-        itmX.SubItems(3) = Format(H, FormatoImporte)
+            'Totales
+            Text1(4).Tag = Text1(4).Tag + H
         
-        'Totales
-        Text1(4).Tag = Text1(4).Tag + H
+        
+        Else
+        
+            H = RS!norm + RS!extr
+        
+        
+            'Totales
+            Text1(4).Tag = Text1(4).Tag + H
+        
+        End If
+        
         
         RS.MoveNext
         
@@ -946,21 +1000,21 @@ Dim ExcesoDefecto As Boolean
     
     
     
-            Cad = "SELECT Bajas.*, tipobaja.descbaja"
-            Cad = Cad & " FROM tipobaja INNER JOIN Bajas ON tipobaja.idbaja = Bajas.idTipobaja"
-            Cad = Cad & " WHERE Bajas.IdTrab = " & RecuperaValor(Trabajador, 2)
-            Me.Tag = Cad   'Este trozo sera comun para el resto de SQLs
+            cad = "SELECT Bajas.*, tipobaja.descbaja"
+            cad = cad & " FROM tipobaja INNER JOIN Bajas ON tipobaja.idbaja = Bajas.idTipobaja"
+            cad = cad & " WHERE Bajas.IdTrab = " & RecuperaValor(Trabajador, 2)
+            Me.Tag = cad   'Este trozo sera comun para el resto de SQLs
             
-            Cad = Cad & " AND Fechabaja<=" & DBSet(FFin, "F", "F")
-            Cad = Cad & " AND FechaAlta is null ORDER BY fechabaja"
-            RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            cad = cad & " AND Fechabaja<=" & DBSet(FFin, "F", "F")
+            cad = cad & " AND FechaAlta is null ORDER BY fechabaja"
+            RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             While Not RS.EOF
                 'Añadimos en el list2
                 Set itmX = ListView2.ListItems.Add
-                Cad = Format(RS!FechaBaja, "dd/mm/yyyy")
-                itmX.Text = Cad
-                Cad = ""
-                itmX.SubItems(1) = Cad
+                cad = Format(RS!FechaBaja, "dd/mm/yyyy")
+                itmX.Text = cad
+                cad = ""
+                itmX.SubItems(1) = cad
                 itmX.SubItems(2) = RS!descbaja
                 
                 itmX.SmallIcon = 6
@@ -995,17 +1049,17 @@ Dim ExcesoDefecto As Boolean
     
     
    
-        Cad = Me.Tag
-        Cad = Cad & " AND FechaAlta>=" & DBSet(FechaIni, "F")
-        Cad = Cad & " AND FechaAlta<=" & DBSet(FFin, "F")
-        RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = Me.Tag
+        cad = cad & " AND FechaAlta>=" & DBSet(FechaIni, "F")
+        cad = cad & " AND FechaAlta<=" & DBSet(FFin, "F")
+        RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not RS.EOF
             'Añadimos en el list2
             Set itmX = ListView2.ListItems.Add
-            Cad = Format(RS!FechaBaja, "dd/mm/yyyy")
-            itmX.Text = Cad
-            Cad = Format(RS!fechaalta, "dd/mm/yyyy")
-            itmX.SubItems(1) = Cad
+            cad = Format(RS!FechaBaja, "dd/mm/yyyy")
+            itmX.Text = cad
+            cad = Format(RS!fechaalta, "dd/mm/yyyy")
+            itmX.SubItems(1) = cad
             itmX.SubItems(2) = RS!descbaja
             itmX.SmallIcon = 6
             
@@ -1038,17 +1092,17 @@ Dim ExcesoDefecto As Boolean
         Wend
         RS.Close
   
-        Cad = Me.Tag
-        Cad = Cad & " AND FechaAlta>" & DBSet(FFin, "F")
-        Cad = Cad & " AND Fechabaja<=" & DBSet(FFin, "F")
-        RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = Me.Tag
+        cad = cad & " AND FechaAlta>" & DBSet(FFin, "F")
+        cad = cad & " AND Fechabaja<=" & DBSet(FFin, "F")
+        RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not RS.EOF
             'Añadimos en el list2
             Set itmX = ListView2.ListItems.Add
-            Cad = Format(RS!FechaBaja, "dd/mm/yyyy")
-            itmX.Text = Cad
-            Cad = Format(RS!fechaalta, "dd/mm/yyyy")
-            itmX.SubItems(1) = Cad
+            cad = Format(RS!FechaBaja, "dd/mm/yyyy")
+            itmX.Text = cad
+            cad = Format(RS!fechaalta, "dd/mm/yyyy")
+            itmX.SubItems(1) = cad
             itmX.SubItems(2) = RS!descbaja
             itmX.SmallIcon = 6
             
@@ -1134,8 +1188,8 @@ Dim ExcesoDefecto As Boolean
         Do
             Semana = InStr(Icono, MediosDias, "|")
             If Semana > 0 Then
-                Cad = Mid(MediosDias, Icono, Semana - Icono)
-                Dias = Weekday(CDate(Cad), vbMonday)
+                cad = Mid(MediosDias, Icono, Semana - Icono)
+                Dias = Weekday(CDate(cad), vbMonday)
                 If Dias = 3 Then
                     ContadorMier = ContadorMier + 1
                 Else
@@ -1149,17 +1203,17 @@ Dim ExcesoDefecto As Boolean
     End If
     'Si son jorandas semanles cargamos
     If JornadasSemanales Then
-        Cad = "Select * from JornadasSemanales where "
-        Cad = Cad & "  Fecha>=" & DBSet(FechaIni, "F")
-        Cad = Cad & " AND Fecha<=" & DBSet(FFin, "F")
-        Cad = Cad & " AND idTrabajador = " & RecuperaValor(Trabajador, 2)
-        Cad = Cad & " ORDER BY fecha"
-        RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        cad = "Select * from JornadasSemanales where "
+        cad = cad & "  Fecha>=" & DBSet(FechaIni, "F")
+        cad = cad & " AND Fecha<=" & DBSet(FFin, "F")
+        cad = cad & " AND idTrabajador = " & RecuperaValor(Trabajador, 2)
+        cad = cad & " ORDER BY fecha"
+        RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Text2(0).Tag = 0: Text2(1).Tag = 0: Text2(2).Tag = 0: Text2(3).Tag = 0
         While Not RS.EOF
             Set itmX = ListView3.ListItems.Add
-            Cad = Format(RS!Fecha, "dd/mm/yyyy")
-            itmX.Text = Cad
+            cad = Format(RS!Fecha, "dd/mm/yyyy")
+            itmX.Text = cad
             itmX.SubItems(1) = RS!diasofi
             Text2(0).Tag = Text2(0).Tag + RS!diasofi
             
@@ -1199,15 +1253,28 @@ Dim ExcesoDefecto As Boolean
     
     Dim C1 As Currency
     Dim C2 As Currency
-
+    Dim C3 As Currency
     C1 = 0
     C2 = 0
+    C3 = 0
     For i = 1 To ListView1.ListItems.Count
         If ListView1.ListItems(i).SubItems(1) <> "" Then C1 = C1 + ImporteFormateadoAmoneda(CStr(ListView1.ListItems(i).SubItems(1)))
         If ListView1.ListItems(i).SubItems(2) <> "" Then C2 = C2 + ImporteFormateadoAmoneda(CStr(ListView1.ListItems(i).SubItems(2)))
+        If ListView1.ListItems(i).SubItems(3) <> "" Then C3 = C3 + ImporteFormateadoAmoneda(CStr(ListView1.ListItems(i).SubItems(3)))
     Next i
     Text4(0).Text = Format(C1, "0.00")
-    Text4(1).Text = Format(C2, "0.00")
+    If vEmpresa.QueEmpresa = 4 Then
+        
+        If Option1(1).Value Then
+            Text4(1).Text = Format(C2, "0.00")
+            Text4(2).Text = Format(C3, "0.00")
+        Else
+            Text4(1).Text = Format(C2, "0.00")
+            Text4(2).Text = ""
+        End If
+    Else
+        Text4(1).Text = Format(C2, "0.00")
+    End If
 End Sub
 
 
@@ -1257,36 +1324,36 @@ Dim FechaFin As Date
 End Sub
 
 Private Sub RecalculoHorasMiercolesSabados(F1 As Date, F2 As Date, Miercoles As Boolean)
-Dim Cad As String
+Dim cad As String
 Dim RF As ADODB.Recordset
 Dim HT As Currency
 Dim Horas As Currency
 
     
 
-    Cad = "SELECT EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha, Weekday([Fecha]) AS Expr1"
-    Cad = Cad & " From EntradaMarcajes"
-    Cad = Cad & " Where EntradaMarcajes.Fecha >= #" & Format(F1, "yyyy/mm/dd") & "# And"
-    Cad = Cad & " EntradaMarcajes.Fecha <= #" & Format(F2, "yyyy/mm/dd") & "# And "
-    Cad = Cad & " Weekday([Fecha]) = "
+    cad = "SELECT EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha, Weekday([Fecha]) AS Expr1"
+    cad = cad & " From EntradaMarcajes"
+    cad = cad & " Where EntradaMarcajes.Fecha >= #" & Format(F1, "yyyy/mm/dd") & "# And"
+    cad = cad & " EntradaMarcajes.Fecha <= #" & Format(F2, "yyyy/mm/dd") & "# And "
+    cad = cad & " Weekday([Fecha]) = "
     If Miercoles Then
-        Cad = Cad & " 4"
+        cad = cad & " 4"
     Else
-        Cad = Cad & " 7"
+        cad = cad & " 7"
     End If
     
     'Trabajador
-    Cad = Cad & " AND idtrabajador = " & RecuperaValor(Trabajador, 2)
-    Cad = Cad & " And Hora "
+    cad = cad & " AND idtrabajador = " & RecuperaValor(Trabajador, 2)
+    cad = cad & " And Hora "
     If Miercoles Then
-        Cad = Cad & " <"
+        cad = cad & " <"
     Else
-        Cad = Cad & " >"
+        cad = cad & " >"
     End If
-    Cad = Cad & " #14:00:00# group by  EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha,  Weekday([Fecha])"
-    Cad = Cad & " ORDER BY EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha"
+    cad = cad & " #14:00:00# group by  EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha,  Weekday([Fecha])"
+    cad = cad & " ORDER BY EntradaMarcajes.idTrabajador, EntradaMarcajes.Fecha"
     Set RF = New ADODB.Recordset
-    RF.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RF.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Horas = 0
     HT = 0
     While Not RF.EOF
@@ -1469,6 +1536,10 @@ End Function
 
 
 Private Sub Option1_Click(Index As Integer)
+    Me.ListView1.ColumnHeaders(4).Text = "Total"
+    If Option1(1).Value Then
+        If vEmpresa.QueEmpresa = 4 Then Me.ListView1.ColumnHeaders(4).Text = "EXT"
 
+    End If
     CargaGrid
 End Sub

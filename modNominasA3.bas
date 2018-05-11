@@ -25,10 +25,19 @@ Dim FecPag As String
 
     NFic = -1
 
+
+    cad = DevuelveDesdeBD("idAsesoria", "empresas", "1", "1")
+    If Len(Trim(cad)) = "" Then
+        MsgBox "Falta configurar ID asesoria en la empresa."
+        Exit Function
+    End If
+    cad = "03" & cad & "00000" ' tipo de registro + codigo de empresa + centro o codigo de trabajador
+
+
     NFic = FreeFile
     Open App.Path & "\nominaA3.txt" For Output As NFic
 
-    cad = "03" & "00017" & "00000" ' tipo de registro + codigo de empresa + centro o codigo de trabajador
+    
     
     FecPag = Format(Year(FechaPago), "0000") & Format(Month(FechaPago), "00") & Format(Day(FechaPago), "00")
 
@@ -76,6 +85,27 @@ Dim FecPag As String
         
         RegImpBruto = cad & Format(Rs2!idTrabajador, "000000") & FecPag & "001" & "017" & Importe 'cad+codtraba+fecha+incidencia+001+importe bruto
         Print #NFic, RegImpBruto
+        
+        
+        'Si lleva estrcturales como independientes, es otra linea mas.-  De momento CATADAU
+        If vEmpresa.QueEmpresa = 4 Then
+            If Not IsNull(Rs2!neto) Then
+                Importe = Format(Int(DBLet(Rs2!neto, "N")), "00000") & Format((DBLet(Rs2!neto, "N") - Int(DBLet(Rs2!neto, "N"))) * 100, "00")
+                If Rs2!neto >= 0 Then
+                    Importe = Importe & "+"
+                Else
+                    Importe = Importe & "-"
+                End If
+                
+                Importe = Importe & "000000000+"
+                
+                RegImpBruto = cad & Format(Rs2!idTrabajador, "000000") & FecPag & "001" & "017" & Importe 'cad+codtraba+fecha+incidencia+001+importe
+                Print #NFic, RegImpBruto
+
+            End If
+        End If
+        
+        
         
         
         Rs2.MoveNext

@@ -149,10 +149,10 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 
-Dim SQL As String
+Dim Sql As String
 
 Private Sub cmdAceptar_Click()
 Dim Co As Collection
@@ -170,29 +170,29 @@ Dim F As Date
     
     
     'Que de todas las fechas que haya en la entrada fichajes, esta es la menor
-    SQL = "Select min(fecha) from entradafichajes"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = ""
+    Sql = "Select min(fecha) from entradafichajes"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = ""
     If Not miRsAux.EOF Then
-        If CDate(Text1(0).Text) > miRsAux.Fields(0) Then SQL = "La fecha para procesar es mayor que la primera pendiente de procesar: " & miRsAux.Fields(0)
+        If CDate(Text1(0).Text) > miRsAux.Fields(0) Then Sql = "La fecha para procesar es mayor que la primera pendiente de procesar: " & miRsAux.Fields(0)
     End If
     miRsAux.Close
-    If SQL <> "" Then
+    If Sql <> "" Then
         If vEmpresa.TodosLosDias Then
             MsgBox "El tipo de proceso de datos(generacion automatica) no permite procesar dias posteriores.", vbCritical
             Exit Sub
         Else
-            SQL = SQL & vbCrLf & vbCrLf & "Deberia empezar por la primera fecha a procesar." & vbCrLf & vbCrLf & "       ¿Continuar?"
-            If MsgBox(SQL, vbQuestion + vbYesNo) <> vbYes Then Exit Sub
+            Sql = Sql & vbCrLf & vbCrLf & "Deberia empezar por la primera fecha a procesar." & vbCrLf & vbCrLf & "       ¿Continuar?"
+            If MsgBox(Sql, vbQuestion + vbYesNo) <> vbYes Then Exit Sub
             SeHaHechoPregunta = True
         End If
     End If
     
     'QUE LA FECHA ES LA CORRECTA, mayor que ultima precoesada....
     
-    SQL = "Select max(fecha) from marcajes"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = ""
+    Sql = "Select max(fecha) from marcajes"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = ""
     MasDeUnDiaDiferencia = False
     If Not miRsAux.EOF Then
         If IsNull(miRsAux.Fields(0)) Then
@@ -201,7 +201,7 @@ Dim F As Date
             UltimoDia = miRsAux.Fields(0)
             'Hay procesados
             If CDate(Text1(0).Text) <= miRsAux.Fields(0) Then
-                SQL = "La fecha para procesar es menor o igual a la ultima ya procesada." & vbCrLf & "Desea continuar?"
+                Sql = "La fecha para procesar es menor o igual a la ultima ya procesada." & vbCrLf & "Desea continuar?"
             Else
                 If DateDiff("d", miRsAux.Fields(0), CDate(Text1(0).Text)) > 1 Then
                     'Separacion de mas de un dia
@@ -216,9 +216,9 @@ Dim F As Date
         UltimoDia = DateAdd("d", -1, CDate(Text1(0).Text))
     End If
     miRsAux.Close
-    If SQL <> "" Then
+    If Sql <> "" Then
         SeHaHechoPregunta = True
-        If MsgBox(SQL, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+        If MsgBox(Sql, vbQuestion + vbYesNo) = vbNo Then Exit Sub
     End If
     
     
@@ -230,14 +230,14 @@ Dim F As Date
     Set Co = New Collection
     ListadoTrabajadoresConErroresPrimarios Co, 1
     If Co.Count > 0 Then
-        SQL = "Los siguientes trabajadores no tienen horario asignado:" & vbCrLf
+        Sql = "Los siguientes trabajadores no tienen horario asignado:" & vbCrLf
         While Co.Count > 0
-            SQL = SQL & Co.Item(Co.Count)
+            Sql = Sql & Co.Item(Co.Count)
             Co.Remove Co.Count
         Wend
-        SQL = SQL & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
+        Sql = Sql & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
         SeHaHechoPregunta = True
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
     Set Co = Nothing
     
@@ -250,17 +250,17 @@ Dim F As Date
     ListadoTrabajadoresConErroresPrimarios Co, 0
     If Co.Count > 0 Then
         
-        SQL = "Los siguientes trabajadores tienen  marcajes impares:" & vbCrLf
+        Sql = "Los siguientes trabajadores tienen  marcajes impares:" & vbCrLf
         While Co.Count > 0
-            SQL = SQL & Co.Item(Co.Count)
+            Sql = Sql & Co.Item(Co.Count)
             Co.Remove Co.Count
         Wend
         Set Co = Nothing
         SeHaHechoPregunta = True
-        SQL = SQL & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
-        SQL = MsgBox(SQL, vbQuestion + vbYesNoCancel + vbDefaultButton2)
-        If CByte(SQL) <> vbYes Then
-            If CByte(SQL) = vbNo Then
+        Sql = Sql & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
+        Sql = MsgBox(Sql, vbQuestion + vbYesNoCancel + vbDefaultButton2)
+        If CByte(Sql) <> vbYes Then
+            If CByte(Sql) = vbNo Then
                 If MsgBox("Quiere ver marcajes del dia " & Text1(0).Text & "?", vbQuestion + vbYesNo) = vbYes Then
             
                     frmTareaActual.QueFecha = CDate(Text1(0).Text)
@@ -276,11 +276,36 @@ Dim F As Date
     Set Co = Nothing
     
     
+    If vEmpresa.QueEmpresa = 4 Then
+        'En Catadau si hay marcajes que no son 4 al dia avisar
+        Sql = "fecha =" & DBSet(Text1(0).Text, "F") & " AND 1"
+        Sql = DevuelveDesdeBD("idtrabajador", "entradafichajes", Sql, "1 GROUP BY idtrabajador HAVING count(*)<4")
+        
+        If Sql <> "" Then
+            SeHaHechoPregunta = True
+            Sql = "Trabajadores con menos de 4 fichajes"
+            Sql = Sql & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
+            Sql = MsgBox(Sql, vbQuestion + vbYesNoCancel + vbDefaultButton2)
+            If CByte(Sql) <> vbYes Then
+                If CByte(Sql) = vbNo Then
+                    If MsgBox("Quiere ver marcajes del dia " & Text1(0).Text & "?", vbQuestion + vbYesNo) = vbYes Then
+                
+                        frmTareaActual.QueFecha = CDate(Text1(0).Text)
+                        frmTareaActual.Opcion = 1
+                        frmTareaActual.Show vbModal
+                    End If
+                End If
+                Exit Sub
+            End If
+        End If
+    
+    End If
+    
     'Pregunta
     If Not SeHaHechoPregunta Then
         If vEmpresa.QueEmpresa <> 2 Then
-            SQL = "Seguro que desea continuar con el proceso?"
-            If MsgBox(SQL, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+            Sql = "Seguro que desea continuar con el proceso?"
+            If MsgBox(Sql, vbQuestion + vbYesNo) = vbNo Then Exit Sub
         End If
     End If
     
@@ -315,8 +340,8 @@ Dim F As Date
             F = DateAdd("d", 1, UltimoDia)
             Do
                 DoEvents
-                SQL = CStr(F)
-                GeneraEntradasSinMarcajes SQL, Label4, Label5
+                Sql = CStr(F)
+                GeneraEntradasSinMarcajes Sql, Label4, Label5
                 F = DateAdd("d", 1, F)
             Loop Until F = CDate(Text1(0).Text)
         End If
@@ -338,7 +363,7 @@ Dim F As Date
     
     
     
-    
+        
     
     'Si alguno no ha fichado
     'Le generamos en vacio
@@ -349,8 +374,8 @@ Dim F As Date
             Label5.Caption = ""
             Me.Refresh
             DoEvents
-            SQL = CDate(Text1(0).Text)
-            GeneraEntradasSinMarcajes SQL, Label4, Label5
+            Sql = CDate(Text1(0).Text)
+            GeneraEntradasSinMarcajes Sql, Label4, Label5
     
     
             '    GeneraLasVacaciones
@@ -360,8 +385,8 @@ Dim F As Date
             Me.Refresh
             Do
                 DoEvents
-                SQL = CStr(F)
-                GeneraLosQueNoHanTicado SQL, Label4, Label5
+                Sql = CStr(F)
+                GeneraLosQueNoHanTicado Sql, Label4, Label5
                 F = DateAdd("d", 1, F)
             Loop Until F >= CDate(Text1(0).Text)
     End If
@@ -386,33 +411,33 @@ Dim L As Collection
 
     Select Case vOpcion
     Case 0
-        SQL = "select idtrabajador,(count(*) % 2) as c1 from entradafichajes where fecha='" & Format(Text1(0).Text, FormatoFecha)
-        SQL = SQL & "' group by idtrabajador having c1>0"
+        Sql = "select idtrabajador,(count(*) % 2) as c1 from entradafichajes where fecha='" & Format(Text1(0).Text, FormatoFecha)
+        Sql = Sql & "' group by idtrabajador having c1>0"
         
     Case 1
         'Listado de trabajadores sin asignar horario para esta fecha
         Dim CalendarioVariable As Boolean
         CalendarioVariable = vEmpresa.QueEmpresa <> 2 And vEmpresa.QueEmpresa <> 5    'alzira y picassent
-        
+        If vEmpresa.QueEmpresa = 4 Then CalendarioVariable = False
         If CalendarioVariable Then
             
-            SQL = "select entradafichajes.idtrabajador,idhorario as c1 from entradafichajes left join calendariot"
-            SQL = SQL & " on entradafichajes.idTrabajador = calendariot.idTrabajador"
-            SQL = SQL & " and calendariot.fecha=entradafichajes.fecha"
-            SQL = SQL & " where entradafichajes.fecha='" & Format(Text1(0).Text, FormatoFecha)
-            SQL = SQL & "' group by idtrabajador Having c1 Is Null"
+            Sql = "select entradafichajes.idtrabajador,idhorario as c1 from entradafichajes left join calendariot"
+            Sql = Sql & " on entradafichajes.idTrabajador = calendariot.idTrabajador"
+            Sql = Sql & " and calendariot.fecha=entradafichajes.fecha"
+            Sql = Sql & " where entradafichajes.fecha='" & Format(Text1(0).Text, FormatoFecha)
+            Sql = Sql & "' group by idtrabajador Having c1 Is Null"
             
         Else
-            SQL = "select entradafichajes.idtrabajador,idhorario as c1 from entradafichajes left join"
-            SQL = SQL & " calendariol on calendariol.fecha=entradafichajes.fecha "
-            SQL = SQL & " where entradafichajes.fecha='" & Format(Text1(0).Text, FormatoFecha)
-            SQL = SQL & "' group by idtrabajador Having c1 Is Null"
+            Sql = "select entradafichajes.idtrabajador,idhorario as c1 from entradafichajes left join"
+            Sql = Sql & " calendariol on calendariol.fecha=entradafichajes.fecha "
+            Sql = Sql & " where entradafichajes.fecha='" & Format(Text1(0).Text, FormatoFecha)
+            Sql = Sql & "' group by idtrabajador Having c1 Is Null"
         End If
     End Select
         
         
     Set miRs = New ADODB.Recordset
-    miRs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRs.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Set L = New Collection
     While Not miRs.EOF
         L.Add Val(miRs!idTrabajador)
@@ -428,35 +453,35 @@ Dim L As Collection
     
         Select Case vOpcion
         Case 0
-                SQL = "Select entradafichajes.*,concat(hora,'') LHora ,nomtrabajador from entradafichajes,trabajadores where"
-                SQL = SQL & " entradafichajes.idtrabajador=trabajadores.idtrabajador and fecha='" & Format(Text1(0).Text, FormatoFecha)
-                SQL = SQL & "' and entradafichajes.idtrabajador =" & L.Item(L.Count)
-                SQL = SQL & " ORDER BY hora"
-                miRs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                Sql = "Select entradafichajes.*,concat(hora,'') LHora ,nomtrabajador from entradafichajes,trabajadores where"
+                Sql = Sql & " entradafichajes.idtrabajador=trabajadores.idtrabajador and fecha='" & Format(Text1(0).Text, FormatoFecha)
+                Sql = Sql & "' and entradafichajes.idtrabajador =" & L.Item(L.Count)
+                Sql = Sql & " ORDER BY hora"
+                miRs.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                 If Not miRs.EOF Then
-                    SQL = miRs!nomtrabajador & vbCrLf & "             .- "
+                    Sql = miRs!nomtrabajador & vbCrLf & "             .- "
                     While Not miRs.EOF
-                        SQL = SQL & miRs!LHora & "   "
+                        Sql = Sql & miRs!LHora & "   "
                         miRs.MoveNext
                     Wend
-                    SQL = SQL & vbCrLf
-                    Cole.Add SQL
+                    Sql = Sql & vbCrLf
+                    Cole.Add Sql
                     
                 End If
                 miRs.Close
         
         Case 1
         
-                SQL = "Select * from trabajadores where"
-                SQL = SQL & " idtrabajador =" & L.Item(L.Count)
-                miRs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                Sql = "Select * from trabajadores where"
+                Sql = Sql & " idtrabajador =" & L.Item(L.Count)
+                miRs.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                 If Not miRs.EOF Then
-                    SQL = miRs!nomtrabajador & "(" & L.Item(L.Count) & ")"
+                    Sql = miRs!nomtrabajador & "(" & L.Item(L.Count) & ")"
                 Else
-                    SQL = "Desconocido (" & L.Item(L.Count) & ")"
+                    Sql = "Desconocido (" & L.Item(L.Count) & ")"
                 End If
-                SQL = SQL & vbCrLf
-                Cole.Add SQL
+                Sql = Sql & vbCrLf
+                Cole.Add Sql
                     
                 
                 miRs.Close
@@ -481,7 +506,7 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Activate()
-    If SQL = "" Then
+    If Sql = "" Then
         DoEvents
         CargaValoresInciales
         Screen.MousePointer = vbDefault
@@ -489,10 +514,10 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_Load()
-    SQL = ""
+    Sql = ""
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     Text1(CInt(Me.imgFec(0).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -500,34 +525,34 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
 
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
 
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
 
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
 
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If Text1(Index).Text <> "" Then frmC.NovaData = Text1(Index).Text
+    If Text1(Index).Text <> "" Then frmc.NovaData = Text1(Index).Text
     ' ********************************************
 
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco Text1(CByte(imgFec(0).Tag)) '<===
     ' ********************************************
@@ -541,8 +566,8 @@ Dim B As Boolean
     On Error GoTo ECargaValoresInciales
     
     Set miRsAux = New ADODB.Recordset
-    SQL = "Select max(fecha) from marcajes"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select max(fecha) from marcajes"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1900")
     B = False
     If Not miRsAux.EOF Then
@@ -558,8 +583,8 @@ Dim B As Boolean
        ' Text1(0).Text = Format(DateAdd("d", 1, F), "dd/mm/yyyy")
     End If
     
-    SQL = "Select min(fecha) from entradafichajes"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select min(fecha) from entradafichajes"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     B = False
     If Not miRsAux.EOF Then
@@ -607,8 +632,8 @@ End Sub
 Private Sub ObtenerSiguienteFechaProceso()
 
     Set miRsAux = New ADODB.Recordset
-    SQL = "Select min(fecha) from entradafichajes where fecha>'" & Format(Text1(0).Text, FormatoFecha) & "' group by fecha"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adCmdText
+    Sql = "Select min(fecha) from entradafichajes where fecha>'" & Format(Text1(0).Text, FormatoFecha) & "' group by fecha"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adCmdText
     If Not miRsAux.EOF Then
         If Not IsNull(miRsAux.Fields(0)) Then Text1(0).Text = Format(miRsAux.Fields(0), "dd/mm/yyyy")
     End If

@@ -598,7 +598,7 @@ Private Sub BotonModificar()
     
  
     
-    i = adodc1.Recordset!Tipo
+    i = adodc1.Recordset!tipo
     PosicionarCombo Combo1(0), i
     
     LLamaLineas anc, 4
@@ -690,10 +690,6 @@ Private Sub btnBuscar_Click(Index As Integer)
     MsgBox "buscar"
     
     If Modo = 4 Then BLOQUEADesdeFormulario2 Me, Me.adodc1, 1
-End Sub
-
-Private Sub adodc1_WillMove(ByVal adReason As ADODB.EventReasonEnum, adStatus As ADODB.EventStatusEnum, ByVal pRecordset As ADODB.Recordset)
-
 End Sub
 
 Private Sub cmdAceptar_Click()
@@ -799,7 +795,7 @@ End Sub
 
 
 Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_DblClick()
@@ -807,7 +803,7 @@ Private Sub DataGrid1_DblClick()
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -946,7 +942,7 @@ Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
         KeyAscii = 0
         btnBuscar_Click (0)
     Else
-        KeyPress KeyAscii
+        Keypress KeyAscii
     End If
 End Sub
 
@@ -1008,18 +1004,18 @@ Private Sub PonerOpcionesMenu()
 End Sub
 
 Private Function SepuedeBorrar(ByRef C As String) As Boolean
-
-    C = DevuelveDesdeBD("tarea", "tareasrealizadas", "tarea", CStr(adodc1.Recordset!idtarea), "N")
-    If C <> "" Then
-        MsgBox "Existen tareas realizadas asignadas", vbExclamation
-    Else
-        SepuedeBorrar = True
-    End If
+    SepuedeBorrar = False
+'    C = DevuelveDesdeBD("tarea", "tareasrealizadas", "tarea", CStr(adodc1.Recordset!idtarea), "N")
+'    If C <> "" Then
+'        MsgBox "Existen tareas realizadas asignadas", vbExclamation
+'    Else
+'        SepuedeBorrar = True
+'    End If
     
 End Function
 
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

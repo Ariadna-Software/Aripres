@@ -24,7 +24,7 @@ Begin VB.MDIForm frmMain
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   18
+         NumListImages   =   19
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmMain.frx":1F6DB
             Key             =   ""
@@ -97,6 +97,10 @@ Begin VB.MDIForm frmMain
             Picture         =   "frmMain.frx":508BD
             Key             =   ""
          EndProperty
+         BeginProperty ListImage19 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmMain.frx":5711F
+            Key             =   ""
+         EndProperty
       EndProperty
    End
    Begin MSComDlg.CommonDialog cd1 
@@ -122,7 +126,7 @@ Begin VB.MDIForm frmMain
             Alignment       =   1
             Object.Width           =   3175
             MinWidth        =   3175
-            Picture         =   "frmMain.frx":5711F
+            Picture         =   "frmMain.frx":5D981
          EndProperty
          BeginProperty Panel2 {8E3867AB-8586-11D1-B16A-00C0F0283628} 
             AutoSize        =   1
@@ -151,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "16:37"
+            TextSave        =   "13:30"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -210,7 +214,7 @@ Begin VB.MDIForm frmMain
             Object.ToolTipText     =   "Procesar marcajes"
          EndProperty
          BeginProperty Button10 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.ToolTipText     =   "Traspaso ARIADNA"
+            Object.ToolTipText     =   "Consultar marcaje actual"
          EndProperty
          BeginProperty Button11 {66833FEA-8583-11D1-B16A-00C0F0283628} 
             Style           =   3
@@ -248,87 +252,87 @@ Begin VB.MDIForm frmMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   21
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A6E1
+            Picture         =   "frmMain.frx":60F43
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A73F
+            Picture         =   "frmMain.frx":60FA1
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A79D
+            Picture         =   "frmMain.frx":60FFF
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A7FB
+            Picture         =   "frmMain.frx":6105D
             Key             =   ""
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A859
+            Picture         =   "frmMain.frx":610BB
             Key             =   ""
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A8B7
+            Picture         =   "frmMain.frx":61119
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A915
+            Picture         =   "frmMain.frx":61177
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A973
+            Picture         =   "frmMain.frx":611D5
             Key             =   ""
          EndProperty
          BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5A9D1
+            Picture         =   "frmMain.frx":61233
             Key             =   ""
          EndProperty
          BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AA2F
+            Picture         =   "frmMain.frx":61291
             Key             =   ""
          EndProperty
          BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AA8D
+            Picture         =   "frmMain.frx":612EF
             Key             =   ""
          EndProperty
          BeginProperty ListImage12 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AAEB
+            Picture         =   "frmMain.frx":6134D
             Key             =   ""
          EndProperty
          BeginProperty ListImage13 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AB49
+            Picture         =   "frmMain.frx":613AB
             Key             =   ""
          EndProperty
          BeginProperty ListImage14 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5ABA7
+            Picture         =   "frmMain.frx":61409
             Key             =   ""
          EndProperty
          BeginProperty ListImage15 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AC05
+            Picture         =   "frmMain.frx":61467
             Key             =   ""
          EndProperty
          BeginProperty ListImage16 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AC63
+            Picture         =   "frmMain.frx":614C5
             Key             =   ""
          EndProperty
          BeginProperty ListImage17 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5ACC1
+            Picture         =   "frmMain.frx":61523
             Key             =   ""
          EndProperty
          BeginProperty ListImage18 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AD1F
+            Picture         =   "frmMain.frx":61581
             Key             =   ""
          EndProperty
          BeginProperty ListImage19 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AD7D
+            Picture         =   "frmMain.frx":615DF
             Key             =   ""
          EndProperty
          BeginProperty ListImage20 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5ADDB
+            Picture         =   "frmMain.frx":6163D
             Key             =   ""
          EndProperty
          BeginProperty ListImage21 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AE39
+            Picture         =   "frmMain.frx":6169B
             Key             =   ""
          EndProperty
       EndProperty
@@ -346,75 +350,75 @@ Begin VB.MDIForm frmMain
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   18
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5AE97
+            Picture         =   "frmMain.frx":616F9
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5CBA1
+            Picture         =   "frmMain.frx":63403
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":5CEBB
+            Picture         =   "frmMain.frx":6371D
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":63155
+            Picture         =   "frmMain.frx":699B7
             Key             =   ""
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":635AF
+            Picture         =   "frmMain.frx":69E11
             Key             =   ""
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":638C9
+            Picture         =   "frmMain.frx":6A12B
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":647A3
+            Picture         =   "frmMain.frx":6B005
             Key             =   ""
          EndProperty
          BeginProperty ListImage8 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":6567D
+            Picture         =   "frmMain.frx":6BEDF
             Key             =   ""
          EndProperty
          BeginProperty ListImage9 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":6B917
+            Picture         =   "frmMain.frx":72179
             Key             =   ""
          EndProperty
          BeginProperty ListImage10 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":6BC31
+            Picture         =   "frmMain.frx":72493
             Key             =   ""
          EndProperty
          BeginProperty ListImage11 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":71853
+            Picture         =   "frmMain.frx":780B5
             Key             =   ""
          EndProperty
          BeginProperty ListImage12 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":7252D
+            Picture         =   "frmMain.frx":78D8F
             Key             =   ""
          EndProperty
          BeginProperty ListImage13 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":745AF
+            Picture         =   "frmMain.frx":7AE11
             Key             =   ""
          EndProperty
          BeginProperty ListImage14 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":748C9
+            Picture         =   "frmMain.frx":7B12B
             Key             =   ""
          EndProperty
          BeginProperty ListImage15 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":74BE3
+            Picture         =   "frmMain.frx":7B445
             Key             =   ""
          EndProperty
          BeginProperty ListImage16 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":7AE7D
+            Picture         =   "frmMain.frx":816DF
             Key             =   ""
          EndProperty
          BeginProperty ListImage17 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":7BD57
+            Picture         =   "frmMain.frx":825B9
             Key             =   ""
          EndProperty
          BeginProperty ListImage18 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmMain.frx":7CC31
+            Picture         =   "frmMain.frx":83493
             Key             =   ""
          EndProperty
       EndProperty
@@ -635,29 +639,43 @@ Begin VB.MDIForm frmMain
    End
    Begin VB.Menu mnProduccion 
       Caption         =   "&Producción"
-      Begin VB.Menu mnDatosProduccion 
-         Caption         =   "Datos producción"
+      Begin VB.Menu mnProduccion1 
+         Caption         =   "Datos reloj"
+         Index           =   0
       End
-      Begin VB.Menu mnTareaActual 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "Tarea actual"
+         Index           =   1
       End
-      Begin VB.Menu mnVerTicajesTareas 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "Ver ticajes/tareas"
+         Index           =   2
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnInsertarTicajeManual 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "Insertar ticajes manual"
+         Index           =   3
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnTraerDatosProduccion 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "Traer datos maquina"
+         Index           =   4
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnDatosMaquinaKimaldi 
-         Caption         =   "Datos maquina"
+      Begin VB.Menu mnProduccion1 
+         Caption         =   "libre"
+         Index           =   5
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnbarra51 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "-"
+         Index           =   6
+         Visible         =   0   'False
       End
-      Begin VB.Menu mnEliminarDatosKimaldi 
+      Begin VB.Menu mnProduccion1 
          Caption         =   "Eliminar datos para recalcular"
+         Index           =   7
+         Visible         =   0   'False
       End
    End
    Begin VB.Menu mnGeneraInformes 
@@ -866,8 +884,7 @@ On Error Resume Next
     Toolbar1.Buttons(6).Image = 6  'revisar
     Toolbar1.Buttons(8).Image = 1  'TCP3
     Toolbar1.Buttons(9).Image = 9  'procesar
-    Toolbar1.Buttons(10).Image = 11 'Vacio
-    Toolbar1.Buttons(10).Enabled = False
+    Toolbar1.Buttons(10).Image = 19 'Vacio
            
              
     Toolbar1.Buttons(12).Image = 4  'Presecia
@@ -950,11 +967,7 @@ On Error Resume Next
         
     
     
-    
-    
-    B = False
-    mnInsertarTicajeManual.Enabled = B
-    mnTraerDatosProduccion.Enabled = B
+    mnInformaesCominiados.Visible = False 'NO estan desarrollados
     
     mnListHorTrab.Visible = vEmpresa.QueEmpresa <> 5
 
@@ -964,9 +977,8 @@ On Error Resume Next
     
     If vEmpresa.QueEmpresa = 2 Then
         TieneRelojesAuxiliares
-        mnProcesoPrevioALZ.Visible = True
     End If
-    
+    mnProcesoPrevioALZ.Visible = vEmpresa.HorarioNocturno2
     
     
     'Aqui asociamos los botones de la tool con el menu
@@ -976,13 +988,13 @@ On Error Resume Next
    
 
     'Deshacer semana
-    mnLaboralHoras1(9).Visible = vEmpresa.QueEmpresa = 2
-    mnLaboralHoras1(10).Visible = vEmpresa.QueEmpresa = 2
+    mnLaboralHoras1(9).Visible = vEmpresa.QueEmpresa = 2 Or vEmpresa.QueEmpresa = 4
+    mnLaboralHoras1(10).Visible = vEmpresa.QueEmpresa = 2 Or vEmpresa.QueEmpresa = 4
 
 
     
-    If vEmpresa.QueEmpresa = 2 Then
     
+    If vEmpresa.reloj = vbKimaldi Then
         'Alzira  entra aqui
     
         ' La bD esta en el ODBC driver de MDB y se llama accGestorHuella
@@ -997,6 +1009,9 @@ Private Sub MDIForm_Unload(Cancel As Integer)
     On Error Resume Next
     conn.Close
     Set conn = Nothing
+    Set ColK2 = Nothing
+    GesHuellaDB.Cerrar
+    Set GesHuellaDB = Nothing
     End
 End Sub
 
@@ -1047,9 +1062,12 @@ Private Sub mnCopiaSeg_Click()
     frmBackUP.Show vbModal
 End Sub
 
+
 Private Sub mnDiasTrabajados_Click()
     AbrirListado 14
 End Sub
+
+
 
 Private Sub mnEmpresas_Click()
     frmEmpresa.Show vbModal
@@ -1112,10 +1130,16 @@ Private Sub mnLaboralHoras1_Click(Index As Integer)
     
     Case 1
         'GEneracion de HORAS
-        CadenaDesdeOtroForm = ""
-        FrmVarios.Opcion = 4
-        FrmVarios.Show vbModal
-        If CadenaDesdeOtroForm <> "" Then frmCalcularHorasSemana.Show vbModal
+        Do
+            CadenaDesdeOtroForm = ""
+            FrmVarios.Opcion = 4
+            FrmVarios.Show vbModal
+            If CadenaDesdeOtroForm <> "" Then
+                frmCalcularHorasSemana.TodasSecciones = RecuperaValor(CadenaDesdeOtroForm, 3) = 1
+                frmCalcularHorasSemana.Show vbModal
+            End If
+        Loop Until CadenaDesdeOtroForm = ""
+        
     Case 2
         CadenaDesdeOtroForm = ""
         FrmVarios.Opcion = 5
@@ -1142,7 +1166,11 @@ Private Sub mnLaboralNominas_Click(Index As Integer)
     Case 0
         frmNominas.Show vbModal
     Case 1
-        frmCalculoHorasMes.Show vbModal
+        If vEmpresa.QueEmpresa = 4 Then
+            frmCalculoHorasMesConEstrc.Show vbModal
+        Else
+            frmCalculoHorasMes.Show vbModal
+        End If
     Case 3
         'exportar
         frmListado.Opcion = 20
@@ -1256,6 +1284,19 @@ Dim Aux As String
     
     Me.StatusBar1.Panels(2).Text = Aux
     Screen.MousePointer = vbDefault
+End Sub
+
+Private Sub mnProduccion1_Click(Index As Integer)
+    Select Case Index
+    Case 0
+        If vEmpresa.reloj = vbKimaldi Then
+            frmDatosKimaldi.Show vbModal
+        End If
+    Case 1
+        frmTareaActual.QueFecha = Now
+        frmTareaActual.Opcion = 0
+        frmTareaActual.Show vbModal
+    End Select
 End Sub
 
 Private Sub mnRelojesAuxiliares_Click()
@@ -1393,8 +1434,8 @@ Private Sub HacerToolBar(Index As Integer)
     
             
     Case 10
-            'traspasos aradna
-            
+            'marcaje actual
+            mnTicajeActual_Click
           
             
             
@@ -1459,43 +1500,43 @@ Private Sub NoHaceNada()
 End Sub
 
 
-
-Private Sub PoneMenusDelEditor()
-Dim T As Control
-Dim Sql As String
-Dim C As String
-
-    On Error GoTo ELeerEditorMenus
-    
-    Sql = "Select * from usuarios.appmenususuario where aplicacion='conta' and codusu = " & Val(Right(CStr(vUsu.Codigo), 3))
-    Set miRsAux = New ADODB.Recordset
-    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    Sql = ""
-
-    While Not miRsAux.EOF
-        If Not IsNull(miRsAux.Fields(3)) Then
-            Sql = Sql & miRsAux.Fields(3) & "·"
-        End If
-        miRsAux.MoveNext
-    Wend
-    miRsAux.Close
-        
-   
-    If Sql <> "" Then
-        Sql = "·" & Sql
-        For Each T In Me.Controls
-            If TypeOf T Is menu Then
-               ' C = DevuelveCadenaMenu(T)
-                C = "·" & C & "·"
-                If InStr(1, Sql, C) > 0 Then T.Visible = False
-           
-            End If
-        Next
-    End If
-ELeerEditorMenus:
-    Set miRsAux = Nothing
-    If Err.Number <> 0 Then Err.Clear
-End Sub
+'
+'Private Sub PoneMenusDelEditor()
+'Dim T As Control
+'Dim SQL As String
+'Dim C As String
+'
+'    On Error GoTo ELeerEditorMenus
+'
+'    SQL = "Select * from usu arios.appmenususuario where aplicacion='conta' and codusu = " & Val(Right(CStr(vUsu.Codigo), 3))
+'    Set miRsAux = New ADODB.Recordset
+'    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+'    SQL = ""
+'
+'    While Not miRsAux.EOF
+'        If Not IsNull(miRsAux.Fields(3)) Then
+'            SQL = SQL & miRsAux.Fields(3) & "·"
+'        End If
+'        miRsAux.MoveNext
+'    Wend
+'    miRsAux.Close
+'
+'
+'    If SQL <> "" Then
+'        SQL = "·" & SQL
+'        For Each T In Me.Controls
+'            If TypeOf T Is menu Then
+'               ' C = DevuelveCadenaMenu(T)
+'                C = "·" & C & "·"
+'                If InStr(1, SQL, C) > 0 Then T.Visible = False
+'
+'            End If
+'        Next
+'    End If
+'ELeerEditorMenus:
+'    Set miRsAux = Nothing
+'    If Err.Number <> 0 Then Err.Clear
+'End Sub
 
 
 
@@ -1567,7 +1608,7 @@ Dim DiaTraba As Collection
 Dim UltimaDiaHoraTraidoMaquina2 As String
 Dim UltimoDiaProcesado As Date
 Dim FechaParaActualizarEnParametros As Date
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 
 Dim DiasATratar As Collection
 Dim J As Integer
@@ -1584,7 +1625,7 @@ Dim J As Integer
     
     
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     
     cad = DevuelveDesdeBD("AcabalUltimoDiaProcesado", "empresas", "1", "1")
     If cad = "" Then
@@ -1599,15 +1640,15 @@ Dim J As Integer
     
     'Voy a ver ultimo dia -hora que hemos traido desde la maquina
     cad = "Select fecha , concat(horareal,'') h1 from entradafichajes ORDER BY 1 desc,2 desc"
-    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Rs.EOF Then
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If RS.EOF Then
         Err.Raise 513, , "Entrada fichejes vacia"
     Else
         cad = "23:59:59"
-        If Not HoraFueraIntervalo(Rs!H1) Then cad = Format(Rs!H1, "hh:nn:ss")
-        cad = Format(Rs!Fecha, "dd/mm/yyyy") & " " & cad
+        If HoraFueraInterval(RS!H1) = 0 Then cad = Format(RS!H1, "hh:nn:ss")
+        cad = Format(RS!Fecha, "dd/mm/yyyy") & " " & cad
     End If
-    Rs.Close
+    RS.Close
     UltimaDiaHoraTraidoMaquina2 = cad
     
     
@@ -1629,12 +1670,12 @@ Dim J As Integer
     cad = cad & "  order by 1"
     
  
-    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
-        DiasATratar.Add CStr(Format(Rs.Fields(0), "dd/mm/yyyy"))
-        Rs.MoveNext
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        DiasATratar.Add CStr(Format(RS.Fields(0), "dd/mm/yyyy"))
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
     
     
     If DiasATratar.Count = 0 Then GoTo eProcesoHorasAcabalgadas
@@ -1650,15 +1691,15 @@ Dim J As Integer
             cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
             'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
             cad = "Select distinct idtrabajador from entradafichajes where " & cad & " ORDER BY idtrabajador"
-            Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             Set RegistrosTratar = New Collection
             i = -1
-            While Not Rs.EOF
-                cad = Rs!idTrabajador
+            While Not RS.EOF
+                cad = RS!idTrabajador
                 RegistrosTratar.Add cad
-                Rs.MoveNext
+                RS.MoveNext
             Wend
-            Rs.Close
+            RS.Close
             
             'Para que haga los nothing
             If RegistrosTratar.Count > 0 Then
@@ -1703,12 +1744,12 @@ Dim J As Integer
                         cad = "Select * from tmpnotrabajo ORDER by idtra"
                         Set DiaTraba = New Collection
                         
-                        Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-                        While Not Rs.EOF
-                            DiaTraba.Add CStr(Rs!idTRa)
-                            Rs.MoveNext
+                        RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                        While Not RS.EOF
+                            DiaTraba.Add CStr(RS!idTRa)
+                            RS.MoveNext
                         Wend
-                        Rs.Close
+                        RS.Close
                         
                         
                         'Para cada trabajador
@@ -1770,7 +1811,7 @@ Dim J As Integer
 eProcesoHorasAcabalgadas:
     
     If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
-    Set Rs = Nothing
+    Set RS = Nothing
     Set RegistrosTratar = Nothing
     Set DiaTraba = Nothing
     Set DiasATratar = Nothing

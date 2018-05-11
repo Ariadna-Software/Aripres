@@ -254,7 +254,7 @@ Attribute frmc.VB_VarHelpID = -1
 
 Dim PrimeraVez As Boolean
 Dim Antiguo As String
-Dim Cad As String
+Dim cad As String
 
 
 
@@ -344,7 +344,7 @@ End Sub
 
 
 Private Sub CargaDatos2()
-Dim SQL As String
+Dim Sql As String
 Dim F As Date
 Dim IT As ListItem
 Dim Agrupar As String
@@ -355,10 +355,10 @@ Dim T1 As Single
 
     ListView1.ListItems.Clear
     
-    SQL = "select marcajes.fecha,marcajes.idtrabajador,entrada,hora,nomtrabajador,nominci,incfinal "
-    SQL = SQL & ",HorasTrabajadas, HorasIncid,excesodefecto"
-    SQL = SQL & " from marcajes left join entradamarcajes on marcajes.Entrada = entradamarcajes.idmarcaje,trabajadores,incidencias"
-    SQL = SQL & " Where marcajes.idTrabajador = trabajadores.idTrabajador And IncFinal = incidencias.idinci"
+    Sql = "select marcajes.fecha,marcajes.idtrabajador,entrada,hora,nomtrabajador,nominci,incfinal "
+    Sql = Sql & ",HorasTrabajadas, HorasIncid,excesodefecto"
+    Sql = Sql & " from marcajes left join entradamarcajes on marcajes.Entrada = entradamarcajes.idmarcaje,trabajadores,incidencias"
+    Sql = Sql & " Where marcajes.idTrabajador = trabajadores.idTrabajador And IncFinal = incidencias.idinci"
 
     
     'EL SQL PARTICULAR
@@ -368,13 +368,13 @@ Dim T1 As Single
         F = CDate(txtFec(0).Text)
     End If
         
-    SQL = SQL & " and marcajes.fecha>='" & Format(F, FormatoFecha)
+    Sql = Sql & " and marcajes.fecha>='" & Format(F, FormatoFecha)
     If txtFec(1).Text = "" Then
         F = "1/01/2050"
     Else
         F = CDate(txtFec(1).Text)
     End If
-    SQL = SQL & "' and marcajes.fecha <= '" & Format(F, FormatoFecha)
+    Sql = Sql & "' and marcajes.fecha <= '" & Format(F, FormatoFecha)
         
         
         
@@ -383,30 +383,30 @@ Dim T1 As Single
     Else
         SubI = 0
     End If
-    SQL = SQL & "' and marcajes.idtrabajador>=" & SubI
+    Sql = Sql & "' and marcajes.idtrabajador>=" & SubI
     
     If Me.txtTrab(5).Text <> "" Then
         SubI = Val(txtTrab(5).Text)
     Else
         SubI = 32600
     End If
-    SQL = SQL & "  and  marcajes.idtrabajador<= " & SubI
+    Sql = Sql & "  and  marcajes.idtrabajador<= " & SubI
     
     
-    SQL = SQL & " ORDER BY "
-    If Check1.Value = 1 Then SQL = SQL & "fecha,"
+    Sql = Sql & " ORDER BY "
+    If Check1.Value = 1 Then Sql = Sql & "fecha,"
     If Option1(0).Value Then
-        SQL = SQL & "idtrabajador"
+        Sql = Sql & "idtrabajador"
     Else
-        SQL = SQL & "nomtrabajador"
+        Sql = Sql & "nomtrabajador"
     End If
-    If Not (Check1.Value = 1) Then SQL = SQL & ",fecha"
-    SQL = SQL & ",hora"
+    If Not (Check1.Value = 1) Then Sql = Sql & ",fecha"
+    Sql = Sql & ",hora"
     
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     DoEvents
-    SQL = ""
+    Sql = ""
     Agrupar = ""
     Entrada = 0
     T1 = Timer
@@ -416,7 +416,7 @@ Dim T1 As Single
             Me.Refresh
         End If
         If Check1.Value = 1 Then
-            SQL = Format(miRsAux!Fecha, "dd/mm/yyyy")
+            Sql = Format(miRsAux!Fecha, "dd/mm/yyyy")
             Salto = miRsAux.Fields(0) <> Agrupar
         Else
             Salto = miRsAux!idTrabajador <> Agrupar
@@ -425,11 +425,11 @@ Dim T1 As Single
             Set IT = ListView1.ListItems.Add()
             If Check1.Value = 1 Then
                 Agrupar = Format(miRsAux.Fields(0), "dd/mm/yyyy")
-                SQL = Agrupar
+                Sql = Agrupar
             Else
                 'Aunque sea por nombre, el codigo no sirve
                 Agrupar = miRsAux!idTrabajador
-                SQL = Agrupar
+                Sql = Agrupar
 '                If Option1(0).Value Then
 '                    SQL = Agrupar
 '                Else
@@ -437,7 +437,7 @@ Dim T1 As Single
 '                End If
 '
             End If
-            IT.Text = SQL
+            IT.Text = Sql
             If Check1.Value = 1 Then
                 IT.SmallIcon = 3
                 IT.SubItems(1) = miRsAux!idTrabajador
@@ -466,10 +466,14 @@ Dim T1 As Single
                 End If
             End If
             Entrada = miRsAux!Entrada
+            
+            
+            
+            
             IT.Key = "C" & Entrada
             IT.SubItems(8) = Format(miRsAux!HorasTrabajadas, "0.00")
             If miRsAux!IncFinal <> 0 Then
-                If miRsAux!excesodefecto = 1 Then
+                If miRsAux!ExcesoDefecto = 1 Then
                     IT.SubItems(9) = Format(miRsAux!HorasIncid, "0.00")
                 Else
                     IT.SubItems(9) = "-"
@@ -511,7 +515,7 @@ End Function
 
 Private Sub CargarColumnas()
 Dim L As Collection
-Dim I As Integer
+Dim i As Integer
 Dim C As ColumnHeader
 
     ListView1.ColumnHeaders.Clear
@@ -529,9 +533,9 @@ Dim C As ColumnHeader
     If Not (Check1.Value = 1) Then L.Add "Fecha|1100|"
 
     'Las columnas para el resto de campos
-    For I = 1 To 4
-        L.Add "H" & I & "|800|"
-    Next I
+    For i = 1 To 4
+        L.Add "H" & i & "|800|"
+    Next i
     'Columna para marcar si hay mas
     L.Add "+|300|"
     
@@ -542,11 +546,11 @@ Dim C As ColumnHeader
     
     
     'TOTAL..... 11 campos
-    For I = 1 To 11
-        Set C = ListView1.ColumnHeaders.Add(, "C" & I)
-        C.Text = RecuperaValor(L.Item(I), 1)
-        C.Width = RecuperaValor(L.Item(I), 2)
-    Next I
+    For i = 1 To 11
+        Set C = ListView1.ColumnHeaders.Add(, "C" & i)
+        C.Text = RecuperaValor(L.Item(i), 1)
+        C.Width = RecuperaValor(L.Item(i), 2)
+    Next i
     
     'A MANO
     '---------
@@ -558,7 +562,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Antiguo = Me.txtFec(Index).Text
 
@@ -567,12 +571,12 @@ Private Sub imgFec_Click(Index As Integer)
     dalt = imgFec(Index).Top
     
     
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
     
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -605,12 +609,12 @@ Private Sub imgTra_Click(Index As Integer)
     Antiguo = Me.txtTrab(Index).Text
     imgTra(4).Tag = 0 'Para que el devuelve grid sepa que es TRABAJADORES
     txtTrab(4).Tag = Index
-    Cad = "Codigo|idTrabajador|N||15·"
-    Cad = Cad & "Nombre|nomtrabajador|T||60·"
-    Cad = Cad & "Tarjeta|numtarjeta|T||20·"
+    cad = "Codigo|idTrabajador|N||15·"
+    cad = cad & "Nombre|nomtrabajador|T||60·"
+    cad = cad & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = Cad
+    frmB.vCampos = cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
@@ -675,12 +679,12 @@ Private Sub txtTrab_LostFocus(Index As Integer)
         Me.txtDT(Index).Text = ""
     Else
         If IsNumeric(txtTrab(Index).Text) Then
-            Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
+            cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
         Else
             txtTrab(Index).Text = ""
-            Cad = ""
+            cad = ""
         End If
-        txtDT(Index).Text = Cad
+        txtDT(Index).Text = cad
     End If
     If Antiguo <> txtTrab(Index).Text Then CargaDatos
     

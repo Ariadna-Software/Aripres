@@ -354,7 +354,7 @@ Begin VB.Form frmCalculoHorasMes
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   6
+         NumListImages   =   7
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmCalculoHorasMes.frx":0000
             Key             =   ""
@@ -377,6 +377,10 @@ Begin VB.Form frmCalculoHorasMes
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmCalculoHorasMes.frx":183A
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmCalculoHorasMes.frx":1DD4
             Key             =   ""
          EndProperty
       EndProperty
@@ -569,7 +573,7 @@ Public Opcion2 As Byte
 
     
     
-Private SQL As String
+Private Sql As String
 Dim Importe1 As Currency
 Dim PrimeraVez As Boolean
 
@@ -601,25 +605,25 @@ Dim FF As Date
     End If
         
     If ListView1.ListItems.Count > 0 Then
-        SQL = "Ya ha generado datos. ¿ Seguro que desea volverlos a generar ?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Ya ha generado datos. ¿ Seguro que desea volverlos a generar ?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
         
-    SQL = "/" & Combo1.ListIndex + 1 & "/" & Text1.Text
-    FI = CDate("01" & SQL)
+    Sql = "/" & Combo1.ListIndex + 1 & "/" & Text1.Text
+    FI = CDate("01" & Sql)
     d = DiasMes(Combo1.ListIndex + 1, CInt(Text1.Text))
     FF = CDate(d & "/" & Combo1.ListIndex + 1 & "/" & Text1.Text)
         
         
     If ComprobarMarcajesCorrectos(FI, FF, True) = 0 Then
-        SQL = "No existe marcajes entre las fechas."
-        MsgBox SQL, vbExclamation
+        Sql = "No existe marcajes entre las fechas."
+        MsgBox Sql, vbExclamation
         Exit Sub
     End If
         
     If ComprobarMarcajesCorrectos(FI, FF, False) <> 0 Then
-        SQL = "Existen marcajes incorrectos entre las fechas. ¿Desea continuar?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Existen marcajes incorrectos entre las fechas. ¿Desea continuar?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
         
         
@@ -647,6 +651,8 @@ Dim Dias As Integer
 Dim AntiguaFormaProcesar As Boolean
 Dim Aux As String
 Dim idCal As Integer
+Dim vSeccion As Integer
+
     conn.Execute "DELETE FROM tmpHorasMesHorario"
 
     'Para comprobar si estando de baja han trabajado
@@ -682,7 +688,10 @@ Dim idCal As Integer
     
     Label1.Caption = "Horas trabajadas"
     Label1.Refresh
-    CalculaHorasTrabajadas FI, FF, 0, -1
+    
+    vSeccion = -1
+    If cboSeccion.ListIndex > 0 Then vSeccion = cboSeccion.ItemData(cboSeccion.ListIndex)
+    CalculaHorasTrabajadas FI, FF, 0, vSeccion
     Me.Refresh
     
 
@@ -765,6 +774,43 @@ Dim idCal As Integer
         RS.Close
     End If
     
+    
+    If ListView1.ListItems.Count > 0 Then
+        Label1.Caption = "Comprobar trabajadores sin datos"
+        Label1.Refresh
+        
+        
+        For idCal = Me.ListView1.ListItems.Count To 1 Step -1
+            If Me.ListView1.ListItems(idCal).SmallIcon = 7 Then
+                'En principioo, NO ha sido tratado
+                For vSeccion = 2 To 13
+                    Select Case vSeccion
+                    Case 2
+                        If ListView1.ListItems(idCal).SubItems(vSeccion) <> "0/0,00" Then Exit For
+                    Case 3, 6, 8, 11
+                        If ListView1.ListItems(idCal).SubItems(vSeccion) <> "0" Then Exit For
+                        
+                    Case 9, 10
+                        If ListView1.ListItems(idCal).SubItems(vSeccion) <> " " Then Exit For
+                        
+                    Case Else
+                        If ListView1.ListItems(idCal).SubItems(vSeccion) <> "0,00" Then Exit For
+                    End Select
+                Next vSeccion
+                If vSeccion > 13 Then
+                    'Todo vacio
+                    'Eliminamos
+                
+                    Sql = "DELETE FROM sassda where idtrabajador =" & Me.ListView1.ListItems(idCal).Text
+                    
+                    ListView1.ListItems.Remove idCal
+                    
+                End If
+            End If
+        Next idCal
+    End If
+    
+    
     Set RS = Nothing
 End Sub
 
@@ -791,25 +837,25 @@ Dim FF As Date
     End If
         
     If ListView1.ListItems.Count > 0 Then
-        SQL = "Ya ha generado datos. ¿ Seguro que desea volverlos a generar ?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Ya ha generado datos. ¿ Seguro que desea volverlos a generar ?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
         
-    SQL = "/" & Combo2.ListIndex + 1 & "/" & Text2.Text
-    FI = CDate("01" & SQL)
+    Sql = "/" & Combo2.ListIndex + 1 & "/" & Text2.Text
+    FI = CDate("01" & Sql)
     d = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
     FF = CDate(d & "/" & Combo2.ListIndex + 1 & "/" & Text2.Text)
         
         
     If ComprobarMarcajesCorrectos(FI, FF, True) = 0 Then
-        SQL = "No existe marcajes entre las fechas."
-        MsgBox SQL, vbExclamation
+        Sql = "No existe marcajes entre las fechas."
+        MsgBox Sql, vbExclamation
         Exit Sub
     End If
         
     If ComprobarMarcajesCorrectos(FI, FF, False) <> 0 Then
-        SQL = "Existen marcajes incorrectos entre las fechas. ¿Desea continuar?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Existen marcajes incorrectos entre las fechas. ¿Desea continuar?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
         
         
@@ -836,11 +882,11 @@ Dim RS As ADODB.Recordset
     If ListView1.SelectedItem Is Nothing Then Exit Sub
     
     If Index = 1 Then
-        SQL = "reestablecer horas plus"
+        Sql = "reestablecer horas plus"
     Else
-        SQL = "añadir horas plus"
+        Sql = "añadir horas plus"
     End If
-    If MsgBox("Desea continuar con la opción " & SQL & " ?", vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+    If MsgBox("Desea continuar con la opción " & Sql & " ?", vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         
     If Index = 0 Then
         'Si ya ha compensado le decimos k ya ha compensado
@@ -863,36 +909,36 @@ Dim RS As ADODB.Recordset
         Imp1 = -1
         Importe = ImporteFormateadoAmoneda(ListView1.SelectedItem.SubItems(12))
              Do
-                 SQL = "Introduzca las horas de PLUS para " & ListView1.SelectedItem.SubItems(1) & "." & vbCrLf & "Máximo:" & Format(Importe, "0.00")
-                 SQL = InputBox(SQL, "Horas +")
-                 If SQL <> "" Then
-                     If IsNumeric(SQL) Then
-                         SQL = TransformaPuntosComas(SQL)
-                         Imp1 = CCur(SQL)
+                 Sql = "Introduzca las horas de PLUS para " & ListView1.SelectedItem.SubItems(1) & "." & vbCrLf & "Máximo:" & Format(Importe, "0.00")
+                 Sql = InputBox(Sql, "Horas +")
+                 If Sql <> "" Then
+                     If IsNumeric(Sql) Then
+                         Sql = TransformaPuntosComas(Sql)
+                         Imp1 = CCur(Sql)
                          If Imp1 > 0 Then
                             If Imp1 > Importe Then
                                 MsgBox "No puede poner mas horas de las que tiene", vbExclamation
                                 Imp1 = 0
                             Else
-                                SQL = ""
+                                Sql = ""
                             End If
                         End If
                      End If
                  End If
-             Loop Until SQL = ""
+             Loop Until Sql = ""
                          
-            If SQL = "" And Imp1 <= 0 Then Exit Sub
+            If Sql = "" And Imp1 <= 0 Then Exit Sub
                     
                     
       '  Importe = ImporteFormateadoAmoneda(ListView1.SelectedItem.SubItems(12))
         
        
-            SQL = "SELECT Categorias.Importe1, Categorias.Importe2, Trabajadores.IdTrabajador,PorcSS,PorcIRPF"
-            SQL = SQL & " FROM Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria"
-            SQL = SQL & " WHERE Trabajadores.IdTrabajador=" & ListView1.SelectedItem.Text
+            Sql = "SELECT Categorias.Importe1, Categorias.Importe2, Trabajadores.IdTrabajador,PorcSS,PorcIRPF"
+            Sql = Sql & " FROM Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria"
+            Sql = Sql & " WHERE Trabajadores.IdTrabajador=" & ListView1.SelectedItem.Text
 
             Set RS = New ADODB.Recordset
-            RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             If RS.EOF Then
                 MsgBox "Error leyendo datos trabajador", vbExclamation
             Else
@@ -941,10 +987,10 @@ Dim i As Integer
     
     
     'Borramos las dos tablas k utiliza
-    SQL = "DELETE FROM tmpPagosMes"
-    conn.Execute SQL
-    SQL = "DELETE FROM tmpHoras"
-    conn.Execute SQL
+    Sql = "DELETE FROM tmpPagosMes"
+    conn.Execute Sql
+    Sql = "DELETE FROM tmpHoras"
+    conn.Execute Sql
     espera 0.1
     
     'Para cada list item vamos a ver lo k pagamos
@@ -958,41 +1004,41 @@ Dim i As Integer
     
     For i = 1 To ListView1.ListItems.Count
         With ListView1.ListItems(i)
-            SQL = .Text & ",'" & .SubItems(1) & "',"
+            Sql = .Text & ",'" & .SubItems(1) & "',"
             
             'OFICIALES
-            SQL = SQL & Mid(.SubItems(2), 1, InStr(1, .SubItems(2), "/") - 1) & ",'"
-            SQL = SQL & TransformaComasPuntos(Mid(.SubItems(2), InStr(1, .SubItems(2), "/") + 1)) & "',"
+            Sql = Sql & Mid(.SubItems(2), 1, InStr(1, .SubItems(2), "/") - 1) & ",'"
+            Sql = Sql & TransformaComasPuntos(Mid(.SubItems(2), InStr(1, .SubItems(2), "/") + 1)) & "',"
             
             
             'Horas Normales y compensables
-            SQL = SQL & TransformaComasPuntos(.SubItems(4)) & "," & TransformaComasPuntos(.SubItems(5)) & ","
+            Sql = Sql & TransformaComasPuntos(.SubItems(4)) & "," & TransformaComasPuntos(.SubItems(5)) & ","
             
             'Horas Nomina y H+
-            SQL = SQL & TransformaComasPuntos(.SubItems(9)) & "," & TransformaComasPuntos(.SubItems(10)) & ","
+            Sql = Sql & TransformaComasPuntos(.SubItems(9)) & "," & TransformaComasPuntos(.SubItems(10)) & ","
             
             'Bolsa antes y despues
-            SQL = SQL & TransformaComasPuntos(.SubItems(11)) & "," & TransformaComasPuntos(.SubItems(12)) & ","
+            Sql = Sql & TransformaComasPuntos(.SubItems(11)) & "," & TransformaComasPuntos(.SubItems(12)) & ","
             
             'Importes: pagos, PULS y Anticpipos
-            SQL = SQL & "0," & TransformaComasPuntos(CCur(.SubItems(13))) & ","
-            SQL = SQL & TransformaComasPuntos(CCur(.SubItems(14))) & ")"
-            conn.Execute VariableCompartida & SQL
+            Sql = Sql & "0," & TransformaComasPuntos(CCur(.SubItems(13))) & ","
+            Sql = Sql & TransformaComasPuntos(CCur(.SubItems(14))) & ")"
+            conn.Execute VariableCompartida & Sql
             
             'Insertamos los dias en tmpHoras
-            SQL = "INSERT INTO tmpHoras (trabajador,Dias,horasE) VALUES (" & .Text & ","
-            SQL = SQL & .SubItems(3) & "," & .SubItems(8) & ")"
-            conn.Execute SQL
+            Sql = "INSERT INTO tmpHoras (trabajador,Dias,horasE) VALUES (" & .Text & ","
+            Sql = Sql & .SubItems(3) & "," & .SubItems(8) & ")"
+            conn.Execute Sql
         End With
     Next i
     
     If vEmpresa.NominaAutomatica Then
-        SQL = "Mes= """ & UCase(Combo1.List(Combo1.ListIndex)) & " " & Text1.Text & """|"
+        Sql = "Mes= """ & UCase(Combo1.List(Combo1.ListIndex)) & " " & Text1.Text & """|"
     Else
-        SQL = "Mes= """ & UCase(Combo2.List(Combo2.ListIndex)) & " " & Text2.Text & """|"
+        Sql = "Mes= """ & UCase(Combo2.List(Combo2.ListIndex)) & " " & Text2.Text & """|"
     End If
     frmImprimir.Opcion = 15
-    frmImprimir.OtrosParametros = SQL
+    frmImprimir.OtrosParametros = Sql
     frmImprimir.NumeroParametros = 1
     frmImprimir.Show vbModal
     
@@ -1008,10 +1054,10 @@ Private Sub cmdQuitar_Click()
         If Me.ListView1.ListItems.Count = 0 Then Exit Sub
         If Me.ListView1.SelectedItem Is Nothing Then Exit Sub
         
-        SQL = "¿Desea eliminar de la nomina al trabajador: " & ListView1.SelectedItem.Text & " - " & ListView1.SelectedItem.SubItems(1) & "?"
-        If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
-            SQL = "DELETE FROM tmpDatosMes WHERE tmpDatosMes.trabajador =" & ListView1.SelectedItem.Text
-            conn.Execute SQL
+        Sql = "¿Desea eliminar de la nomina al trabajador: " & ListView1.SelectedItem.Text & " - " & ListView1.SelectedItem.SubItems(1) & "?"
+        If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
+            Sql = "DELETE FROM tmpDatosMes WHERE tmpDatosMes.trabajador =" & ListView1.SelectedItem.Text
+            conn.Execute Sql
             ListView1.ListItems.Remove ListView1.SelectedItem.Index
             
         End If
@@ -1039,23 +1085,23 @@ Dim i As Integer
     If ListView1.ListItems.Count < 1 Then Exit Sub
     
     'Preguntamos si desea continuar
-    SQL = "Seguro que desea generar las nóminas con estos valores?"
-    If MsgBox(SQL, vbQuestion + vbYesNoCancel + vbDefaultButton2) <> vbYes Then Exit Sub
+    Sql = "Seguro que desea generar las nóminas con estos valores?"
+    If MsgBox(Sql, vbQuestion + vbYesNoCancel + vbDefaultButton2) <> vbYes Then Exit Sub
     
     
 
         i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
-        SQL = "'" & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "'"
+        Sql = "'" & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "'"
   
-    SQL = "Select * from Nominas where Fecha = " & SQL
+    Sql = "Select * from Nominas where Fecha = " & Sql
     Set RS = New ADODB.Recordset
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = ""
-    If Not RS.EOF Then SQL = "SI"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = ""
+    If Not RS.EOF Then Sql = "SI"
     RS.Close
     Set RS = Nothing
     
-    If SQL <> "" Then
+    If Sql <> "" Then
         
         MsgBox "Ya se han generado las nominas de este mes.", vbExclamation
         
@@ -1093,13 +1139,13 @@ Dim RS As ADODB.Recordset
     Select Case Index
     Case 0
         'Guardar los datos
-        SQL = "Desea guardar los cambios?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Desea guardar los cambios?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         ModificarRecuperar True
     Case 1
          'Recuperar datos
-        SQL = "Desea recuperar los datos almacenados?"
-        If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Sql = "Desea recuperar los datos almacenados?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         Screen.MousePointer = vbHourglass
         ModificarRecuperar False
         Screen.MousePointer = vbDefault
@@ -1125,8 +1171,8 @@ Dim RS As ADODB.Recordset
         VariableCompartida = "" 'Si guarda o no guarda
         With ListView1.SelectedItem
             
-            SQL = Combo1.ListIndex + 1 & "  / " & Combo1.Text
-            frmCambiosDatosNomina.Caption = SQL
+            Sql = Combo1.ListIndex + 1 & "  / " & Combo1.Text
+            frmCambiosDatosNomina.Caption = Sql
             frmCambiosDatosNomina.lblIdTra(0) = .Text             'Trabajador
             frmCambiosDatosNomina.lblTra(0) = " - " & .SubItems(1)              'Trabajador
             i = InStr(.SubItems(2), "/")
@@ -1152,7 +1198,7 @@ Dim RS As ADODB.Recordset
             'HA UPDATEADO LOS DATOS
             PonSQL ListView1.SelectedItem.Text
             Set RS = New ADODB.Recordset
-            RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+            RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
             If Not RS.EOF Then
                 
                 PonLinea ListView1.SelectedItem, RS
@@ -1168,34 +1214,34 @@ Private Sub ModificarRecuperar(Guardar As Boolean)
 
     If Guardar Then
         'Borramos los datos de la 2
-        SQL = "Delete from tmpDatosMes2"
-        conn.Execute SQL
+        Sql = "Delete from tmpDatosMes2"
+        conn.Execute Sql
         
         'Insertamos tmp
-        SQL = "INSERT INTo tmpDatosMes2 SELECT * from tmpDatosMES"
-        conn.Execute SQL
+        Sql = "INSERT INTo tmpDatosMes2 SELECT * from tmpDatosMES"
+        conn.Execute Sql
         
         
         'UPDATEAMOS para guardar el año
         'Es decir, en la tabla tmpdatosmes2 habra en lugar del mes solo
         'habra yyyymm
-        SQL = "UPDATE tmpDatosMEs2 SET mes=" & Text2.Text & Combo2.ListIndex + 1
-        conn.Execute SQL
+        Sql = "UPDATE tmpDatosMEs2 SET mes=" & Text2.Text & Combo2.ListIndex + 1
+        conn.Execute Sql
         
     Else
         'Borramos los datos de la 1
-        SQL = "Delete from tmpDatosMes"
-        conn.Execute SQL
+        Sql = "Delete from tmpDatosMes"
+        conn.Execute Sql
         
         'truquito
         CadParam = "Error leyendo datos almacenados."
-        SQL = DevuelveDesdeBD("mes", "tmpdatosmes2", "mes", "mes", "N")
-        If SQL = "" Then
+        Sql = DevuelveDesdeBD("mes", "tmpdatosmes2", "mes", "mes", "N")
+        If Sql = "" Then
             MsgBox CadParam, vbExclamation
             Exit Sub
         End If
         
-        Importe1 = Val(Mid(SQL, 1, 4))
+        Importe1 = Val(Mid(Sql, 1, 4))
         If Importe1 = 0 Then
             MsgBox CadParam, vbExclamation
             Exit Sub
@@ -1203,17 +1249,17 @@ Private Sub ModificarRecuperar(Guardar As Boolean)
         Text2.Text = Importe1
         
         
-        Importe1 = Val(Mid(SQL, 5, 2))
+        Importe1 = Val(Mid(Sql, 5, 2))
         Importe1 = Importe1 - 1
         Combo2.ListIndex = CInt(Importe1)
         'UPDATEAMOS para dejar el mes solamente
-        SQL = "UPDATE tmpDatosMEs2 SET mes=" & Importe1 + 1
-        conn.Execute SQL
+        Sql = "UPDATE tmpDatosMEs2 SET mes=" & Importe1 + 1
+        conn.Execute Sql
         
         
         'Insertamos tmp
-        SQL = "INSERT INTo tmpDatosMes SELECT * from tmpDatosMES2"
-        conn.Execute SQL
+        Sql = "INSERT INTo tmpDatosMes SELECT * from tmpDatosMES2"
+        conn.Execute Sql
         
         
         
@@ -1221,8 +1267,8 @@ Private Sub ModificarRecuperar(Guardar As Boolean)
         'UPDATEAMOS para guardar el año
         'Es decir, en la tabla tmpdatosmes2 habra en lugar del mes solo
         'habra yyyymm
-        SQL = "UPDATE tmpDatosMEs2 SET mes=" & Text2.Text & Combo2.ListIndex + 1
-        conn.Execute SQL
+        Sql = "UPDATE tmpDatosMEs2 SET mes=" & Text2.Text & Combo2.ListIndex + 1
+        conn.Execute Sql
         
         'Cargamos datos
         CargaDatos
@@ -1259,9 +1305,9 @@ Private Sub Form_Load()
     
     ListView1.SmallIcons = Me.ImageList1
 
-    SQL = DevuelveDesdeBD("HorasJornada", "empresas", "idempresa", 1, "N")
-    If SQL <> "" Then
-        HorasxDia2 = CCur(SQL)
+    Sql = DevuelveDesdeBD("HorasJornada", "empresas", "idempresa", 1, "N")
+    If Sql <> "" Then
+        HorasxDia2 = CCur(Sql)
     Else
         HorasxDia2 = 0
     End If
@@ -1441,7 +1487,8 @@ Dim Cantidad2 As Currency
         Else
             'Como alzira
             If RS!diasTrabajados = 0 Then
-                J = 3
+                'J = 3
+                J = 7
             Else
                 If RS!extras <> 0 Then
                     J = 4
@@ -1514,7 +1561,7 @@ Dim NParam As Byte
     Set RS = New ADODB.Recordset
     ListView1.ListItems.Clear
     PonSQL ""
-    SQL = SQL & " order by "
+    Sql = Sql & " order by "
 
     NParam = 1
     If vEmpresa.NominaAutomatica Then
@@ -1525,14 +1572,14 @@ Dim NParam As Byte
     
     
         If NParam = 0 Then
-            SQL = SQL & "id"
+            Sql = Sql & "id"
         Else
-            SQL = SQL & "nom"
+            Sql = Sql & "nom"
         End If
         NParam = 0
     
-    SQL = SQL & "Trabajador"
-    RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    Sql = Sql & "Trabajador"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     While Not RS.EOF
         Set i = ListView1.ListItems.Add
         PonLinea i, RS
@@ -1594,12 +1641,12 @@ Dim RS As ADODB.Recordset
         Importe = ImporteFormateadoAmoneda(ListView1.SelectedItem.SubItems(12))
         
         If Importe > 0 Then
-            SQL = "SELECT Categorias.Importe1, Categorias.Importe2, Trabajadores.IdTrabajador,PorcSS,PorcIRPF"
-            SQL = SQL & " FROM Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria"
-            SQL = SQL & " WHERE Trabajadores.IdTrabajador=" & ListView1.SelectedItem.Text
+            Sql = "SELECT Categorias.Importe1, Categorias.Importe2, Trabajadores.IdTrabajador,PorcSS,PorcIRPF"
+            Sql = Sql & " FROM Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria"
+            Sql = Sql & " WHERE Trabajadores.IdTrabajador=" & ListView1.SelectedItem.Text
 
             Set RS = New ADODB.Recordset
-            RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             If RS.EOF Then
                 MsgBox "Error leyendo datos trabajador", vbExclamation
             Else
@@ -1626,7 +1673,7 @@ Dim RS As ADODB.Recordset
         PonSQL ListView1.SelectedItem.Text
         
         Set RS = New ADODB.Recordset
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If RS.EOF Then
             MsgBox "Error leyendo datos tmpDatosMES del trabajador : " & ListView1.SelectedItem.Text, vbExclamation
         Else
@@ -1639,9 +1686,9 @@ End Sub
 
 
 Private Sub PonSQL(Id As String)
-    SQL = "Select tmpDatosMes.*,nomtrabajador,controlnomina from tmpDatosMes,Trabajadores"
-    SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador "
-    If Id <> "" Then SQL = SQL & " AND tmpDatosMes.trabajador =" & Id
+    Sql = "Select tmpDatosMes.*,nomtrabajador,controlnomina from tmpDatosMes,Trabajadores"
+    Sql = Sql & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador "
+    If Id <> "" Then Sql = Sql & " AND tmpDatosMes.trabajador =" & Id
 End Sub
 
 
@@ -1652,14 +1699,14 @@ Private Function PuedeCompensarDias() As Integer
 Dim i As Integer
 
     PuedeCompensarDias = 0
-    SQL = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", ListView1.SelectedItem.Text, "N")
-    i = Val(SQL)
+    Sql = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", ListView1.SelectedItem.Text, "N")
+    i = Val(Sql)
     
     'En la tabla tmpHorasMesHorario, al cargar los datos
     'se han cargado las horas oficiales
-    SQL = DevuelveDesdeBD("Dias", "tmpHorasMesHorario", "idHorario", CStr(i), "N")
-    If SQL <> "" Then
-        i = Val(SQL)
+    Sql = DevuelveDesdeBD("Dias", "tmpHorasMesHorario", "idHorario", CStr(i), "N")
+    If Sql <> "" Then
+        i = Val(Sql)
         i = i - Val(ListView1.SelectedItem.SubItems(8))
         If i > 0 Then PuedeCompensarDias = i
     End If
@@ -1678,8 +1725,8 @@ Dim D1 As Integer
 Dim RS As ADODB.Recordset
 
 
-    SQL = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", ListView1.SelectedItem.Text, "N")
-    i = Val(SQL)
+    Sql = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", ListView1.SelectedItem.Text, "N")
+    i = Val(Sql)
 
     Lab = DiasLaborablesSemana(i)
     If Lab < 1 Then Exit Sub
@@ -1693,8 +1740,8 @@ Dim RS As ADODB.Recordset
 
     'QUiero saber las horas a la semana k puedo compensar
     Set RS = New ADODB.Recordset
-    SQL = "Select * from Horarios Where idHorario =" & i
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select * from Horarios Where idHorario =" & i
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not RS.EOF Then
     
         H = CCur(ListView1.SelectedItem.SubItems(11)) 'Las horas k le van a quedar en bolsa
@@ -1727,9 +1774,9 @@ Dim RS As ADODB.Recordset
         
         
         'Horas para la nomina
-        SQL = "Select Importe1,importe2,porcSS,porcIRPF from Categorias,Trabajadores WHERE Trabajadores.IdCategoria = Categorias.IdCategoria"
-        SQL = SQL & " AND Trabajadores.idTrabajador =" & ListView1.SelectedItem.Text
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select Importe1,importe2,porcSS,porcIRPF from Categorias,Trabajadores WHERE Trabajadores.IdCategoria = Categorias.IdCategoria"
+        Sql = Sql & " AND Trabajadores.idTrabajador =" & ListView1.SelectedItem.Text
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If Not RS.EOF Then
             'Ponemos ya las nuevas horas en horas normales
             H = CCur(ListView1.SelectedItem.SubItems(4)) + H1
@@ -1779,33 +1826,33 @@ Dim MEDIOS As String
     With ListView1.SelectedItem
         If ListView1.SelectedItem Is Nothing Then Exit Sub
         
-        SQL = DevuelveDesdeBD("idcal", "Trabajadores", "idTrabajador", .Text, "N")
+        Sql = DevuelveDesdeBD("idcal", "Trabajadores", "idTrabajador", .Text, "N")
       
-        SQL = "fecha>=" & DBSet(CDate("01/" & Combo2.ListIndex + 1 & "/" & Text2.Text), "F") & " AND idcal = " & SQL & " AND 1"
-        SQL = DevuelveDesdeBD("idHorario", "calendariol", SQL, "1", "N")
-        If SQL = "" Then
+        Sql = "fecha>=" & DBSet(CDate("01/" & Combo2.ListIndex + 1 & "/" & Text2.Text), "F") & " AND idcal = " & Sql & " AND 1"
+        Sql = DevuelveDesdeBD("idHorario", "calendariol", Sql, "1", "N")
+        If Sql = "" Then
             MsgBox "Error leyendo datos trabajador", vbExclamation
         Else
                 
             
             Set vH = New CHorarios
-            vH.IdHorario = Val(SQL)
-            SQL = ""
+            vH.IdHorario = Val(Sql)
+            Sql = ""
            
             F = CDate("01/" & Combo2.ListIndex + 1 & "/" & Text2.Text)
             F2 = F
             F = DateAdd("m", 1, F)
             F = DateAdd("d", -1, F)
-            SQL = ""
+            Sql = ""
             'Picassent
             'MEDIOS = vH.LeerMediosDias(vH.IdHorario, F2, F)
             
-            SQL = vH.LeerDiasFestivos(vH.IdHorario, F2, F)
+            Sql = vH.LeerDiasFestivos(vH.IdHorario, F2, F)
             frmVerDiasMesTrabajador3.DiasEnNomina = .SubItems(8)
             frmVerDiasMesTrabajador3.TodoElMEs = 0
             frmVerDiasMesTrabajador3.JornadasSemanales = False '(.Tag = 3)
             frmVerDiasMesTrabajador3.MediosDias = MEDIOS
-            frmVerDiasMesTrabajador3.FESTIVOS = SQL
+            frmVerDiasMesTrabajador3.FESTIVOS = Sql
             frmVerDiasMesTrabajador3.Trabajador = .SubItems(1) & "|" & .Text & "|"
             frmVerDiasMesTrabajador3.FechaIni = F2
             frmVerDiasMesTrabajador3.HorasMinimoDia = HorasxDia2
@@ -1885,7 +1932,7 @@ End Sub
 
 Private Function genNominas() As Boolean
 Dim i As Integer
-Dim Cad As String
+Dim cad As String
 Dim Importe As Currency
 Dim Horas As Currency
 Dim RS As ADODB.Recordset
@@ -1894,51 +1941,51 @@ Dim Aux As String
 On Error GoTo EGenerarNominas
     genNominas = False
 
-    SQL = "INSERT INTO Nominas (Fecha,IdTrabajador,Dias,HN,HC,Plus,HP,BolsaDespues,BolsaAntes"
-    SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE ) VALUES ('"
+    Sql = "INSERT INTO Nominas (Fecha,IdTrabajador,Dias,HN,HC,Plus,HP,BolsaDespues,BolsaAntes"
+    Sql = Sql & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE ) VALUES ('"
     i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
-    SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
+    Sql = Sql & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
     
     'Primero generamos la tabla de  nominas con los importes marcados aqui
-    Cad = "SELECT tmpDatosMEs.*, "
-    Cad = Cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 "
-    Cad = Cad & " FROM tmpDatosMEs , Trabajadores ,categorias WHERE  tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
-     Cad = Cad & " AND trabajadores.idcategoria=Categorias.idcategoria "
-    Cad = Cad & " AND Mes = " & Combo2.ListIndex + 1
-    Cad = Cad & " ORDER BY tmpDatosMes.Trabajador"
+    cad = "SELECT tmpDatosMEs.*, "
+    cad = cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 "
+    cad = cad & " FROM tmpDatosMEs , Trabajadores ,categorias WHERE  tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
+     cad = cad & " AND trabajadores.idcategoria=Categorias.idcategoria "
+    cad = cad & " AND Mes = " & Combo2.ListIndex + 1
+    cad = cad & " ORDER BY tmpDatosMes.Trabajador"
     Set RS = New ADODB.Recordset
-    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
         Debug.Print RS!Trabajador
     
     
         'IdTrabajador,Dias
-        Cad = RS!Trabajador & "," & RS!diasperiodo & ","
+        cad = RS!Trabajador & "," & RS!diasperiodo & ","
         
         'HN,HC,HP   -> Las horas compensables seran aquellas que superen las horas de las horas mensuales, las que iran a bolsa, pero ahora se pagan
         Horas = RS!saldoh
         If Horas < 0 Then Horas = 0
         '                                                                         Plus. de momento cero. Eso es si quitarn bolsa, pero habria que verlo
-        Cad = Cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!horasc, "N")) & ","
+        cad = cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!horasc, "N")) & ","
         
 
 
         
         'BolsaDespues,BolsaAntes,brutodespues,netodespues,importedelbote,brutoantes,netoan
-        Cad = Cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
+        cad = cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
         
         'Ahora nO anticipmaos como hacia Picassent
         Importe = 0
-        Cad = Cad & TransformaComasPuntos(DBLet(Importe, "N"))
+        cad = cad & TransformaComasPuntos(DBLet(Importe, "N"))
         
         'Antiguedad,IRPF,SSEmpr
-        Cad = Cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
+        cad = cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
         'PrecioHN,PrecioHC,PrecioHE
-        Cad = Cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
+        cad = cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
         
-        Cad = Cad & ")"
-        Cad = SQL & Cad
-        conn.Execute Cad
+        cad = cad & ")"
+        cad = Sql & cad
+        conn.Execute cad
         
         
         
@@ -1949,9 +1996,9 @@ On Error GoTo EGenerarNominas
         
         
         
-        Cad = "REPLACE INTO trabajadoresbolsahoras(IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) VALUES ("
-        Cad = Cad & RS!Trabajador & ",0,1," & DBSet(RS!bolsadespues, "N") & ")"
-        conn.Execute Cad
+        cad = "REPLACE INTO trabajadoresbolsahoras(IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) VALUES ("
+        cad = cad & RS!Trabajador & ",0,1," & DBSet(RS!bolsadespues, "N") & ")"
+        conn.Execute cad
         
         
         

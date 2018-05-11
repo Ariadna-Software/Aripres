@@ -22,12 +22,12 @@ Private conn As ADODB.Connection
 
 Private mrs As ADODB.Recordset
 
-Public Property Let Tipo(ByVal vData As String)
+Public Property Let tipo(ByVal vData As String)
     mtipo = vData
 End Property
 
-Public Property Get Tipo() As String
-    Tipo = mtipo
+Public Property Get tipo() As String
+    tipo = mtipo
 End Property
 
 
@@ -39,6 +39,16 @@ Public Function abrir(vODBC As String, vUsu As String, vPass As String) As Boole
                             ";UID=" & vUsu & _
                             ";PWD=" & vPass
     conn.Open
+End Function
+
+
+Public Function Cerrar()
+    'estamios cerrando el programa
+    On Error Resume Next
+    conn.Close
+        
+    Set conn = Nothing
+    Err.Clear
 End Function
 
 Public Function AbrirConexionDavid(StringConexion As String)

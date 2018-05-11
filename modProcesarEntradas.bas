@@ -17,7 +17,7 @@ Dim vSQL As String
 
 Public Sub ProcesarEntradasFichajes(Fecha As Date, ByRef lblPpal As Label, ByRef lblDetall As Label)
 'Public Sub ProcesarEntradasFichajes(Fecha As Date, IdTra As Long, ByRef lblPpal As Label, ByRef lblDetall As Label)
-Dim SQL As String
+Dim Sql As String
 Dim RsH As ADODB.Recordset
 Dim vH As CHorarios
 
@@ -28,18 +28,18 @@ Dim vH As CHorarios
     'LOS HORARIOS SALTEADOS
     If vEmpresa.CreaCalDiariaTra Then
     
-        SQL = "select distinct(idhorario) from entradafichajes,calendariot"
-        SQL = SQL & " where entradafichajes.idtrabajador=calendariot.idtrabajador"
-        SQL = SQL & " and entradafichajes.fecha=calendariot.fecha "
-        SQL = SQL & " and entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = "select distinct(idhorario) from entradafichajes,calendariot"
+        Sql = Sql & " where entradafichajes.idtrabajador=calendariot.idtrabajador"
+        Sql = Sql & " and entradafichajes.fecha=calendariot.fecha "
+        Sql = Sql & " and entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
         
         
     Else
-        'ALZIRA
-        SQL = "select distinct(idhorario) from entradafichajes,calendariol ,trabajadores where"
-        SQL = SQL & " entradafichajes.idtrabajador=trabajadores.idtrabajador and trabajadores.idcal=calendariol.idcal"
-        SQL = SQL & " and entradafichajes.fecha=calendariol.fecha"
-        SQL = SQL & " and entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
+        'ALZIRA - CATADAU
+        Sql = "select distinct(idhorario) from entradafichajes,calendariol ,trabajadores where"
+        Sql = Sql & " entradafichajes.idtrabajador=trabajadores.idtrabajador and trabajadores.idcal=calendariol.idcal"
+        Sql = Sql & " and entradafichajes.fecha=calendariol.fecha"
+        Sql = Sql & " and entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
     End If
         
     'Para el trabajador
@@ -47,7 +47,7 @@ Dim vH As CHorarios
         
     
     Set RsH = New ADODB.Recordset
-    RsH.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RsH.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Set vH = New CHorarios
     While Not RsH.EOF
         If vH.IdHorario <> RsH!IdHorario Then
@@ -96,14 +96,14 @@ Private Function Rectificar(ByRef vH As CHorarios, ByRef l1 As Label, ByRef L2 A
 Dim Recortes As ADODB.Recordset
 Dim vRs As ADODB.Recordset
 Dim H1, h2, H3
-Dim Cad As String
+Dim cad As String
 Dim Aux As String
 Dim Trabajador As Long
-Dim I As Integer
+Dim i As Integer
 Dim Hora As Date
 Dim HoraAnt As Date
 Dim HoraFin As Date
-                
+Dim H8 As Integer
 Dim IncremeHora As Integer
 Dim k As Integer
 
@@ -114,10 +114,10 @@ Dim k As Integer
     Case vbRecAjustes
         'Tenemos k recortar en funcion de lo k haya puewto
         'En ajuste manuales
-        Cad = "SELECT * FROM ModificarFichajes "
-        Cad = Cad & " WHERE Idhorario= " & vH.IdHorario
+        cad = "SELECT * FROM ModificarFichajes "
+        cad = cad & " WHERE Idhorario= " & vH.IdHorario
         Set Recortes = New ADODB.Recordset
-        Recortes.Open Cad, conn, , , adCmdText
+        Recortes.Open cad, conn, , , adCmdText
         While Not Recortes.EOF
             
             H1 = "'" & Format(Recortes.Fields(1), "hh:mm") & "'"
@@ -136,21 +136,24 @@ Dim k As Integer
             'SELECT EntradaFichajes.idTrabajador, Trabajadores.IdTrabajador, Secciones.IdSeccion
             'FROM Secciones INNER JOIN (EntradaFichajes INNER JOIN Trabajadores ON EntradaFichajes.idTrabajador = Trabajadores.IdTrabajador) ON Secciones.IdSeccion = Trabajadores.Seccion
             'WHERE (((Secciones.IdSeccion)=1));
+            
+            'VER que estamos lincando con calendarioL
+            
             Set vRs = New ADODB.Recordset
-            Cad = "select secuencia,hora from entradafichajes,calendariot where entradafichajes.fecha=calendariot.fecha and"
-            Cad = Cad & " entradafichajes.idtrabajador =calendariot.idtrabajador and entradafichajes.fecha =calendariot.fecha"
-            Cad = Cad & " and calendariot.idhorario = " & vH.IdHorario
-            Cad = Cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
-            Cad = Cad & " and hora >= " & H1 & " and hora <= " & h2
+            cad = "select secuencia,hora from entradafichajes,calendariol where entradafichajes.fecha=calendariol.fecha and"
+            cad = cad & " entradafichajes.fecha =calendariol.fecha"
+            cad = cad & " and calendariol.idhorario = " & vH.IdHorario
+            cad = cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
+            cad = cad & " and hora >= " & H1 & " and hora <= " & h2
             Set vRs = New ADODB.Recordset
-            vRs.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+            vRs.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
             While Not vRs.EOF
-                Cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
+                cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
                 L2.Caption = H3
                 'Siguiente
                 vRs.MoveNext
                 
-                conn.Execute Cad
+                conn.Execute cad
             Wend
             vRs.Close
 
@@ -192,20 +195,20 @@ Dim k As Integer
           
           'Febrero  2014
           If vEmpresa.CreaCalDiariaTra Then
-            Cad = "select min(hora),max(hora) from entradafichajes,calendariot where"
-            Cad = Cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
-            Cad = Cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
-            Cad = Cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
-            Cad = Cad & " AND hora< '23:59:59'"
+            cad = "select min(hora),max(hora) from entradafichajes,calendariot where"
+            cad = cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
+            cad = cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
+            cad = cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
+            cad = cad & " AND hora< '23:59:59'"
               
           Else
-             Cad = "select min(hora),max(hora) from entradafichajes,calendariol,trabajadores  where"
-             Cad = Cad & " entradafichajes.fecha=calendariol.fecha and entradafichajes.idtrabajador =trabajadores.idtrabajador"
-             Cad = Cad & " and calendariol.idhorario = " & vH.IdHorario
-             Cad = Cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
-             Cad = Cad & " AND hora< '23:59:59'"
+             cad = "select min(hora),max(hora) from entradafichajes,calendariol,trabajadores  where"
+             cad = cad & " entradafichajes.fecha=calendariol.fecha and entradafichajes.idtrabajador =trabajadores.idtrabajador"
+             cad = cad & " and calendariol.idhorario = " & vH.IdHorario
+             cad = cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
+             cad = cad & " AND hora< '23:59:59'"
           End If
-          vRs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+          vRs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
 
           
           
@@ -216,49 +219,49 @@ Dim k As Integer
           
           
           
-                I = Minute(mihora)
+                i = Minute(mihora)
                 If vH.Rectificar = vbRecNormCuarto Then
-                   I = (I \ 15)
+                   i = (i \ 15)
                    
-                   I = 15 * I
+                   i = 15 * i
                    
                 Else
-                     If I < 31 Then
-                          I = 0
+                     If i < 31 Then
+                          i = 0
                      Else
-                          I = 30
+                          i = 30
                      End If
                      
                 End If
-                HoraFin = CDate(Hour(mihora) & ":" & Format(I, "00"))
+                HoraFin = CDate(Hour(mihora) & ":" & Format(i, "00"))
                 
                 
         Else
                 If vH.Rectificar = vbRecNormCuarto Then
-                    I = 15
+                    i = 15
                 Else
-                    I = 30
+                    i = 30
                 End If
-                HoraFin = Format(DateAdd("n", -I, CDate("0:00:00")), "hh:mm:ss")
+                HoraFin = Format(DateAdd("n", -i, CDate("0:00:00")), "hh:mm:ss")
           'Minimo   ######### INICIO
         End If
           mihora = vRs.Fields(0) 'minimo
           
-          I = Minute(mihora)
+          i = Minute(mihora)
           If vH.Rectificar = vbRecNormCuarto Then
-             I = (I \ 15)
+             i = (i \ 15)
              
-             I = 15 * I
+             i = 15 * i
              
           Else
-               If I < 31 Then
-                    I = 0
+               If i < 31 Then
+                    i = 0
                Else
-                    I = 30
+                    i = 30
                End If
                
           End If
-          Hora = CDate(Hour(mihora) & ":" & Format(I, "00"))
+          Hora = CDate(Hour(mihora) & ":" & Format(i, "00"))
 
           vRs.Close
               
@@ -282,31 +285,31 @@ Dim k As Integer
                       h2 = "'" & Format(mihora, "hh:mm") & ":59'"
                       'H3 = "#" & Format(Hora, "hh:mm") & "#"
                       'FALTA####
-                      'If Hora > CDate("23:00") Then Stop
+                      'If Hora > CDate("23:00") Then St op
                       H3 = Format(Hora, "hh:mm") & ":00"
                       
                       l1.Caption = HoraAnt & " - " & mihora & "   --> " & H3
                       l1.Refresh
                       
                       If vEmpresa.CreaCalDiariaTra Then
-                          Cad = "select secuencia,hora from entradafichajes,calendariot where"
-                          Cad = Cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
-                          Cad = Cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
-                          Cad = Cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
+                          cad = "select secuencia,hora from entradafichajes,calendariot where"
+                          cad = cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
+                          cad = cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
+                          cad = cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
                           
                       Else
-                          Cad = "select secuencia,hora from entradafichajes,calendariol,trabajadores  where"
-                          Cad = Cad & " entradafichajes.fecha=calendariol.fecha and entradafichajes.idtrabajador =trabajadores.idtrabajador"
-                          Cad = Cad & " and calendariol.idhorario = " & vH.IdHorario
-                          Cad = Cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
+                          cad = "select secuencia,hora from entradafichajes,calendariol,trabajadores  where"
+                          cad = cad & " entradafichajes.fecha=calendariol.fecha and entradafichajes.idtrabajador =trabajadores.idtrabajador"
+                          cad = cad & " and calendariol.idhorario = " & vH.IdHorario
+                          cad = cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
                       End If
-                      Cad = Cad & " AND hora >= " & H1 & " AND hora <= " & h2
+                      cad = cad & " AND hora >= " & H1 & " AND hora <= " & h2
                       
-                      vRs.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+                      vRs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
                         While Not vRs.EOF
                             
-                            Cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
-                            conn.Execute Cad
+                            cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
+                            conn.Execute cad
                             'Siguiente
                             vRs.MoveNext
                         Wend
@@ -322,17 +325,17 @@ Dim k As Integer
                       h2 = "'23:59:58'"
                       H3 = "'23:59:59'"
                       
-                      Cad = "select secuencia,hora from entradafichajes,calendariot where"
-                      Cad = Cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
-                      Cad = Cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
-                      Cad = Cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
-                      Cad = Cad & " AND hora >= " & H1 & " AND hora <= " & h2
+                      cad = "select secuencia,hora from entradafichajes,calendariot where"
+                      cad = cad & " entradafichajes.fecha=calendariot.fecha and entradafichajes.idtrabajador =calendariot.idtrabajador and"
+                      cad = cad & " entradafichajes.fecha =calendariot.fecha and calendariot.idhorario = " & vH.IdHorario
+                      cad = cad & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "' "
+                      cad = cad & " AND hora >= " & H1 & " AND hora <= " & h2
                       
                       Set vRs = New ADODB.Recordset
-                      vRs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                      vRs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                         While Not vRs.EOF
-                            Cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
-                            conn.Execute Cad
+                            cad = "UPDATE entradafichajes SET HORA = '" & H3 & "' where secuencia = " & vRs!Secuencia
+                            conn.Execute cad
                             'Siguiente
                             vRs.MoveNext
                         Wend
@@ -369,26 +372,32 @@ Dim k As Integer
 
       
           'Primero vemos los ajustes. Medias horas, cuartos
-          Cad = "AjusteSalida"
+          cad = "AjusteSalida"
           
           
           If vEmpresa.CreaCalDiariaTra Then
-            Cad = "select entradafichajes.* ,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos"
-            Cad = Cad & " from entradafichajes,calendariot where entradafichajes.fecha=calendariot.fecha"
-            Cad = Cad & " and entradafichajes.idtrabajador =calendariot.idtrabajador and entradafichajes.fecha =calendariot.fecha and"
-            Cad = Cad & " calendariot.idhorario = " & vH.IdHorario & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
+            cad = "select entradafichajes.* ,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos, if(hora<'0:00:00',1,0) Negativa"
+            cad = cad & ",if(hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(hora)>24,ADDTIME(hora , '-24:00:00' ),hora)) HoraPintarneg"
+
+            cad = cad & " from entradafichajes,calendariot where entradafichajes.fecha=calendariot.fecha"
+            cad = cad & " and entradafichajes.idtrabajador =calendariot.idtrabajador and entradafichajes.fecha =calendariot.fecha and"
+            cad = cad & " calendariot.idhorario = " & vH.IdHorario & " and calendariot.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
           Else
-            Cad = "select entradafichajes.* ,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos"
-            Cad = Cad & " from entradafichajes,calendariol,trabajadores where "
-            Cad = Cad & " entradafichajes.idtrabajador =trabajadores.idtrabajador and  trabajadores.idcal=calendariol.idcal and"
-            Cad = Cad & " entradafichajes.Fecha = calendariol.Fecha And calendariol.IdHorario = " & vH.IdHorario
-            Cad = Cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
+            cad = "select entradafichajes.* ,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos ,if(hora<'0:00:00',1,0) Negativa"
+            
+            'Si fuera negativa la hora
+            cad = cad & ",if(hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(hora)>24,ADDTIME(hora , '-24:00:00' ),hora)) HoraPintarneg"
+            
+            cad = cad & " from entradafichajes,calendariol,trabajadores where "
+            cad = cad & " entradafichajes.idtrabajador =trabajadores.idtrabajador and  trabajadores.idcal=calendariol.idcal and"
+            cad = cad & " entradafichajes.Fecha = calendariol.Fecha And calendariol.IdHorario = " & vH.IdHorario
+            cad = cad & " and calendariol.fecha= '" & Format(vH.Fecha, FormatoFecha) & "'"
 
           End If
-          Cad = Cad & " ORDER By entradafichajes.idTrabajador,Fecha,Hora"
+          cad = cad & " ORDER By entradafichajes.idTrabajador,Fecha,Hora"
           Trabajador = -1
           Set vRs = New ADODB.Recordset
-          vRs.Open Cad, conn, , , adCmdText
+          vRs.Open cad, conn, , , adCmdText
           While Not vRs.EOF
           
           
@@ -397,18 +406,22 @@ Dim k As Integer
                    Trabajador = vRs!idTrabajador
                     L2.Caption = "Trab: " & Trabajador
                     DoEvents
-                    I = 0
+                    i = 0
                     
                     
-                    'If Trabajador = 30 Then Stop
+                    
+                    'If InStr(1, ",901,178,169,196,193,150,182,154,", "," & vRs!idTrabajador & ",") > 0 Then St op
+        
+                    'If Trabajador = 30 Then St op
                    
               End If
  
               If vRs!LaHora >= 24 Then
                   IncremeHora = -24
-              ElseIf vRs!LaHora < 0 Then
+                  H8 = vRs!LaHora
+              ElseIf vRs!Negativa = 1 Then
                   IncremeHora = 24
-                  
+                  H8 = -vRs!LaHora
               Else
                     IncremeHora = 0
                     HoraAnt = Format(vRs!Hora, "hh:mm:ss")
@@ -416,35 +429,46 @@ Dim k As Integer
               If IncremeHora <> 0 Then
                 'Acabalgada
                 'LaHora,minute(hora) minutos,second(hora) segundos
-                HoraAnt = Format(vRs!LaHora + IncremeHora, "00") & ":" & vRs!Minutos & ":" & vRs!segundos
+                If IncremeHora = -24 Then
+                    HoraAnt = Format(H8 + IncremeHora, "00") & ":" & vRs!Minutos & ":" & vRs!segundos
+                Else
+                    
+                    HoraAnt = Format(vRs!HoraPintarneg, "hh:mm:ss")
+                End If
+                
               End If
               
-              If (I Mod 2) = 0 Then
+              If (i Mod 2) = 0 Then
                   'Entrada
                   Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteEntrada, CInt(Aux))
               Else
                   'Salida
                   Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteSalida, CInt(Aux))
               End If
-                'If Hora <> HoraAnt Then Stop
+                'If Hora <> HoraAnt Then St op
               'reajusto la hora
               If IncremeHora <> 0 Then
-                   k = Hour(Hora)
-                   k = k - IncremeHora
-                   Cad = Format(k, "00") & Format(Hora, ":nn:ss")
+                    
+                    If IncremeHora = -24 Then
+                        k = Hour(Hora)
+                        k = k - IncremeHora
+                        cad = Format(k, "00") & Format(Hora, ":nn:ss")
+                    Else
+                        cad = Horas_Quitar24(CDate(Hora), False)
+                    End If
               Else
-                Cad = Format(Hora, "hh:mm:ss")
+                cad = Format(Hora, "hh:mm:ss")
               End If
               
              
               
-              Cad = "UPDATE entradafichajes SET HORA = '" & Cad & "' where secuencia = " & vRs!Secuencia
+              cad = "UPDATE entradafichajes SET HORA = '" & cad & "' where secuencia = " & vRs!Secuencia
               
               vRs.MoveNext
               espera 0.03
-              conn.Execute Cad
+              conn.Execute cad
               'Siguiente
-              I = I + 1
+              i = i + 1
            Wend
            vRs.Close
             
@@ -590,7 +614,7 @@ Dim Salir As Boolean
         Do
             Minu = DateDiff("n", Nueva, Hora)
             If Minu > Ajuste Then
-                If DateDiff("n", Nueva, CDate("23:59")) <= 30 Then
+                If DateDiff("n", Nueva, CDate("23:59")) < 15 Then
                     HoraRectificada = CDate("23:59")
                     Exit Function
                 End If
@@ -613,7 +637,7 @@ End Function
 '---------------------------------------------------------------------------
 
 Public Sub GeneraEntradasMarcajes(Fecha As Date, ByRef l1 As Label, ByRef L2 As Label)
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim vH As CHorarios
 Dim Control As Integer
@@ -621,7 +645,7 @@ Dim FechaBaja As Date
 Dim vM As CMarcajes
 Dim C1 As Collection
 Dim C2 As Collection
-Dim num As Long
+Dim Num As Long
 Dim Tot As Long
 Dim RTra As ADODB.Recordset
 Dim MiCal As Integer
@@ -639,32 +663,32 @@ Dim ValorModificadoParadas As Currency
     
     idIncidenciaGenerada = 0 'Contador de incidencas para trabajador/dia
     'Vemos cual es la que le toca
-    SQL = "select max(id) from incidenciasgeneradas"
-    miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "select max(id) from incidenciasgeneradas"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not miRsAux.EOF Then
         idIncidenciaGenerada = DBLet(miRsAux.Fields(0), "N")
     End If
     miRsAux.Close
 
     If vEmpresa.CreaCalDiariaTra Then
-        SQL = "select entradafichajes.idtrabajador,idhorario from entradafichajes,calendariot where"
-        SQL = SQL & " entradafichajes.idTrabajador = calendariot.idTrabajador"
-        SQL = SQL & " and entradafichajes.fecha =calendariot.fecha and"
-        SQL = SQL & " entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
-        SQL = SQL & " group by 1,2 order by idhorario,idtrabajador"
+        Sql = "select entradafichajes.idtrabajador,idhorario from entradafichajes,calendariot where"
+        Sql = Sql & " entradafichajes.idTrabajador = calendariot.idTrabajador"
+        Sql = Sql & " and entradafichajes.fecha =calendariot.fecha and"
+        Sql = Sql & " entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = Sql & " group by 1,2 order by idhorario,idtrabajador"
     Else
         'TIPO ALZIRA. No llevan una entrada en calendariot para cada dia
-        SQL = "SElect idhorario,entradafichajes.idtrabajador from entradafichajes,calendariol ,trabajadores where"
-        SQL = SQL & " entradafichajes.idTrabajador = trabajadores.idTrabajador And trabajadores.idCal = calendariol.idCal"
-        SQL = SQL & " And entradafichajes.Fecha = calendariol.Fecha"
-        SQL = SQL & " AND entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
-        SQL = SQL & " group by 1,2 order by idhorario,idtrabajador"
+        Sql = "SElect idhorario,entradafichajes.idtrabajador from entradafichajes,calendariol ,trabajadores where"
+        Sql = Sql & " entradafichajes.idTrabajador = trabajadores.idTrabajador And trabajadores.idCal = calendariol.idCal"
+        Sql = Sql & " And entradafichajes.Fecha = calendariol.Fecha"
+        Sql = Sql & " AND entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = Sql & " group by 1,2 order by idhorario,idtrabajador"
     
     End If
     
 
     Set RS = New ADODB.Recordset
-    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Set vH = New CHorarios
     
     
@@ -687,12 +711,12 @@ Dim ValorModificadoParadas As Currency
     vSQL = "INSERT INTO entradamarcajes (Secuencia, idTrabajador, idMarcaje, Fecha, Hora, "
     vSQL = vSQL & "idInci, HoraReal) VALUES ( "
     Set RTra = New ADODB.Recordset
-    num = 0
+    Num = 0
     MiCal = 0
     While Not RS.EOF
-        num = num + 1
+        Num = Num + 1
         
-        If (num Mod 30) = 0 Then
+        If (Num Mod 30) = 0 Then
             l1.Caption = "Leyendo BD .... "
             l1.Refresh
             L2.Caption = "Leyendo BD ...."
@@ -701,21 +725,27 @@ Dim ValorModificadoParadas As Currency
             espera 0.5
         End If
         
-    
-
-        l1.Caption = "Procesar marcaje.   (" & num & " de " & Tot & ")"
+        'sql = "," & RS!idTrabajador & ","
+        'If InStr(1, ",901,178,169,196,193,150,182,154,", sql) > 0 Then St op
+        
+        
+        l1.Caption = "Procesar marcaje.   (" & Num & " de " & Tot & ")"
         l1.Refresh
         L2.Caption = "Trab: " & RS!idTrabajador
         L2.Refresh
     
        
-        SQL = "Select control,fecbaja,idcal from trabajadores WHERE idtrabajador=" & RS!idTrabajador
-        RTra.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select control,fecbaja,idcal,nomtrabajador from trabajadores WHERE idtrabajador=" & RS!idTrabajador
+        RTra.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Control = DBLet(RTra!Control, "N")
-        SQL = DBLet(RTra!FecBaja, "T")
-        CalAux = RTra!IdCal
-        If SQL <> "" Then
-            FechaBaja = CDate(SQL)
+        Sql = DBLet(RTra!FecBaja, "T")
+        CalAux = RTra!idCal
+        L2.Caption = "Trab: " & Mid(DBLet(RTra!nomtrabajador, "T"), 1, 30)
+        L2.Refresh
+    
+        
+        If Sql <> "" Then
+            FechaBaja = CDate(Sql)
         Else
             FechaBaja = CDate("01/01/2300")
         End If
@@ -724,8 +754,8 @@ Dim ValorModificadoParadas As Currency
         ModificaLasParadas = False
         If vEmpresa.QueEmpresa = 2 Then
         
-            SQL = "Select * from tmpcombinada WHERE codusu=" & vUsu.Codigo & " AND  idtrabajador=" & RS!idTrabajador
-            RTra.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            Sql = "Select * from tmpcombinada WHERE codusu=" & vUsu.Codigo & " AND  idtrabajador=" & RS!idTrabajador
+            RTra.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             If Not RTra.EOF Then
                 If Not IsNull(RTra!codusu) Then
                     ModificaLasParadas = True
@@ -823,10 +853,10 @@ Dim ValorModificadoParadas As Currency
         l1.Caption = "Lectura datos trabajadores.... vacaciones "
         l1.Refresh
         
-        SQL = "Select idtrabajador,idhorario from  calendariot where "
-        SQL = SQL & "  fecha='" & Format(Fecha, FormatoFecha) & "'"
-        SQL = SQL & " and tipodia = " & vbDiaVacas
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select idtrabajador,idhorario from  calendariot where "
+        Sql = Sql & "  fecha='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = Sql & " and tipodia = " & vbDiaVacas
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Set C1 = New Collection
         Set C2 = New Collection
         While Not RS.EOF
@@ -837,9 +867,9 @@ Dim ValorModificadoParadas As Currency
         RS.Close
         
         'Abrimos el recodset con los que han trabajado este dia
-        SQL = "Select entrada,idtrabajador from marcajes where fecha='" & Format(Fecha, FormatoFecha) & "'"
-        SQL = SQL & " ORDER BY idtrabajador"
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select entrada,idtrabajador from marcajes where fecha='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = Sql & " ORDER BY idtrabajador"
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If Not RS.EOF Then
         
             For Control = C1.Count To 1 Step -1
@@ -851,9 +881,9 @@ Dim ValorModificadoParadas As Currency
                     ''  HA TENIDO MARCAJES !!!!!!!!
                     '  ..... ESTANDO DE VACACIONES. OOOOOOOohhhhhhhhh
                     'Le UPDATEO el marcaje a vacaciones y se lo pongo incorrecto pq no debia de estar
-                    SQL = "UPDATE marcajes set incfinal =" & vEmpresa.IncVacaciones
-                    SQL = SQL & " ,correcto=0 where entrada =" & RS!Entrada
-                    conn.Execute SQL
+                    Sql = "UPDATE marcajes set incfinal =" & vEmpresa.IncVacaciones
+                    Sql = Sql & " ,correcto=0 where entrada =" & RS!Entrada
+                    conn.Execute Sql
                     
                     'Lo quito de la lista para que asi luego
                     'no le genere los marcajes
@@ -899,13 +929,13 @@ End Sub
 
 
 Public Sub GeneraIncidencia(Inci As Integer, marca As Long, Horas As Currency)
-Dim Cad As String
+Dim cad As String
     On Error Resume Next
-    Cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES ("
+    cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES ("
     idIncidenciaGenerada = idIncidenciaGenerada + 1
-    Cad = Cad & idIncidenciaGenerada & "," & marca & "," & Inci & "," & TransformaComasPuntos(CStr(Horas)) & ")"
-    conn.Execute Cad
-    If Err.Number <> 0 Then MuestraError Err.Number, "Generando incidencia. " & vbCrLf & Cad
+    cad = cad & idIncidenciaGenerada & "," & marca & "," & Inci & "," & TransformaComasPuntos(CStr(Horas)) & ")"
+    conn.Execute cad
+    If Err.Number <> 0 Then MuestraError Err.Number, "Generando incidencia. " & vbCrLf & cad
 
 End Sub
 '-------------------------------------------------------------------------------
@@ -920,10 +950,10 @@ Dim TieneIncidencia As Boolean
 Dim MarcajeCorrecto As Boolean
 Dim Exceso As Date
 Dim Retraso As Date
-Dim I As Long
+Dim i As Long
 Dim v(3) As Currency
 Dim vI(3) As Integer
-Dim Cad As String
+Dim cad As String
 Dim HoraH As Date
 Dim InciManual As Integer
 Dim N As Integer
@@ -937,24 +967,24 @@ Dim SQLUpdateHora As String
     
     Set Rss = New ADODB.Recordset
     'Vector para incidencias
-    For I = 0 To 3
-        v(I) = 0
-        vI(I) = 0
-    Next I
+    For i = 0 To 3
+        v(i) = 0
+        vI(i) = 0
+    Next i
     'Seleccionamos todas las horas de este
     If RevisionEnMarcajes Then
     
-        Cad = "Select * from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
+        cad = "Select * from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
         'cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-        Cad = Cad & " ORDER BY Hora"
+        cad = cad & " ORDER BY Hora"
     Else
     
-        Cad = "Select * from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-        Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-        Cad = Cad & " ORDER BY Hora"
+        cad = "Select * from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+        cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
+        cad = cad & " ORDER BY Hora"
     End If
     Rss.CursorType = adOpenStatic
-    Rss.Open Cad, conn, , , adCmdText
+    Rss.Open cad, conn, , , adCmdText
     
     If Rss.EOF Then
         'Si no hay ninguna entrada
@@ -988,13 +1018,13 @@ If vH.EsDiaFestivo Then
         TotalH = 0
         'NUMERO DE MARCAJES PAR
         Rss.MoveFirst
-        For I = 1 To N
+        For i = 1 To N
             T1 = DevuelveValorHora(Rss!Hora)
             Rss.MoveNext
             T2 = DevuelveValorHora(Rss!Hora)
             Rss.MoveNext
             TotalH = TotalH + (T2 - T1)
-        Next I
+        Next i
         
         'Contabilizaremos los descuentos relativos al almuerzo y merienda
         'si procede
@@ -1021,13 +1051,13 @@ If vH.EsDiaFestivo Then
         End If
                 
         If vH.DtoMer > 0 Then
-            For I = 1 To N
+            For i = 1 To N
                 PrimerTicaje = Rss!Hora
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Rss!Hora > vH.HoraDtoMer Then quitarmerienda = True
                 End If
-            Next I
+            Next i
         End If
         
         'Ahora ya sabemos las horas trabajadas
@@ -1062,16 +1092,16 @@ Else
         Exceso = DevuelveHora(vEmpresa.MaxExceso)
         Retraso = DevuelveHora(vEmpresa.MaxRetraso)
         vMar.HorasDto = 0
-        I = 0
+        i = 0
         Rss.MoveFirst
         PrimerTicaje = Format(Rss!Hora, "hh:mm:ss")
         SQLUpdateHora = ""
         While Not Rss.EOF
-            If Rss!idInci > 0 Then
-                InciManual = Rss!idInci
-                vI(I) = InciManual
+            If Rss!IdInci > 0 Then
+                InciManual = Rss!IdInci
+                vI(i) = InciManual
             End If
-            Select Case I
+            Select Case i
             Case 0
                 HoraH = vH.HoraE1
             Case 1
@@ -1081,8 +1111,8 @@ Else
             Case 3
                 HoraH = vH.HoraS2
             End Select
-            kIncidencia = EntraDentro(Format(Rss!Hora, "hh:mm:ss"), HoraH, Exceso, Retraso, (I Mod 2) = 0)
-            v(I) = kIncidencia
+            kIncidencia = EntraDentro(Format(Rss!Hora, "hh:mm:ss"), HoraH, Exceso, Retraso, (i Mod 2) = 0)
+            v(i) = kIncidencia
             If kIncidencia = 0 Then
                 'Como ha entrado dentro entonces UPDATE la hora a hora
                 If RevisionEnMarcajes Then
@@ -1093,7 +1123,7 @@ Else
                 SQLUpdateHora = "UPDATE " & SQLUpdateHora & " SET hora ='" & Format(HoraH, "hh:mm:ss") & "' WHERE Secuencia =" & Rss!Secuencia
                 EjecutaSQL SQLUpdateHora
             End If
-            I = I + 1
+            i = i + 1
             UltimoTicaje = Format(Rss!Hora, "hh:mm:ss")
             Rss.MoveNext
         Wend
@@ -1114,31 +1144,31 @@ Else
         'En t1 tendremos las horas en las incidencias
         T1 = 0
         TieneIncidencia = False
-        For I = 0 To 3
-            T1 = T1 + v(I)
-            If v(I) > 0 Then
+        For i = 0 To 3
+            T1 = T1 + v(i)
+            If v(i) > 0 Then
                 'Si tenia incidencia manul la pongo
-                If vI(I) <> 0 Then
-                    N = vI(I)
+                If vI(i) <> 0 Then
+                    N = vI(i)
                 Else
                     N = vEmpresa.IncRetraso
                 End If
-                GeneraIncidencia N, vMar.Entrada, v(I)
+                GeneraIncidencia N, vMar.Entrada, v(i)
                 TieneIncidencia = True
                 Else
                     
-                    If v(I) < 0 Then
+                    If v(i) < 0 Then
                     
-                        If vI(I) <> 0 Then
-                            N = vI(I)
+                        If vI(i) <> 0 Then
+                            N = vI(i)
                         Else
                             N = vEmpresa.IncHoraExceso
                         End If
-                        GeneraIncidencia N, vMar.Entrada, Abs(v(I))
+                        GeneraIncidencia N, vMar.Entrada, Abs(v(i))
                         TieneIncidencia = True
                     End If
             End If
-        Next I
+        Next i
         'Debug.Print vMar.IdTrabajador & ": " & T1
         
         'si tiene dto. Le sumaremos al valor obtenido en T1 el valor de los dtos
@@ -1162,14 +1192,14 @@ Else
                 
         If vH.DtoMer > 0 Then
             Rss.MoveFirst
-            For I = 1 To N
+            For i = 1 To N
                 PrimerTicaje = Format(Rss!Hora, "hh:mm:ss")
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Format(Rss!Hora, "hh:mm:ss") > vH.HoraDtoMer Then quitarmerienda = True
                 End If
                 Rss.MoveNext
-            Next I
+            Next i
         End If
             
         
@@ -1191,12 +1221,12 @@ Else
 '            If Not QuitarAlmuerzo Then
 '
 '                If T1 >= 0 Then
-'                    'Stop
+'                    '
 '                    'Me debe mas horas
 '                    T1 = T1 - vH.DtoAlm
 '                Else
 '                    'Horas extra. Le quito el almuerzo
-'                    'Stop
+'                    '
 '                    If T1 < 0 Then
 '                        T1 = T1 - vH.DtoAlm
 '                    End If
@@ -1250,7 +1280,7 @@ Else
     Else
         Rss.MoveFirst
         While Not Rss.EOF
-             If Rss!idInci > 0 Then InciManual = Rss!idInci
+             If Rss!IdInci > 0 Then InciManual = Rss!IdInci
              Rss.MoveNext
         Wend
         If InciManual > 0 Then
@@ -1302,13 +1332,13 @@ Else
         End If
                 
         If vH.DtoMer > 0 Then
-            For I = 1 To N
+            For i = 1 To N
                 PrimerTicaje = Rss!Hora
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Rss!Hora > vH.HoraDtoMer Then quitarmerienda = True
                 End If
-            Next I
+            Next i
         End If
     
         'Ahora ya sabemos las horas trabajadas
@@ -1350,9 +1380,9 @@ Else
         
         'Nuevo 09/11/2006
         'Updato las horas de la incidencia generada a la que resultan de la incidencia total
-        Cad = "UPDATE incidenciasgeneradas SET horas=" & TransformaComasPuntos(CStr(T1))
-        Cad = Cad & " WHERE EntradaMarcaje =" & vMar.Entrada & " AND incidencia = " & vMar.IncFinal
-        EjecutaSQL Cad
+        cad = "UPDATE incidenciasgeneradas SET horas=" & TransformaComasPuntos(CStr(T1))
+        cad = cad & " WHERE EntradaMarcaje =" & vMar.Entrada & " AND incidencia = " & vMar.IncFinal
+        EjecutaSQL cad
         
         
     End If   'de numero de tikadas=vh.numtikadas
@@ -1382,26 +1412,26 @@ End If
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            I = 1
+            i = 1
             Else
-                I = DBLet(RFin.Fields(0), "N") + 1
+                i = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         While Not Rss.EOF
-            Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada
-            Cad = Cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
-            Cad = Cad & "'," & Rss!idInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "')"
-            conn.Execute vSQL & Cad
-            I = I + 1
+            cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
+            cad = cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
+            cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "')"
+            conn.Execute vSQL & cad
+            i = i + 1
             Rss.MoveNext
         Wend
         
     
     
     'Borramos los ticajes
-    Cad = "Delete from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-    Cad = Cad & " AND Fecha= '" & Format(vMar.Fecha, FormatoFecha) & "'"
-    conn.Execute Cad
+    cad = "Delete from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+    cad = cad & " AND Fecha= '" & Format(vMar.Fecha, FormatoFecha) & "'"
+    conn.Execute cad
 
 End If
 
@@ -1430,8 +1460,8 @@ Dim RFin As ADODB.Recordset
 Dim NumTikadas As Integer
 Dim T1 As Currency
 Dim T2 As Currency
-Dim I As Long
-Dim Cad As String
+Dim i As Long
+Dim cad As String
 Dim N As Integer
 Dim TotalH As Currency
 Dim HoE As Currency
@@ -1444,6 +1474,9 @@ Dim PuedeQuitarAlmuerzoMerienda As Boolean
 ' Fichadas acabalgadas
 Dim IncreHora As Integer
 Dim HoraPintar As String
+Dim HoraNocturna As Boolean
+
+
 
 'Ahora ya tenemos las horas tikadas reflejadas
 'Comprobamos las horas en funcion de los horarios
@@ -1454,17 +1487,17 @@ IncManual = 0
 
 'Seleccionamos todas las horas de este
 If RevisionEnMarcajes Then
-    Cad = "Select EntradaMarcajes.*,hour(hora) lahora,minute(hora) minutos,second(hora) segundos, concat(horareal,' ') LaReal"
-    Cad = Cad & " from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
+    cad = "Select EntradaMarcajes.*,hour(hora) lahora,minute(hora) minutos,second(hora) segundos, concat(horareal,' ') LaReal ,if(hora<'0:00:00',1,0) Negativa"
+    cad = cad & " from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
     'Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-    Cad = Cad & " ORDER BY Hora"
+    cad = cad & " ORDER BY Hora"
 Else
-    Cad = "Select EntradaFichajes.*,hour(hora) lahora,minute(hora) minutos,second(hora) segundos , concat(horareal,' ') LaReal"
-    Cad = Cad & " from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-    Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-    Cad = Cad & " ORDER BY Hora"
+    cad = "Select EntradaFichajes.*,hour(hora) lahora,minute(hora) minutos,second(hora) segundos , concat(horareal,' ') LaReal,if(hora<'0:00:00',1,0) Negativa"
+    cad = cad & " from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+    cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
+    cad = cad & " ORDER BY Hora"
 End If
-Rss.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+Rss.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
 
 If Rss.EOF Then
     'Si no hay ninguna entrada
@@ -1483,7 +1516,7 @@ End If
 
 
 
-'If vMar.idTrabajador = 144 Then Stop
+'If vMar.idTrabajador = 144 Then St op
 
 If (NumTikadas Mod 2) > 0 Then
     'Numero de marcajes impares. No podemos calcular horas
@@ -1511,32 +1544,45 @@ If (NumTikadas Mod 2) > 0 Then
                 TotalParadas2 = vMar.HorasDto   'Las que tuviere
             End If
         End If
-        For I = 1 To N
+        HoraNocturna = False
+        For i = 1 To N
         
             
-            If Rss!LaHora < 0 Or Rss!LaHora > 23 Then
-                IncreHora = 1
+            If Rss!Negativa = 1 Or Rss!LaHora > 23 Then
+                IncreHora = 2
+                If Rss!Negativa = 1 Then IncreHora = 1
+                
                 HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
                 PuedeQuitarAlmuerzoMerienda = False
+                HoraNocturna = True
             Else
                 IncreHora = 0
                 HoraPintar = Format(Rss!Hora, "hh:nn:ss")
             End If
                 
-            If Rss!idInci <> 0 Then IncManual = Rss!idInci
-            T1 = DevuelveValorHora2(IncreHora = 1, HoraPintar)
+            If Rss!IdInci <> 0 Then
+                IncManual = Rss!IdInci
+                If vEmpresa.QueEmpresa = 4 And IncManual = 2 Then IncManual = 0
+            End If
+            T1 = DevuelveValorHora3(CByte(IncreHora), HoraPintar)
             
             
             Rss.MoveNext
-            If Rss!LaHora < 0 Or Rss!LaHora > 23 Then
-                IncreHora = 1
-                HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
+            If Rss!Negativa = 1 Or Rss!LaHora > 23 Then
+                If Rss!Negativa Then
+                     IncreHora = 1
+                    HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
+                Else
+                    IncreHora = 2
+                    HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
+                End If
                 UltimoTicaje = "23:59:59"
                 PuedeQuitarAlmuerzoMerienda = False
+                HoraNocturna = True
             Else
+                
+                
                 IncreHora = 0
-                
-                
                 HoraPintar = Format(Rss!Hora, "hh:nn:ss")
                 UltimoTicaje = Format(Rss!Hora, "hh:nn:ss") 'Obtendremos el ultimo marcaje
                 
@@ -1544,15 +1590,18 @@ If (NumTikadas Mod 2) > 0 Then
             
             
             
-            T2 = DevuelveValorHora2(IncreHora = 1, HoraPintar)
-            If Rss!idInci <> 0 Then IncManual = Rss!idInci
+            T2 = DevuelveValorHora3(CByte(IncreHora), HoraPintar)
+            If Rss!IdInci <> 0 Then
+                IncManual = Rss!IdInci
+                If vEmpresa.QueEmpresa = 4 And IncManual = 2 Then IncManual = 0 'SALIDA
+            End If
             Rss.MoveNext
             TotalH = TotalH + (T2 - T1)
-        Next I
+        Next i
         
         
         'ALZIRA. Los ticajes NOCTURNOS llevan una hora mas trabajada
-        If IncreHora <> 0 Then
+        If HoraNocturna Then
             vMar.Nocturno = True
             TotalH = TotalH + vEmpresa.AcabalgadoIncremento
         
@@ -1622,8 +1671,12 @@ If (NumTikadas Mod 2) > 0 Then
                 vMar.HorasTrabajadas = vH.TotalHoras
                 vMar.HorasIncid = 0
                 vMar.Correcto = True
+                If vEmpresa.QueEmpresa = 4 Then
+                    If IncManual = 2 Then IncManual = 0
+                    vMar.IncFinal = 0
+                End If
                 If IncManual <> 0 Then GeneraIncidencia IncManual, vMar.Entrada, 0
-                Else
+            Else
                     vMar.Correcto = False
                     If HoE < 0 Then
                         'Horas extras
@@ -1632,7 +1685,7 @@ If (NumTikadas Mod 2) > 0 Then
                         vMar.IncFinal = vEmpresa.IncHoraExtra
                         GeneraIncidencia vEmpresa.IncHoraExtra, vMar.Entrada, Abs(HoE)  'Genera tb la incidenciagenerada horaextra
                         If IncManual <> 0 And IncManual <> vEmpresa.IncHoraExtra Then GeneraIncidencia IncManual, vMar.Entrada, 0
-                        If vEmpresa.QueEmpresa <> 2 Then vMar.Correcto = True
+                            If vEmpresa.QueEmpresa <> 2 Then vMar.Correcto = True
                         Else
                             'retraso, no ha llegado al minimo exigible
                             vMar.HorasTrabajadas = vH.TotalHoras - HoE
@@ -1676,16 +1729,16 @@ End If
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            I = 1
+            i = 1
             Else
-                I = DBLet(RFin.Fields(0), "N") + 1
+                i = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         
         While Not Rss.EOF
                     
-            If Rss!LaHora < 0 Then
-                Stop
+            If Rss!Negativa = 1 Then
+                HoraPintar = "-" & Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
             Else
                 If Rss!LaHora > 23 Then
                     HoraPintar = Format(Rss!LaHora, "00") & ":" & Format(Rss!Minutos, "00") & ":" & Format(Rss!segundos, "00")
@@ -1693,18 +1746,20 @@ End If
                     HoraPintar = Format(Rss!Hora, "hh:nn:ss")
                 End If
             End If
-        
-            Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada
-            Cad = Cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & HoraPintar
-            Cad = Cad & "'," & Rss!idInci & ",'" & Trim(Rss!laReal) & "')"
-            conn.Execute vSQL & Cad
-            I = I + 1
+            cad = Trim(Rss!lareal)
+            cad = Replace(cad, Chr(0), "")
+            cad = cad & "'," & Rss!IdInci & ",'" & cad & "')"
+            cad = ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & HoraPintar & cad
+            
+            cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada & cad
+            conn.Execute vSQL & cad
+            i = i + 1
             Rss.MoveNext
         Wend
                 
-        Cad = "Delete  from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-        Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-        conn.Execute Cad
+        cad = "Delete  from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+        cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
+        conn.Execute cad
     End If
     'Cerramos los recordsets
     Rss.Close
@@ -1752,9 +1807,9 @@ Dim kIncidencia As Currency
 'Dim MarcajeCorrecto As Boolean
 'Dim Exceso As Date
 'Dim Retraso As Date
-Dim I As Long
+Dim i As Long
 'Dim v(3) As Single
-Dim Cad As String
+Dim cad As String
 'Dim HoraH As Date
 Dim InciManual As Integer
 Dim N As Integer
@@ -1772,16 +1827,16 @@ Set Rss = New ADODB.Recordset
 'Seleccionamos todas las horas de este
 If RevisionEnMarcajes Then
 
-    Cad = "Select * from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
+    cad = "Select * from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
     'cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-    Cad = Cad & " ORDER BY Hora"
+    cad = cad & " ORDER BY Hora"
 Else
-    Cad = "Select * from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-    Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-    Cad = Cad & " ORDER BY Hora"
+    cad = "Select * from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+    cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
+    cad = cad & " ORDER BY Hora"
 
 End If
-Rss.Open Cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
+Rss.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
 
 If Rss.EOF Then
     'Si no hay ninguna entrada
@@ -1817,18 +1872,18 @@ If (NumTikadas Mod 2) > 0 Then
             
             '----------------------------------------------
             
-                For I = 1 To N
+                For i = 1 To N
                     T1 = DevuelveValorHora(Rss!Hora)
                     'por si acaso; traen; incidencias; manuales
-                    If InciManual = 0 Then InciManual = Rss!idInci
+                    If InciManual = 0 Then InciManual = Rss!IdInci
                     Rss.MoveNext
                     T2 = DevuelveValorHora(Rss!Hora)
                     'Por si trae incidencias manuales
-                    If InciManual = 0 Then InciManual = Rss!idInci
+                    If InciManual = 0 Then InciManual = Rss!IdInci
                     UltimoTicaje = Rss!Hora
                     Rss.MoveNext
                     TotalH = TotalH + (T2 - T1)
-            Next I
+            Next i
                 
             'Ahora ya sabemos las horas trabajadas, y las redondeamos
             TotalH = RealizaRedondeo(TotalH)
@@ -1898,26 +1953,34 @@ End If 'De DIAFESTIVO
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            I = 1
+            i = 1
             Else
-                I = DBLet(RFin.Fields(0), "N") + 1
+                i = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         While Not Rss.EOF
-            Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada
-            Cad = Cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
-            Cad = Cad & "'," & Rss!idInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "')"
-            conn.Execute vSQL & Cad
-            I = I + 1
+            If ProcesandomarcajesHoraOk(Rss) Then
+                
+                cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
+                cad = cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
+                cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "')"
+                conn.Execute vSQL & cad
+            
+            Else
+                cad = "ERROR " & vbCrLf & vbCrLf & "Trab: " & vMar.idTrabajador & " Secuencia: " & Rss!Secuencia
+                cad = cad & "Fecha: " & Format(Rss!Fecha, FormatoFecha)
+                MsgBox cad, vbExclamation
+            End If
+            i = i + 1
             Rss.MoveNext
         Wend
         
         
         
         
-        Cad = "Delete  from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
-        Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
-        conn.Execute Cad
+        cad = "Delete  from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+        cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
+        conn.Execute cad
     End If
 
 'Cerramos los recordsets
@@ -1936,7 +1999,17 @@ End Sub
 
 
 
-
+Private Function ProcesandomarcajesHoraOk(ByRef R As ADODB.Recordset) As Boolean
+Dim H1 As Date
+    On Error Resume Next
+    H1 = R!Hora
+    If Err.Number <> 0 Then
+        Err.Clear
+        ProcesandomarcajesHoraOk = False
+    Else
+        ProcesandomarcajesHoraOk = True
+    End If
+End Function
 
 
 
@@ -1982,7 +2055,7 @@ End Function
 
 Public Function RealizaRedondeo(ByRef T1 As Currency) As Currency
     
-    'De momento solo se aplica redondeo al tipo de marcaje 3 (ej. Belgida)
+   
     'puesto que en los demas el redondeo se realiza
     'revisando marcajes ya que si trabaja las
     'horas que le corresponden no hace falta redondear
@@ -2112,14 +2185,14 @@ End Function
 '
 Public Function YaExistenMarcajes(Cod As Integer, Fecha As Date) As Long
 Dim RS As ADODB.Recordset
-Dim SQL As String
+Dim Sql As String
     YaExistenMarcajes = -1
     Set RS = New ADODB.Recordset
-    SQL = "SELECT Entrada" & _
+    Sql = "SELECT Entrada" & _
         " FROM Marcajes WHERE " & _
         " IdTrabajador=" & Cod & _
         " AND Fecha=#" & Format(Fecha, "yyyy/mm/dd") & "#"
-    RS.Open SQL, conn, , , adCmdText
+    RS.Open Sql, conn, , , adCmdText
     If Not RS.EOF Then
         If Not IsNull(RS.Fields(0)) Then _
             YaExistenMarcajes = RS.Fields(0)
@@ -2142,8 +2215,8 @@ Public Function GeneraUnmarcajeAlzicoop(NTarjeta As String, Codigo As Long, vFec
 '  ANTES Public Function GeneraUnmarcajeAlzicoop(NTarjeta As String, Codigo As Long, vFecha As Date, ByRef vSec As Long) As Byte
 Dim RS As ADODB.Recordset
 Dim RsAUX As Recordset
-Dim Cad As String
-Dim I As Integer
+Dim cad As String
+Dim i As Integer
 Dim H1 As Date
 Dim h2 As Date
 Dim Entrada As Boolean
@@ -2152,10 +2225,10 @@ Dim Aux As Byte
 
 On Error GoTo ErrGeneraUnmarcajeAlzicoop
 GeneraUnmarcajeAlzicoop = 1
-Cad = "Select * from TipoAlzicoop WHERE Tarjeta='" & NTarjeta & "'"
-Cad = Cad & " AND Fecha=#" & Format(vFecha, "yyyy/mm/dd") & "#  ORDER BY Hora"
+cad = "Select * from TipoAlzicoop WHERE Tarjeta='" & NTarjeta & "'"
+cad = cad & " AND Fecha=#" & Format(vFecha, "yyyy/mm/dd") & "#  ORDER BY Hora"
 Set RS = New ADODB.Recordset
-RS.Open Cad, conn, , , adCmdText
+RS.Open cad, conn, , , adCmdText
 
 If Not RS.EOF Then
     Set RsAUX = New ADODB.Recordset
@@ -2211,7 +2284,7 @@ If Not RS.EOF Then
         'Nuevo
         RsAUX!HoraReal = RS!Hora
         
-        RsAUX!idInci = 0
+        RsAUX!IdInci = 0
         RsAUX.Update
         vSec = vSec + 1
         'Siguiente
@@ -2221,9 +2294,9 @@ If Not RS.EOF Then
 End If 'De rs.eof
 RS.Close
 'Borramos los marcajes en TABLAALZICOOP
-Cad = "DELETE from TipoAlzicoop WHERE Tarjeta='" & NTarjeta & "'"
-Cad = Cad & " AND Fecha=#" & Format(vFecha, "yyyy/mm/dd") & "#"
-conn.Execute Cad
+cad = "DELETE from TipoAlzicoop WHERE Tarjeta='" & NTarjeta & "'"
+cad = cad & " AND Fecha=#" & Format(vFecha, "yyyy/mm/dd") & "#"
+conn.Execute cad
 
 'Salida
 Set RS = Nothing
@@ -2249,7 +2322,7 @@ End Function
 '               Comprobaremos en los dias anterior
 
 Public Sub GeneraEntradasSinMarcajes(Fecha As String, ByRef l1 As Label, ByRef L2 As Label)
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim vM As CMarcajes
 Dim Lista
@@ -2268,21 +2341,21 @@ Dim RT As ADODB.Recordset
     
         'Cojeremos los marcajes del dia cuya incidencia este marcada como
         'continuada, y le generaremos los marcajes
-        SQL = Format(DateAdd("d", -1, CDate(Fecha)), FormatoFecha)
-        SQL = "select idtrabajador,idinci from marcajes,incidencias where idinci=incfinal and fecha='" & SQL
-        SQL = SQL & "' and continuada=1 "
+        Sql = Format(DateAdd("d", -1, CDate(Fecha)), FormatoFecha)
+        Sql = "select idtrabajador,idinci from marcajes,incidencias where idinci=incfinal and fecha='" & Sql
+        Sql = Sql & "' and continuada=1 "
         Set RS = New ADODB.Recordset
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Lista = "|"
         
         'VEo los marcajes de hoy
-        SQL = "Select idtrabajador from marcajes where fecha ='" & Format(Fecha, FormatoFecha) & "'"
+        Sql = "Select idtrabajador from marcajes where fecha ='" & Format(Fecha, FormatoFecha) & "'"
         Set RT = New ADODB.Recordset
-        RT.Open SQL, conn, adOpenForwardOnly, adLockReadOnly, adCmdText
+        RT.Open Sql, conn, adOpenForwardOnly, adLockReadOnly, adCmdText
         
         While Not RS.EOF
             RT.Find "idtrabajador = " & RS!idTrabajador, , adSearchForward, 1
-            If RT.EOF Then Lista = Lista & RS!idTrabajador & ":" & RS!idInci & "|"
+            If RT.EOF Then Lista = Lista & RS!idTrabajador & ":" & RS!IdInci & "|"
             RS.MoveNext
         Wend
         RS.Close
@@ -2300,9 +2373,9 @@ Dim RT As ADODB.Recordset
         'Ahora cojeremos el horario  que tienen
         
 
-        SQL = "Select calendariot.*,idcal from calendariot,trabajadores where fecha = '" & Format(Fecha, FormatoFecha) & "'"
-        SQL = SQL & "  and calendariot.idtrabajador=trabajadores.idtrabajador ORDER BY idhorario,idtrabajador"
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select calendariot.*,idcal from calendariot,trabajadores where fecha = '" & Format(Fecha, FormatoFecha) & "'"
+        Sql = Sql & "  and calendariot.idtrabajador=trabajadores.idtrabajador ORDER BY idhorario,idtrabajador"
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
         'Para generar los marcajes
         Set vM = New CMarcajes
@@ -2323,12 +2396,12 @@ Dim RT As ADODB.Recordset
             If vH.IdHorario <> RS!IdHorario Then
                 l1.Caption = "Dia: " & Fecha & "    Horario: " & RS!IdHorario
                 DoEvents
-                vH.Leer RS!IdHorario, Fecha, RS!IdCal
+                vH.Leer RS!IdHorario, Fecha, RS!idCal
                 espera 0.3
                 
             Else
                 'Veremos si es festivo
-                If vH.IdCal <> RS!IdCal Then vH.CambioCalendario RS!IdCal
+                If vH.idCal <> RS!idCal Then vH.CambioCalendario RS!idCal
             End If
         
                     
@@ -2341,19 +2414,19 @@ Dim RT As ADODB.Recordset
     
             
   
-            SQL = "|" & RS!idTrabajador & ":"
-            k = InStr(1, Lista, SQL)
+            Sql = "|" & RS!idTrabajador & ":"
+            k = InStr(1, Lista, Sql)
             If k > 0 Then
                 'El trabajador tenia una incidencia continuada
-                k = k + Len(SQL)
+                k = k + Len(Sql)
                 J = InStr(k, Lista, "|")
-                SQL = Mid(Lista, k, J - k)
+                Sql = Mid(Lista, k, J - k)
             Else
-                SQL = ""
+                Sql = ""
             End If
            
                 
-                If SQL <> "" Then
+                If Sql <> "" Then
                     vM.idTrabajador = RS!idTrabajador
                     vM.IdHorario = vH.IdHorario
                     vM.Festivo = vH.EsDiaFestivo
@@ -2367,7 +2440,7 @@ Dim RT As ADODB.Recordset
 '                        If vH.EsDiaFestivo Then
 '                            vM.IncFinal = Val(SQL)
 '                        Else
-                            vM.IncFinal = Val(SQL)
+                            vM.IncFinal = Val(Sql)
                             
 '                        End If
                     
@@ -2399,7 +2472,7 @@ End Sub
 
 
 Public Sub GeneraLosQueNoHanTicado(Fecha As String, ByRef l1 As Label, ByRef L2 As Label)
-Dim SQL As String
+Dim Sql As String
 Dim RS As ADODB.Recordset
 Dim vM As CMarcajes
 Dim vH As CHorarios
@@ -2415,8 +2488,8 @@ Dim FESTIVOS As String
         DoEvents
         Set RS = New ADODB.Recordset
         
-        SQL = "Select idtrabajador from calendariot where fecha= '" & Format(Fecha, FormatoFecha) & "' AND tipodia=2"
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Sql = "Select idtrabajador from calendariot where fecha= '" & Format(Fecha, FormatoFecha) & "' AND tipodia=2"
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         FESTIVOS = "|"
         While Not RS.EOF
             FESTIVOS = FESTIVOS & RS!idTrabajador & "|"
@@ -2424,20 +2497,20 @@ Dim FESTIVOS As String
         Wend
         RS.Close
     
-        SQL = "delete from tmpConMarcajes where codusu = " & vUsu.Codigo
-        conn.Execute SQL
+        Sql = "delete from tmpConMarcajes where codusu = " & vUsu.Codigo
+        conn.Execute Sql
         
-        SQL = "INSERT INTO tmpConMarcajes select " & vUsu.Codigo & ",idtrabajador from marcajes  where fecha='" & Format(Fecha, FormatoFecha) & "' group by idtrabajador"
-        conn.Execute SQL
+        Sql = "INSERT INTO tmpConMarcajes select " & vUsu.Codigo & ",idtrabajador from marcajes  where fecha='" & Format(Fecha, FormatoFecha) & "' group by idtrabajador"
+        conn.Execute Sql
         
-        SQL = "select trabajadores.idtrabajador as c1,tmpConMarcajes.idTrabajador,trabajadores.idcal from trabajadores left join tmpConMarcajes on tmpConMarcajes.idTrabajador=trabajadores.idtrabajador and codusu =" & vUsu.Codigo & " where "
+        Sql = "select trabajadores.idtrabajador as c1,tmpConMarcajes.idTrabajador,trabajadores.idcal from trabajadores left join tmpConMarcajes on tmpConMarcajes.idTrabajador=trabajadores.idtrabajador and codusu =" & vUsu.Codigo & " where "
         If vEmpresa.laboral Then
-            SQL = SQL & "fecalta <='" & Format(Fecha, FormatoFecha) & "' AND "
+            Sql = Sql & "fecalta <='" & Format(Fecha, FormatoFecha) & "' AND "
         End If
-        SQL = SQL & " (fecbaja is null or fecbaja>'" & Format(Fecha, FormatoFecha) & "') AND "
-        SQL = SQL & "  tmpConMarcajes.idTrabajador is null"
+        Sql = Sql & " (fecbaja is null or fecbaja>'" & Format(Fecha, FormatoFecha) & "') AND "
+        Sql = Sql & "  tmpConMarcajes.idTrabajador is null"
         
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
         
         
@@ -2472,30 +2545,30 @@ Dim FESTIVOS As String
                 L2.Caption = "Trab: " & RS.Fields(0)
                 L2.Refresh
                 
-                SQL = "Select idhorario from calendariot where fecha='" & Format(Fecha, FormatoFecha) & "'"
-                SQL = SQL & " and idtrabajador = " & RS.Fields(0)
+                Sql = "Select idhorario from calendariot where fecha='" & Format(Fecha, FormatoFecha) & "'"
+                Sql = Sql & " and idtrabajador = " & RS.Fields(0)
                     
-                miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                 If miRsAux.EOF Then
                     'ERROR. El trabajador no tenia horario asignado. Cogeremos uno cualquiera
-                    SQL = ""
+                    Sql = ""
                 Else
-                    SQL = miRsAux!IdHorario
+                    Sql = miRsAux!IdHorario
                 End If
                 miRsAux.Close
-                If SQL = "" Then
+                If Sql = "" Then
                     'NO TIENE HORARIO ASIGNADO. COJO UNO
                     miRsAux.Open "Select * from horarios", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-                    SQL = miRsAux!IdHorario
+                    Sql = miRsAux!IdHorario
                     miRsAux.Close
                 End If
                 
-                If vH.IdHorario <> Val(SQL) Then
-                    vH.Leer CInt(SQL), Fecha, RS!IdCal
+                If vH.IdHorario <> Val(Sql) Then
+                    vH.Leer CInt(Sql), Fecha, RS!idCal
                 Else
-                    If vH.IdCal <> RS!IdCal Then
+                    If vH.idCal <> RS!idCal Then
                         'Vuelvo a leer faltara esto
-                        vH.CambioCalendario RS!IdCal
+                        vH.CambioCalendario RS!idCal
                     End If
                 End If
                 

@@ -195,6 +195,9 @@ Public Opcion As Integer
 
             '66    Horas procesadas (tipo alzira)
 
+            '67    marcaje actual sin secciones ni nada
+
+
 Public FormulaSeleccion As String
 Public SoloImprimir As Boolean
 Public OtrosParametros As String   ' El grupo acaba en |
@@ -273,16 +276,16 @@ Screen.MousePointer = vbDefault
 End Sub
 
 Private Sub Form_Load()
-Dim Cad As String
+Dim cad As String
 
 PrimeraVez = True
 Lanzado = False
 CargaICO
-Cad = Dir(App.Path & "\impre.dat", vbArchive)
+cad = Dir(App.Path & "\impre.dat", vbArchive)
 
 
 'ReestableceSoloImprimir = False
-If Cad = "" Then
+If cad = "" Then
     chkSoloImprimir.Value = 0
     Else
     chkSoloImprimir.Value = 1
@@ -568,6 +571,11 @@ Case 65
     Nombre = NombreRPT100
     MostrarTree = True
     
+    
+Case 67
+    Text1.Text = "Marcahe actual normal"
+    Nombre = "marcactualPlano.rpt"
+    MostrarTree = True
 Case 100
     'GENERICO. Se le pasa el rpt y el titulo
     Nombre = NombreRPT100

@@ -94,7 +94,7 @@ Begin VB.Form frmAbout
       Width           =   2175
    End
    Begin VB.Label Label2 
-      Caption         =   "C/  Uruguay 11, Despacho 711"
+      Caption         =   "C/ Pasaje Ventura Feliu,13      46007 VALENCIA"
       Height          =   495
       Index           =   3
       Left            =   360
@@ -285,7 +285,7 @@ End Sub
 Public Sub StartSysInfo()
     On Error GoTo SysInfoErr
   
-    Dim Rc As Long
+    Dim RC As Long
     Dim SysInfoPath As String
     
     ' Intentar obtener ruta de acceso y nombre del programa de Info. del sistema a partir del Registro...
@@ -314,7 +314,7 @@ End Sub
 
 Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As String, ByRef KeyVal As String) As Boolean
     Dim i As Long                                           ' Contador de bucle
-    Dim Rc As Long                                          ' Código de retorno
+    Dim RC As Long                                          ' Código de retorno
     Dim hKey As Long                                        ' Controlador de una clave de Registro abierta
     Dim hDepth As Long                                      '
     Dim KeyValType As Long                                  ' Tipo de datos de una clave de Registro
@@ -323,9 +323,9 @@ Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As Str
     '------------------------------------------------------------
     ' Abrir clave de registro bajo KeyRoot {HKEY_LOCAL_MACHINE...}
     '------------------------------------------------------------
-    Rc = RegOpenKeyEx(KeyRoot, KeyName, 0, KEY_ALL_ACCESS, hKey) ' Abrir clave de Registro
+    RC = RegOpenKeyEx(KeyRoot, KeyName, 0, KEY_ALL_ACCESS, hKey) ' Abrir clave de Registro
     
-    If (Rc <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Error de controlador...
+    If (RC <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Error de controlador...
     
     tmpVal = String$(1024, 0)                             ' Asignar espacio de variable
     KeyValSize = 1024                                       ' Marcar tamaño de variable
@@ -333,10 +333,10 @@ Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As Str
     '------------------------------------------------------------
     ' Obtener valor de clave de Registro...
     '------------------------------------------------------------
-    Rc = RegQueryValueEx(hKey, SubKeyRef, 0, _
+    RC = RegQueryValueEx(hKey, SubKeyRef, 0, _
                          KeyValType, tmpVal, KeyValSize)    ' Obtener o crear valor de clave
                         
-    If (Rc <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Controlar errores
+    If (RC <> ERROR_SUCCESS) Then GoTo GetKeyError          ' Controlar errores
     
     If (Asc(Mid(tmpVal, KeyValSize, 1)) = 0) Then           ' Win95 agregar cadena terminada en valor nulo...
         tmpVal = Left(tmpVal, KeyValSize - 1)               ' Encontrado valor nulo, se va a quitar de la cadena
@@ -357,13 +357,13 @@ Public Function GetKeyValue(KeyRoot As Long, KeyName As String, SubKeyRef As Str
     End Select
     
     GetKeyValue = True                                      ' Se ha devuelto correctamente
-    Rc = RegCloseKey(hKey)                                  ' Cerrar clave de Registro
+    RC = RegCloseKey(hKey)                                  ' Cerrar clave de Registro
     Exit Function                                           ' Salir
     
 GetKeyError:      ' Borrar después de que se produzca un error...
     KeyVal = ""                                             ' Establecer valor a cadena vacía
     GetKeyValue = False                                     ' Fallo de retorno
-    Rc = RegCloseKey(hKey)                                  ' Cerrar clave de Registro
+    RC = RegCloseKey(hKey)                                  ' Cerrar clave de Registro
 End Function
 
 

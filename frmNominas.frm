@@ -8,12 +8,12 @@ Begin VB.Form frmNominas
    ClientHeight    =   6450
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   11520
+   ClientWidth     =   12795
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   6450
-   ScaleWidth      =   11520
+   ScaleWidth      =   12795
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.CommandButton cmdTr 
@@ -77,7 +77,7 @@ Begin VB.Form frmNominas
    Begin VB.CommandButton cmdAceptar 
       Caption         =   "&Aceptar"
       Height          =   375
-      Left            =   9000
+      Left            =   10080
       TabIndex        =   6
       Top             =   6000
       Visible         =   0   'False
@@ -87,7 +87,7 @@ Begin VB.Form frmNominas
       Cancel          =   -1  'True
       Caption         =   "&Cancelar"
       Height          =   375
-      Left            =   10320
+      Left            =   11280
       TabIndex        =   7
       Top             =   6000
       Visible         =   0   'False
@@ -121,7 +121,7 @@ Begin VB.Form frmNominas
    Begin VB.CommandButton cmdRegresar 
       Caption         =   "&Regresar"
       Height          =   375
-      Left            =   10320
+      Left            =   11280
       TabIndex        =   10
       Top             =   6000
       Visible         =   0   'False
@@ -149,8 +149,8 @@ Begin VB.Form frmNominas
       Left            =   0
       TabIndex        =   11
       Top             =   0
-      Width           =   11520
-      _ExtentX        =   20320
+      Width           =   12795
+      _ExtentX        =   22569
       _ExtentY        =   741
       ButtonWidth     =   609
       ButtonHeight    =   582
@@ -238,8 +238,8 @@ Begin VB.Form frmNominas
       Left            =   60
       TabIndex        =   13
       Top             =   540
-      Width           =   11310
-      _ExtentX        =   19950
+      Width           =   12510
+      _ExtentX        =   22066
       _ExtentY        =   9393
       _Version        =   393216
       AllowUpdate     =   0   'False
@@ -398,7 +398,7 @@ Private CadenaConsulta As String
 Dim CadAncho As Boolean  'Para cuando llamemos al al form de lineas
 Dim Modo As Byte
 Dim JJ As Integer
-Dim SQL As String
+Dim Sql As String
 
 '----------------------------------------------
 '----------------------------------------------
@@ -517,7 +517,7 @@ Private Sub BotonModificar()
     '---------
     'MODIFICAR
     '----------
-    Dim Cad As String
+    Dim cad As String
     Dim anc As Single
     Dim i As Integer
     If adodc1.Recordset.EOF Then Exit Sub
@@ -565,7 +565,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim SQL As String
+Dim Sql As String
     On Error GoTo Error2
     'Ciertas comprobaciones
     If adodc1.Recordset.EOF Then Exit Sub
@@ -574,15 +574,15 @@ Dim SQL As String
  
     
     '### a mano
-    SQL = "Seguro que desea eliminar la baja :"
-    SQL = SQL & vbCrLf & "Trabajador: " & adodc1.Recordset.Fields(4)
-    SQL = SQL & vbCrLf & "Codigo: " & adodc1.Recordset.Fields(3)
-    SQL = SQL & vbCrLf & "Fecha baja: " & adodc1.Recordset.Fields(0)
-    If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
+    Sql = "Seguro que desea eliminar la baja :"
+    Sql = Sql & vbCrLf & "Trabajador: " & adodc1.Recordset.Fields(4)
+    Sql = Sql & vbCrLf & "Codigo: " & adodc1.Recordset.Fields(3)
+    Sql = Sql & vbCrLf & "Fecha baja: " & adodc1.Recordset.Fields(0)
+    If MsgBox(Sql, vbQuestion + vbYesNoCancel) = vbYes Then
         'Hay que eliminar
-        SQL = "Delete from bajas where idtrab = " & adodc1.Recordset.Fields(3)
-        SQL = SQL & " AND FechaBaja = " & DBSet(adodc1.Recordset.Fields(0), "F")
-        conn.Execute SQL
+        Sql = "Delete from bajas where idtrab = " & adodc1.Recordset.Fields(3)
+        Sql = Sql & " AND FechaBaja = " & DBSet(adodc1.Recordset.Fields(0), "F")
+        conn.Execute Sql
         espera 0.5
         CargaGrid ""
         adodc1.Recordset.Cancel
@@ -656,16 +656,16 @@ End Sub
 
 
 Private Sub cmdRegresar_Click()
-Dim Cad As String
+Dim cad As String
     
     If adodc1.Recordset.EOF Then
         MsgBox "Ningún registro a devolver.", vbExclamation
         Exit Sub
     End If
     
-    Cad = adodc1.Recordset.Fields(0) & "|"
-    Cad = Cad & adodc1.Recordset.Fields(1) & "|"
-    RaiseEvent DatoSeleccionado(Cad)
+    cad = adodc1.Recordset.Fields(0) & "|"
+    cad = cad & adodc1.Recordset.Fields(1) & "|"
+    RaiseEvent DatoSeleccionado(cad)
     Unload Me
 End Sub
 
@@ -675,22 +675,22 @@ End Sub
 
 
 Private Sub cmdTr_Click()
-    SQL = "Codigo|idTrabajador|N||15·"
-    SQL = SQL & "Nombre|nomtrabajador|T||60·"
-    SQL = SQL & "Tarjeta|numtarjeta|T||20·"
+    Sql = "Codigo|idTrabajador|N||15·"
+    Sql = Sql & "Nombre|nomtrabajador|T||60·"
+    Sql = Sql & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = SQL
+    frmB.vCampos = Sql
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
-    SQL = ""
+    Sql = ""
     frmB.Show vbModal
     Set frmB = Nothing
-    If SQL <> "" Then
+    If Sql <> "" Then
     
-        txtAux(1).Text = RecuperaValor(SQL, 1)
-        txtAux(2).Text = RecuperaValor(SQL, 2)
+        txtAux(1).Text = RecuperaValor(Sql, 1)
+        txtAux(2).Text = RecuperaValor(Sql, 2)
     End If
 End Sub
 
@@ -717,8 +717,8 @@ Private Sub Form_Load()
         .Buttons(7).Image = 4
         .Buttons(8).Image = 5
        ' .Buttons(10).Image = 22
-        .Buttons(11).Image = 16
-        .Buttons(11).Visible = False
+        .Buttons(11).Image = 10
+        
         
         .Buttons(12).Image = 11
         .Buttons(14).Image = 6
@@ -752,7 +752,7 @@ Private Sub frmC_DatoSeleccionado(CadenaSeleccion As String)
 End Sub
 
 Private Sub frmB_Selecionado(CadenaDevuelta As String)
-    SQL = CadenaDevuelta
+    Sql = CadenaDevuelta
 End Sub
 
 Private Sub mnBuscar_Click()
@@ -803,7 +803,9 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
             BotonEliminar
     Case 10
             If Me.adodc1.Recordset.EOF Then Exit Sub
-            
+    Case 11
+        frmListado.Opcion = 21
+        frmListado.Show vbModal
     Case 12
             Unload Me
     Case Else
@@ -825,14 +827,14 @@ Private Sub CargaGrid(Optional vSQL As String)
     Dim i As Integer
     
     adodc1.ConnectionString = conn
-    SQL = ""
-    vSQL = SQL & vSQL
+    Sql = ""
+    vSQL = Sql & vSQL
     
     PonerSQL
-    If vSQL <> "" Then SQL = SQL & " AND " & vSQL
+    If vSQL <> "" Then Sql = Sql & " AND " & vSQL
     
-    SQL = SQL & " ORDER BY fecha,nominas.idtrabajador"
-    adodc1.RecordSource = SQL
+    Sql = Sql & " ORDER BY fecha,nominas.idtrabajador"
+    adodc1.RecordSource = Sql
     adodc1.CursorType = adOpenDynamic
     adodc1.LockType = adLockOptimistic
     adodc1.Refresh
@@ -856,7 +858,7 @@ Private Sub CargaGrid(Optional vSQL As String)
     
     i = 2
         DataGrid1.Columns(i).Caption = "Nombre"
-        DataGrid1.Columns(i).Width = 3500
+        DataGrid1.Columns(i).Width = IIf(vEmpresa.QueEmpresa = 4, 3000, 3500)
         
         
     i = 3
@@ -865,19 +867,16 @@ Private Sub CargaGrid(Optional vSQL As String)
         DataGrid1.Columns(i).Alignment = dbgRight
         
     
-    i = 4
-        DataGrid1.Columns(i).Caption = "Horas"
+    For i = 4 To 6
+        DataGrid1.Columns(i).Caption = RecuperaValor("Horas|Estr.|Extra|", i - 3)
         DataGrid1.Columns(i).Width = 800
         DataGrid1.Columns(i).Alignment = dbgRight
         DataGrid1.Columns(i).NumberFormat = FormatoImporte
+    Next
     
-    i = 5
-        DataGrid1.Columns(i).Caption = "Extra"
-        DataGrid1.Columns(i).Width = 800
-        DataGrid1.Columns(i).Alignment = dbgRight
-        DataGrid1.Columns(i).NumberFormat = FormatoImporte
     
-    For i = 6 To Me.DataGrid1.Columns.Count - 1
+    
+    For i = 7 To Me.DataGrid1.Columns.Count - 1
         DataGrid1.Columns(i).NumberFormat = FormatoImporte
         DataGrid1.Columns(i).Alignment = dbgRight
         If i = DataGrid1.Columns.Count - 1 Then
@@ -1002,11 +1001,11 @@ Dim RS As ADODB.Recordset
     'Datos bien. Ahora comprobaremos que si es insertar el trabajador no tiene ninguna
     ' inicdencia abierta
     If Modo = 1 Then
-        SQL = "Select * from Bajas where idTrab =" & txtAux(3).Text
-        SQL = SQL & " AND fechabaja >=" & DBSet(txtAux(0).Text, "F")
-        SQL = SQL & " AND fechaalta is null"
+        Sql = "Select * from Bajas where idTrab =" & txtAux(3).Text
+        Sql = Sql & " AND fechabaja >=" & DBSet(txtAux(0).Text, "F")
+        Sql = Sql & " AND fechaalta is null"
         Set RS = New ADODB.Recordset
-        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If Not RS.EOF Then
             If Not IsNull(RS.Fields(0)) Then B = False
         End If
@@ -1037,8 +1036,14 @@ End Sub
 
 
 Private Sub PonerSQL()
-    SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HP,BolsaAntes Antes,BolsaDespues despues,anticipos"
-    SQL = SQL & " FROM nominas,Trabajadores WHERE  Trabajadores.IdTrabajador = nominas.IdTrabajador"
+    Sql = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
+    If vEmpresa.QueEmpresa = 4 Then
+        'Catadau
+        Sql = Sql & " Bruto,ImporEstruc 'Imp est',Plus, LlevaPlus PlusH "
+    Else
+        Sql = Sql & " BolsaAntes Antes,BolsaDespues despues,anticipos"
+    End If
+    Sql = Sql & " FROM nominas,Trabajadores WHERE  Trabajadores.IdTrabajador = nominas.IdTrabajador"
 End Sub
 
 
