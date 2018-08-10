@@ -20,6 +20,7 @@ Public Const vbKimaldi = 2
 Public Const vbAlzira = 3
 Public Const vbRobotics = 4
 Public Const vbFingKey = 5
+Public Const vbZKTeco = 6
 
 
 '--------------------------------------------------------------

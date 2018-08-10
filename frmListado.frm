@@ -6035,6 +6035,10 @@ Dim Ajustadas As Currency
 Dim QuitoMeriendaAlmuerzo As Currency
 Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    2. Quito la merienda
 
+
+    On Error GoTo eImprimirTicajeActual
+
+
     Sql = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
     conn.Execute Sql
     Set vH = New CHorarios
@@ -6241,6 +6245,11 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
    Else
         ImprimirTicajeActual = False
    End If
+   
+   Exit Function
+eImprimirTicajeActual:
+    MuestraError Err.Number, Err.Description
+   
 End Function
 
 
@@ -7512,7 +7521,7 @@ Dim vH As CHorarios
 Dim DiasFestivos As String
 Dim VectorDiasFestivos As String
 Dim RS As ADODB.Recordset
-Dim k As Integer
+Dim K As Integer
 Dim J As Integer
 Dim EstaDeBaja As String
 Dim L As Integer
@@ -7648,12 +7657,12 @@ Dim FinMes As Date
                     L = Day(RS!FechaBaja)
                 End If
                 If IsNull(RS!fechaalta) Then
-                    k = Day(FF) + 1
+                    K = Day(FF) + 1
                 Else
-                    k = Day(RS!fechaalta)
+                    K = Day(RS!fechaalta)
                 End If
                 
-                For L2 = L To k
+                For L2 = L To K
                     EstaDeBaja = EstaDeBaja & L2 & "|"
                 Next
                 RS.MoveNext
@@ -7665,12 +7674,12 @@ Dim FinMes As Date
             cad = "select fecha from marcajes where festivo=0 AND weekday(fecha)<5 and  idtrabajador = " & miRsAux!idTrabajador
             cad = cad & " AND month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF)
             RS.Open cad, conn, adOpenKeyset, adCmdText
-            k = miRsAux!Dias
+            K = miRsAux!Dias
             While Not RS.EOF
                 If InStr(1, DiasFestivos, Format(RS!Fecha, "dd/mm/yyyy")) = 0 Then
                     J = Day(RS!Fecha)
                     VectorDiasTrab = Mid(VectorDiasTrab, 1, J - 1) & "S" & Mid(VectorDiasTrab, J + 1)
-                    k = k - 1
+                    K = K - 1
                 Else
                     'St op
                 End If
@@ -7680,21 +7689,24 @@ Dim FinMes As Date
             RS.Close
             
             'Comprobemos que no esta de baja
-            If k > 0 Then
+            If K > 0 Then
                 For J = 1 To DiasDelMes
                     If Mid(VectorDiasTrab, J, 1) = "N" Then
                         'ESTE ES EL QUE COMPENSAMOS
                         VectorDiasTrab = Mid(VectorDiasTrab, 1, J - 1) & "S" & Mid(VectorDiasTrab, J + 1)
-                        k = k - 1
-                        If k = 0 Then Exit For
+                        K = K - 1
+                        If K = 0 Then Exit For
                     End If
                 Next
             Else
                ' If diasTrabajados <> DiasOficiales Then St op
             End If
             
-            If k > 0 Then
-                MsgBox "Mal,. NO ha compensado todos los dias", vbExclamation
+            If K > 0 Then
+                cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", miRsAux!idTrabajador)
+                cad = miRsAux!idTrabajador & " " & cad & vbCrLf
+                cad = "NO ha compensado todos los dias: " & vbCrLf & cad
+                MsgBox cad, vbExclamation
                 
             End If
         End If

@@ -68,91 +68,142 @@ Begin VB.Form frmTrabajadores
    Begin TabDlg.SSTab SSTab1 
       Height          =   6615
       Left            =   240
-      TabIndex        =   34
+      TabIndex        =   35
       Top             =   1320
       Width           =   11415
       _ExtentX        =   20135
       _ExtentY        =   11668
       _Version        =   393216
-      Tab             =   2
       TabHeight       =   520
       TabCaption(0)   =   "Datos básicos"
       TabPicture(0)   =   "frmTrabajadores.frx":000C
-      Tab(0).ControlEnabled=   0   'False
-      Tab(0).Control(0)=   "FrameHuella"
-      Tab(0).Control(1)=   "FrameTapaCtaBancaria"
-      Tab(0).Control(2)=   "Text1(28)"
-      Tab(0).Control(3)=   "Combo1(2)"
-      Tab(0).Control(4)=   "Text1(18)"
-      Tab(0).Control(5)=   "Text1(12)"
-      Tab(0).Control(6)=   "Text1(11)"
-      Tab(0).Control(7)=   "Option1(1)"
-      Tab(0).Control(8)=   "Option1(0)"
-      Tab(0).Control(9)=   "Text1(9)"
-      Tab(0).Control(10)=   "FrameImagen"
-      Tab(0).Control(11)=   "Combo1(1)"
-      Tab(0).Control(12)=   "Combo1(0)"
-      Tab(0).Control(13)=   "Text1(8)"
-      Tab(0).Control(14)=   "Text1(7)"
-      Tab(0).Control(15)=   "Text1(6)"
-      Tab(0).Control(16)=   "Text1(5)"
-      Tab(0).Control(17)=   "Text1(4)"
-      Tab(0).Control(18)=   "Text1(3)"
-      Tab(0).Control(19)=   "Text1(2)"
+      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).Control(0)=   "Label4(1)"
+      Tab(0).Control(0).Enabled=   0   'False
+      Tab(0).Control(1)=   "Label4(2)"
+      Tab(0).Control(1).Enabled=   0   'False
+      Tab(0).Control(2)=   "Label4(3)"
+      Tab(0).Control(2).Enabled=   0   'False
+      Tab(0).Control(3)=   "Label4(4)"
+      Tab(0).Control(3).Enabled=   0   'False
+      Tab(0).Control(4)=   "Label4(5)"
+      Tab(0).Control(4).Enabled=   0   'False
+      Tab(0).Control(5)=   "Label4(6)"
+      Tab(0).Control(5).Enabled=   0   'False
+      Tab(0).Control(6)=   "Label4(7)"
+      Tab(0).Control(6).Enabled=   0   'False
+      Tab(0).Control(7)=   "Label4(8)"
+      Tab(0).Control(7).Enabled=   0   'False
+      Tab(0).Control(8)=   "Label4(9)"
+      Tab(0).Control(8).Enabled=   0   'False
+      Tab(0).Control(9)=   "Label4(10)"
+      Tab(0).Control(9).Enabled=   0   'False
+      Tab(0).Control(10)=   "Label4(12)"
+      Tab(0).Control(10).Enabled=   0   'False
+      Tab(0).Control(11)=   "Label4(13)"
+      Tab(0).Control(11).Enabled=   0   'False
+      Tab(0).Control(12)=   "Label4(23)"
+      Tab(0).Control(12).Enabled=   0   'False
+      Tab(0).Control(13)=   "Label4(21)"
+      Tab(0).Control(13).Enabled=   0   'False
+      Tab(0).Control(14)=   "Label4(22)"
+      Tab(0).Control(14).Enabled=   0   'False
+      Tab(0).Control(15)=   "imgFec(11)"
+      Tab(0).Control(15).Enabled=   0   'False
+      Tab(0).Control(16)=   "imgEMAIL"
+      Tab(0).Control(16).Enabled=   0   'False
+      Tab(0).Control(17)=   "imgFec(28)"
+      Tab(0).Control(17).Enabled=   0   'False
+      Tab(0).Control(18)=   "Label4(20)"
+      Tab(0).Control(18).Enabled=   0   'False
+      Tab(0).Control(19)=   "Label4(36)"
+      Tab(0).Control(19).Enabled=   0   'False
       Tab(0).Control(20)=   "Text1(17)"
       Tab(0).Control(20).Enabled=   0   'False
-      Tab(0).Control(21)=   "Label4(20)"
-      Tab(0).Control(22)=   "imgFec(28)"
-      Tab(0).Control(23)=   "imgEMAIL"
-      Tab(0).Control(24)=   "imgFec(11)"
-      Tab(0).Control(25)=   "Label4(22)"
-      Tab(0).Control(26)=   "Label4(21)"
-      Tab(0).Control(27)=   "Label4(23)"
-      Tab(0).Control(28)=   "Label4(13)"
-      Tab(0).Control(29)=   "Label4(12)"
-      Tab(0).Control(30)=   "Label4(10)"
-      Tab(0).Control(31)=   "Label4(9)"
-      Tab(0).Control(32)=   "Label4(8)"
-      Tab(0).Control(33)=   "Label4(7)"
-      Tab(0).Control(34)=   "Label4(6)"
-      Tab(0).Control(35)=   "Label4(5)"
-      Tab(0).Control(36)=   "Label4(4)"
-      Tab(0).Control(37)=   "Label4(3)"
-      Tab(0).Control(38)=   "Label4(2)"
-      Tab(0).Control(39)=   "Label4(1)"
-      Tab(0).ControlCount=   40
+      Tab(0).Control(21)=   "Text1(2)"
+      Tab(0).Control(21).Enabled=   0   'False
+      Tab(0).Control(22)=   "Text1(3)"
+      Tab(0).Control(22).Enabled=   0   'False
+      Tab(0).Control(23)=   "Text1(4)"
+      Tab(0).Control(23).Enabled=   0   'False
+      Tab(0).Control(24)=   "Text1(5)"
+      Tab(0).Control(24).Enabled=   0   'False
+      Tab(0).Control(25)=   "Text1(6)"
+      Tab(0).Control(25).Enabled=   0   'False
+      Tab(0).Control(26)=   "Text1(7)"
+      Tab(0).Control(26).Enabled=   0   'False
+      Tab(0).Control(27)=   "Text1(8)"
+      Tab(0).Control(27).Enabled=   0   'False
+      Tab(0).Control(28)=   "Combo1(0)"
+      Tab(0).Control(28).Enabled=   0   'False
+      Tab(0).Control(29)=   "Combo1(1)"
+      Tab(0).Control(29).Enabled=   0   'False
+      Tab(0).Control(30)=   "FrameImagen"
+      Tab(0).Control(30).Enabled=   0   'False
+      Tab(0).Control(31)=   "Text1(9)"
+      Tab(0).Control(31).Enabled=   0   'False
+      Tab(0).Control(32)=   "Option1(0)"
+      Tab(0).Control(32).Enabled=   0   'False
+      Tab(0).Control(33)=   "Option1(1)"
+      Tab(0).Control(33).Enabled=   0   'False
+      Tab(0).Control(34)=   "Text1(11)"
+      Tab(0).Control(34).Enabled=   0   'False
+      Tab(0).Control(35)=   "Text1(12)"
+      Tab(0).Control(35).Enabled=   0   'False
+      Tab(0).Control(36)=   "Text1(18)"
+      Tab(0).Control(36).Enabled=   0   'False
+      Tab(0).Control(37)=   "Combo1(2)"
+      Tab(0).Control(37).Enabled=   0   'False
+      Tab(0).Control(38)=   "Text1(28)"
+      Tab(0).Control(38).Enabled=   0   'False
+      Tab(0).Control(39)=   "FrameTapaCtaBancaria"
+      Tab(0).Control(39).Enabled=   0   'False
+      Tab(0).Control(40)=   "FrameHuella"
+      Tab(0).Control(40).Enabled=   0   'False
+      Tab(0).Control(41)=   "Text1(34)"
+      Tab(0).Control(41).Enabled=   0   'False
+      Tab(0).ControlCount=   42
       TabCaption(1)   =   "Horario"
       TabPicture(1)   =   "frmTrabajadores.frx":0028
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Text2"
-      Tab(1).Control(1)=   "Text1(26)"
-      Tab(1).Control(2)=   "ListView1"
-      Tab(1).Control(3)=   "ListView2"
-      Tab(1).Control(4)=   "imgVacas"
+      Tab(1).Control(0)=   "Label2(0)"
+      Tab(1).Control(1)=   "Label2(1)"
+      Tab(1).Control(2)=   "imgZoom(0)"
+      Tab(1).Control(3)=   "ImgModifHora"
+      Tab(1).Control(4)=   "Label2(2)"
       Tab(1).Control(5)=   "imgCalendariP(0)"
-      Tab(1).Control(6)=   "Label2(2)"
-      Tab(1).Control(7)=   "ImgModifHora"
-      Tab(1).Control(8)=   "imgZoom(0)"
-      Tab(1).Control(9)=   "Label2(1)"
-      Tab(1).Control(10)=   "Label2(0)"
+      Tab(1).Control(6)=   "imgVacas"
+      Tab(1).Control(7)=   "ListView2"
+      Tab(1).Control(8)=   "ListView1"
+      Tab(1).Control(9)=   "Text1(26)"
+      Tab(1).Control(10)=   "Text2"
       Tab(1).ControlCount=   11
       TabCaption(2)   =   "Laboral"
       TabPicture(2)   =   "frmTrabajadores.frx":0044
-      Tab(2).ControlEnabled=   -1  'True
+      Tab(2).ControlEnabled=   0   'False
       Tab(2).Control(0)=   "Framelaboral"
-      Tab(2).Control(0).Enabled=   0   'False
       Tab(2).ControlCount=   1
+      Begin VB.TextBox Text1 
+         Height          =   315
+         Index           =   34
+         Left            =   6720
+         MaxLength       =   10
+         TabIndex        =   17
+         Tag             =   "Tarjeta|T|S|||trabajadores|idTraReloj2|||"
+         Top             =   1200
+         Width           =   1095
+      End
       Begin VB.Frame FrameHuella 
          Height          =   3675
-         Left            =   -66240
-         TabIndex        =   95
+         Left            =   8760
+         TabIndex        =   96
          Top             =   2280
          Width           =   2415
          Begin VB.CheckBox Check2 
             Caption         =   "Sin huella"
             Height          =   255
             Left            =   120
-            TabIndex        =   98
+            TabIndex        =   99
             Tag             =   "Sin huella|N|S|||Trabajadores|NoCapturarHuella|||"
             Top             =   150
             Width           =   1095
@@ -161,7 +212,7 @@ Begin VB.Form frmTrabajadores
             Caption         =   "Capturar"
             Height          =   435
             Left            =   480
-            TabIndex        =   96
+            TabIndex        =   97
             ToolTipText     =   "Capturar huella"
             Top             =   2520
             Width           =   1455
@@ -169,7 +220,7 @@ Begin VB.Form frmTrabajadores
          Begin MSComctlLib.Slider Slider1 
             Height          =   255
             Left            =   480
-            TabIndex        =   97
+            TabIndex        =   98
             ToolTipText     =   "Calidad imagen"
             Top             =   3240
             Width           =   1500
@@ -205,7 +256,7 @@ Begin VB.Form frmTrabajadores
             Height          =   135
             Index           =   1
             Left            =   360
-            TabIndex        =   101
+            TabIndex        =   102
             Top             =   3240
             Width           =   60
          End
@@ -225,7 +276,7 @@ Begin VB.Form frmTrabajadores
             Height          =   135
             Index           =   0
             Left            =   1920
-            TabIndex        =   100
+            TabIndex        =   101
             Top             =   3240
             Width           =   240
          End
@@ -244,7 +295,7 @@ Begin VB.Form frmTrabajadores
             ForeColor       =   &H00800000&
             Height          =   855
             Left            =   360
-            TabIndex        =   99
+            TabIndex        =   100
             Top             =   1080
             Visible         =   0   'False
             Width           =   1815
@@ -252,17 +303,17 @@ Begin VB.Form frmTrabajadores
       End
       Begin VB.Frame FrameTapaCtaBancaria 
          BorderStyle     =   0  'None
-         Height          =   855
-         Left            =   -69480
-         TabIndex        =   89
-         Top             =   960
+         Height          =   735
+         Left            =   5280
+         TabIndex        =   90
+         Top             =   1560
          Width           =   5655
          Begin VB.TextBox Text1 
             Height          =   285
             Index           =   29
             Left            =   1440
             MaxLength       =   4
-            TabIndex        =   17
+            TabIndex        =   18
             Tag             =   "IBAN|T|S|||trabajadores|iban|||"
             Top             =   360
             Width           =   615
@@ -272,7 +323,7 @@ Begin VB.Form frmTrabajadores
             Index           =   13
             Left            =   2160
             MaxLength       =   4
-            TabIndex        =   18
+            TabIndex        =   19
             Tag             =   "Tarjeta|T|S|||trabajadores|entidad|0000||"
             Top             =   360
             Width           =   615
@@ -282,7 +333,7 @@ Begin VB.Form frmTrabajadores
             Index           =   14
             Left            =   2880
             MaxLength       =   4
-            TabIndex        =   19
+            TabIndex        =   20
             Tag             =   "Tarjeta|T|S|||trabajadores|oficina|0000||"
             Top             =   360
             Width           =   735
@@ -292,7 +343,7 @@ Begin VB.Form frmTrabajadores
             Index           =   15
             Left            =   3720
             MaxLength       =   2
-            TabIndex        =   20
+            TabIndex        =   21
             Tag             =   "Tarjeta|T|S|||trabajadores|controlcta|00||"
             Top             =   360
             Width           =   375
@@ -302,7 +353,7 @@ Begin VB.Form frmTrabajadores
             Index           =   16
             Left            =   4200
             MaxLength       =   10
-            TabIndex        =   21
+            TabIndex        =   22
             Tag             =   "Tarjeta|T|S|||trabajadores|cuenta|0000000000||"
             Top             =   360
             Width           =   1335
@@ -312,7 +363,7 @@ Begin VB.Form frmTrabajadores
             Height          =   195
             Index           =   29
             Left            =   1440
-            TabIndex        =   104
+            TabIndex        =   105
             Top             =   120
             Width           =   540
          End
@@ -330,7 +381,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   14
             Left            =   120
-            TabIndex        =   94
+            TabIndex        =   95
             Top             =   120
             Width           =   1215
          End
@@ -339,7 +390,7 @@ Begin VB.Form frmTrabajadores
             Height          =   195
             Index           =   15
             Left            =   2160
-            TabIndex        =   93
+            TabIndex        =   94
             Top             =   120
             Width           =   540
          End
@@ -348,7 +399,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   16
             Left            =   2880
-            TabIndex        =   92
+            TabIndex        =   93
             Top             =   120
             Width           =   855
          End
@@ -357,7 +408,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   17
             Left            =   3720
-            TabIndex        =   91
+            TabIndex        =   92
             Top             =   120
             Width           =   375
          End
@@ -366,7 +417,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   18
             Left            =   4200
-            TabIndex        =   90
+            TabIndex        =   91
             Top             =   120
             Width           =   855
          End
@@ -374,7 +425,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   28
-         Left            =   -73080
+         Left            =   1920
          MaxLength       =   50
          TabIndex        =   14
          Tag             =   "F.Alta|F|S|||trabajadores|fecbaja|||"
@@ -386,7 +437,7 @@ Begin VB.Form frmTrabajadores
          Enabled         =   0   'False
          Height          =   285
          Left            =   -66840
-         TabIndex        =   82
+         TabIndex        =   83
          Text            =   "Text2"
          Top             =   960
          Width           =   3015
@@ -396,15 +447,15 @@ Begin VB.Form frmTrabajadores
          Index           =   26
          Left            =   -67920
          MaxLength       =   4
-         TabIndex        =   81
+         TabIndex        =   82
          Tag             =   "Calendario|N|N|||trabajadores|idCal|||"
          Top             =   960
          Width           =   975
       End
       Begin VB.Frame Framelaboral 
          Height          =   5895
-         Left            =   120
-         TabIndex        =   54
+         Left            =   -74880
+         TabIndex        =   55
          Top             =   360
          Width           =   11175
          Begin VB.ComboBox Combo1 
@@ -413,7 +464,7 @@ Begin VB.Form frmTrabajadores
             ItemData        =   "frmTrabajadores.frx":0060
             Left            =   3480
             List            =   "frmTrabajadores.frx":006A
-            TabIndex        =   111
+            TabIndex        =   112
             Tag             =   "Nomina|N|S|||trabajadores|ControlNomina|||"
             Text            =   "Combo1"
             Top             =   1200
@@ -426,7 +477,7 @@ Begin VB.Form frmTrabajadores
             Left            =   240
             List            =   "frmTrabajadores.frx":0078
             Style           =   2  'Dropdown List
-            TabIndex        =   63
+            TabIndex        =   64
             Tag             =   "Centro trabajo trabajo|N|S|||trabajadores|idCentroA3|||"
             Top             =   3360
             Width           =   2295
@@ -437,7 +488,7 @@ Begin VB.Form frmTrabajadores
             Index           =   33
             Left            =   240
             MaxLength       =   5
-            TabIndex        =   58
+            TabIndex        =   59
             Tag             =   "PlusHN|N|S|0||trabajadores|PlusHN|0.00||"
             Top             =   1920
             Width           =   855
@@ -448,7 +499,7 @@ Begin VB.Form frmTrabajadores
             Index           =   32
             Left            =   1440
             MaxLength       =   5
-            TabIndex        =   59
+            TabIndex        =   60
             Tag             =   "Plus HEl|N|S|0||trabajadores|PlusHE|0.00||"
             Top             =   1920
             Width           =   855
@@ -458,7 +509,7 @@ Begin VB.Form frmTrabajadores
             Height          =   285
             Index           =   31
             Left            =   2520
-            TabIndex        =   60
+            TabIndex        =   61
             Tag             =   "nomina fija|N|S|0||trabajadores|ImporteFijoNomina|#,##0.00||"
             Top             =   1920
             Width           =   1095
@@ -466,7 +517,7 @@ Begin VB.Form frmTrabajadores
          Begin VB.Frame FrameTapaBolsaHoras 
             Height          =   975
             Left            =   240
-            TabIndex        =   106
+            TabIndex        =   107
             Top             =   4920
             Width           =   5775
          End
@@ -476,7 +527,7 @@ Begin VB.Form frmTrabajadores
             Index           =   30
             Left            =   240
             MaxLength       =   5
-            TabIndex        =   61
+            TabIndex        =   62
             Tag             =   "IRPF cargo empresa|N|S|||trabajadores|IRPFempresa|0.00||"
             Top             =   2640
             Width           =   1215
@@ -485,13 +536,13 @@ Begin VB.Form frmTrabajadores
             Caption         =   "Contador horas"
             Height          =   4095
             Left            =   5040
-            TabIndex        =   102
+            TabIndex        =   103
             Top             =   360
             Width           =   5895
             Begin MSComctlLib.ListView ListView3 
                Height          =   3135
                Left            =   240
-               TabIndex        =   103
+               TabIndex        =   104
                Top             =   360
                Width           =   5295
                _ExtentX        =   9340
@@ -537,7 +588,7 @@ Begin VB.Form frmTrabajadores
             Index           =   10
             Left            =   1800
             MaxLength       =   50
-            TabIndex        =   56
+            TabIndex        =   57
             Tag             =   "DNI|T|S|||trabajadores|nummat|||"
             Top             =   480
             Width           =   2175
@@ -547,7 +598,7 @@ Begin VB.Form frmTrabajadores
             Index           =   27
             Left            =   240
             MaxLength       =   50
-            TabIndex        =   55
+            TabIndex        =   56
             Tag             =   "F.Alta|F|S|||trabajadores|fecalta|||"
             Top             =   480
             Width           =   1335
@@ -558,7 +609,7 @@ Begin VB.Form frmTrabajadores
             ItemData        =   "frmTrabajadores.frx":007A
             Left            =   240
             List            =   "frmTrabajadores.frx":007C
-            TabIndex        =   57
+            TabIndex        =   58
             Tag             =   "Tipo trabajo|N|S|||trabajadores|tipocontrato|||"
             Text            =   "Combo1"
             Top             =   1200
@@ -570,7 +621,7 @@ Begin VB.Form frmTrabajadores
             Index           =   25
             Left            =   4440
             MaxLength       =   4
-            TabIndex        =   70
+            TabIndex        =   71
             Tag             =   "bolsa horas|N|S|||trabajadores|bolsabruto|||"
             Top             =   5400
             Width           =   1095
@@ -581,7 +632,7 @@ Begin VB.Form frmTrabajadores
             Index           =   24
             Left            =   2880
             MaxLength       =   4
-            TabIndex        =   69
+            TabIndex        =   70
             Tag             =   "bolsa neto|N|S|||trabajadores|bolsaneto|||"
             Top             =   5400
             Width           =   1095
@@ -592,7 +643,7 @@ Begin VB.Form frmTrabajadores
             Index           =   23
             Left            =   1320
             MaxLength       =   4
-            TabIndex        =   68
+            TabIndex        =   69
             Tag             =   "bolsa horas|N|S|||trabajadores|bolsahoras|||"
             Top             =   5400
             Width           =   975
@@ -602,7 +653,7 @@ Begin VB.Form frmTrabajadores
             Index           =   22
             Left            =   2760
             MaxLength       =   4
-            TabIndex        =   64
+            TabIndex        =   65
             Tag             =   "Cod. Asesoria|N|S|||trabajadores|idAsesoria|||"
             Top             =   3360
             Width           =   1095
@@ -612,7 +663,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   0
             Left            =   1560
-            TabIndex        =   62
+            TabIndex        =   63
             Tag             =   "P|N|S|||trabajadores|pagobancario|||"
             Top             =   2640
             Width           =   1575
@@ -623,7 +674,7 @@ Begin VB.Form frmTrabajadores
             Index           =   21
             Left            =   2880
             MaxLength       =   5
-            TabIndex        =   67
+            TabIndex        =   68
             Tag             =   "IRPF|N|N|||trabajadores|porcIRPF|0.00||"
             Top             =   4080
             Width           =   975
@@ -634,7 +685,7 @@ Begin VB.Form frmTrabajadores
             Index           =   20
             Left            =   1560
             MaxLength       =   5
-            TabIndex        =   66
+            TabIndex        =   67
             Tag             =   "Seguridad social|N|N|||trabajadores|porcSS|0.00||"
             Top             =   4080
             Width           =   975
@@ -645,7 +696,7 @@ Begin VB.Form frmTrabajadores
             Index           =   19
             Left            =   240
             MaxLength       =   5
-            TabIndex        =   65
+            TabIndex        =   66
             Tag             =   "antiguedad|N|N|||trabajadores|porcantiguedad|0.00||"
             Top             =   4080
             Width           =   975
@@ -655,7 +706,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   35
             Left            =   3480
-            TabIndex        =   112
+            TabIndex        =   113
             Top             =   960
             Width           =   975
          End
@@ -664,7 +715,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   34
             Left            =   240
-            TabIndex        =   110
+            TabIndex        =   111
             Top             =   3120
             Width           =   1575
          End
@@ -673,7 +724,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   33
             Left            =   240
-            TabIndex        =   109
+            TabIndex        =   110
             Top             =   1680
             Width           =   975
          End
@@ -682,7 +733,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   32
             Left            =   1440
-            TabIndex        =   108
+            TabIndex        =   109
             Top             =   1680
             Width           =   855
          End
@@ -691,7 +742,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   31
             Left            =   2520
-            TabIndex        =   107
+            TabIndex        =   108
             Top             =   1680
             Width           =   975
          End
@@ -700,7 +751,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   30
             Left            =   240
-            TabIndex        =   105
+            TabIndex        =   106
             Top             =   2400
             Width           =   1215
          End
@@ -709,7 +760,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   11
             Left            =   1800
-            TabIndex        =   87
+            TabIndex        =   88
             Top             =   240
             Width           =   1455
          End
@@ -727,7 +778,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   19
             Left            =   240
-            TabIndex        =   83
+            TabIndex        =   84
             Top             =   240
             Width           =   1095
          End
@@ -736,7 +787,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   28
             Left            =   240
-            TabIndex        =   79
+            TabIndex        =   80
             Top             =   960
             Width           =   975
          End
@@ -756,7 +807,7 @@ Begin VB.Form frmTrabajadores
             Height          =   240
             Index           =   3
             Left            =   4680
-            TabIndex        =   78
+            TabIndex        =   79
             Top             =   5040
             Width           =   810
          End
@@ -776,7 +827,7 @@ Begin VB.Form frmTrabajadores
             Height          =   240
             Index           =   2
             Left            =   3120
-            TabIndex        =   77
+            TabIndex        =   78
             Top             =   5040
             Width           =   645
          End
@@ -796,7 +847,7 @@ Begin VB.Form frmTrabajadores
             Height          =   240
             Index           =   1
             Left            =   1440
-            TabIndex        =   76
+            TabIndex        =   77
             Top             =   5040
             Width           =   810
          End
@@ -815,7 +866,7 @@ Begin VB.Form frmTrabajadores
             Height          =   240
             Index           =   0
             Left            =   240
-            TabIndex        =   75
+            TabIndex        =   76
             Top             =   5400
             Width           =   750
          End
@@ -824,7 +875,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   27
             Left            =   2760
-            TabIndex        =   74
+            TabIndex        =   75
             Top             =   3120
             Width           =   975
          End
@@ -833,7 +884,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   26
             Left            =   2880
-            TabIndex        =   73
+            TabIndex        =   74
             Top             =   3840
             Width           =   975
          End
@@ -842,7 +893,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   25
             Left            =   1560
-            TabIndex        =   72
+            TabIndex        =   73
             Top             =   3840
             Width           =   975
          End
@@ -851,7 +902,7 @@ Begin VB.Form frmTrabajadores
             Height          =   255
             Index           =   24
             Left            =   240
-            TabIndex        =   71
+            TabIndex        =   72
             Top             =   3840
             Width           =   975
          End
@@ -859,27 +910,27 @@ Begin VB.Form frmTrabajadores
       Begin VB.ComboBox Combo1 
          Height          =   315
          Index           =   2
-         Left            =   -66960
+         Left            =   8040
          Style           =   2  'Dropdown List
          TabIndex        =   16
-         Tag             =   "s|N|N|||trabajadores|control|||"
-         Top             =   660
+         Tag             =   "Control |N|N|||trabajadores|control|||"
+         Top             =   720
          Width           =   3015
       End
       Begin VB.TextBox Text1 
          Height          =   315
          Index           =   18
-         Left            =   -68160
+         Left            =   6720
          MaxLength       =   10
          TabIndex        =   15
          Tag             =   "Tarjeta|T|S|||trabajadores|numtarjeta|||"
-         Top             =   660
+         Top             =   720
          Width           =   1095
       End
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   12
-         Left            =   -72360
+         Left            =   2640
          MaxLength       =   50
          TabIndex        =   9
          Tag             =   "SS|T|S|||trabajadores|numSS|||"
@@ -889,7 +940,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   11
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   50
          TabIndex        =   13
          Tag             =   "F.Alta|F|S|||trabajadores|antiguedad|||"
@@ -900,8 +951,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   " Mujer"
          Height          =   255
          Index           =   1
-         Left            =   -70560
-         TabIndex        =   23
+         Left            =   4440
+         TabIndex        =   24
          Top             =   5880
          Width           =   855
       End
@@ -909,15 +960,15 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Hombre"
          Height          =   255
          Index           =   0
-         Left            =   -71640
-         TabIndex        =   22
+         Left            =   3360
+         TabIndex        =   23
          Top             =   5880
          Width           =   1000
       End
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   9
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   15
          TabIndex        =   8
          Tag             =   "DNI|T|S|||trabajadores|numDNI|||"
@@ -927,7 +978,7 @@ Begin VB.Form frmTrabajadores
       Begin MSComctlLib.ListView ListView1 
          Height          =   4695
          Left            =   -74760
-         TabIndex        =   45
+         TabIndex        =   46
          Top             =   840
          Width           =   6495
          _ExtentX        =   11456
@@ -960,15 +1011,15 @@ Begin VB.Form frmTrabajadores
       End
       Begin VB.Frame FrameImagen 
          Height          =   3735
-         Left            =   -69600
-         TabIndex        =   44
+         Left            =   5400
+         TabIndex        =   45
          Top             =   2280
          Width           =   3135
          Begin MSComctlLib.Toolbar ToolAux 
             Height          =   390
             Index           =   0
             Left            =   240
-            TabIndex        =   84
+            TabIndex        =   85
             Top             =   240
             Width           =   2250
             _ExtentX        =   3969
@@ -1010,7 +1061,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.ComboBox Combo1 
          Height          =   315
          Index           =   1
-         Left            =   -74520
+         Left            =   480
          Style           =   2  'Dropdown List
          TabIndex        =   12
          Tag             =   "Categoria|N|N|||trabajadores|idcategoria|||"
@@ -1020,7 +1071,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.ComboBox Combo1 
          Height          =   315
          Index           =   0
-         Left            =   -74520
+         Left            =   480
          Style           =   2  'Dropdown List
          TabIndex        =   11
          Tag             =   "Seccion|N|N|||trabajadores|seccion|||"
@@ -1030,7 +1081,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   8
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   100
          TabIndex        =   10
          Tag             =   "Nombre|T|S|||trabajadores|email|||"
@@ -1040,7 +1091,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   7
-         Left            =   -72360
+         Left            =   2640
          MaxLength       =   50
          TabIndex        =   7
          Tag             =   "D|T|S|||trabajadores|movtrabajador|||"
@@ -1050,7 +1101,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   6
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   50
          TabIndex        =   6
          Tag             =   "D|T|S|||trabajadores|teltrabajador|||"
@@ -1060,7 +1111,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   5
-         Left            =   -73200
+         Left            =   1800
          MaxLength       =   50
          TabIndex        =   5
          Tag             =   "D|T|S|||trabajadores|provtrabajador|||"
@@ -1070,7 +1121,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   4
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   50
          TabIndex        =   4
          Tag             =   "D|T|S|||trabajadores|codpostrabajador|||"
@@ -1080,7 +1131,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   3
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   50
          TabIndex        =   3
          Tag             =   "D|T|S|||trabajadores|pobtrabajador|||"
@@ -1090,7 +1141,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   2
-         Left            =   -74520
+         Left            =   480
          MaxLength       =   50
          TabIndex        =   2
          Tag             =   "Direccion|T|S|||trabajadores|domtrabajador|||"
@@ -1100,7 +1151,7 @@ Begin VB.Form frmTrabajadores
       Begin MSComctlLib.ListView ListView2 
          Height          =   3975
          Left            =   -67920
-         TabIndex        =   85
+         TabIndex        =   86
          Top             =   1560
          Width           =   4095
          _ExtentX        =   7223
@@ -1129,27 +1180,45 @@ Begin VB.Form frmTrabajadores
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   17
-         Left            =   -68040
+         Left            =   6960
          MaxLength       =   4
-         TabIndex        =   49
+         TabIndex        =   50
          TabStop         =   0   'False
          Tag             =   "Tarjeta|N|S|||trabajadores|sexo|||"
-         Top             =   690
+         Top             =   720
          Width           =   255
+      End
+      Begin VB.Label Label4 
+         Caption         =   "Datos Reloj"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   255
+         Index           =   36
+         Left            =   5400
+         TabIndex        =   114
+         Top             =   1200
+         Width           =   1095
       End
       Begin VB.Label Label4 
          Caption         =   "F. Baja"
          Height          =   255
          Index           =   20
-         Left            =   -73080
-         TabIndex        =   88
+         Left            =   1920
+         TabIndex        =   89
          Top             =   5640
          Width           =   735
       End
       Begin VB.Image imgFec 
          Height          =   240
          Index           =   28
-         Left            =   -72360
+         Left            =   2640
          Picture         =   "frmTrabajadores.frx":0109
          ToolTipText     =   "Buscar fecha"
          Top             =   5640
@@ -1164,7 +1233,7 @@ Begin VB.Form frmTrabajadores
       End
       Begin VB.Image imgEMAIL 
          Height          =   255
-         Left            =   -73920
+         Left            =   1080
          ToolTipText     =   "Enviar mail"
          Top             =   3400
          Width           =   255
@@ -1184,7 +1253,7 @@ Begin VB.Form frmTrabajadores
          Height          =   195
          Index           =   2
          Left            =   -67920
-         TabIndex        =   86
+         TabIndex        =   87
          Top             =   1320
          Width           =   975
       End
@@ -1208,7 +1277,7 @@ Begin VB.Form frmTrabajadores
       Begin VB.Image imgFec 
          Height          =   240
          Index           =   11
-         Left            =   -73440
+         Left            =   1560
          Picture         =   "frmTrabajadores.frx":183C
          ToolTipText     =   "Buscar fecha"
          Top             =   5640
@@ -1219,7 +1288,7 @@ Begin VB.Form frmTrabajadores
          Height          =   195
          Index           =   1
          Left            =   -67920
-         TabIndex        =   80
+         TabIndex        =   81
          Top             =   720
          Width           =   975
       End
@@ -1227,18 +1296,18 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Control"
          Height          =   255
          Index           =   22
-         Left            =   -66960
-         TabIndex        =   53
-         Top             =   420
+         Left            =   8040
+         TabIndex        =   54
+         Top             =   480
          Width           =   735
       End
       Begin VB.Label Label4 
          Caption         =   "Tarjeta"
          Height          =   255
          Index           =   21
-         Left            =   -68160
-         TabIndex        =   52
-         Top             =   420
+         Left            =   6720
+         TabIndex        =   53
+         Top             =   480
          Width           =   855
       End
       Begin VB.Label Label4 
@@ -1254,9 +1323,9 @@ Begin VB.Form frmTrabajadores
          EndProperty
          Height          =   255
          Index           =   23
-         Left            =   -69360
-         TabIndex        =   51
-         Top             =   420
+         Left            =   5400
+         TabIndex        =   52
+         Top             =   480
          Width           =   1095
       End
       Begin VB.Label Label2 
@@ -1264,7 +1333,7 @@ Begin VB.Form frmTrabajadores
          Height          =   195
          Index           =   0
          Left            =   -74760
-         TabIndex        =   50
+         TabIndex        =   51
          Top             =   600
          Width           =   1350
       End
@@ -1272,8 +1341,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Nº S.S."
          Height          =   255
          Index           =   13
-         Left            =   -72360
-         TabIndex        =   48
+         Left            =   2640
+         TabIndex        =   49
          Top             =   2820
          Width           =   1455
       End
@@ -1281,8 +1350,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "F. Antiguedad"
          Height          =   255
          Index           =   12
-         Left            =   -74520
-         TabIndex        =   47
+         Left            =   480
+         TabIndex        =   48
          Top             =   5640
          Width           =   1095
       End
@@ -1290,8 +1359,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "NIF"
          Height          =   255
          Index           =   10
-         Left            =   -74520
-         TabIndex        =   46
+         Left            =   480
+         TabIndex        =   47
          Top             =   2820
          Width           =   735
       End
@@ -1299,8 +1368,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Sección"
          Height          =   255
          Index           =   9
-         Left            =   -74520
-         TabIndex        =   43
+         Left            =   480
+         TabIndex        =   44
          Top             =   4140
          Width           =   735
       End
@@ -1308,8 +1377,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Categoría"
          Height          =   255
          Index           =   8
-         Left            =   -74520
-         TabIndex        =   42
+         Left            =   480
+         TabIndex        =   43
          Top             =   4860
          Width           =   735
       End
@@ -1317,8 +1386,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "e-mail"
          Height          =   255
          Index           =   7
-         Left            =   -74520
-         TabIndex        =   41
+         Left            =   480
+         TabIndex        =   42
          Top             =   3420
          Width           =   615
       End
@@ -1326,8 +1395,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Movil"
          Height          =   255
          Index           =   6
-         Left            =   -72360
-         TabIndex        =   40
+         Left            =   2640
+         TabIndex        =   41
          Top             =   2220
          Width           =   735
       End
@@ -1335,8 +1404,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Teléfono"
          Height          =   255
          Index           =   5
-         Left            =   -74520
-         TabIndex        =   39
+         Left            =   480
+         TabIndex        =   40
          Top             =   2220
          Width           =   735
       End
@@ -1344,8 +1413,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Provincia"
          Height          =   255
          Index           =   4
-         Left            =   -73200
-         TabIndex        =   38
+         Left            =   1800
+         TabIndex        =   39
          Top             =   1620
          Width           =   735
       End
@@ -1353,8 +1422,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "C.P."
          Height          =   255
          Index           =   3
-         Left            =   -74520
-         TabIndex        =   37
+         Left            =   480
+         TabIndex        =   38
          Top             =   1620
          Width           =   735
       End
@@ -1362,8 +1431,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Población"
          Height          =   255
          Index           =   2
-         Left            =   -74520
-         TabIndex        =   36
+         Left            =   480
+         TabIndex        =   37
          Top             =   1020
          Width           =   735
       End
@@ -1371,8 +1440,8 @@ Begin VB.Form frmTrabajadores
          Caption         =   "Dirección"
          Height          =   255
          Index           =   1
-         Left            =   -74520
-         TabIndex        =   35
+         Left            =   480
+         TabIndex        =   36
          Top             =   420
          Width           =   735
       End
@@ -1381,7 +1450,7 @@ Begin VB.Form frmTrabajadores
       Height          =   765
       Index           =   0
       Left            =   240
-      TabIndex        =   28
+      TabIndex        =   29
       Top             =   480
       Width           =   11295
       Begin VB.TextBox Text1 
@@ -1428,7 +1497,7 @@ Begin VB.Form frmTrabajadores
          Height          =   255
          Index           =   0
          Left            =   2400
-         TabIndex        =   30
+         TabIndex        =   31
          Top             =   240
          Width           =   735
       End
@@ -1437,7 +1506,7 @@ Begin VB.Form frmTrabajadores
          Height          =   255
          Index           =   0
          Left            =   240
-         TabIndex        =   29
+         TabIndex        =   30
          Top             =   240
          Width           =   495
       End
@@ -1446,7 +1515,7 @@ Begin VB.Form frmTrabajadores
       Height          =   555
       Index           =   0
       Left            =   240
-      TabIndex        =   26
+      TabIndex        =   27
       Top             =   8040
       Width           =   2865
       Begin VB.Label lblIndicador 
@@ -1463,7 +1532,7 @@ Begin VB.Form frmTrabajadores
          EndProperty
          Height          =   240
          Left            =   120
-         TabIndex        =   27
+         TabIndex        =   28
          Top             =   180
          Width           =   2655
       End
@@ -1473,7 +1542,7 @@ Begin VB.Form frmTrabajadores
       Caption         =   "&Cancelar"
       Height          =   375
       Left            =   10380
-      TabIndex        =   25
+      TabIndex        =   26
       Top             =   8160
       Width           =   1035
    End
@@ -1481,7 +1550,7 @@ Begin VB.Form frmTrabajadores
       Caption         =   "&Aceptar"
       Height          =   375
       Left            =   9120
-      TabIndex        =   24
+      TabIndex        =   25
       Top             =   8160
       Width           =   1035
    End
@@ -1536,7 +1605,7 @@ Begin VB.Form frmTrabajadores
       Caption         =   "&Regresar"
       Height          =   375
       Left            =   10380
-      TabIndex        =   31
+      TabIndex        =   32
       Top             =   8160
       Visible         =   0   'False
       Width           =   1035
@@ -1545,7 +1614,7 @@ Begin VB.Form frmTrabajadores
       Align           =   1  'Align Top
       Height          =   360
       Left            =   0
-      TabIndex        =   32
+      TabIndex        =   33
       Top             =   0
       Width           =   11775
       _ExtentX        =   20770
@@ -1635,7 +1704,7 @@ Begin VB.Form frmTrabajadores
          Height          =   195
          Index           =   0
          Left            =   8520
-         TabIndex        =   33
+         TabIndex        =   34
          Top             =   120
          Width           =   1215
       End
@@ -1878,7 +1947,7 @@ End Sub
 Private Sub HacerCambioCalendario()
 Dim F As Date
 Dim FESTIVOS As String
-Dim i As Integer
+Dim I As Integer
     On Error GoTo EHacerCambioCalendario
     
     F = CDate(cad_meua)
@@ -1936,8 +2005,8 @@ Dim i As Integer
         cad_meua = RecuperaValor(FESTIVOS, 1)
         cad_meua = "UPDATE calendarioT set tipodia=2 where fecha='" & cad_meua & "' AND idtrabajador=" & Text1(0).Text
         conn.Execute cad_meua
-        i = InStr(1, FESTIVOS, "|")
-        FESTIVOS = Mid(FESTIVOS, i + 1)
+        I = InStr(1, FESTIVOS, "|")
+        FESTIVOS = Mid(FESTIVOS, I + 1)
     Wend
     
     Exit Sub
@@ -1950,7 +2019,7 @@ End Sub
 
 Private Sub CopiandoHorarios()
 Dim C As String
-Dim i As Integer
+Dim I As Integer
 
 
     On Error GoTo ECopiandoHorarios
@@ -1962,13 +2031,13 @@ Dim i As Integer
     C = C & " calendariol.idcal=calendariof.idcal  and calendariol.fecha=calendariof.fecha"
     C = C & " Where calendariol.idCal = " & Text1(26).Text
     miRsAux.Open C, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    i = 0
+    I = 0
     While Not miRsAux.EOF
-        If i > 100 Then
+        If I > 100 Then
             EjecutaSQL C & ";"
-            i = 0
+            I = 0
         End If
-        If i = 0 Then
+        If I = 0 Then
             C = "INSERT INTO calendariot (idtrabajador, fecha, idhorario, TipoDia) VALUES "
         Else
             C = C & ","
@@ -1982,10 +2051,10 @@ Dim i As Integer
         End If
         
         miRsAux.MoveNext
-        i = i + 1
+        I = I + 1
     Wend
     miRsAux.Close
-    If i > 0 Then EjecutaSQL C & ";"
+    If I > 0 Then EjecutaSQL C & ";"
             
     Exit Sub
 ECopiandoHorarios:
@@ -2015,6 +2084,9 @@ Private Sub cmdHuella_Click()
     End If
     Byt = CByte(Me.Slider1.Value)
     
+    
+    
+       
     Dim usu As UsuarioHuella
     Set usu = New UsuarioHuella
     
@@ -2047,6 +2119,8 @@ Private Sub cmdHuella_Click()
     
 
 
+    
+    
 End Sub
 
 Private Sub Combo1_Change(Index As Integer)
@@ -2090,7 +2164,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Form_Load()
-Dim i As Integer
+Dim I As Integer
 
     PrimeraVez = True
     
@@ -2150,6 +2224,15 @@ Dim i As Integer
         Me.FrameImagen.Visible = False
     End If
     
+    
+    Label4(36).Visible = False
+    Text1(34).Visible = False
+    If vEmpresa.Reloj2 > 0 Then
+        Label4(36).Visible = True
+        Text1(34).Visible = True
+        If vEmpresa.Reloj2 = 1 Then Label4(36).Caption = "Id Biostar"
+    End If
+    
     Me.SSTab1.TabVisible(2) = vEmpresa.laboral
     FrameTapaCtaBancaria.Visible = vEmpresa.laboral
     
@@ -2173,9 +2256,9 @@ Dim i As Integer
     Data1.RecordSource = "Select * from " & NombreTabla & " where idtrabajador=-1"
     Data1.Refresh
           
-    For i = 0 To Combo1.Count - 1
-        If i <> 5 Then CargaCombo i
-    Next i
+    For I = 0 To Combo1.Count - 1
+        If I <> 5 Then CargaCombo I
+    Next I
     
     imgZoom(0).Picture = frmPpal.imgListImages16.ListImages(3).Picture
     imgEMAIL.Picture = frmPpal.imgListImages16.ListImages(2).Picture
@@ -2197,16 +2280,16 @@ End Sub
 
 
 Private Sub LimpiarCampos()
-Dim i As Integer
+Dim I As Integer
     
     On Error Resume Next
 
     Limpiar Me   'Metodo general: Limpia los controles TextBox
     lblIndicador.Caption = ""
     Check1(0).Value = 0
-    For i = 0 To Me.Combo1.Count - 1
-        Me.Combo1(i).ListIndex = -1
-    Next i
+    For I = 0 To Me.Combo1.Count - 1
+        Me.Combo1(I).ListIndex = -1
+    Next I
     If vEmpresa.imgtrabaj Then
         ImageTra.Picture = LoadPicture("")
         ImageTra.Tag = ""
@@ -2223,7 +2306,7 @@ End Sub
 '   En PONERMODO se habilitan, o no, los diverso campos del
 '   formulario en funcion del modo en k vayamos a trabajar
 Private Sub PonerModo(Kmodo As Byte)
-Dim i As Integer, NumReg As Byte
+Dim I As Integer, NumReg As Byte
 Dim B As Boolean
 
     On Error GoTo EPonerModo
@@ -2884,16 +2967,16 @@ Private Sub HacerBusqueda()
 End Sub
 
 Private Sub MandaBusquedaPrevia(CadB As String)
-Dim cad As String
+Dim Cad As String
         'Llamamos a al form
         ' **************** arreglar-ho per a vore lo que es desije ****************
-        cad = ""
-        cad = cad & ParaGrid(Text1(0), 20, "Cód.")
-        cad = cad & ParaGrid(Text1(1), 60, "Nombre")
-        If cad <> "" Then
+        Cad = ""
+        Cad = Cad & ParaGrid(Text1(0), 20, "Cód.")
+        Cad = Cad & ParaGrid(Text1(1), 60, "Nombre")
+        If Cad <> "" Then
             Screen.MousePointer = vbHourglass
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = cad
+            frmB.vCampos = Cad
             frmB.vTabla = NombreTabla
             frmB.vSQL = CadB
             HaDevueltoDatos = False
@@ -2917,9 +3000,9 @@ Dim cad As String
 End Sub
 
 Private Sub cmdRegresar_Click()
-Dim cad As String
+Dim Cad As String
 Dim Aux As String
-Dim i As Integer
+Dim I As Integer
 Dim J As Integer
 
     If Data1.Recordset.EOF Then
@@ -2927,18 +3010,18 @@ Dim J As Integer
         Exit Sub
     End If
     
-    cad = ""
-    i = 0
+    Cad = ""
+    I = 0
     Do
-        J = i + 1
-        i = InStr(J, DatosADevolverBusqueda, "|")
-        If i > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, J, i - J)
+        J = I + 1
+        I = InStr(J, DatosADevolverBusqueda, "|")
+        If I > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, I - J)
             J = Val(Aux)
-            cad = cad & Text1(J).Text & "|"
+            Cad = Cad & Text1(J).Text & "|"
         End If
-    Loop Until i = 0
-    RaiseEvent DatoSeleccionado(cad)
+    Loop Until I = 0
+    RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
 
@@ -3031,7 +3114,7 @@ Private Sub BotonModificar()
 End Sub
 
 Private Sub BotonEliminar()
-Dim cad As String
+Dim Cad As String
 
     On Error GoTo EEliminar
 
@@ -3044,14 +3127,14 @@ Dim cad As String
     If EsCodigoCero(CStr(Data1.Recordset.Fields(0).Value), FormatoCampo(Text1(0))) Then Exit Sub
 
     ' *************** canviar els noms, els formats i el DELETE ****************                  "
-    cad = cad & "¿Seguro que desea eliminar el Trabajador?"
-    cad = cad & vbCrLf & "  Código: " & Format(Data1.Recordset.Fields(0), FormatoCampo(Text1(0)))
-    cad = cad & vbCrLf & "  Nombre: " & Data1.Recordset.Fields(3)
+    Cad = Cad & "¿Seguro que desea eliminar el Trabajador?"
+    Cad = Cad & vbCrLf & "  Código: " & Format(Data1.Recordset.Fields(0), FormatoCampo(Text1(0)))
+    Cad = Cad & vbCrLf & "  Nombre: " & Data1.Recordset.Fields(3)
     
     ' **************************************************************************
     
     'Borramos
-    If MsgBox(cad, vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox(Cad, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         On Error GoTo EEliminar
         Screen.MousePointer = vbHourglass
@@ -3156,16 +3239,16 @@ Private Sub cmdCancelar_Click()
 End Sub
 
 Private Sub QuitarFocoCbo()
-Dim i
+Dim I
     On Error Resume Next
-    For i = 0 To Combo1.Count - 1
-        Me.Combo1(i).SelLength = 0
+    For I = 0 To Combo1.Count - 1
+        Me.Combo1(I).SelLength = 0
     Next
     Err.Clear
 End Sub
 Private Function DatosOk() As Boolean
 Dim B As Boolean
-Dim i As Integer
+Dim I As Integer
 
     On Error GoTo EDatosOK
 
@@ -3229,6 +3312,37 @@ Dim i As Integer
         End If
     End If
          
+         
+         
+    If B And vEmpresa.Reloj2 > 0 Then
+        Text1(34).Text = Trim(Text1(34).Text)
+        If Text1(34).Text <> "" Then
+            'Ha puesto identificador para el segundo reloj
+            
+            If vEmpresa.Reloj2 = 1 Then
+                'El campo ID del reloj2 debe ser numerico
+                If Not IsNumeric(Text1(34).Text) Then
+                    MsgBox "Campo ID biostar debe ser numérico", vbExclamation
+                    PonerFoco Text1(34)
+                    
+                    B = False
+                Else
+                    Text1(34).Text = Val(Text1(34).Text)
+                    
+                    'Compruebo que NO existe otro trabajador con este codigo
+                    CadB = "idtrabajador <> " & Text1(0).Text & " AND idTraReloj2"
+                    CadB = DevuelveDesdeBD("concat(idtrabajador,' ',nomtrabajador)", "trabajadores", CadB, Text1(34).Text, "T")
+                    If CadB <> "" Then
+                        MsgBox "Ya existe ese ID en el reloj BIostar. " & vbCrLf & CadB, vbExclamation
+                        B = False
+                    End If
+                    
+                End If
+            End If
+        End If
+         
+    End If
+         
     DatosOk = B
     
 EDatosOK:
@@ -3237,13 +3351,13 @@ End Function
 
 
 Private Sub PosicionarData()
-Dim cad As String, Indicador As String
+Dim Cad As String, Indicador As String
 
     ' *** canviar-ho per la clua primaria ***
-    cad = "(idTrabajador=" & Text1(0).Text & ")"
+    Cad = "(idTrabajador=" & Text1(0).Text & ")"
     ' ***************************************
     
-    If SituarData(Data1, cad, Indicador) Then
+    If SituarData(Data1, Cad, Indicador) Then
        PonerModo 2
        PonerCampos
        lblIndicador.Caption = Indicador
@@ -3290,13 +3404,13 @@ Private Sub Combo1_GotFocus(Index As Integer)
 End Sub
 
 Private Sub PonTipoControl(valor As String)
-Dim i As Integer
-    For i = 0 To Combo1(2).ListCount - 1
-        If Combo1(2).ItemData(i) = valor Then
-            Combo1(2).ListIndex = i
+Dim I As Integer
+    For I = 0 To Combo1(2).ListCount - 1
+        If Combo1(2).ItemData(I) = valor Then
+            Combo1(2).ListIndex = I
             Exit For
         End If
-    Next i
+    Next I
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)

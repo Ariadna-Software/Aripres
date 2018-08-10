@@ -54,7 +54,7 @@ End Function
 'CATADAU TENDRA EL SUYO PROPIO
 
 Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Boolean)
-    Dim Sql As String
+    Dim SQL As String
     '-- Graba en la tabla EntradaFichajes
     Dim Secuencia As Long
     Dim idTrabajador As Long
@@ -116,16 +116,16 @@ Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Bo
             
             
             Secuencia = ObtenerSecuencia(RelojAuxiliar)
-            Sql = "insert into " & IIf(RelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
-            Sql = Sql & "(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal)  values("
-            Sql = Sql & Secuencia & ","
-            Sql = Sql & idTrabajador & ","
-            Sql = Sql & DBSet(Fecha, "F") & ","
-            Sql = Sql & DBSet(Hora, "H") & ","
-            Sql = Sql & IdInci & ","
-            Sql = Sql & DBSet(HoraReal, "H") & ")"
+            SQL = "insert into " & IIf(RelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
+            SQL = SQL & "(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal)  values("
+            SQL = SQL & Secuencia & ","
+            SQL = SQL & idTrabajador & ","
+            SQL = SQL & DBSet(Fecha, "F") & ","
+            SQL = SQL & DBSet(Hora, "H") & ","
+            SQL = SQL & IdInci & ","
+            SQL = SQL & DBSet(HoraReal, "H") & ")"
             'db.ejecutar SQL
-            conn.Execute Sql
+            conn.Execute SQL
             
         End If
     Else
@@ -139,7 +139,7 @@ End Function
 'DOS PROCESOS , meter sea lo que sea en marcajeskimaldi
 ' y luego meterlo tb en fichajeactual
 Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo_ As Byte, RelojAuxiliar As Boolean)
-    Dim Sql As String
+    Dim SQL As String
     '-- Graba en la tabla EntradaFichajes
     Dim Secuencia As Long
     Dim idTrabajador As Long
@@ -171,11 +171,11 @@ Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo_ As Byte, Rel
   
         'Primero,sea lo que sea, insertamos en marcajkes kimaldi
         'MarcajesKimaldi
-        Sql = "INSERT INTO MarcajesKimaldi (Nodo,Fecha,Hora,TipoMens,Marcaje) VALUES "
-        Sql = Sql & "(" & Nodo_ & "," & DBSet(Fecha, "F") & "," & DBSet(HoraReal, "H") & "," & DBSet(Right(registro, 2), "T")
+        SQL = "INSERT INTO MarcajesKimaldi (Nodo,Fecha,Hora,TipoMens,Marcaje) VALUES "
+        SQL = SQL & "(" & Nodo_ & "," & DBSet(Fecha, "F") & "," & DBSet(HoraReal, "H") & "," & DBSet(Right(registro, 2), "T")
         'COJO SOLO las ultimas 4 posciones
-        Sql = Sql & "," & DBSet(Mid(registro, 7, 4), "T") & ")"
-        conn.Execute Sql
+        SQL = SQL & "," & DBSet(Mid(registro, 7, 4), "T") & ")"
+        conn.Execute SQL
         
         '-- Si el usuario no está dado de alta despeciamos la información
         If usu.Leer(Mid(registro, 1, 10)) Then
@@ -199,15 +199,16 @@ Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo_ As Byte, Rel
             
             
             Secuencia = ObtenerSecuencia(RelojAuxiliar)  'ObtenerSecuencia(db)
-            Sql = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal) " & _
+            SQL = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal) " & _
                         " values("
-            Sql = Sql & Secuencia & ","
-            Sql = Sql & idTrabajador & ","
-            Sql = Sql & DBSet(Fecha, "F") & ","
-            Sql = Sql & DBSet(Hora, "H") & ","
-            Sql = Sql & IdInci & ","
-            Sql = Sql & DBSet(HoraReal, "H") & ")"
-            conn.Execute Sql
+            SQL = SQL & Secuencia & ","
+            SQL = SQL & idTrabajador & ","
+            SQL = SQL & DBSet(Fecha, "F") & ","
+            SQL = SQL & DBSet(Hora, "H") & ","
+            SQL = SQL & IdInci & ","
+            SQL = SQL & DBSet(HoraReal, "H") & ")"
+            Debug.Print SQL
+            conn.Execute SQL
         End If
 
 End Function
@@ -215,19 +216,19 @@ End Function
 
 'Public Function ObtenerSecuencia(db As BaseDatos) As Long
 Public Function ObtenerSecuencia(EsTablaRelojAuxiliar As Boolean) As Long
-    Dim Sql As String
-    Dim RS As ADODB.Recordset
-    Sql = "select Max(Secuencia) from " & IIf(EsTablaRelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
+    Dim SQL As String
+    Dim Rs As ADODB.Recordset
+    SQL = "select Max(Secuencia) from " & IIf(EsTablaRelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
     'Set Rs = db.cursor(SQL)
-    Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not IsNull(RS.Fields(0)) Then
-        ObtenerSecuencia = RS.Fields(0) + 1
+    Set Rs = New ADODB.Recordset
+    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not IsNull(Rs.Fields(0)) Then
+        ObtenerSecuencia = Rs.Fields(0) + 1
     Else
         ObtenerSecuencia = 1
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
@@ -236,33 +237,3 @@ End Function
 
 
 
-'Esto estaba en GESALB, en otro modulo
-Public Sub CargaComboSecciones(ByRef CBO As ComboBox, AñadirTodas As Boolean)
-Dim Sql As String
-Dim RS As ADODB.Recordset
-
-    CBO.Clear
-    Sql = "select IdSeccion,nombre from secciones order by NOMBRE"
-    Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If AñadirTodas Then
-        CBO.AddItem "Todas las secciones"
-        CBO.ItemData(CBO.NewIndex) = -1
-    End If
-    
-    While Not RS.EOF
-        CBO.AddItem RS!Nombre & " (" & RS!IdSeccion & ")"
-        CBO.ItemData(CBO.NewIndex) = RS!IdSeccion
-        
-        If vEmpresa.QueEmpresa = 5 Then
-            If RS!IdSeccion = 1 Then CBO.ListIndex = CBO.NewIndex
-        End If
-        RS.MoveNext
-    Wend
-    RS.Close
-    Set RS = Nothing
-    
-    If vEmpresa.QueEmpresa <> 5 Then
-        If AñadirTodas Then CBO.ListIndex = 0
-    End If
-End Sub

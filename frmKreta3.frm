@@ -1157,7 +1157,7 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
         NF = FreeFile
         Open vEmpresa.DirMarcajes & "\" & Fichero For Input As #NF
         lblInf.Caption = "Abriendo " & Fichero & "    de " & tam
-        espera 1
+        espera 0.5
         Do While Not EOF(NF)
             Line Input #NF, Leido
             llev = llev + Len(Leido)
@@ -1629,3 +1629,7 @@ eProcesoHorasAcabalgadas:
 End Sub
 
     
+
+
+
+

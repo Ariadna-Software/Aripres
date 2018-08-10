@@ -573,7 +573,7 @@ Case 65
     
     
 Case 67
-    Text1.Text = "Marcahe actual normal"
+    Text1.Text = "Marcaje actual normal"
     Nombre = "marcactualPlano.rpt"
     MostrarTree = True
 Case 100

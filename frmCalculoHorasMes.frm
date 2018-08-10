@@ -18,6 +18,17 @@ Begin VB.Form frmCalculoHorasMes
       TabIndex        =   20
       Top             =   0
       Width           =   11775
+      Begin VB.CommandButton Command2 
+         Height          =   315
+         Index           =   4
+         Left            =   5160
+         Picture         =   "frmCalculoHorasMes.frx":0000
+         Style           =   1  'Graphical
+         TabIndex        =   34
+         ToolTipText     =   "Eliminar de nomina"
+         Top             =   360
+         Width           =   375
+      End
       Begin VB.ComboBox cboSeccion 
          Height          =   315
          Left            =   6840
@@ -29,7 +40,7 @@ Begin VB.Form frmCalculoHorasMes
       Begin VB.CommandButton Command2 
          Height          =   315
          Index           =   2
-         Left            =   5280
+         Left            =   6000
          Style           =   1  'Graphical
          TabIndex        =   29
          ToolTipText     =   "Imprimir"
@@ -40,7 +51,7 @@ Begin VB.Form frmCalculoHorasMes
       Begin VB.CommandButton Command2 
          Height          =   315
          Index           =   1
-         Left            =   5280
+         Left            =   6000
          Style           =   1  'Graphical
          TabIndex        =   28
          ToolTipText     =   "Recuperar datos"
@@ -102,11 +113,11 @@ Begin VB.Form frmCalculoHorasMes
       Begin VB.CommandButton Command2 
          Height          =   315
          Index           =   0
-         Left            =   5160
+         Left            =   6360
          Style           =   1  'Graphical
          TabIndex        =   21
          ToolTipText     =   "Guardar datos"
-         Top             =   360
+         Top             =   480
          Visible         =   0   'False
          Width           =   375
       End
@@ -258,6 +269,7 @@ Begin VB.Form frmCalculoHorasMes
       _ExtentY        =   7435
       View            =   3
       LabelEdit       =   1
+      MultiSelect     =   -1  'True
       LabelWrap       =   0   'False
       HideSelection   =   0   'False
       FullRowSelect   =   -1  'True
@@ -356,31 +368,31 @@ Begin VB.Form frmCalculoHorasMes
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   7
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":0000
+            Picture         =   "frmCalculoHorasMes.frx":0A02
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":059A
+            Picture         =   "frmCalculoHorasMes.frx":0F9C
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":0B34
+            Picture         =   "frmCalculoHorasMes.frx":1536
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":0E4E
+            Picture         =   "frmCalculoHorasMes.frx":1850
             Key             =   ""
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":13E8
+            Picture         =   "frmCalculoHorasMes.frx":1DEA
             Key             =   ""
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":183A
+            Picture         =   "frmCalculoHorasMes.frx":223C
             Key             =   ""
          EndProperty
          BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCalculoHorasMes.frx":1DD4
+            Picture         =   "frmCalculoHorasMes.frx":27D6
             Key             =   ""
          EndProperty
       EndProperty
@@ -1134,7 +1146,7 @@ Dim RS As ADODB.Recordset
 
 
     'De momento no hacemos nada
-    Exit Sub
+    If Index <> 4 Then Exit Sub
 
     Select Case Index
     Case 0
@@ -1206,6 +1218,36 @@ Dim RS As ADODB.Recordset
             End If
             RS.Close
         End If
+    
+    
+    
+    Case 4
+        If ListView1.ListItems.Count = 0 Then Exit Sub
+        If ListView1.SelectedItem Is Nothing Then Exit Sub
+        
+        
+        'Eliminar la entrada
+        Sql = ""
+        For i = 1 To ListView1.ListItems.Count
+            If ListView1.ListItems(i).Selected Then Sql = Sql & "X"
+        Next i
+        If Sql = "" Then Exit Sub
+        
+        
+        Sql = "Va a eliminar " & Len(Sql) & " trabajadores de la nomina. Continuar?"
+        If MsgBox(Sql, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        
+        Sql = ""
+        For i = ListView1.ListItems.Count To 1 Step -1
+            If ListView1.ListItems(i).Selected Then
+                
+                Sql = "DELETE FROM tmpdatosmes where trabajador =" & ListView1.ListItems(i).Text
+                conn.Execute Sql
+                ListView1.ListItems.Remove i
+            End If
+        Next i
+    
+    
     End Select
 End Sub
 
@@ -1513,7 +1555,7 @@ Dim Cantidad2 As Currency
         'Trabajados
         i.SubItems(3) = RS!diasTrabajados
         i.SubItems(4) = Format(RS!horasn, "0.00")
-        i.SubItems(5) = Format(RS!horasc, "0.00")
+        i.SubItems(5) = Format(RS!HorasC, "0.00")
         
         
         'Saldo
@@ -1536,7 +1578,7 @@ Dim Cantidad2 As Currency
         i.SubItems(8) = RS!diasperiodo
         i.SubItems(9) = " "  'Horas que lleva a nomina son las horasn
         i.SubItems(10) = " "  'EXTRAS
-        If RS!horasc > 0 Then i.SubItems(10) = Format(RS!horasc, "0.00")
+        If RS!HorasC > 0 Then i.SubItems(10) = Format(RS!HorasC, "0.00")
         
         
         '
@@ -1966,7 +2008,7 @@ On Error GoTo EGenerarNominas
         Horas = RS!saldoh
         If Horas < 0 Then Horas = 0
         '                                                                         Plus. de momento cero. Eso es si quitarn bolsa, pero habria que verlo
-        cad = cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!horasc, "N")) & ","
+        cad = cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
         
 
 

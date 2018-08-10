@@ -562,7 +562,7 @@ Private TieneConfiguracion As Boolean
 
 
 Private Sub cmdCompruebaFecha_Click()
-Dim Cad As String
+Dim cad As String
 Dim HayErrores As Boolean
 
    Screen.MousePointer = vbHourglass
@@ -574,8 +574,8 @@ Dim HayErrores As Boolean
     Frame6.Visible = True
     Label5.Caption = "  LEYENDO "
     'Fecha PC
-    Cad = UCase(Format(Now, "ddd d, mmm  hh:mm"))
-    Label6.Caption = Cad
+    cad = UCase(Format(Now, "ddd d, mmm  hh:mm"))
+    Label6.Caption = cad
 
     Me.Refresh
     'Llegados aqui es donde empezamos a transmitir con el reloj
@@ -588,20 +588,20 @@ Dim HayErrores As Boolean
     Text1.Text = Text1.Text & "Solicitando programación hora/fecha reloj al TCP-3" & vbCrLf
     Text1.Refresh
     PonerTexto kTCP
-    Cad = Leer(2, "Cmd:")
+    cad = Leer(2, "Cmd:")
     LimpiaBufferRecepcion
     'Si respuesta afirmativa
-    If Cad = "" Then
+    If cad = "" Then
         GoTo Salida3
     End If
         
     'Ponemos comando 5 Leer hora/fecha en TCP-3
-    Cad = "5"
-    PonerTexto Cad
-    Cad = Leer(2, "Cmd OK")
+    cad = "5"
+    PonerTexto cad
+    cad = Leer(2, "Cmd OK")
     LimpiaBufferRecepcion
     'No hay datos correctos
-    If Cad = "" Then
+    If cad = "" Then
         GoTo Salida3
     End If
     
@@ -626,7 +626,7 @@ Salida3:
     If Not HayErrores Then
         Label5.Caption = "Ajustando valores dev."
         Label5.Refresh
-        If Not PonerHoras(Cad) Then
+        If Not PonerHoras(cad) Then
             Label5.Caption = "Valores devueltos erroneos"
             Label5.Refresh
         End If
@@ -642,7 +642,7 @@ End Sub
 
 'PROGRAMAR TARJETA
 Private Sub Command1_Click()
-Dim Cad As String
+Dim cad As String
 Dim HayErrores As Boolean
 
 'If Text2(0).Tag = "" Then
@@ -667,35 +667,35 @@ HayErrores = True
 Text1.Text = Text1.Text & "Solicitando programacion tarjeta al TCP-3"
 Text1.Refresh
 PonerTexto kTCP
-Cad = Leer(2, "Cmd:")
+cad = Leer(2, "Cmd:")
 LimpiaBufferRecepcion
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
     
 'Ponemos comando 18 de PRogramar TARJETA
 PonerTexto "18"
-Cad = Leer(2, "Zona:")
+cad = Leer(2, "Zona:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 'Ponemos zona
 PonerTexto "1"
-Cad = Leer(2, "Planta:")
+cad = Leer(2, "Planta:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 'Ponemos PLANTA
 PonerTexto "18"
-Cad = Leer(2, "Acceso:")
+cad = Leer(2, "Acceso:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 '
@@ -704,10 +704,10 @@ Text1.Refresh
 '
 'Ponemos ACCESO
 PonerTexto "255"
-Cad = Leer(2, "Fichaje:")
+cad = Leer(2, "Fichaje:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 'Ponemos NUM tarjeta  ----------------
@@ -720,28 +720,28 @@ End If
 
 'ANtes aripres 4
 'Cad = Text2(0).Tag
-Cad = Text5(1).Text
-PonerTexto Cad
-Cad = Leer(2, "Identf.:")
+cad = Text5(1).Text
+PonerTexto cad
+cad = Leer(2, "Identf.:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 'Ponemos Nombre  ----------------
 'que esta en el tag
 If Len(Text2(0).Text) > 16 Then
-    Cad = Mid(Text2(0).Text, 1, 16)
+    cad = Mid(Text2(0).Text, 1, 16)
     Else
-    Cad = Text2(0).Text
+    cad = Text2(0).Text
 End If
 Text1.Text = Text1.Text & vbCrLf & "Enviando Datos tarjeta ....."
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(15, "Cmd OK")
+PonerTexto cad
+cad = Leer(15, "Cmd OK")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 'Todo correcto
@@ -760,17 +760,17 @@ End Sub
 
 'IMPORTAR MARCAJES
 Private Sub Command2_Click()
-Dim Cad As String
+Dim cad As String
 Dim Correcto As Boolean
 
 Screen.MousePointer = vbHourglass
 
 'Si ya existe el fichero marcaje
-Cad = Dir(NombreFichero)
-If Cad <> "" Then
-    Cad = "Ya existe el archivo: " & NombreFichero & vbCrLf
-    Cad = Cad & "Procéselo primero"
-    MsgBox Cad, vbExclamation
+cad = Dir(NombreFichero)
+If cad <> "" Then
+    cad = "Ya existe el archivo: " & NombreFichero & vbCrLf
+    cad = cad & "Procéselo primero"
+    MsgBox cad, vbExclamation
     Screen.MousePointer = vbDefault
     Exit Sub
 End If
@@ -792,25 +792,25 @@ End If
 '   Una vez procesado la primera parte volveremos a la fecha actual
 '   y procearemos la segunda.
 If Month(Now) = 1 And Day(Now) < 4 Then
-    Cad = "Puede que hayan marcajes del año anterior " & Year(Now) - 1 & "." & vbCrLf
-    Cad = Cad & "Si hay alguno tendra que dividir el fichero fichajes.txt" & vbCrLf
-    Cad = Cad & "Del siguiente modo." & vbCrLf
-    Cad = Cad & "1.- Haga una copia del FICHAJES.TXT a FICHAJES.BAK" & vbCrLf
-    Cad = Cad & "2.- Abra el fichero y seleccione las entradas de enero y borrelas. " & vbCrLf
-    Cad = Cad & "3.- Cambie la fecha de su ordenador y ponga 31 de diciembre de " & Year(Now) - 1 & vbCrLf
-    Cad = Cad & "4.- Procese el fichero" & vbCrLf
-    Cad = Cad & "5.- Copie FICHAJES.BAK como Fichajes.txt" & vbCrLf
-    Cad = Cad & "6.- Vuelva a poner la fecha actual" & vbCrLf
-    Cad = Cad & "7.- Procese otra vez el fichero" & vbCrLf
-    MsgBox Cad, vbExclamation, "PRECAUCION"
+    cad = "Puede que hayan marcajes del año anterior " & Year(Now) - 1 & "." & vbCrLf
+    cad = cad & "Si hay alguno tendra que dividir el fichero fichajes.txt" & vbCrLf
+    cad = cad & "Del siguiente modo." & vbCrLf
+    cad = cad & "1.- Haga una copia del FICHAJES.TXT a FICHAJES.BAK" & vbCrLf
+    cad = cad & "2.- Abra el fichero y seleccione las entradas de enero y borrelas. " & vbCrLf
+    cad = cad & "3.- Cambie la fecha de su ordenador y ponga 31 de diciembre de " & Year(Now) - 1 & vbCrLf
+    cad = cad & "4.- Procese el fichero" & vbCrLf
+    cad = cad & "5.- Copie FICHAJES.BAK como Fichajes.txt" & vbCrLf
+    cad = cad & "6.- Vuelva a poner la fecha actual" & vbCrLf
+    cad = cad & "7.- Procese otra vez el fichero" & vbCrLf
+    MsgBox cad, vbExclamation, "PRECAUCION"
 End If
 'Eliminamos los temporales
-Cad = Dir(App.Path & "\tmpMar.txt")
-If Cad <> "" Then
+cad = Dir(App.Path & "\tmpMar.txt")
+If cad <> "" Then
     Kill App.Path & "\tmpMar.txt"
 End If
-Cad = Dir(App.Path & "\tmpMar2.txt")
-If Cad <> "" Then
+cad = Dir(App.Path & "\tmpMar2.txt")
+If cad <> "" Then
     Kill App.Path & "\tmpMar2.txt"
 End If
 
@@ -825,33 +825,33 @@ Text1.Text = ""
 Text1.Text = Text1.Text & "Solicitando marcajes al TCP-3" & vbCrLf
 Text1.Refresh
 PonerTexto kTCP
-Cad = Leer(2, "Cmd:")
+cad = Leer(2, "Cmd:")
 'Debug.Print cad
 LimpiaBufferRecepcion
 
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     Text1.Text = Text1.Text & "Error solicitando datos"
     GoTo salida
 End If
     
 'Ponemos comando 3 de solicitud de transferencias
 PonerTexto "3"
-Cad = Leer(2, "Reg. Ini:")
+cad = Leer(2, "Reg. Ini:")
 
 LimpiaBufferRecepcion
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 
 'Registro inicial 0
 PonerTexto "0"
-Cad = Leer(2, "Reg. Fin:")
+cad = Leer(2, "Reg. Fin:")
 LimpiaBufferRecepcion
 
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     GoTo salida
 End If
 
@@ -898,9 +898,9 @@ Text1.Text = "Solicitando borrado marcajes."
 Text1.Refresh
 LimpiaBufferRecepcion
 PonerTexto kTCP
-Cad = Leer(6, "Cmd:")
+cad = Leer(6, "Cmd:")
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     Text1.Text = Text1.Text & vbCrLf & "Error conectando con el TCP-3(Cmd: 4). Tiempo agotado"
     Text1.Refresh
     Kill NombreFichero
@@ -910,10 +910,10 @@ LimpiaBufferRecepcion
 
 'Ponemos comando 3 de solicitud de transferencias
 PonerTexto "4"
-Cad = Leer(2, "Confirmar:")
+cad = Leer(2, "Confirmar:")
 LimpiaBufferRecepcion
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     Text1.Text = Text1.Text & vbCrLf & "Error conectando con el TCP-3(Confirmar: Si). Tiempo agotado"
     Text1.Refresh
     Kill NombreFichero
@@ -922,12 +922,12 @@ End If
 
 PonerTexto "si"
 'Aqui ponemos mas tiempo por que tiene que borrar registros: EsperaBorrado
-Cad = Leer(EsperaBorrado, "Cmd OK")
+cad = Leer(EsperaBorrado, "Cmd OK")
 'Debug.Print cad
 LimpiaBufferRecepcion
 
 'Si no ha podido borrar entonces borramos el marcaje
-If Cad = "" Then
+If cad = "" Then
     Text1.Text = Text1.Text & vbCrLf & "Ha sido imposible eliminar los marcajes en el TCP-3"
     Text1.Refresh
     Kill NombreFichero
@@ -959,8 +959,8 @@ salida:
 End Sub
 
 
-Private Function Leer(Segundos As Integer, CadenaEsperada As String) As String
-Dim I As Integer
+Private Function Leer(segundos As Integer, CadenaEsperada As String) As String
+Dim i As Integer
 Dim Fin As Boolean
 Dim T1, T2
 Dim Buffer2$
@@ -977,7 +977,7 @@ While Not Fin
         Leer = Buffer2$
         Else
             T2 = Timer - T1
-            Fin = (T2 > Segundos)
+            Fin = (T2 > segundos)
     End If
 Wend
 End Function
@@ -1126,7 +1126,7 @@ End Sub
 Private Sub Command3_Click()
 Dim tecla As Integer
 Dim HayErrores As Boolean
-Dim Cad As String
+Dim cad As String
 
 
 If Text2(1).Tag = "" And Text2(0).Text = "Elija una incidencia" Then
@@ -1164,45 +1164,45 @@ HayErrores = True
 Text1.Text = Text1.Text & "Solicitando grabación de mensajes al TCP-3" & vbCrLf
 Text1.Refresh
 PonerTexto kTCP
-Cad = Leer(2, "Cmd:")
+cad = Leer(2, "Cmd:")
 LimpiaBufferRecepcion
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida2
 End If
     
 'Ponemos comando 13 grabar mensajes usuario
 PonerTexto "13"
-Cad = Leer(2, "Usuario")
+cad = Leer(2, "Usuario")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida2
 End If
 'Ponemos la tecla asignada
 PonerTexto CStr(tecla)
-Cad = Leer(2, "Ind:")
+cad = Leer(2, "Ind:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida2
 End If
 'Ponemos PLANTA
 If Len(Text2(1).Text) < 16 Then
-    Cad = Text2(1).Text & "                           "
+    cad = Text2(1).Text & "                           "
     Else
-        Cad = Mid(Text2(1).Text, 1, 16)
+        cad = Mid(Text2(1).Text, 1, 16)
 End If
-Cad = Mid(Cad, 1, 16)
+cad = Mid(cad, 1, 16)
 Text1.Text = Text1.Text & " Incidencia: " & tecla & vbCrLf
-Text1.Text = Text1.Text & " Mensaje: " & Cad & vbCrLf
+Text1.Text = Text1.Text & " Mensaje: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
+PonerTexto cad
 
-Cad = Leer(6, "Cmd OK")
+cad = Leer(6, "Cmd OK")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida2
 End If
 Text1.Text = Text1.Text & vbCrLf & "Grabación correcta" & vbCrLf
@@ -1232,17 +1232,17 @@ End Sub
 '  Configuracion terminal
 '  ----------------------
 Private Sub Command5_Click()
-Dim I As Integer
+Dim i As Integer
 
 On Error GoTo ErrorGuardar
-    For I = 0 To 3
-        If I <> 2 Then
-            If Not IsNumeric(txtConfig(I).Text) Then
+    For i = 0 To 3
+        If i <> 2 Then
+            If Not IsNumeric(txtConfig(i).Text) Then
                 MsgBox "Los campos de configuracion tienen que ser numéricos.", vbExclamation
                 Exit Sub
             End If
         End If
-    Next I
+    Next i
 
     
     If Combo1.ListIndex < 0 Then
@@ -1250,10 +1250,10 @@ On Error GoTo ErrorGuardar
         Exit Sub
     End If
 
-    I = FreeFile
-    Open App.Path & "\TCPConf.cfg" For Output As #I
-    Print #I, Trim(txtConfig(0)) & "|" & Trim(txtConfig(1)) & "|" & Combo1.List(Combo1.ListIndex) & "|" & Trim(txtConfig(3)) & "|"
-    Close #I
+    i = FreeFile
+    Open App.Path & "\TCPConf.cfg" For Output As #i
+    Print #i, Trim(txtConfig(0)) & "|" & Trim(txtConfig(1)) & "|" & Combo1.List(Combo1.ListIndex) & "|" & Trim(txtConfig(3)) & "|"
+    Close #i
     
 
     
@@ -1282,7 +1282,7 @@ End Sub
 ' puede, no esta comprobado, que de errores en un futuro
 Private Sub Command6_Click()
 Dim HayErrores As Boolean
-Dim Cad As String
+Dim cad As String
 
 
 If Text4(0).Text = "" Then
@@ -1317,99 +1317,99 @@ HayErrores = True
 Text1.Text = Text1.Text & "Solicitando programación hora/fecha reloj al TCP-3" & vbCrLf
 Text1.Refresh
 PonerTexto kTCP
-Cad = Leer(2, "Cmd:")
+cad = Leer(2, "Cmd:")
 LimpiaBufferRecepcion
 'Si respuesta afirmativa
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
     
 'Ponemos comando 2 programar hora/fecha en TCP-3
 'El 1 tb programa pero el 2 en nuestro terminal es mas completo
 PonerTexto "2"
-Cad = Leer(2, "a¤o:")  'realmente ¤ es la ñ
+cad = Leer(2, "a¤o:")  'realmente ¤ es la ñ
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 
 'Ponemos el año
-Cad = Year(CDate(Text4(1).Text))
-Text1.Text = Text1.Text & "Año: " & Cad & vbCrLf
+cad = Year(CDate(Text4(1).Text))
+Text1.Text = Text1.Text & "Año: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "mes:")
+PonerTexto cad
+cad = Leer(2, "mes:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 
 'Ponemos el mes
-Cad = Month(CDate(Text4(1).Text))
-Text1.Text = Text1.Text & "Mes: " & Cad & vbCrLf
+cad = Month(CDate(Text4(1).Text))
+Text1.Text = Text1.Text & "Mes: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "dia:")
+PonerTexto cad
+cad = Leer(2, "dia:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 'Ponemos el dia
-Cad = Day(CDate(Text4(1).Text))
-Text1.Text = Text1.Text & "Dia: " & Cad & vbCrLf
+cad = Day(CDate(Text4(1).Text))
+Text1.Text = Text1.Text & "Dia: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "ds:")
+PonerTexto cad
+cad = Leer(2, "ds:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 'Ponemos el dia semana
-Cad = Weekday(CDate(Text4(1).Text), vbMonday)
-Text1.Text = Text1.Text & "Dia seman: " & Cad & "  (1 - Lunes ...)" & vbCrLf
+cad = Weekday(CDate(Text4(1).Text), vbMonday)
+Text1.Text = Text1.Text & "Dia seman: " & cad & "  (1 - Lunes ...)" & vbCrLf
 Text1.Refresh
-PonerTexto Format(Cad, "00")
-Cad = Leer(2, "hora:")
+PonerTexto Format(cad, "00")
+cad = Leer(2, "hora:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 'Ponemos la hora
-Cad = Hour(CDate(Text4(0).Text))
-Text1.Text = Text1.Text & "Hora: " & Cad & vbCrLf
+cad = Hour(CDate(Text4(0).Text))
+Text1.Text = Text1.Text & "Hora: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "min:")
+PonerTexto cad
+cad = Leer(2, "min:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 'Los minutos
-Cad = Minute(CDate(Text4(0).Text))
-Text1.Text = Text1.Text & "Hora: " & Cad & vbCrLf
+cad = Minute(CDate(Text4(0).Text))
+Text1.Text = Text1.Text & "Hora: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "seg:")
+PonerTexto cad
+cad = Leer(2, "seg:")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 'Los segundos
-Cad = 30
-Text1.Text = Text1.Text & "Segundos: " & Cad & vbCrLf
+cad = 30
+Text1.Text = Text1.Text & "Segundos: " & cad & vbCrLf
 Text1.Refresh
-PonerTexto Cad
-Cad = Leer(2, "Cmd OK")
+PonerTexto cad
+cad = Leer(2, "Cmd OK")
 LimpiaBufferRecepcion
 'No hay datos correctos
-If Cad = "" Then
+If cad = "" Then
     GoTo Salida3
 End If
 
@@ -1492,15 +1492,15 @@ End Sub
 
 
 Private Sub frmB_Seleccion(vCodigo As Long, vCadena As String)
-    Dim Cad As String
+    Dim cad As String
     If vIndice = 0 Then
         'Cad = devuelveNombreNTarjeta(CInt(vCodigo))
-        If Cad <> "" Then
+        If cad <> "" Then
             'Necesito saber tambien el número de la tarjeta
-            Text2(0).Tag = Cad
+            Text2(0).Tag = cad
             Text2(0).Text = vCadena
             Text5(0).Text = vCodigo
-            Text5(1).Text = Cad
+            Text5(1).Text = cad
         End If
         Else
             Text2(1).Tag = vCodigo
@@ -1524,7 +1524,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
 End Sub
 
 Private Sub Image1_Click(Index As Integer)
-Dim Cad As String
+Dim cad As String
 
     Set frmB = New frmBuscaGrid
     NF = Index
@@ -1533,18 +1533,18 @@ Dim Cad As String
     'Ponemos los valores para abrir
     If Index = 0 Then
         vIndice = 0
-        Cad = "Codigo|idTrabajador|N||15·"
-        Cad = Cad & "Nombre|nomtrabajador|T||60·"
-        Cad = Cad & "Tarjeta|numtarjeta|T||20·"
+        cad = "Codigo|idTrabajador|N||15·"
+        cad = cad & "Nombre|nomtrabajador|T||60·"
+        cad = cad & "Tarjeta|numtarjeta|T||20·"
         frmB.vTabla = "Trabajadores"
-        frmB.vCampos = Cad
+        frmB.vCampos = cad
         frmB.vDevuelve = "0|1|2|"
         frmB.vSelElem = 0
         frmB.vTitulo = "TRABAJADORES"
         Else
-            Cad = "Codigo|idinci|N||20·"
-            Cad = Cad & "Descripcion|nominci|T||70·"
-            frmB.vCampos = Cad
+            cad = "Codigo|idinci|N||20·"
+            cad = cad & "Descripcion|nominci|T||70·"
+            frmB.vCampos = cad
             frmB.vDevuelve = "0|1|"
             frmB.vTabla = "incidencias"
             frmB.vTitulo = "INCIDENCIAS"
@@ -1555,9 +1555,9 @@ End Sub
 
 
 Private Sub ObtenerConfiguracion()
-Dim Cad As String
+Dim cad As String
 Dim NF As Integer
-Dim I As Integer
+Dim i As Integer
 Dim ini As Integer
 Dim v(3) As String
 Dim C As String
@@ -1566,12 +1566,12 @@ Dim L As Long
 On Error GoTo ErrorObtener
 TieneConfiguracion = False
 
-Cad = Dir(App.Path & "\TCPConf.cfg")
-If Cad <> "" Then
+cad = Dir(App.Path & "\TCPConf.cfg")
+If cad <> "" Then
     
     NF = FreeFile
     Open App.Path & "\TCPConf.cfg" For Input As #NF
-    Input #NF, Cad
+    Input #NF, cad
     Close #NF
     'Leemos los valores
     TieneConfiguracion = True
@@ -1583,11 +1583,11 @@ If Cad <> "" Then
     
     ini = 1
     For NF = 0 To 3
-        I = InStr(ini, Cad, "|")
-        If I > 0 Then
-            C = Mid(Cad, ini, I - ini)
+        i = InStr(ini, cad, "|")
+        If i > 0 Then
+            C = Mid(cad, ini, i - ini)
             If IsNumeric(C) Then v(NF) = C
-            ini = I + 1
+            ini = i + 1
         End If
     Next NF
 Else
@@ -1607,18 +1607,18 @@ ErrorObtener:
     Baudios = CLng(v(2))
     '---------------------
     EsperaBorrado = CInt(v(3))
-    For I = 0 To 3
-        If I <> 2 Then txtConfig(I) = v(I)
-    Next I
+    For i = 0 To 3
+        If i <> 2 Then txtConfig(i) = v(i)
+    Next i
     
     'Pongo el combo
-    For I = 0 To Combo1.ListCount - 1
-        If Combo1.List(I) = Baudios Then
-            Combo1.ListIndex = I
+    For i = 0 To Combo1.ListCount - 1
+        If Combo1.List(i) = Baudios Then
+            Combo1.ListIndex = i
             Exit For
         End If
-    Next I
-    If I > Combo1.ListIndex Then
+    Next i
+    If i > Combo1.ListIndex Then
         MsgBox "Error fijando la velocidad de conexion", vbExclamation
         TieneConfiguracion = False
     End If
@@ -1629,9 +1629,9 @@ End Sub
 
 
 'Segunda prueba para leer mucho datos desde el TCP 3
-Private Function LeerDatos2(Segundos As Integer, Leyendo As Boolean) As Boolean
+Private Function LeerDatos2(segundos As Integer, Leyendo As Boolean) As Boolean
 Dim Seg As Integer
-Dim I As Integer
+Dim i As Integer
 Dim Fin As Boolean
 Dim tmp As String
 Dim Esta As Boolean
@@ -1646,7 +1646,7 @@ Dim T3, T4
 Buffer$ = ""
 Fin = False
 T1 = Timer
-J = Segundos + 1
+J = segundos + 1
 'Bucle
 Text1.Text = Text1.Text & vbCrLf
 If Leyendo Then
@@ -1656,7 +1656,7 @@ If Leyendo Then
 End If
 Text1.Refresh
 tmp = Text1.Text
-I = 0
+i = 0
 T3 = Timer
 While Not Fin
     
@@ -1665,19 +1665,19 @@ While Not Fin
         Buffer$ = Buffer$ & MSComm1.Input
         T2 = Timer - T1
         If Buffer$ <> "" Then J = 2
-    Loop Until T2 > Segundos Or T2 > J
+    Loop Until T2 > segundos Or T2 > J
     T4 = Timer - T3
     If Buffer$ <> "" Then
-        Text1.Text = tmp & vbCrLf & "Bloque: " & Format(I, "0000") & "     " & "  Seg: " & Format(T4, "0.00")
+        Text1.Text = tmp & vbCrLf & "Bloque: " & Format(i, "0000") & "     " & "  Seg: " & Format(T4, "0.00")
         Text1.Refresh
-        I = I + 1
+        i = i + 1
         EscribeTextoFichero Buffer$
         If InStr(1, Buffer$, "Cmd OK") Then
             Fin = True
             Esta = True
             Else
                 Buffer$ = ""
-                J = Segundos + 1
+                J = segundos + 1
                 T1 = Timer
         End If
         Else
@@ -1698,12 +1698,12 @@ End Function
 Private Function ProcesarFichero2() As Boolean
 Dim Linea As String
 Dim Aux As String
-Dim I As Long
+Dim i As Long
 Dim TotalReg As Long
 Dim Fich As Integer
 Dim Fin As Boolean
 Dim J As Integer
-Dim Cad As String
+Dim cad As String
 
 'Del fichero leido lo ponemos en lineas que contienen unicamente numero
 ' lo leido por el fichero
@@ -1735,26 +1735,26 @@ Line Input #NF, Linea
 'El resto del fichero
 While Not EOF(NF)
 
-    Line Input #NF, Cad
-    J = InStr(1, Cad, "Total Reg")
+    Line Input #NF, cad
+    J = InStr(1, cad, "Total Reg")
     If J > 0 Then
         'Mandamos a imprimir lo que esta antes de totalreg
-        Aux = Linea & Mid(Cad, 1, J - 1)
+        Aux = Linea & Mid(cad, 1, J - 1)
         'Escribimos en el fichero Aux
         Print #Fich, Aux
         'Recalculamos linea
-        Linea = Mid(Cad, J)
+        Linea = Mid(cad, J)
         Else
-            I = InStr(1, Cad, "Reg.")
-            If I > 0 Then
-                Aux = Linea & Mid(Cad, 1, I - 1)
+            i = InStr(1, cad, "Reg.")
+            If i > 0 Then
+                Aux = Linea & Mid(cad, 1, i - 1)
                 'Escribimos en el fichero Aux
                 Print #Fich, Aux
                 'Recalculamos linea
-                Linea = Mid(Cad, I)
+                Linea = Mid(cad, i)
                 'Sino
                 Else
-                    Linea = Linea & Cad
+                    Linea = Linea & cad
             End If
     End If
 Wend
@@ -1776,22 +1776,22 @@ NF = FreeFile + 1
 Open App.Path & "\tmpMar2.txt" For Input As #NF
 Open NombreFichero For Output As #Fich
 
-I = 0 'Tendremos el contador.
+i = 0 'Tendremos el contador.
 Fin = False
 Linea = ""
 While Not Fin
-    Line Input #NF, Cad
-    J = InStr(1, Cad, "Total Reg")
+    Line Input #NF, cad
+    J = InStr(1, cad, "Total Reg")
         If J > 0 Then
             'Es la ultima linea que nos intersa
-            TotalReg = CLng(Val(Mid(Cad, 11)))
+            TotalReg = CLng(Val(Mid(cad, 11)))
             Fin = True
             Linea = ""
             Else
                 'Ahora hay que procear cada linea
-                Linea = ProcesarLineaMarcaje(Cad)
+                Linea = ProcesarLineaMarcaje(cad)
                 Print #Fich, Linea
-                I = I + 1
+                i = i + 1
         End If 'De j>0
     Fin = Fin Or EOF(NF)
 Wend
@@ -1801,7 +1801,7 @@ Close #NF
 Close #Fich
 
 'Vemos si esta correcto o no
-ProcesarFichero2 = (I = TotalReg)
+ProcesarFichero2 = (i = TotalReg)
 Exit Function
 ErrProcFich:
     ProcesarFichero2 = False
@@ -1812,16 +1812,16 @@ End Function
 
 Private Function ProcesarLineaMarcaje(Linea As String) As String
 Dim Aux As String
-Dim I As Integer
+Dim i As Integer
 
 On Error GoTo errorProcesarLineaMarcaje
 
 ProcesarLineaMarcaje = ""
 'Separamos las dos partes de la linea
-I = InStr(2, Linea, vbLf)
+i = InStr(2, Linea, vbLf)
 
 
-Aux = Mid(Linea, I + 1)
+Aux = Mid(Linea, i + 1)
 Aux = Mid(Aux, 1, Len(Aux) - 1)
 ProcesarLineaMarcaje = Aux
 Exit Function
@@ -1846,12 +1846,12 @@ Private Sub PonerEmpleadoVacio()
 End Sub
 Private Sub PonerEmpleado(Cod As String, Campo As String)
 Dim RT As ADODB.Recordset
-Dim SQL As String
+Dim Sql As String
     
-    SQL = "Select * from Trabajadores where "
-    SQL = SQL & Campo & " = " & Cod
+    Sql = "Select * from Trabajadores where "
+    Sql = Sql & Campo & " = " & Cod
     Set RT = New ADODB.Recordset
-    RT.Open SQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If RT.EOF Then
         'ponerempleadovacio
         PonerEmpleadoVacio
@@ -1901,8 +1901,8 @@ End Sub
 
 
 'Pone la cadena devuelta por el reloj  y la fecha /hora del PC
-Private Function PonerHoras(cadena As String) As Boolean
-Dim I As Integer
+Private Function PonerHoras(CADENA As String) As Boolean
+Dim i As Integer
 Dim Fecha As Date
 
     PonerHoras = False
@@ -1910,29 +1910,29 @@ Dim Fecha As Date
     '5 Reg. Fin:
     'mes,dia,ds,hora,min,seg:08,31,5,21,38,21
     ' a partir de los dos puntos
-    I = InStr(1, cadena, ":")
-    If I > 0 Then
+    i = InStr(1, CADENA, ":")
+    If i > 0 Then
         
         'BIEN
-        cadena = Mid(cadena, I + 1)
+        CADENA = Mid(CADENA, i + 1)
         'Le aañdimos una coma al final para facilitar
         
         
     
-            NF = InStr(1, cadena, Chr(13))
-            If NF > 0 Then cadena = Mid(cadena, 1, NF - 2)
-            cadena = cadena & ","
+            NF = InStr(1, CADENA, Chr(13))
+            If NF > 0 Then CADENA = Mid(CADENA, 1, NF - 2)
+            CADENA = CADENA & ","
         
         
         NF = 0
         Do
-            I = InStr(1, cadena, ",")
-            If I > 0 Then
+            i = InStr(1, CADENA, ",")
+            If i > 0 Then
                 NF = NF + 1
-                Buffer$ = Mid(cadena, I + 1)
-                cadena = Mid(cadena, 1, I - 1) & "|" & Buffer$
+                Buffer$ = Mid(CADENA, i + 1)
+                CADENA = Mid(CADENA, 1, i - 1) & "|" & Buffer$
             End If
-        Loop Until I = 0
+        Loop Until i = 0
         
         Buffer$ = ""
         If NF = 6 Then
@@ -1941,27 +1941,27 @@ Dim Fecha As Date
             '----
             'Dia semana lo calcularemos de la primerasemana del
             'mes de noviembre de 2004 que empieza ekl 1 Lunes
-            I = Val(RecuperaValor(cadena, 3))
-            If I > 7 Then Exit Function
+            i = Val(RecuperaValor(CADENA, 3))
+            If i > 7 Then Exit Function
             'I = I + 1
-            Buffer$ = Buffer$ & Format(I & "/11/2004", "ddd")
+            Buffer$ = Buffer$ & Format(i & "/11/2004", "ddd")
             
             
-            I = Val(RecuperaValor(cadena, 2))
-            If I = 0 Then Exit Function
-            Buffer$ = Buffer$ & " " & I & ","
+            i = Val(RecuperaValor(CADENA, 2))
+            If i = 0 Then Exit Function
+            Buffer$ = Buffer$ & " " & i & ","
             
-            I = Val(RecuperaValor(cadena, 1))
-            If I = 0 Then Exit Function
-            Buffer$ = Buffer$ & "  " & Format("01/" & I & "/2004", "mmm")
+            i = Val(RecuperaValor(CADENA, 1))
+            If i = 0 Then Exit Function
+            Buffer$ = Buffer$ & "  " & Format("01/" & i & "/2004", "mmm")
             
             'Hora
-            I = Val(RecuperaValor(cadena, 4))
-            Buffer$ = Buffer$ & "  " & I & ":"
+            i = Val(RecuperaValor(CADENA, 4))
+            Buffer$ = Buffer$ & "  " & i & ":"
             
             'Minutos
-            I = Val(RecuperaValor(cadena, 5))
-            Buffer$ = Buffer$ & Format(I, "00")
+            i = Val(RecuperaValor(CADENA, 5))
+            Buffer$ = Buffer$ & Format(i, "00")
             
             
             Label5.Caption = UCase(Buffer$)

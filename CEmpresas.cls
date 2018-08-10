@@ -53,7 +53,7 @@ Private mvarredondeo As Byte 'copia local
 Private mvarlaboral As Boolean 'copia local
 Private mvarproduccion As Boolean 'copia local
 Private mvarimgtrabaj As Boolean 'copia local
-Private mvarreloj As Byte 'copia local
+Private mvarReloj As Byte 'copia local
 Private mvarTodosLosDias As Boolean  'copia local
 Private mvarFechaInicio As Date
 Private mvarFechaFin As Date
@@ -100,6 +100,13 @@ Private mvarpathCostesServer As String
 
 'A3
 Private mvarTieneCentrosA3 As Boolean
+
+
+
+' Para poder añadir otro reloj mas a  la lectura. De momento un BIostar2 (y solo COOPIC)
+Private mvarReloj2 As Byte 'copia local
+Private mvarRelojConfig2 As String 'copia local
+
 
 Private Sql As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
@@ -672,7 +679,7 @@ Public Property Let reloj(ByVal vData As Byte)
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado izquierdo de la asignacion
 'Syntax: X.reloj = 5
-     mvarreloj = vData
+     mvarReloj = vData
 End Property
 
 'vbTCP3 = 1  vbKimaldi = 2      vbAlzira = 3     vbRobotics = 4
@@ -680,7 +687,7 @@ Public Property Get reloj() As Byte
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado derecho de la asignacion
 'Syntax: Debug.Print X.reloj
-     reloj = mvarreloj
+     reloj = mvarReloj
 End Property
 
 
@@ -819,10 +826,20 @@ Public Property Get TieneCentrosA3() As Boolean
 End Property
 
 
+Public Property Get Reloj2() As Integer
+     Reloj2 = mvarReloj2
+End Property
+
+Public Property Get RelojConfig2() As String
+     RelojConfig2 = mvarRelojConfig2
+End Property
+
+
+
 
 '****   LEER  ***
 Public Function Leer(vIdIdEmpresa As Long) As Byte
-Dim I As Integer
+Dim i As Integer
 
     On Error GoTo Err3
 
@@ -871,7 +888,7 @@ Dim I As Integer
             mvarlaboral = RS!laboral = 1
             mvarproduccion = RS!produccion = 1
             mvarimgtrabaj = RS!imgtrabaj = 1
-            mvarreloj = RS!reloj
+            mvarReloj = RS!reloj
             mvarTodosLosDias = (RS!TodosLosDias = 1)
             'mvarFechaInicio="01/04/2006"  'Para probar años partidos
             mvarFechaInicio = Format(RS!FechaInicio, "dd/mm/yyyy")
@@ -915,8 +932,8 @@ Dim I As Integer
             
             '-------------------------------------
             'Vere si son el mismo
-            I = InStr(1, conn.ConnectionString, ";SERVER=")
-            If I = 0 Then
+            i = InStr(1, conn.ConnectionString, ";SERVER=")
+            If i = 0 Then
             
                 'Voy a suponer que es el mismo servidor que el de usuarios
                 mvarServer = ""
@@ -924,13 +941,13 @@ Dim I As Integer
             Else
                 
                 
-                Sql = Mid(conn.ConnectionString, I + 8)
-                I = InStr(1, Sql, ";")
-                If I = 0 Then
+                Sql = Mid(conn.ConnectionString, i + 8)
+                i = InStr(1, Sql, ";")
+                If i = 0 Then
                     MsgBox "Error grave. Cadena no encontrada. 2º;" & vbCrLf & Sql, vbCritical
                     End
                 End If
-                Sql = UCase(Mid(Sql, 1, I - 1))
+                Sql = UCase(Mid(Sql, 1, i - 1))
                 If Sql = UCase(mvarServer) Then
                     'PERFECTO. SOn el mismo servidor
                     mvarServer = ""
@@ -938,6 +955,12 @@ Dim I As Integer
                     mvarServer = DBLet(RS!Servidor) & "|" & DBLet(RS!Usuario) & "|" & DBLet(RS!Pass)
                 End If
             End If
+            
+            mvarReloj2 = DBLet(RS!Reloj2, "N")
+            mvarRelojConfig2 = DBLet(RS!configreloj2, "T")
+            
+            
+            
             Leer = 0
     End If
  

@@ -570,8 +570,8 @@ Public Opcion As Byte
         '
 Public QueFecha As Date
         
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 Private WithEvents frmHoras As frmHorasMarcajes
 Attribute frmHoras.VB_VarHelpID = -1
 Private WithEvents frmB As frmBuscaGrid
@@ -579,7 +579,7 @@ Attribute frmB.VB_VarHelpID = -1
 Dim PrimeraVez As Boolean
 Dim Tamanyo As Long
 Dim Contador As Long
-Dim Cad As String
+Dim cad As String
 Dim Modifi As Boolean
 
 
@@ -746,12 +746,12 @@ Dim valor As Long
                 MsgBox "Campo fecha incorrecto", vbExclamation
                 Exit Sub
             End If
-            Cad = "Codigo|idTrabajador|N|00000|15·"
-            Cad = Cad & "Nombre|nomtrabajador|T||60·"
-            Cad = Cad & "Tarjeta|numtarjeta|T||20·"
+            cad = "Codigo|idTrabajador|N|00000|15·"
+            cad = cad & "Nombre|nomtrabajador|T||60·"
+            cad = cad & "Tarjeta|numtarjeta|T||20·"
             Set frmB = New frmBuscaGrid
             frmB.vTabla = "Trabajadores"
-            frmB.vCampos = Cad
+            frmB.vCampos = cad
             frmB.vDevuelve = "0|1|"
             frmB.vSelElem = 0
             frmB.vTitulo = "TRABAJADORES"
@@ -760,9 +760,9 @@ Dim valor As Long
             
             
             If Contador > 0 Then
-                Cad = "Va a crear marcajes para el trabajador: " & Me.Tag
-                Cad = Cad & "   ¿Desea continuar?"
-                If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
+                cad = "Va a crear marcajes para el trabajador: " & Me.Tag
+                cad = cad & "   ¿Desea continuar?"
+                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
             End If
         End If
         If Contador < 1 Then Exit Sub
@@ -772,13 +772,13 @@ Dim valor As Long
         
     Case 2
         'ELIMINAR
-                Cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
-                Cad = Cad & "   ¿Desea continuar?"
-                If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+                cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
+                cad = cad & "   ¿Desea continuar?"
+                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
                     
-                Cad = "DELETE from EntradaFichajes WHERE idTrabajador=" & ListView2.SelectedItem.Text
-                Cad = Cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
-                conn.Execute Cad
+                cad = "DELETE from EntradaFichajes WHERE idTrabajador=" & ListView2.SelectedItem.Text
+                cad = cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
+                conn.Execute cad
                 Modifi = True
     End Select
     If Modifi Then
@@ -820,19 +820,19 @@ Dim idCal As String
     If vEmpresa.CreaCalDiariaTra Then
         'Por ejemplo TEINSA.
         'Cad trabajador tienen una entrada en calendariot
-        Cad = DevuelveDesdeBD("idhorario", "calendariot", "idTrabajador", vM.idTrabajador, "N")
+        cad = DevuelveDesdeBD("idhorario", "calendariot", "idTrabajador", vM.idTrabajador, "N")
     Else
         
         'En alzira los horarios no van POR trabajador, si no que lo tiene el calendario
-        Cad = "trabajadores.idcal=calendariol.idcal AND idtrabajador"
-        Cad = DevuelveDesdeBD("idhorario", "trabajadores,calendariol", Cad, vM.idTrabajador, "N")
+        cad = "trabajadores.idcal=calendariol.idcal AND idtrabajador"
+        cad = DevuelveDesdeBD("idhorario", "trabajadores,calendariol", cad, vM.idTrabajador, "N")
     End If
     
     
-    If Cad = "" Then
+    If cad = "" Then
         Contador = 0
     Else
-        Contador = Val(Cad)
+        Contador = Val(cad)
     End If
     If Contador < 1 Then
         MsgBox "Error obteniendo horario", vbExclamation
@@ -873,13 +873,13 @@ Private Sub Command3_Click(Index As Integer)
     Screen.MousePointer = vbHourglass
     Contador = 0
     'Añadiremos en tmpCambioHor
-    Cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
-    conn.Execute Cad
+    cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
+    conn.Execute cad
     espera 0.2
-    Cad = "INSERT INTO tmpCambioHor values ("
+    cad = "INSERT INTO tmpCambioHor values ("
     For Tamanyo = 1 To ListView2.ListItems.Count
         If ListView2.ListItems(Tamanyo).Selected Then
-            conn.Execute Cad & ListView2.ListItems(Tamanyo).Text & "," & vUsu.Codigo & ")"
+            conn.Execute cad & ListView2.ListItems(Tamanyo).Text & "," & vUsu.Codigo & ")"
             Contador = Contador + 1
         End If
     Next Tamanyo
@@ -940,8 +940,8 @@ Private Sub Form_Load()
     Combo1.AddItem "Sección.."
     Combo1.ListIndex = 0
     Set miRsAux = New ADODB.Recordset
-    Cad = "select idseccion,nombre from secciones"
-    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    cad = "select idseccion,nombre from secciones"
+    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
         Combo1.AddItem miRsAux!Nombre
         Combo1.ItemData(Combo1.NewIndex) = miRsAux!IdSeccion
@@ -1002,7 +1002,7 @@ On Error Resume Next
     If Err.Number <> 0 Then Err.Clear
 End Sub
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1021,7 +1021,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
     Me.Tag = RecuperaValor(CadenaDevuelta, 2)
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     Text1(CInt(imgFec(1).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -1037,7 +1037,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim Obj As Object
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -1053,16 +1053,16 @@ Private Sub imgFec_Click(Index As Integer)
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
     
     
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(1).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If Text1(Index).Text <> "" Then frmC.NovaData = Text1(Index).Text
+    If Text1(Index).Text <> "" Then frmc.NovaData = Text1(Index).Text
     ' ********************************************
 
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco Text1(CByte(imgFec(1).Tag)) '<===
     Command2_Click 0
@@ -1085,7 +1085,7 @@ End Sub
 
 
 Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
@@ -1114,7 +1114,7 @@ Private Sub Text2_GotFocus()
 End Sub
 
 Private Sub Text2_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text2_LostFocus()
@@ -1144,8 +1144,8 @@ End Sub
 
 'La siguiente funcion esta copiada de procesar marcajes
 Private Sub Generatemporal()
-Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim Sql As String
+Dim RS As ADODB.Recordset
 Dim AntTarea As Long
 Dim Procesar As Boolean
 Dim salida As Boolean
@@ -1164,48 +1164,48 @@ On Error GoTo ETemporal
 
     'Obtenemos la anterior ultima tarea k estaban realizando
     AntTarea = 0
-    Set Rs = New ADODB.Recordset
-    SQL = "Select Tarea from TareasRealizadas order by Fecha,Horafin"
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not Rs.EOF Then
-        Rs.MoveLast 'Vemos el ultimo registro
-        AntTarea = DBLet(Rs!Tarea, "N")
+    Set RS = New ADODB.Recordset
+    Sql = "Select Tarea from TareasRealizadas order by Fecha,Horafin"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not RS.EOF Then
+        RS.MoveLast 'Vemos el ultimo registro
+        AntTarea = DBLet(RS!Tarea, "N")
     End If
-    Rs.Close
+    RS.Close
 
     'Eliminamos datos temporales
     conn.Execute "delete from tmpTareasRealizadas"
 
     'SQL
-    SQL = " from MarcajesKimaldi  where (Fecha =  " & DBSet(Text1(0).Text, "F") & ")"
+    Sql = " from MarcajesKimaldi  where (Fecha =  " & DBSet(Text1(0).Text, "F") & ")"
 
     'Progress bar
-    Rs.Open "Select count(*) " & SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open "Select count(*) " & Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Tamanyo = 0
-    If Not Rs.EOF Then Tamanyo = DBLet(Rs.Fields(0), "N")
-    Rs.Close
+    If Not RS.EOF Then Tamanyo = DBLet(RS.Fields(0), "N")
+    RS.Close
 
     If Tamanyo = 0 Then Exit Sub
 
     Me.Tag = "Obtener desde KIMALDI"
     'Recorremos la tabla Kimaldi entre las fechas seleccionadas
     ' y para cada registro de trabajador le insertamos su tarea correspondiente
-    SQL = " from MarcajesKimaldi  where (Fecha =  " & DBSet(Text1(0).Text, "F") & ")"
-    SQL = SQL & " ORDER BY Nodo,Fecha,Hora"
-    Rs.Open "Select * " & SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = " from MarcajesKimaldi  where (Fecha =  " & DBSet(Text1(0).Text, "F") & ")"
+    Sql = Sql & " ORDER BY Nodo,Fecha,Hora"
+    RS.Open "Select * " & Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
 
     'Progress
     Contador = 0
 
-    While Not Rs.EOF
+    While Not RS.EOF
         'Progress
         Contador = Contador + 1
         pb1.Value = CInt((Contador / Tamanyo) * 1000)
 
         Procesar = True
         salida = False
-        If DBLet(Rs!tipomens) <> "" Then
-            If Rs!tipomens <> "S" Then
+        If DBLet(RS!tipomens) <> "" Then
+            If RS!tipomens <> "S" Then
                 Procesar = False
             Else
                 salida = True
@@ -1216,28 +1216,28 @@ On Error GoTo ETemporal
             Insertar = False
             If Not salida Then
                 'Veremos si es marcaje de trabajador o tarea
-                If Mid(Rs!Marcaje, 1, 1) = "1" Then
+                If Mid(RS!Marcaje, 1, 1) = "1" Then
                     'Trabajador
-                    Insertar = CodigoCorrecto(True, Rs!Marcaje, Trabajador)
+                    Insertar = CodigoCorrecto(True, RS!Marcaje, Trabajador)
                 Else
                     'Tarea
-                    CodigoCorrecto False, Rs!Marcaje, AntTarea
+                    CodigoCorrecto False, RS!Marcaje, AntTarea
 
                 End If
             Else
                 AntTarea = -1
                 Insertar = True
                 'Hay k ver k trabajador
-                CodigoCorrecto True, Rs!Marcaje, Trabajador
+                CodigoCorrecto True, RS!Marcaje, Trabajador
             End If
 
             If Insertar Then
-                SQL = "INSERT into tmpTareasRealizadas (Fecha,Hora,  Trabajador,Tarea) VALUES ("
-                SQL = SQL & DBSet(Rs!Fecha, "F")
-                SQL = SQL & "," & DBSet(Rs!Hora, "H") & ","
-                SQL = SQL & Trabajador & ","
-                SQL = SQL & AntTarea & ")"
-                conn.Execute SQL
+                Sql = "INSERT into tmpTareasRealizadas (Fecha,Hora,  Trabajador,Tarea) VALUES ("
+                Sql = Sql & DBSet(RS!Fecha, "F")
+                Sql = Sql & "," & DBSet(RS!Hora, "H") & ","
+                Sql = Sql & Trabajador & ","
+                Sql = Sql & AntTarea & ")"
+                conn.Execute Sql
             End If
         End If
 
@@ -1245,9 +1245,9 @@ On Error GoTo ETemporal
 
 
         'Siguiente
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
 
 
 
@@ -1262,68 +1262,68 @@ On Error GoTo ETemporal
 
 
     Me.Tag = "Desde tmpTareasRealizadas"
-    SQL = "SELECT Count(tmpTareasRealizadas.trabajador) AS CuentaDetrabajador"
-    SQL = SQL & " From tmpTareasRealizadas"
-    SQL = SQL & " WHERE Hora <= '" & DBSet(Text2.Text, "hh:mm") & "'"
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "SELECT Count(tmpTareasRealizadas.trabajador) AS CuentaDetrabajador"
+    Sql = Sql & " From tmpTareasRealizadas"
+    Sql = Sql & " WHERE Hora <= '" & DBSet(Text2.Text, "hh:mm") & "'"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Tamanyo = 0
-    If Not Rs.EOF Then
-        Tamanyo = DBLet(Rs.Fields(0), "N")
+    If Not RS.EOF Then
+        Tamanyo = DBLet(RS.Fields(0), "N")
     End If
-    Rs.Close
+    RS.Close
 
     If Tamanyo = 0 Then Exit Sub
 
-    SQL = " From tmpTareasRealizadas WHERE Hora <= '" & Format(Text2.Text, "hh:mm") & "'"
-    SQL = SQL & " GROUP BY tmpTareasRealizadas.trabajador"
-    Rs.Open "Select trabajador " & SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    Sql = " From tmpTareasRealizadas WHERE Hora <= '" & Format(Text2.Text, "hh:mm") & "'"
+    Sql = Sql & " GROUP BY tmpTareasRealizadas.trabajador"
+    RS.Open "Select trabajador " & Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
 
     Contador = 0
 
-    While Not Rs.EOF
+    While Not RS.EOF
         'Progress
         Contador = Contador + 1
         pb1.Value = CInt((Contador / Tamanyo) * 1000)
 
-        Trabajador = Rs.Fields(0)
+        Trabajador = RS.Fields(0)
 
         Insertar = DevuelveUltimo(Trabajador, Hora, AntTarea)
         If Insertar Then
-            SQL = "INSERT INTO tmpTareaActual (Trabajador,Tarea,Hora) VALUES ("
-            SQL = SQL & Trabajador & "," & AntTarea & ",'" & Format(Hora, "hh:mm") & "')"
-            conn.Execute SQL
+            Sql = "INSERT INTO tmpTareaActual (Trabajador,Tarea,Hora) VALUES ("
+            Sql = Sql & Trabajador & "," & AntTarea & ",'" & Format(Hora, "hh:mm") & "')"
+            conn.Execute Sql
         End If
         'Siguiente
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
 
     'Para cargar el arbol
     Me.Tag = "Cargar el arbol"
 
     'Ahora cargamos el arbol de las tareas
-    SQL = "SELECT tmpTareaActual.Tarea, Tareas.Descripcion"
-    SQL = SQL & " FROM tmpTareaActual LEFT JOIN Tareas ON tmpTareaActual.Tarea = Tareas.idTarea"
-    SQL = SQL & " GROUP BY tmpTareaActual.tarea, Tareas.Descripcion;"
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
-    While Not Rs.EOF
-        If IsNull(Rs!Descripcion) Then
-            If Rs!Tarea = -1 Then
-                SQL = "SALIDA"
+    Sql = "SELECT tmpTareaActual.Tarea, Tareas.Descripcion"
+    Sql = Sql & " FROM tmpTareaActual LEFT JOIN Tareas ON tmpTareaActual.Tarea = Tareas.idTarea"
+    Sql = Sql & " GROUP BY tmpTareaActual.tarea, Tareas.Descripcion;"
+    RS.Open Sql, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    While Not RS.EOF
+        If IsNull(RS!descripcion) Then
+            If RS!Tarea = -1 Then
+                Sql = "SALIDA"
             Else
-                SQL = "TAREA desconocida"
+                Sql = "TAREA desconocida"
             End If
         Else
-            SQL = Rs!Descripcion
+            Sql = RS!descripcion
         End If
 
-        Set Nod = TreeView1.Nodes.Add(, , "C" & CStr(Rs!Tarea), SQL)
-        Nod.Tag = Rs!Tarea
+        Set Nod = TreeView1.Nodes.Add(, , "C" & CStr(RS!Tarea), Sql)
+        Nod.Tag = RS!Tarea
         Nod.Image = 1
         'Siguiente
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
 
     'Ponemos el primero de todos
     If TreeView1.Nodes.Count > 0 Then
@@ -1331,7 +1331,7 @@ On Error GoTo ETemporal
         Cargalistview
         Me.Refresh
     End If
-    Set Rs = Nothing
+    Set RS = Nothing
     Exit Sub
 ETemporal:
     MuestraError Err.Number, Me.Tag & vbCrLf & Err.Description
@@ -1339,19 +1339,19 @@ End Sub
 
 
 Private Function CodigoCorrecto(Trabajador As Boolean, Marcaje As String, valor As Long) As Boolean
-Dim SQL As String
+Dim Sql As String
 Dim RT As ADODB.Recordset
 
     Set RT = New ADODB.Recordset
     CodigoCorrecto = False
     If Trabajador Then
-        SQL = "Select idTrabajador from Trabajadores where numtarjeta = '" & Marcaje & "';"
+        Sql = "Select idTrabajador from Trabajadores where numtarjeta = '" & Marcaje & "';"
     Else
-        SQL = "Select idTarea from Tareas where tarjeta = '" & Marcaje & "';"
+        Sql = "Select idTarea from Tareas where tarjeta = '" & Marcaje & "';"
     End If
 
         
-    RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not RT.EOF Then
         CodigoCorrecto = True
         valor = RT.Fields(0)
@@ -1367,13 +1367,13 @@ End Function
 
 'Devolvera si hay k insertar o no
 Private Function DevuelveUltimo(Trabajador As Long, Hora As Date, Tarea As Long) As Boolean
-Dim SQL As String
+Dim Sql As String
 Dim RT As ADODB.Recordset
 
     Set RT = New ADODB.Recordset
-    SQL = "Select * from tmpTareasRealizadas WHERE Trabajador = " & Trabajador
-    SQL = SQL & " AND Hora<='" & Format(Text2.Text, "hh:mm") & "' ORDER BY Hora"
-    RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select * from tmpTareasRealizadas WHERE Trabajador = " & Trabajador
+    Sql = Sql & " AND Hora<='" & Format(Text2.Text, "hh:mm") & "' ORDER BY Hora"
+    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     DevuelveUltimo = False
     If Not RT.EOF Then
         Do
@@ -1393,8 +1393,8 @@ End Function
 'Cargar el listview
 Private Sub Cargalistview()
 Dim Item As ListItem
-Dim Rs As ADODB.Recordset
-Dim SQL As String
+Dim RS As ADODB.Recordset
+Dim Sql As String
     On Error GoTo ECarga
     
     ListView1.ListItems.Clear
@@ -1402,26 +1402,26 @@ Dim SQL As String
     If TreeView1.SelectedItem Is Nothing Then Exit Sub
     ListView1.Tag = TreeView1.SelectedItem.Text
     
-    SQL = "SELECT Trabajadores.NomTrabajador, tmpTareaActual.Hora"
-    SQL = SQL & " FROM tmpTareaActual INNER JOIN Trabajadores ON tmpTareaActual.Trabajador = Trabajadores.IdTrabajador "
-    SQL = SQL & " WHERE tarea =" & TreeView1.SelectedItem.Tag & " ORDER BY Hora"
+    Sql = "SELECT Trabajadores.NomTrabajador, tmpTareaActual.Hora"
+    Sql = Sql & " FROM tmpTareaActual INNER JOIN Trabajadores ON tmpTareaActual.Trabajador = Trabajadores.IdTrabajador "
+    Sql = Sql & " WHERE tarea =" & TreeView1.SelectedItem.Tag & " ORDER BY Hora"
     
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
-        Set Item = ListView1.ListItems.Add(, , Rs.Fields(0))
+    Set RS = New ADODB.Recordset
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        Set Item = ListView1.ListItems.Add(, , RS.Fields(0))
         Item.SmallIcon = 2
-        Item.SubItems(1) = Format(Rs!Hora, "hh:mm")
+        Item.SubItems(1) = Format(RS!Hora, "hh:mm")
     
         'Siguiente
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
 
 ECarga:
     If Err.Number <> 0 Then _
         MuestraError Err.Number, "Carga LISTVIEW" & vbCrLf & Err.Description
-    Set Rs = Nothing
+    Set RS = Nothing
 End Sub
 
 Private Sub TreeView1_NodeClick(ByVal Node As MSComctlLib.Node)
@@ -1443,48 +1443,49 @@ End Sub
 Private Sub PonMarcajes()
     'Dos recordsets
     Dim i As Integer
-    Dim Rs As ADODB.Recordset
+    Dim RS As ADODB.Recordset
     Dim RT As ADODB.Recordset
-    Dim SQL As String
+    Dim Sql As String
     Dim Item As ListItem
     
     Dim HoraPintar As Date
     
     ListView2.ListItems.Clear
-    SQL = "SELECT EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
-    SQL = SQL & " FROM EntradaFichajes ,Trabajadores WHERE EntradaFichajes.idTrabajador = Trabajadores.IdTrabajador"
-    SQL = SQL & " AND Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "' "
-    If vUsu.Nivel > 2 Then SQL = SQL & " AND Trabajadores.controlnomina >0"
-    If Combo1.ListIndex > 0 Then SQL = SQL & " AND trabajadores.seccion=" & Combo1.ItemData(Combo1.ListIndex)
+    Sql = "SELECT EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
+    Sql = Sql & " FROM EntradaFichajes ,Trabajadores WHERE EntradaFichajes.idTrabajador = Trabajadores.IdTrabajador"
+    Sql = Sql & " AND Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "' "
+    
+    'If vUsu.Nivel > 2 Then Sql = Sql & " AND Trabajadores.controlnomina >0"
+    If Combo1.ListIndex > 0 Then Sql = Sql & " AND trabajadores.seccion=" & Combo1.ItemData(Combo1.ListIndex)
         
-    SQL = SQL & " GROUP BY EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
-    SQL = SQL & " ORDER BY "
+    Sql = Sql & " GROUP BY EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
+    Sql = Sql & " ORDER BY "
     If optTicaje(0).Value Then
-        SQL = SQL & " EntradaFichajes.idTrabajador"
+        Sql = Sql & " EntradaFichajes.idTrabajador"
     Else
-        SQL = SQL & "  Trabajadores.NomTrabajador"
+        Sql = Sql & "  Trabajadores.NomTrabajador"
     End If
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     Set RT = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     
-    SQL = "horareal"
+    Sql = "horareal"
     If vEmpresa.HorarioNocturno2 Then
         
-            SQL = "if(horareal<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(horareal)>24,ADDTIME(hora , '-24:00:00' ),horareal))"
+            Sql = "if(horareal<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(horareal)>24,ADDTIME(hora , '-24:00:00' ),horareal))"
 
     End If
-    SQL = "Select EntradaFichajes.*," & SQL
-    SQL = SQL & " as acabalga FROM EntradaFichajes WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
-    SQL = SQL & " AND idTrabajador = "
-    While Not Rs.EOF
-        RT.Open SQL & Rs.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Sql = "Select EntradaFichajes.*," & Sql
+    Sql = Sql & " as acabalga FROM EntradaFichajes WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
+    Sql = Sql & " AND idTrabajador = "
+    While Not RS.EOF
+        RT.Open Sql & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         i = 2
         
-        Set Item = ListView2.ListItems.Add(, , Rs.Fields(0))
-        Item.SubItems(1) = Rs.Fields(1)
+        Set Item = ListView2.ListItems.Add(, , RS.Fields(0))
+        Item.SubItems(1) = RS.Fields(1)
         While Not RT.EOF
             'If i < 8 Then  He puesto 2 mas
             If i < 17 Then
@@ -1510,10 +1511,10 @@ Private Sub PonMarcajes()
             Item.SmallIcon = 4
         End If
         RT.Close
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
     Set RT = Nothing
 End Sub
 

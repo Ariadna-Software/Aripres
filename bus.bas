@@ -43,7 +43,7 @@ Public NumRegElim  As Long
 'Public miTag As CTag
 
 'Variable para saber si se ha actualizado algun asiento
-'Public AlgunAsientoActualizado As Boolean
+'Public AlgunAsientoActuaAs Boolean
 'Public TieneIntegracionesPendientes As Boolean
 
 Public miRsAux As ADODB.Recordset
@@ -51,12 +51,7 @@ Public miRsAux As ADODB.Recordset
 Public AnchoLogin As String  'Para fijar los anchos de columna
 
 
-'Metemos KRETA dentro de este proyecto
-Public ColK2 As ColKreta2
-Public GesHuellaDB As BaseDatos2
 
-'FALTA###
-'meterlas dentro de la configuracion, o
 Public Servidor As String
 Public ValorBD As String
 
@@ -690,7 +685,7 @@ Dim cad As String
 End Function
 
 Public Function DevuelveDesdeBD(kCampo As String, Ktabla As String, Kcodigo As String, ValorCodigo As String, Optional tipo As String, Optional ByRef otroCampo As String) As String
-    Dim RS As Recordset
+    Dim Rs As Recordset
     Dim cad As String
     Dim Aux As String
     
@@ -715,14 +710,14 @@ Public Function DevuelveDesdeBD(kCampo As String, Ktabla As String, Kcodigo As S
     
     
     'Creamos el sql
-    Set RS = New ADODB.Recordset
-    RS.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
-    If Not RS.EOF Then
-        DevuelveDesdeBD = DBLet(RS.Fields(0))
-        If otroCampo <> "" Then otroCampo = DBLet(RS.Fields(1))
+    Set Rs = New ADODB.Recordset
+    Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    If Not Rs.EOF Then
+        DevuelveDesdeBD = DBLet(Rs.Fields(0))
+        If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
     Exit Function
 EDevuelveDesdeBD:
         MuestraError Err.Number, "Devuelve DesdeBD.", Err.Description
@@ -820,7 +815,7 @@ End Function
 'Funciona para claves primarias formadas por 3 campos
 Public Function DevuelveDesdeBDNew(vBD As Byte, Ktabla As String, kCampo As String, Kcodigo1 As String, valorCodigo1 As String, Optional tipo1 As String, Optional ByRef otroCampo As String, Optional KCodigo2 As String, Optional ValorCodigo2 As String, Optional tipo2 As String, Optional KCodigo3 As String, Optional ValorCodigo3 As String, Optional tipo3 As String) As String
 'IN: vBD --> Base de Datos a la que se accede
-Dim RS As Recordset
+Dim Rs As Recordset
 Dim cad As String
 Dim Aux As String
     
@@ -892,20 +887,20 @@ On Error GoTo EDevuelveDesdeBDnew
     
     
     'Creamos el sql
-    Set RS = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     
    ' If vBD = 1 Then 'BD 1: Ariges
-        RS.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+        Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
    ' Else    'BD 2: Conta
       '  RS.Open cad, ConnConta, adOpenForwardOnly, adLockOptimistic, adCmdText
    ' End If
     
-    If Not RS.EOF Then
-        DevuelveDesdeBDNew = DBLet(RS.Fields(0))
-        If otroCampo <> "" Then otroCampo = DBLet(RS.Fields(1))
+    If Not Rs.EOF Then
+        DevuelveDesdeBDNew = DBLet(Rs.Fields(0))
+        If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
     Exit Function
     
 EDevuelveDesdeBDnew:
@@ -917,7 +912,7 @@ End Function
 
 'CESAR
 Public Function DevuelveDesdeBDnew2(kBD As Integer, kCampo As String, Ktabla As String, Kcodigo As String, ValorCodigo As String, Optional tipo As String, Optional Num As Byte, Optional ByRef otroCampo As String) As String
-Dim RS As Recordset
+Dim Rs As Recordset
 Dim cad As String
 Dim Aux As String
 Dim v_aux As Integer
@@ -957,20 +952,20 @@ For v_aux = 1 To Num
   Next v_aux
 
 'Creamos el sql
-Set RS = New ADODB.Recordset
+Set Rs = New ADODB.Recordset
 Select Case kBD
     Case 1
-        RS.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+        Rs.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
 End Select
 
-If Not RS.EOF Then
-    DevuelveDesdeBDnew2 = DBLet(RS.Fields(0))
-    If otroCampo <> "" Then otroCampo = DBLet(RS.Fields(1))
+If Not Rs.EOF Then
+    DevuelveDesdeBDnew2 = DBLet(Rs.Fields(0))
+    If otroCampo <> "" Then otroCampo = DBLet(Rs.Fields(1))
 Else
      If otroCampo <> "" Then otroCampo = ""
 End If
-RS.Close
-Set RS = Nothing
+Rs.Close
+Set Rs = Nothing
 Exit Function
 EDevuelveDesdeBDnew2:
     MuestraError Err.Number, "Devuelve DesdeBDnew2.", Err.Description
@@ -1082,25 +1077,25 @@ End Sub
 
 
 Public Function DevuelveTextoIncidencia(vId As Integer, Optional ByRef vSigno As Single) As String
-Dim RS As ADODB.Recordset
-Dim Sql As String
+Dim Rs As ADODB.Recordset
+Dim SQL As String
 
     DevuelveTextoIncidencia = ""
     vSigno = 0
-    Set RS = New ADODB.Recordset
-    Sql = "SELECT * From Incidencias " & _
+    Set Rs = New ADODB.Recordset
+    SQL = "SELECT * From Incidencias " & _
         " WHERE Incidencias.IdInci =" & vId
-    RS.Open Sql, conn, , , adCmdText
-    If Not RS.EOF Then
-            DevuelveTextoIncidencia = RS.Fields(1)
-            If RS!ExcesoDefecto Then
+    Rs.Open SQL, conn, , , adCmdText
+    If Not Rs.EOF Then
+            DevuelveTextoIncidencia = Rs.Fields(1)
+            If Rs!ExcesoDefecto Then
                 vSigno = -1
                 Else
                 vSigno = 1
             End If
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
@@ -1108,18 +1103,18 @@ End Function
 
 
 Public Function DevuelveCodigo(vNUmTar) As Long
-Dim RS As ADODB.Recordset
-Dim Sql As String
+Dim Rs As ADODB.Recordset
+Dim SQL As String
     DevuelveCodigo = -1
-    Set RS = New ADODB.Recordset
-    Sql = "SELECT idTrabajador From Trabajadores " & _
+    Set Rs = New ADODB.Recordset
+    SQL = "SELECT idTrabajador From Trabajadores " & _
         " WHERE NumTarjeta ='" & vNUmTar & "'"
-    RS.Open Sql, conn, , , adCmdText
-    If Not RS.EOF Then
-            DevuelveCodigo = RS.Fields(0)
+    Rs.Open SQL, conn, , , adCmdText
+    If Not Rs.EOF Then
+            DevuelveCodigo = Rs.Fields(0)
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
@@ -1129,9 +1124,9 @@ End Function
 
 
 Public Function MarcajesCorrectos(Correctos As Boolean, vSQL As String) As Boolean
-Dim RS As ADODB.Recordset
+Dim Rs As ADODB.Recordset
     
-    Set RS = New ADODB.Recordset
+    Set Rs = New ADODB.Recordset
     If vSQL <> "" Then
         vSQL = vSQL & " AND "
     Else
@@ -1139,27 +1134,27 @@ Dim RS As ADODB.Recordset
     End If
     vSQL = vSQL & " correcto = " & Abs(Correctos)
     vSQL = "Select count(*) from marcajes " & vSQL
-    RS.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Rs.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     MarcajesCorrectos = False
-    If Not RS.EOF Then
-        If DBLet(RS.Fields(0), "N") > 0 Then MarcajesCorrectos = True
+    If Not Rs.EOF Then
+        If DBLet(Rs.Fields(0), "N") > 0 Then MarcajesCorrectos = True
     End If
-    RS.Close
-    Set RS = Nothing
+    Rs.Close
+    Set Rs = Nothing
 End Function
 
 
 
 Public Function ComprobarMarcajesCorrectos(FI As Date, FF As Date, Correctos As Boolean) As Byte
-Dim RS As ADODB.Recordset
+Dim Rs As ADODB.Recordset
 Dim cad As String
 Dim C As Long
     
     ComprobarMarcajesCorrectos = 127
     C = 0
-    Set RS = New ADODB.Recordset
-    RS.CursorType = adOpenKeyset
-    RS.LockType = adLockOptimistic
+    Set Rs = New ADODB.Recordset
+    Rs.CursorType = adOpenKeyset
+    Rs.LockType = adLockOptimistic
     'SQL. Marcajes incorrectos entre las dos fechas
     cad = "Select count(Entrada) "
     cad = cad & " From Secciones, Trabajadores, Marcajes"
@@ -1174,11 +1169,11 @@ Dim C As Long
     Else
         cad = cad & " False"
     End If
-    RS.Open cad, conn, , , adCmdText
-    If Not RS.EOF Then
-        If Not IsNull(RS.Fields(0)) Then C = RS.Fields(0)
+    Rs.Open cad, conn, , , adCmdText
+    If Not Rs.EOF Then
+        If Not IsNull(Rs.Fields(0)) Then C = Rs.Fields(0)
     End If
-    RS.Close
+    Rs.Close
     'Si c>0 entonces tiene marcajes incorrectos
     If C > 0 Then
         ComprobarMarcajesCorrectos = 1
@@ -1210,6 +1205,40 @@ Public Sub KeyPress(ByRef KeyAscii As Integer)
     If KeyAscii = 13 Then
         KeyAscii = 0
         SendKeys "{tab}"
+    End If
+End Sub
+
+
+
+
+'Esto estaba en GESALB, en otro modulo
+Public Sub CargaComboSecciones(ByRef CBO As ComboBox, AñadirTodas As Boolean)
+Dim SQL As String
+Dim Rs As ADODB.Recordset
+
+    CBO.Clear
+    SQL = "select IdSeccion,nombre from secciones order by NOMBRE"
+    Set Rs = New ADODB.Recordset
+    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If AñadirTodas Then
+        CBO.AddItem "Todas las secciones"
+        CBO.ItemData(CBO.NewIndex) = -1
+    End If
+    
+    While Not Rs.EOF
+        CBO.AddItem Rs!Nombre & " (" & Rs!IdSeccion & ")"
+        CBO.ItemData(CBO.NewIndex) = Rs!IdSeccion
+        
+        If vEmpresa.QueEmpresa = 5 Then
+            If Rs!IdSeccion = 1 Then CBO.ListIndex = CBO.NewIndex
+        End If
+        Rs.MoveNext
+    Wend
+    Rs.Close
+    Set Rs = Nothing
+    
+    If vEmpresa.QueEmpresa <> 5 Then
+        If AñadirTodas Then CBO.ListIndex = 0
     End If
 End Sub
 

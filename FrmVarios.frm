@@ -1016,7 +1016,7 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
             
             'Procesamos todas las secciones a la vez
             
-            FInicioSeccion = txtFecha(5).Text
+            'FInicioSeccion = txtFecha(5).Text
            
             
         Else
@@ -1077,7 +1077,8 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
                            'desde que le corresponde hasta donde empieza
                           If cad = "" Then
                              cad = "fecha >=" & DBSet(FInicioSeccion, "F") & " AND fecha <" & DBSet(txtFecha(5).Text, "F")
-                             cad = cad & " AND idtrabajador IN (select idtrabajador from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+                             cad = cad & " AND idtrabajador IN (select idtrabajador from trabajadores where 1=1"
+                             If cboSeccion.ListIndex > 0 Then cad = cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
                              cad = cad & ") AND 1"
                              cad = DevuelveDesdeBD("count(*)", "marcajes", cad, "1")
                              If Val(cad) > 0 Then
@@ -1099,7 +1100,22 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
                                         
                                 End If
                           End If
+                    
                     End If  'de mayor que fecha inicioseccion
+                    
+                    If cad = "" Then
+                           cad = "fecha >=" & DBSet(txtFecha(5).Text, "F") & " AND fecha <=" & DBSet(txtFecha(6).Text, "F")
+                             cad = cad & " AND idtrabajador IN (select idtrabajador from trabajadores where 1=1"
+                             If cboSeccion.ListIndex > 0 Then cad = cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+                             cad = cad & ") AND correcto "
+                             cad = DevuelveDesdeBD("count(*)", "marcajes", cad, "0")
+                             If Val(cad) > 0 Then
+                                  cad = "Existen marcajes INCORRECTOS entre: " & txtFecha(5).Text & " y " & txtFecha(6).Text
+                             Else
+                                  cad = ""
+                             End If
+                    End If
+                    
                 End If
                             
                             
@@ -1114,7 +1130,7 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
     End If
     
     
-    
+   
     
     
     
@@ -1156,7 +1172,7 @@ Dim N As Byte
     'Una comprobacion
     'Luego lee los festivos del calendario, y estamos procesando una seccion
     'es decir NO dejo pasar si para la seccion hay mas de una calendario
-    If cboSeccion.ListIndex > 0 Then
+    If cboSeccion.ListIndex >= 0 Then
         cad = "select distinct(idcal) from trabajadores where seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
         miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic
         cad = ""
@@ -1182,7 +1198,7 @@ Dim N As Byte
     
     cad = "Select marcajes.idtrabajador FROM marcajes,trabajadores WHERE marcajes.idtrabajador=trabajadores.idtrabajador AND"
     cad = cad & TipoAlziraEntreFechas
-    If cboSeccion.ListIndex > 0 Then cad = cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+    If cboSeccion.ListIndex >= 0 Then cad = cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
     cad = cad & " GROUP BY 1"
     miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     NumRegElim = 0
