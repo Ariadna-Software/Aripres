@@ -21,6 +21,16 @@ Begin VB.Form frmCambioHorario2
       TabIndex        =   16
       Top             =   1800
       Width           =   6555
+      Begin VB.ComboBox cboReloj 
+         Height          =   315
+         ItemData        =   "frmCambioHorario2.frx":6852
+         Left            =   1440
+         List            =   "frmCambioHorario2.frx":685C
+         Style           =   2  'Dropdown List
+         TabIndex        =   39
+         Top             =   1680
+         Width           =   1575
+      End
       Begin VB.TextBox Text3 
          Height          =   285
          Index           =   6
@@ -62,6 +72,15 @@ Begin VB.Form frmCambioHorario2
          TabIndex        =   22
          Top             =   1680
          Width           =   1095
+      End
+      Begin VB.Label Label13 
+         AutoSize        =   -1  'True
+         Caption         =   "Reloj"
+         Height          =   195
+         Left            =   840
+         TabIndex        =   40
+         Top             =   1680
+         Width           =   360
       End
       Begin VB.Label Label12 
          Alignment       =   1  'Right Justify
@@ -158,7 +177,7 @@ Begin VB.Form frmCambioHorario2
       Begin VB.Image Image1 
          Height          =   240
          Left            =   2220
-         Picture         =   "frmCambioHorario2.frx":6852
+         Picture         =   "frmCambioHorario2.frx":6875
          Top             =   1140
          Width           =   240
       End
@@ -359,7 +378,7 @@ Begin VB.Form frmCambioHorario2
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   1
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmCambioHorario2.frx":6954
+            Picture         =   "frmCambioHorario2.frx":6977
             Key             =   ""
          EndProperty
       EndProperty
@@ -400,7 +419,7 @@ Begin VB.Form frmCambioHorario2
          Height          =   240
          Index           =   1
          Left            =   600
-         Picture         =   "frmCambioHorario2.frx":6EEE
+         Picture         =   "frmCambioHorario2.frx":6F11
          Top             =   240
          Width           =   240
       End
@@ -408,7 +427,7 @@ Begin VB.Form frmCambioHorario2
          Height          =   240
          Index           =   0
          Left            =   240
-         Picture         =   "frmCambioHorario2.frx":7038
+         Picture         =   "frmCambioHorario2.frx":705B
          Top             =   240
          Width           =   240
       End
@@ -584,13 +603,13 @@ Private vIndice As Byte
 Private Devolucion As String
 
 
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 Dim Total As Long
 Dim I As Long
 Dim PrimeraVez As Boolean
 
 Private Sub Acciones(Index As Integer)
-Dim cad As String
+Dim Cad As String
 
     Set frmB = New frmBuscaGrid
     'Ponemos los valores para abrir
@@ -600,11 +619,11 @@ Dim cad As String
     Case 0
           vIndice = 0
         
-          cad = "Codigo|idtrabajador|N||20·"
-          cad = cad & "Nombre|nomtrabajador|T||70·"
+          Cad = "Codigo|idtrabajador|N||20·"
+          Cad = Cad & "Nombre|nomtrabajador|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "Trabajadores"
         
@@ -616,11 +635,11 @@ Dim cad As String
         Exit Sub
     Case 2
   
-          cad = "Codigo|idseccion|N||20·"
-          cad = cad & "Nombre|nombre|T||70·"
+          Cad = "Codigo|idseccion|N||20·"
+          Cad = Cad & "Nombre|nombre|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "Secciones"
         
@@ -730,7 +749,7 @@ Private Sub cmdCambiar_Click()
                 FrameModificarTicaje.Visible = True
             End Select
         Else
-            MsgBox "Seleccione trabajadores.", vbExclamation
+           ' MsgBox "Seleccione trabajadores.", vbExclamation
         End If
     End If
 End Sub
@@ -791,8 +810,16 @@ Private Sub cmdHacerCambio_Click(Index As Integer)
             Frame2.Visible = False
             Me.Refresh
             Screen.MousePointer = vbDefault
-            MsgBox "Proceso de generacion de marcajes finalizado.", vbExclamation
+            
             If Opcion = 2 Then
+                If MsgBox("Proceso finalizado." & vbCrLf & vbCrLf & "¿Generar otro marcaje?", vbQuestion + vbYesNoCancel) <> vbYes Then
+                    Unload Me
+                    Exit Sub
+                Else
+                
+                End If
+            Else
+                MsgBox "Proceso de generacion de marcajes finalizado.", vbExclamation
                 Unload Me
                 Exit Sub
             End If
@@ -808,7 +835,7 @@ Private Sub cmdHacerCambio_Click(Index As Integer)
 End Sub
 
 Private Sub cmdModificar_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 
     If Index = 1 Then
         MenuEnable True
@@ -831,13 +858,13 @@ Dim cad As String
             Exit Sub
         End If
         
-        cad = "Va a modificar los fichajes de los trabajadores seleccionados " & vbCrLf
-        cad = cad & " para el dia : " & Text3(2).Text & vbCrLf
-        cad = cad & " Hora inicio: " & Text3(3).Text & vbCrLf
-        cad = cad & " Hora fin: " & Text3(4).Text & vbCrLf & vbCrLf
-        cad = cad & " Hora MODIFICADA: " & Text3(5).Text & vbCrLf
-        cad = cad & vbCrLf & "¿Desea continuar?"
-        If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Cad = "Va a modificar los fichajes de los trabajadores seleccionados " & vbCrLf
+        Cad = Cad & " para el dia : " & Text3(2).Text & vbCrLf
+        Cad = Cad & " Hora inicio: " & Text3(3).Text & vbCrLf
+        Cad = Cad & " Hora fin: " & Text3(4).Text & vbCrLf & vbCrLf
+        Cad = Cad & " Hora MODIFICADA: " & Text3(5).Text & vbCrLf
+        Cad = Cad & vbCrLf & "¿Desea continuar?"
+        If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         'Ahora
         Screen.MousePointer = vbHourglass
             Me.FrameModificarTicaje.Visible = False
@@ -846,27 +873,27 @@ Dim cad As String
             Frame2.Visible = True
             Me.Refresh
             espera 0.2
-            Set Rs = New ADODB.Recordset
-            cad = "select * from tmpCambioHor"
-            Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-            cad = "UPDATE EntradaFichajes SET HoraReal = '" & Format(Text3(5), "hh:mm") & ":00'"
+            Set RS = New ADODB.Recordset
+            Cad = "select * from tmpCambioHor"
+            RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            Cad = "UPDATE EntradaFichajes SET HoraReal = '" & Format(Text3(5), "hh:mm") & ":00'"
             'Modificacion del 10 / Enero /2005
-            cad = cad & ", Hora = '" & Format(Text3(5), "hh:mm") & ":00'"
+            Cad = Cad & ", Hora = '" & Format(Text3(5), "hh:mm") & ":00'"
             
-            cad = cad & " WHERE HoraReal >= '" & Format(Text3(3), "hh:mm") & ":00'"
-            cad = cad & " AND HoraReal <= '" & Format(Text3(4), "hh:mm") & ":00'"
-            cad = cad & " AND Fecha = '" & Format(Text3(2), FormatoFecha) & "'"
-            cad = cad & " AND IdTrabajador  = "
+            Cad = Cad & " WHERE HoraReal >= '" & Format(Text3(3), "hh:mm") & ":00'"
+            Cad = Cad & " AND HoraReal <= '" & Format(Text3(4), "hh:mm") & ":00'"
+            Cad = Cad & " AND Fecha = '" & Format(Text3(2), FormatoFecha) & "'"
+            Cad = Cad & " AND IdTrabajador  = "
 
-            While Not Rs.EOF
+            While Not RS.EOF
             
-                Label3.Caption = Rs!Trabajador
+                Label3.Caption = RS!Trabajador
                 Me.Refresh
-                conn.Execute cad & Rs!Trabajador
-                Rs.MoveNext
+                conn.Execute Cad & RS!Trabajador
+                RS.MoveNext
                 
             Wend
-            Rs.Close
+            RS.Close
             Frame2.Visible = False
             Me.Refresh
             espera 0.1
@@ -939,10 +966,14 @@ Private Sub Form_Load()
     Case Else
         Me.Tag = "Generar"
         Devolucion = "Generacion marcajes"
-    
+        
         Text3(6).Visible = Me.Inserta2Ticajes
         Label12.Visible = Me.Inserta2Ticajes
     
+    
+        cboReloj.Visible = vEmpresa.Reloj2 > 0
+        Me.Label2.Visible = vEmpresa.Reloj2 > 0
+        cboReloj.ListIndex = 0
     End Select
     Caption = Devolucion
     cmdCambiar.Caption = Me.Tag
@@ -953,70 +984,70 @@ End Sub
 
 'INSERTARA LA SECCION, EL HORARIO O LA CATEGORIA
 Private Sub InsertarSeccionHorario(Seccion As Integer)
-Dim cad As String
+Dim Cad As String
 
-    cad = " from Trabajadores,Horarios,Categorias where "
-    cad = cad & " Trabajadores.idHorario = horarios.idhorario AND "
-    cad = cad & " Trabajadores.idCategoria = categorias.idcategoria AND "
+    Cad = " from Trabajadores,Horarios,Categorias where "
+    Cad = Cad & " Trabajadores.idHorario = horarios.idhorario AND "
+    Cad = Cad & " Trabajadores.idCategoria = categorias.idcategoria AND "
     Select Case Seccion
     Case 2
-        cad = cad & "seccion"
+        Cad = Cad & "seccion"
     Case 3
-        cad = cad & "Trabajadores.idhorario"
+        Cad = Cad & "Trabajadores.idhorario"
     Case Else
-        cad = cad & "Trabajadores.idCategoria"
+        Cad = Cad & "Trabajadores.idCategoria"
     End Select
-    cad = cad & " = " & Devolucion
-    Set Rs = New ADODB.Recordset
+    Cad = Cad & " = " & Devolucion
+    Set RS = New ADODB.Recordset
     
     'Contador
-    Rs.Open "Select count(*) " & cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open "Select count(*) " & Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Total = 0
-    If Not Rs.EOF Then
-        Total = DBLet(Rs.Fields(0))
+    If Not RS.EOF Then
+        Total = DBLet(RS.Fields(0))
     End If
-    Rs.Close
+    RS.Close
     If Total = 0 Then
         MsgBox "Ningun trabajador con esos valores.", vbExclamation
-        Set Rs = Nothing
+        Set RS = Nothing
         Exit Sub
     End If
     
-    cad = "Select idTrabajador,nomtrabajador,nomhorario,nomcategoria " & cad
-    cad = cad & " order by idTrabajador"
-    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    cad = ""
+    Cad = "Select idTrabajador,nomtrabajador,nomhorario,nomcategoria " & Cad
+    Cad = Cad & " order by idTrabajador"
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = ""
     I = 0
-    While Not Rs.EOF
-        If Insertar1trabajador(Rs.Fields(0)) Then _
-            AñadeListview1 Rs.Fields(0), Rs.Fields(1), Rs.Fields(2), Rs.Fields(3)
+    While Not RS.EOF
+        If Insertar1trabajador(RS.Fields(0)) Then _
+            AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
         I = I + 1
         Label3.Caption = I & " de " & Total
         Label3.Refresh
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Sub
 
 
 Private Sub InsertarTrabajador()
-Dim cad As String
+Dim Cad As String
 
-    cad = "Select idTrabajador,nomtrabajador,descripcion,nomcategoria from Trabajadores,Calendario,Categorias where "
-    cad = cad & " Trabajadores.idcal = calendario.idcal AND "
-    cad = cad & " Trabajadores.idCategoria = categorias.idCategoria AND "
-    cad = cad & " idTrabajador = " & Devolucion
-    Set Rs = New ADODB.Recordset
-    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not Rs.EOF Then
-        If Insertar1trabajador(Rs.Fields(0)) Then _
-            AñadeListview1 Rs.Fields(0), Rs.Fields(1), Rs.Fields(2), Rs.Fields(3)
+    Cad = "Select idTrabajador,nomtrabajador,descripcion,nomcategoria from Trabajadores,Calendario,Categorias where "
+    Cad = Cad & " Trabajadores.idcal = calendario.idcal AND "
+    Cad = Cad & " Trabajadores.idCategoria = categorias.idCategoria AND "
+    Cad = Cad & " idTrabajador = " & Devolucion
+    Set RS = New ADODB.Recordset
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not RS.EOF Then
+        If Insertar1trabajador(RS.Fields(0)) Then _
+            AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
 
-        Rs.MoveNext
+        RS.MoveNext
     End If
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Sub
 
 
@@ -1127,14 +1158,14 @@ Private Sub frmB_Seleccion(vCodigo As Long, vCadena As String)
     End If
 End Sub
 
-Private Sub AñadeListview1(IdTra As Long, NomTra As String, nomHora As String, nomCat As String)
+Private Sub AñadeListview1(idTRa As Long, NomTra As String, nomHora As String, nomCat As String)
 Dim itmX As ListItem
     If Opcion = 6 Then
-        Set itmX = ListView2.ListItems.Add(, "C" & CStr(IdTra), NomTra)
+        Set itmX = ListView2.ListItems.Add(, "C" & CStr(idTRa), NomTra)
     Else
-        Set itmX = ListView1.ListItems.Add(, "C" & CStr(IdTra), NomTra)
+        Set itmX = ListView1.ListItems.Add(, "C" & CStr(idTRa), NomTra)
     End If
-    itmX.Tag = IdTra
+    itmX.Tag = idTRa
     itmX.SubItems(1) = nomHora
     itmX.SubItems(2) = nomCat
     itmX.SmallIcon = 1
@@ -1295,18 +1326,22 @@ End Sub
 
 
 Private Sub HacerTicada2(Primera As Boolean)
-Dim jj As Integer
-    Set Rs = New ADODB.Recordset
+Dim JJ As Integer
+Dim Rel As Integer
+
+    Set RS = New ADODB.Recordset
     
     'Veremos el contador
     Total = 0
-    Rs.Open "Select max(SECUENCIA) from entradafichajes", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not Rs.EOF Then
-        Total = DBLet(Rs.Fields(0), "N")
+    RS.Open "Select max(SECUENCIA) from entradafichajes", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not RS.EOF Then
+        Total = DBLet(RS.Fields(0), "N")
     End If
-    Rs.Close
-    
+    RS.Close
     Total = Total + 1   'la siguiente
+        
+    Rel = 0
+    If vEmpresa.Reloj2 > 0 Then Rel = cboReloj.ListIndex
     
     'Ponemos los tag
     Text3(0).Tag = "'" & Format(Text3(0).Text, FormatoFecha) & "'"
@@ -1318,38 +1353,38 @@ Dim jj As Integer
     End If
     'i ->errores
     I = 0
-    For jj = 1 To ListView1.ListItems.Count
-          Label3.Caption = jj & " de " & ListView1.ListItems.Count
+    For JJ = 1 To ListView1.ListItems.Count
+          Label3.Caption = JJ & " de " & ListView1.ListItems.Count
           Label3.Refresh
-          If TicadaTrabajador(ListView1.ListItems(jj).Tag) = False Then I = I + 1
+          If TicadaTrabajador(ListView1.ListItems(JJ).Tag, Rel) = False Then I = I + 1
 
-    Next jj
-    Set Rs = Nothing
+    Next JJ
+    Set RS = Nothing
     Text3(0).Tag = ""
     Text3(1).Tag = ""
 End Sub
 
 
-Private Function TicadaTrabajador(Trab As String) As Boolean
+Private Function TicadaTrabajador(Trab As String, vReloj As Integer) As Boolean
 Dim Tiene As Boolean
-Dim cad As String
+Dim Cad As String
 
     On Error GoTo ETicadaTrabajador
     
     TicadaTrabajador = False
     'Para el trabajador veo si tiene ticadas
-    cad = "Select secuencia from Entradafichajes where  idTrabajador=" & Trab & " AND fecha = " & Text3(0).Tag
-    Rs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Rs.EOF Then
-        cad = ""
+    Cad = "Select secuencia from Entradafichajes where  idTrabajador=" & Trab & " AND fecha = " & Text3(0).Tag
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If RS.EOF Then
+        Cad = ""
     End If
-    Rs.Close
+    RS.Close
    
     'Si k tiene ticajes
     'Insertamos el nuestro
-    cad = "insert into entradafichajes (secuencia,idtrabajador,fecha,hora,idinci,horareal) VALUES ("
-    cad = cad & Total & "," & Trab & "," & Text3(0).Tag & "," & Text3(1).Tag & ",0," & Text3(1).Tag & ")"
-    conn.Execute cad
+    Cad = "insert into entradafichajes (secuencia,idtrabajador,fecha,hora,idinci,horareal,Reloj) VALUES ("
+    Cad = Cad & Total & "," & Trab & "," & Text3(0).Tag & "," & Text3(1).Tag & ",0," & Text3(1).Tag & "," & vReloj & ")"
+    conn.Execute Cad
     Total = Total + 1
     TicadaTrabajador = True
     Exit Function
@@ -1394,17 +1429,17 @@ Dim Inicio As String
         Devolucion = Devolucion & " AND Trabajadores.numTarjeta <= '" & Fin & "'"
     End If
 
-    Set Rs = New ADODB.Recordset
-    Rs.Open Devolucion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
-        If Insertar1trabajador(Rs.Fields(0)) Then _
-            AñadeListview1 Rs.Fields(0), Rs.Fields(1), Rs.Fields(2), Rs.Fields(3)
+    Set RS = New ADODB.Recordset
+    RS.Open Devolucion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        If Insertar1trabajador(RS.Fields(0)) Then _
+            AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
 
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
     Devolucion = ""
-    Set Rs = Nothing
+    Set RS = Nothing
 
         
 End Function
@@ -1424,18 +1459,18 @@ Private Function CargarDatos()
     Devolucion = Devolucion & " tmpCambioHor.trabajador =  trabajadores.idtrabajador"
     Devolucion = Devolucion & " and codusu = " & vUsu.Codigo
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     Devolucion = LCase(Devolucion)
-    Rs.Open Devolucion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
+    RS.Open Devolucion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
         
-        AñadeListview1 Rs.Fields(0), Rs.Fields(1), Rs.Fields(2), Rs.Fields(3)
+        AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
 
-        Rs.MoveNext
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
     Devolucion = ""
-    Set Rs = Nothing
+    Set RS = Nothing
 
         
 End Function

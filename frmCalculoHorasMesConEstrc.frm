@@ -1026,7 +1026,7 @@ Dim i As Integer
 
     If lw1.ListItems.Count < 1 Then Exit Sub
     
-    Stop
+    
     'FALTA###
     
     'Borramos las dos tablas k utiliza
@@ -1788,7 +1788,7 @@ Dim H As Currency
 Dim H1 As Currency
 Dim D1 As Integer
 Dim RS As ADODB.Recordset
-    Stop
+    
 
     Sql = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", lw1.SelectedItem.Text, "N")
     i = Val(Sql)

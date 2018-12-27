@@ -196,7 +196,8 @@ Public Opcion As Integer
             '66    Horas procesadas (tipo alzira)
 
             '67    marcaje actual sin secciones ni nada
-
+            
+            '68    Listado ora s por Reloj
 
 Public FormulaSeleccion As String
 Public SoloImprimir As Boolean
@@ -576,6 +577,33 @@ Case 67
     Text1.Text = "Marcaje actual normal"
     Nombre = "marcactualPlano.rpt"
     MostrarTree = True
+    
+Case 68, 69, 70, 71
+    
+    Text1.Text = "Marcaje por Reloj- " & IIf(Opcion = 68, "fecha", "trabajador")
+    
+    If Opcion = 69 Then
+        Nombre = "PorRelojTra.rpt"
+    ElseIf Opcion = 70 Then
+        Nombre = "PorRelojTracod.rpt"
+    Else
+        
+        NumeroParametros = NumeroParametros + 1
+        'Nombre = "{tmppresencia.NomTrabajador} {tmppresencia.idtra}"
+        Nombre = IIf(Opcion = 71, "NomTrabajador", "idtra")
+        Nombre = "orden= {tmppresencia." & Nombre & "}"
+
+        OtrosParametros = OtrosParametros & Nombre & "|"
+        
+        Nombre = "PorReloj.rpt"
+    End If
+    MostrarTree = True
+    
+    
+    
+    
+    
+    
 Case 100
     'GENERICO. Se le pasa el rpt y el titulo
     Nombre = NombreRPT100

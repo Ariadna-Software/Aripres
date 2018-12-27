@@ -180,7 +180,7 @@ Private Sub CopiaTodo()
 
 
     Set RS = New ADODB.Recordset
-    RS.Open "SHOW TABLES", Conn, adOpenKeyset, adLockOptimistic, adCmdText
+    RS.Open "SHOW TABLES", conn, adOpenKeyset, adLockOptimistic, adCmdText
     NumTablas = 0
     While Not RS.EOF
         If LCase(Mid(RS.Fields(0), 1, 3)) = "tmp" Then
@@ -281,7 +281,7 @@ End Function
 Private Sub BKTablas(Tabla As String)
 Dim Cad As String
     Set RS = New ADODB.Recordset
-    RS.Open Tabla, Conn, adOpenForwardOnly, adLockPessimistic, adCmdTable
+    RS.Open Tabla, conn, adOpenForwardOnly, adLockPessimistic, adCmdTable
     If RS.EOF Then
         'No hace falta hacer back up
     
@@ -301,30 +301,6 @@ Dim Cad As String
     Set RS = Nothing
 End Sub
 
-
-'Private Sub RenumeracionAsientos()
-'    NumTablas = 6
-'    ReDim Tablas(NumTablas - 1)
-'    Tablas(0) = "hcabapu"
-'    Tablas(1) = "hlinapu"
-'    Tablas(2) = "cabfact"
-'    Tablas(3) = "cabfactprov"
-'    Tablas(4) = "linfact"
-'    Tablas(5) = "linfactprov"
-'End Sub
-
-
-
-'Private Sub Cierre()
-'    NumTablas = 5
-'    ReDim Tablas(NumTablas - 1)
-'    Tablas(0) = "hcabapu"
-'    Tablas(1) = "hlinapu"
-'    Tablas(2) = "contadores"
-'    Tablas(3) = "hsaldos"
-'    Tablas(4) = "hsaldosanal"
-'
-'End Sub
 
 Private Sub ImportarFich()
 

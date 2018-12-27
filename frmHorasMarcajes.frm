@@ -36,9 +36,13 @@ Begin VB.Form frmHorasMarcajes
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   1
+         NumListImages   =   2
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmHorasMarcajes.frx":6852
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmHorasMarcajes.frx":6B6C
             Key             =   ""
          EndProperty
       EndProperty
@@ -57,7 +61,7 @@ Begin VB.Form frmHorasMarcajes
       Height          =   495
       Index           =   2
       Left            =   5100
-      Picture         =   "frmHorasMarcajes.frx":6B6C
+      Picture         =   "frmHorasMarcajes.frx":84FE
       Style           =   1  'Graphical
       TabIndex        =   16
       Top             =   4140
@@ -68,7 +72,7 @@ Begin VB.Form frmHorasMarcajes
       Height          =   495
       Index           =   1
       Left            =   5100
-      Picture         =   "frmHorasMarcajes.frx":6C6E
+      Picture         =   "frmHorasMarcajes.frx":8600
       Style           =   1  'Graphical
       TabIndex        =   17
       Top             =   3540
@@ -79,7 +83,7 @@ Begin VB.Form frmHorasMarcajes
       Height          =   495
       Index           =   0
       Left            =   5100
-      Picture         =   "frmHorasMarcajes.frx":6D70
+      Picture         =   "frmHorasMarcajes.frx":8702
       Style           =   1  'Graphical
       TabIndex        =   18
       Top             =   2940
@@ -113,7 +117,7 @@ Begin VB.Form frmHorasMarcajes
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   4
+      NumItems        =   5
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Hora"
          Object.Width           =   2011
@@ -131,6 +135,11 @@ Begin VB.Form frmHorasMarcajes
       BeginProperty ColumnHeader(4) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   3
          Text            =   "Acabalgado"
+         Object.Width           =   0
+      EndProperty
+      BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   4
+         Text            =   "Reloj"
          Object.Width           =   0
       EndProperty
    End
@@ -287,7 +296,7 @@ Private SeHaModificado As Boolean
 Private PuedeSalir As Boolean
 
 Private Sub Command1_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 Dim RC As Byte
 
 Select Case Index
@@ -298,7 +307,7 @@ Case 0
     frmH.Hora = ""
     frmH.Inci = 0
     frmH.CadInci = ""
-    frmH.TipoAcabalgada = 0 'NORMAL
+    frmH.TipoAcabalgada = 2 'NORMAL
     frmH.Show vbModal
     Set frmH = Nothing
 Case 1
@@ -310,6 +319,7 @@ Case 1
     frmH.Inci = ListView1.SelectedItem.SubItems(2)
     frmH.CadInci = ListView1.SelectedItem.SubItems(1)
     frmH.TipoAcabalgada = ListView1.SelectedItem.SubItems(3)
+    frmH.vReloj = ListView1.SelectedItem.SubItems(4)
     frmH.Show vbModal
     Set frmH = Nothing
 Case 2
@@ -317,31 +327,31 @@ Case 2
     If ListView1.SelectedItem Is Nothing Then Exit Sub
     
     If Opcion = 0 Then
-        cad = "Seguro que desea eliminar el marcaje efectuado " & vbCrLf
-        cad = cad & " a las " & ListView1.SelectedItem.Text & vbCrLf
+        Cad = "Seguro que desea eliminar el marcaje efectuado " & vbCrLf
+        Cad = Cad & " a las " & ListView1.SelectedItem.Text & vbCrLf
         If ListView1.SelectedItem.SubItems(2) <> 0 Then _
-            cad = cad & "y con la incidencia : " & ListView1.SelectedItem.SubItems(1)
-        RC = MsgBox(cad, vbQuestion + vbYesNo)
+            Cad = Cad & "y con la incidencia : " & ListView1.SelectedItem.SubItems(1)
+        RC = MsgBox(Cad, vbQuestion + vbYesNo)
         If RC = vbYes Then
             'Eliminamos
-            cad = "Delete from EntradaMarcajes where secuencia=" & ListView1.SelectedItem.Tag
-            conn.Execute cad
+            Cad = "Delete from EntradaMarcajes where secuencia=" & ListView1.SelectedItem.Tag
+            conn.Execute Cad
             SeHaModificado = True
             ListView1.ListItems.Remove ListView1.SelectedItem.Index
          End If
          
     Else
         'Elminamos del HCO
-        cad = "Seguro que desea eliminar el marcaje efectuado " & vbCrLf
-        cad = cad & " a las " & ListView1.SelectedItem.Text & vbCrLf
+        Cad = "Seguro que desea eliminar el marcaje efectuado " & vbCrLf
+        Cad = Cad & " a las " & ListView1.SelectedItem.Text & vbCrLf
         If ListView1.SelectedItem.SubItems(2) <> 0 Then _
-            cad = cad & "y con la incidencia : " & ListView1.SelectedItem.SubItems(1)
-        RC = MsgBox(cad, vbQuestion + vbYesNo)
+            Cad = Cad & "y con la incidencia : " & ListView1.SelectedItem.SubItems(1)
+        RC = MsgBox(Cad, vbQuestion + vbYesNo)
         If RC = vbYes Then
             'Eliminamos
             
-            cad = "Delete from EntradaFichajes where secuencia=" & ListView1.SelectedItem.Tag
-            conn.Execute cad
+            Cad = "Delete from EntradaFichajes where secuencia=" & ListView1.SelectedItem.Tag
+            conn.Execute Cad
             SeHaModificado = True
             ListView1.ListItems.Remove ListView1.SelectedItem.Index
         End If
@@ -382,7 +392,7 @@ End Sub
 
 Private Sub Cargalistview()
 Dim RS As ADODB.Recordset
-Dim sql As String
+Dim Sql As String
 Dim itm As ListItem
 
     ListView1.ListItems.Clear
@@ -396,31 +406,33 @@ Dim itm As ListItem
     '                           false -> siginifica que hay horas por debajo de las 00:00
     'ACabalgado:  0: normal     1: Hora inferior a 00:00    2: hora superior a 23:59:59
     If Opcion = 0 Then
-        sql = "SELECT EntradaMarcajes.Hora, Incidencias.NomInci, EntradaMarcajes.idInci,Secuencia"
+        Sql = "SELECT EntradaMarcajes.Hora, Incidencias.NomInci, EntradaMarcajes.idInci,Secuencia"
         
-        sql = sql & " ,if(Hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(Hora)>24,ADDTIME(hora , '-24:00:00' ),Hora)) HoraPintar  "
+        Sql = Sql & " ,if(Hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(Hora)>=24,ADDTIME(hora , '-24:00:00' ),Hora)) HoraPintar  "
         
-        sql = sql & " ,if(Hora<'0:00:00',1,if(hour(Hora)>24,2,0)) Acabalgado "
+        Sql = Sql & " ,if(Hora<'0:00:00',1,if(hour(Hora)>=24,2,0)) Acabalgado "
+        Sql = Sql & ", Reloj QueReloj"
         
-        sql = sql & " FROM EntradaMarcajes ,Incidencias WHERE EntradaMarcajes.idInci = Incidencias.IdInci"
-        sql = sql & " AND idMarcaje=" & vM.Entrada
-        sql = sql & " Order by Hora"
+        Sql = Sql & " FROM EntradaMarcajes ,Incidencias WHERE EntradaMarcajes.idInci = Incidencias.IdInci"
+        Sql = Sql & " AND idMarcaje=" & vM.Entrada
+        Sql = Sql & " Order by Hora"
     Else
-        sql = "    SELECT EntradaFichajes.Hora, Incidencias.NomInci, EntradaFichajes.idInci,Secuencia"
+        Sql = "    SELECT EntradaFichajes.Hora, Incidencias.NomInci, EntradaFichajes.idInci,Secuencia"
         
-        sql = sql & " ,if(Hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(Hora)>24,ADDTIME(hora , '-24:00:00' ),Hora)) HoraPintar "
+        Sql = Sql & " ,if(Hora<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(Hora)>=24,ADDTIME(hora , '-24:00:00' ),Hora)) HoraPintar "
         
-        sql = sql & " ,if(Hora<'0:00:00',1,if(hour(Hora)>24,2,0)) Acabalgado "
+        Sql = Sql & " ,if(Hora<'0:00:00',1,if(hour(Hora)>=24,2,0)) Acabalgado "
+        Sql = Sql & ", Reloj QueReloj"
         
-        sql = sql & " FROM EntradaFichajes INNER JOIN Incidencias ON EntradaFichajes.idInci = Incidencias.IdInci"
-        sql = sql & " WHERE idTrabajador=" & vM.idTrabajador
-        sql = sql & " AND Fecha = '" & Format(vM.Fecha, FormatoFecha) & "'"
-        sql = sql & " Order by Hora"
+        Sql = Sql & " FROM EntradaFichajes INNER JOIN Incidencias ON EntradaFichajes.idInci = Incidencias.IdInci"
+        Sql = Sql & " WHERE idTrabajador=" & vM.idTrabajador
+        Sql = Sql & " AND Fecha = '" & Format(vM.Fecha, FormatoFecha) & "'"
+        Sql = Sql & " Order by Hora"
     End If
     
     
     
-    RS.Open sql, conn, , , adCmdText
+    RS.Open Sql, conn, , , adCmdText
     While Not RS.EOF
         Set itm = ListView1.ListItems.Add(, , Format(RS!HoraPintar, "hh:mm:ss"))
         If RS!IdInci = 0 Then
@@ -432,9 +444,18 @@ Dim itm As ListItem
         
         itm.SubItems(3) = RS!acabalgado
         
+        itm.SubItems(4) = DBLet(RS!quereloj, "N")
+        
+            
         itm.Tag = RS!Secuencia
         
         itm.SmallIcon = 1
+        If vEmpresa.Reloj2 > 0 Then
+            If itm.SubItems(4) <> "0" Then
+                itm.SmallIcon = RS!quereloj + 1
+                itm.ToolTipText = "Biostar2"
+            End If
+        End If
         RS.MoveNext
     Wend
     RS.Close
@@ -445,11 +466,11 @@ Private Sub Form_Unload(Cancel As Integer)
     If Not PuedeSalir Then Cancel = 1
 End Sub
 
-Private Sub frmH_Seleccionar(vHora As Date, vInci As Integer, Acabagado As Byte)
+Private Sub frmH_Seleccionar(vHora As Date, vInci As Integer, Acabagado As Byte, kReloj As Integer)
 Dim RS As ADODB.Recordset
 Dim valor As Long
 Dim Tabla As String
-Dim cad As String
+Dim Cad As String
 Dim Hora As String
 Dim LaHora As Integer
 
@@ -474,13 +495,18 @@ Dim LaHora As Integer
             Hora = Horas_Quitar24(vHora, False)
             
         Else
+            If vEmpresa.HorarioNocturno2 Then
+                'LO QUE HACIA ANTES
+                Hora = Format(vHora, ":nn:ss")
+                LaHora = Hour(vHora)
         
-            Hora = Format(vHora, ":mm:ss")
-            LaHora = Hour(vHora)
-        
-            LaHora = LaHora - 24
-            Hora = Format(LaHora, "00") & Hora
-            
+                LaHora = LaHora - 24
+                Hora = Format(LaHora, "00") & Hora
+            Else
+                Hora = Format(vHora, ":nn:ss")
+                LaHora = Hour(vHora) + 24
+                Hora = Format(LaHora, "00") & Hora
+            End If
         End If
         
     End If
@@ -498,28 +524,30 @@ Dim LaHora As Integer
         RS.Close
         
         'Añadimos
-        cad = "INSERT INTO " & Tabla & "(Secuencia,idTrabajador"
-        If Opcion = 0 Then cad = cad & ", idMarcaje"
-        cad = cad & ",Fecha , Hora, idInci, HoraReal) VALUES ("
+        Cad = "INSERT INTO " & Tabla & "(Secuencia,idTrabajador"
+        If Opcion = 0 Then Cad = Cad & ", idMarcaje"
+        Cad = Cad & ",Fecha , Hora, idInci, HoraReal,Reloj) VALUES ("
         
-        cad = cad & valor & "," & vM.idTrabajador & ","
-        If Opcion = 0 Then cad = cad & vM.Entrada & ","
-        cad = cad & DBSet(vM.Fecha, "F") & ","
+        Cad = Cad & valor & "," & vM.idTrabajador & ","
+        If Opcion = 0 Then Cad = Cad & vM.Entrada & ","
+        Cad = Cad & DBSet(vM.Fecha, "F") & ","
         
         
-        cad = cad & "'" & Hora & "'," & vInci & ",'" & Hora & "')"
+        Cad = Cad & "'" & Hora & "'," & vInci & ",'" & Hora & "'," & kReloj & ")"
        
     Else
         'MODIFICAR
         
         
-        cad = "UPDATE " & Tabla & " SET hora = '" & Hora & "' , idinci = " & vInci
+        Cad = "UPDATE " & Tabla & " SET hora = '" & Hora & "' , idinci = " & vInci
         '
-        If Opcion = 1 Then cad = cad & ",  HoraReal = '" & Hora & "'"
-        cad = cad & " WHERE  secuencia=" & Secuencia
+        If Opcion = 1 Then Cad = Cad & ",  HoraReal = '" & Hora & "'"
+        Cad = Cad & ",  Reloj = " & kReloj
+        
+        Cad = Cad & " WHERE  secuencia=" & Secuencia
         
     End If
-    conn.Execute cad
+    conn.Execute Cad
     SeHaModificado = True
     
     espera 0.25

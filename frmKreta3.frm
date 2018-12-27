@@ -521,7 +521,7 @@ Private Sub cmdMarcajes_Click()
     
     
     'Procesar fichero huella, solo para alzira o catadau KRETAs
-    If vEmpresa.reloj = 2 Then CargarFichajesGeslab
+    If vEmpresa.Reloj = 2 Then CargarFichajesGeslab
     
     
     'Enero 2015.   Proceso NOCTURNO
@@ -686,7 +686,7 @@ Dim usu As UsuarioHuella
 Dim i As Integer
 Dim B As Boolean
 
-Dim Sql As String
+Dim SQL As String
 Dim RS As ADODB.Recordset
 
 
@@ -698,15 +698,15 @@ Dim RS As ADODB.Recordset
     If ColK2 Is Nothing Then CargarTerminales
     '-- Ahora los usuarios
     
-    Sql = "select * from usuarios WHERE GesLabID = " & Text5(0).Text
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from usuarios WHERE GesLabID = " & Text5(0).Text
+    Set RS = GesHuellaDB.cursor(SQL)
     If RS.EOF Then
       MsgBox "No tiene ID huella asociado", vbExclamation
       
     Else
 
         
-        Sql = ""
+        SQL = ""
         
             Set usu = New UsuarioHuella
             If usu.Leer(RS!CodUsuario) Then
@@ -727,7 +727,7 @@ Dim RS As ADODB.Recordset
                         B = usu.CargarEnTerminal(k2)
                     End If
                     If Not B Then
-                        Sql = Sql & "Terminal: " & k2.Numero & "   " & usu.GesLabID & " - " & usu.Mensaje & vbCrLf
+                        SQL = SQL & "Terminal: " & k2.Numero & "   " & usu.GesLabID & " - " & usu.Mensaje & vbCrLf
                     Else
                         lblInf.Caption = "Ok"
                         lblInf.Refresh
@@ -738,7 +738,7 @@ Dim RS As ADODB.Recordset
                 Next
             End If
  
-            If Sql <> "" Then MsgBox Sql, vbExclamation
+            If SQL <> "" Then MsgBox SQL, vbExclamation
                 
         
         
@@ -811,7 +811,7 @@ End Sub
 
 Public Sub CargarConfiguracion()
     '-- Cargamos lo que toca
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim i As Integer
     If ColK2 Is Nothing Then CargarTerminales
@@ -837,14 +837,14 @@ Dim Donde As String
     On Error GoTo eCargateer
     Donde = "Cargando col-reloj"
     Set ColK2 = New ColKreta2
-    Dim Sql As String
+    Dim SQL As String
 
     Dim NumTerm As Integer
-    Sql = " select * from terminales"
-    Sql = Sql & " WHERE deshabilitado=0"
+    SQL = " select * from terminales"
+    SQL = SQL & " WHERE deshabilitado=0"
     Donde = "Leyendo BD"
         
-    Set RS = GesHuellaDB.cursor(Sql)
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -893,9 +893,9 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
     '-- Primero cargamos los terminales
     If ColK2 Is Nothing Then CargarTerminales
     '-- Ahora los usuarios
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
-    Sql = "select * from usuarios"
+    SQL = "select * from usuarios"
     TraSeccion = ""
     If Seccion >= 0 Then
         'Veremos que trabadores son de esa seccion
@@ -914,8 +914,8 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
             TraSeccion = " WHERE GeslabID IN (" & TraSeccion & ")"
         End If
     End If
-    If TraSeccion <> "" Then Sql = Sql & TraSeccion
-    Set RS = GesHuellaDB.cursor(Sql)
+    If TraSeccion <> "" Then SQL = SQL & TraSeccion
+    Set RS = GesHuellaDB.cursor(SQL)
     
     If Not RS.EOF Then
         '-- Primero borramos los usuarios de los diferentes terminales
@@ -993,9 +993,9 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
                 'FALTA###
                 'FALTA###
                 'FALTA###
-                Sql = "Error grabando: " & vbCrLf & vbCrLf
+                SQL = "Error grabando: " & vbCrLf & vbCrLf
                 For i = 1 To Col2.Count
-                    Sql = Sql & vbCrLf & Col2.Item(i)
+                    SQL = SQL & vbCrLf & Col2.Item(i)
                 Next
                 'frmVarios2.Text1 = SQL
                 'frmVarios2.Show vbModal
@@ -1015,7 +1015,7 @@ End Function
 
 Private Function CargarMensajes() As Boolean
     '-- Cargamos lo que toca
-    Dim Sql As String
+    Dim SQL As String
     'Dim rs As ADODB.Recordset
     Dim i As Integer
     If ColK2 Is Nothing Then CargarTerminales
@@ -1028,7 +1028,7 @@ End Function
 
 Private Function CargarIncidencias() As Boolean
     '-- Cargamos lo que toca
-    Dim Sql As String
+    Dim SQL As String
     'Dim rs As ADODB.Recordset
     Dim i As Integer
     If ColK2 Is Nothing Then CargarTerminales
@@ -1042,7 +1042,7 @@ End Function
 
 Public Function LeerMarcajes(Directorio As String) As Boolean
     '-- Cargamos lo que toca
-    Dim Sql As String
+    Dim SQL As String
     'Dim rs As ADODB.Recordset
     Dim i As Integer
     
@@ -1189,6 +1189,11 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
     EntradasRepetidas
     
     
+    'Noviembre 2018
+    espera 0.25
+    HorasNocturnas lblInf
+    
+    
    ' Set db = Nothing
     lblInf.Caption = ""
     lblInf.Refresh
@@ -1203,7 +1208,7 @@ Dim Fecha As Date
 Dim Hora As Date
 Dim Diferencia As Long
 
-    If vEmpresa.Repeticion <= 0 Then Exit Sub
+    If vEmpresa.Repeticion_ <= 0 Then Exit Sub
         
     lblInf.Caption = "Entradas duplicadas"
     lblInf.Refresh
@@ -1238,7 +1243,7 @@ Dim Diferencia As Long
                 Else
                     'MISMO TRABAJADOR , MISMA FECHA
                     Diferencia = DateDiff("n", Hora, Format(RFin!Hora, "hh:mm:ss"))
-                    If Diferencia >= vEmpresa.Repeticion Then
+                    If Diferencia >= vEmpresa.Repeticion_ Then
                         'Las horas se diferencian. NO elimino
                         Hora = Format(RFin!Hora, "hh:mm:ss")
                     Else
@@ -1309,12 +1314,12 @@ Private Sub PonerEmpleadoVacio()
 End Sub
 Private Sub PonerEmpleado(Cod As String, Campo As String)
 Dim RT As ADODB.Recordset
-Dim Sql As String
+Dim SQL As String
     
-    Sql = "Select * from Trabajadores where "
-    Sql = Sql & Campo & " = " & Cod
+    SQL = "Select * from Trabajadores where "
+    SQL = SQL & Campo & " = " & Cod
     Set RT = New ADODB.Recordset
-    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If RT.EOF Then
         'ponerempleadovacio
         PonerEmpleadoVacio

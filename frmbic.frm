@@ -1,7 +1,7 @@
 VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmbic 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "BIC/SWIT"
@@ -455,9 +455,9 @@ Private Sub BotonModificar()
     '---------
     'MODIFICAR
     '----------
-    Dim Cad As String
+    Dim cad As String
     Dim anc As Single
-    Dim I As Integer
+    Dim i As Integer
     If adodc1.Recordset.EOF Then Exit Sub
     If adodc1.Recordset.RecordCount < 1 Then Exit Sub
 
@@ -467,8 +467,8 @@ Private Sub BotonModificar()
     Me.lblIndicador.Caption = "MODIFICAR"
     DeseleccionaGrid
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
-        I = DataGrid1.Bookmark - DataGrid1.FirstRow
-        DataGrid1.Scroll 0, I
+        i = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, i
         DataGrid1.Refresh
     End If
     
@@ -482,7 +482,7 @@ Private Sub BotonModificar()
     txtAux(0).Text = DataGrid1.Columns(0).Text
     txtAux(1).Text = DataGrid1.Columns(1).Text
     txtAux(2).Text = DataGrid1.Columns(2).Text
-    I = adodc1.Recordset!Entidad
+    i = adodc1.Recordset!Entidad
     LLamaLineas anc, 1
    
    'Como es modificar
@@ -497,27 +497,28 @@ PonerModo xModo + 1
 txtAux(0).Top = alto
 txtAux(1).Top = alto
 txtAux(2).Top = alto
+
 End Sub
 
 
 
 
 Private Sub BotonEliminar()
-Dim SQL As String
+Dim Sql As String
     On Error GoTo Error2
     'Ciertas comprobaciones
     If adodc1.Recordset.EOF Then Exit Sub
     
     If Not SepuedeBorrar Then Exit Sub
     '### a mano
-    SQL = "Seguro que desea eliminar el BIC del banco:"
-    SQL = SQL & vbCrLf & "Código: " & adodc1.Recordset.Fields(0)
-    SQL = SQL & vbCrLf & "Nombre: " & adodc1.Recordset.Fields(1)
-    If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
+    Sql = "Seguro que desea eliminar el BIC del banco:"
+    Sql = Sql & vbCrLf & "Código: " & adodc1.Recordset.Fields(0)
+    Sql = Sql & vbCrLf & "Nombre: " & adodc1.Recordset.Fields(1)
+    If MsgBox(Sql, vbQuestion + vbYesNoCancel) = vbYes Then
     
         'Hay que eliminar
-        SQL = "Delete from sbic where entidad=" & adodc1.Recordset!Entidad
-        conn.Execute SQL
+        Sql = "Delete from sbic where entidad=" & adodc1.Recordset!Entidad
+        conn.Execute Sql
         CargaGrid ""
         adodc1.Recordset.Cancel
     End If
@@ -532,7 +533,7 @@ End Sub
 
 
 Private Sub cmdAceptar_Click()
-Dim I As Integer
+Dim i As Integer
 Dim CadB As String
 Select Case Modo
     Case 1
@@ -551,10 +552,10 @@ Select Case Modo
                 '-----------------------------------------
                 'Hacemos insertar
                  If ModificaDesdeFormulario(Me) Then
-                    I = adodc1.Recordset.Fields(0)
+                    i = adodc1.Recordset.Fields(0)
                     PonerModo 0
                     CargaGrid
-                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & I)
+                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & i)
                 End If
             End If
     Case 3
@@ -585,16 +586,16 @@ DataGrid1.SetFocus
 End Sub
 
 Private Sub cmdRegresar_Click()
-Dim Cad As String
+Dim cad As String
 
 If adodc1.Recordset.EOF Then
     MsgBox "Ningún registro a devolver.", vbExclamation
     Exit Sub
 End If
 
-Cad = adodc1.Recordset.Fields(0) & "|"
-Cad = Cad & adodc1.Recordset.Fields(1) & "|"
-RaiseEvent DatoSeleccionado(Cad)
+cad = adodc1.Recordset.Fields(0) & "|"
+cad = cad & adodc1.Recordset.Fields(1) & "|"
+RaiseEvent DatoSeleccionado(cad)
 Unload Me
 End Sub
 
@@ -710,26 +711,26 @@ End Select
 End Sub
 
 
-Private Sub DespalzamientoVisible(Bol As Boolean)
-    Dim I
-    For I = 14 To 17
-        Toolbar1.Buttons(I).Visible = Bol
-    Next I
+Private Sub DespalzamientoVisible(bol As Boolean)
+    Dim i
+    For i = 14 To 17
+        Toolbar1.Buttons(i).Visible = bol
+    Next i
 End Sub
 
-Private Sub CargaGrid(Optional SQL As String)
+Private Sub CargaGrid(Optional Sql As String)
     Dim J As Integer
     Dim TotalAncho As Integer
-    Dim I As Integer
+    Dim i As Integer
     
     adodc1.ConnectionString = conn
-    If SQL <> "" Then
-        SQL = CadenaConsulta & " WHERE " & SQL
+    If Sql <> "" Then
+        Sql = CadenaConsulta & " WHERE " & Sql
     Else
-        SQL = CadenaConsulta
+        Sql = CadenaConsulta
     End If
-    SQL = SQL & " ORDER BY entidad"
-    adodc1.RecordSource = SQL
+    Sql = Sql & " ORDER BY entidad"
+    adodc1.RecordSource = Sql
     adodc1.CursorType = adOpenDynamic
     adodc1.LockType = adLockOptimistic
     adodc1.Refresh
@@ -739,22 +740,22 @@ Private Sub CargaGrid(Optional SQL As String)
     
     
     'Nombre producto
-    I = 0
-        DataGrid1.Columns(I).Caption = "Entidad"
-        DataGrid1.Columns(I).Width = 1100
-        DataGrid1.Columns(I).NumberFormat = "0000"
+    i = 0
+        DataGrid1.Columns(i).Caption = "Entidad"
+        DataGrid1.Columns(i).Width = 1100
+        DataGrid1.Columns(i).NumberFormat = "0000"
         
     
     'Leemos del vector en 2
-    I = 1
-        DataGrid1.Columns(I).Caption = "Nombre"
-        DataGrid1.Columns(I).Width = 7200
-        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
+    i = 1
+        DataGrid1.Columns(i).Caption = "Nombre"
+        DataGrid1.Columns(i).Width = 7200
+        TotalAncho = TotalAncho + DataGrid1.Columns(i).Width
     
-    I = 2
-        DataGrid1.Columns(I).Caption = "BIC"
-        DataGrid1.Columns(I).Width = 1800
-        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
+    i = 2
+        DataGrid1.Columns(i).Caption = "BIC"
+        DataGrid1.Columns(i).Width = 1800
+        TotalAncho = TotalAncho + DataGrid1.Columns(i).Width
         
         'Fiajamos el cadancho
     If Not CadAncho Then

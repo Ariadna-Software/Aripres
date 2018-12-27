@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "Comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmPagosBanco2 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Pagos banco"
@@ -306,7 +306,7 @@ Attribute frmc.VB_VarHelpID = -1
 Dim miSQL As String
 
 Private Sub Command1_Click(Index As Integer)
-Dim I As Integer
+Dim i As Integer
 
 
     If Index = 1 Then
@@ -337,12 +337,12 @@ Dim I As Integer
     End If
     
     ListView1.Tag = ""
-    For I = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(I).Checked Then
+    For i = 1 To ListView1.ListItems.Count
+        If ListView1.ListItems(i).Checked Then
             ListView1.Tag = "D"
             Exit For
         End If
-    Next I
+    Next i
 
     If ListView1.Tag = "" Then
         MsgBox "Seleccione algun modo de pago", vbExclamation
@@ -358,7 +358,7 @@ Dim I As Integer
                 End If
                     
                 'BANCO
-                ListView1.Tag = "Este proceso generara todos los pagos y grabara el disquette correspondiente"
+                ListView1.Tag = "Este proceso generara todos los pagos y grabara el fichero correspondiente"
                 If cboBanco.ListIndex > 0 Then ListView1.Tag = ListView1.Tag & vbCrLf & vbCrLf & "Banco: " & cboBanco.List(cboBanco.ListIndex) & vbCrLf
                 ListView1.Tag = ListView1.Tag & vbCrLf & "¿   Desea continuar  ?"
                 If MsgBox(ListView1.Tag, vbQuestion + vbYesNoCancel + vbDefaultButton2) <> vbYes Then Exit Sub
@@ -399,7 +399,7 @@ End Sub
 Private Sub ImprimeListadito()
 
      
-    miSQL = "Campo1= 'Fecha orden'|"
+    miSQL = "Campo1= 'Fecha orden:'|"
     miSQL = miSQL & "Campo2= '" & txtFec(2).Text & "'|"
     miSQL = miSQL & "Campo3= 'Concepto: '|"
     miSQL = miSQL & "Campo4= '" & Text3.Text & "'|"
@@ -409,7 +409,7 @@ Private Sub ImprimeListadito()
         .Titulo100 = "Pagos por transferencia"
         .NombreRPT100 = "tranferencias.rpt"
     
-    
+        .FormulaSeleccion = "{tmpnorma34.codsoc} > 0"
         .ConSubreport100 = True
         .OtrosParametros = miSQL
         .NumeroParametros = 4
@@ -449,19 +449,19 @@ Private Sub imgFec_Click(Index As Integer)
     Dim esq As Long
     Dim dalt As Long
     Dim menu As Long
-    Dim obj As Object
+    Dim Obj As Object
 
     Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
     
-    Set obj = imgFec(Index).Container
+    Set Obj = imgFec(Index).Container
     
-    While imgFec(Index).Parent.Name <> obj.Name
-        esq = esq + obj.Left
-        dalt = dalt + obj.Top
-        Set obj = obj.Container
+    While imgFec(Index).Parent.Name <> Obj.Name
+        esq = esq + Obj.Left
+        dalt = dalt + Obj.Top
+        Set Obj = Obj.Container
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
@@ -486,7 +486,7 @@ End Sub
 
 
 Private Sub txtFec_KeyPress(Index As Integer, KeyAscii As Integer)
-    KEYpress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtFec_LostFocus(Index As Integer)
@@ -499,7 +499,7 @@ Private Sub txtFec_LostFocus(Index As Integer)
     End If
 End Sub
 
-Private Sub KEYpress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -593,7 +593,7 @@ Dim Sufijo As String
                 NIF = "UPDATE Pagos Set Pagado= 1  WHERE "
                 While Not RT.EOF
                     Cta = NIF & "Trabajador =  " & RT!Trabajador
-                    Cta = Cta & " AND Tipo = " & RT!Tipo
+                    Cta = Cta & " AND Tipo = " & RT!tipo
                     Cta = Cta & " AND Fecha = '" & Format(RT!Fecha, FormatoFecha) & "'"
                     conn.Execute Cta
             
@@ -618,8 +618,8 @@ End Function
 
 Private Function GeneraTMPnorma34() As Boolean
 Dim vSQL As String
-Dim I As Integer
-Dim Cad As String
+Dim i As Integer
+Dim cad As String
 Dim Aux As String
 Dim RS As ADODB.Recordset
 
@@ -633,7 +633,7 @@ Dim RS As ADODB.Recordset
     
     Set RS = New ADODB.Recordset
     RS.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    I = 0
+    i = 0
     If RS.EOF Then
         'Ningun datos con esos valores
         MsgBox "Ningun registro con esos valores", vbExclamation
@@ -641,18 +641,18 @@ Dim RS As ADODB.Recordset
         vSQL = "INSERT INTO tmpNorma34 (CodSoc, Nombre, Banco1, Banco2, Banco3, Banco4, Domicilio, Codpos, Poblacion, Concepto, Importe,tipo) VALUES ("
     
         While Not RS.EOF
-            Cad = RS!Trabajador & ","
-            Cad = Cad & DBSet(RS!nomtrabajador, "T") & ",'"
+            cad = RS!Trabajador & ","
+            cad = cad & DBSet(RS!nomtrabajador, "T") & ",'"
             'Cerramos el rs
-            If PonerDatosBancos(RS, Cad) Then
-                Cad = Cad & "," & DBSet(RS!domtrabajador, "T")
-                Cad = Cad & "," & DBSet(RS!codpostrabajador, "T")
-                Cad = Cad & "," & DBSet(RS!pobtrabajador, "T") & ",'" & Text2.Text & "',"
-                Cad = Cad & TransformaComasPuntos(CStr(RS!Importe)) & ","
-                Cad = Cad & RS!Tipo & ")"
+            If PonerDatosBancos(RS, cad) Then
+                cad = cad & "," & DBSet(RS!domtrabajador, "T")
+                cad = cad & "," & DBSet(RS!codpostrabajador, "T")
+                cad = cad & "," & DBSet(RS!pobtrabajador, "T") & ",'" & Text2.Text & "',"
+                cad = cad & TransformaComasPuntos(CStr(RS!Importe)) & ","
+                cad = cad & RS!tipo & ")"
                 'Insertamos
-                conn.Execute vSQL & Cad
-                I = I + 1
+                conn.Execute vSQL & cad
+                i = i + 1
             End If
             'Concepto
             RS.MoveNext
@@ -661,7 +661,7 @@ Dim RS As ADODB.Recordset
     End If
     RS.Close
     Set RS = Nothing
-    If I > 0 Then
+    If i > 0 Then
         GeneraTMPnorma34 = True
     Else
         MsgBox "Ningun dato generado", vbExclamation
@@ -674,56 +674,56 @@ End Function
 
 
 
-Private Sub PonSQL(ByRef SQL As String, vDeshacerPago As Boolean)
-Dim Cad As String
-Dim I As Integer
+Private Sub PonSQL(ByRef Sql As String, vDeshacerPago As Boolean)
+Dim cad As String
+Dim i As Integer
 
-    Cad = ""
-    SQL = ""
-    For I = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(I).Checked Then
-            If Cad <> "" Then Cad = Cad & " OR "
-            Cad = Cad & "tipo = " & ListView1.ListItems(I).Tag
-            SQL = SQL & "1"
+    cad = ""
+    Sql = ""
+    For i = 1 To ListView1.ListItems.Count
+        If ListView1.ListItems(i).Checked Then
+            If cad <> "" Then cad = cad & " OR "
+            cad = cad & "tipo = " & ListView1.ListItems(i).Tag
+            Sql = Sql & "1"
         End If
-    Next I
+    Next i
 
-    If Len(SQL) = ListView1.ListItems.Count Then
+    If Len(Sql) = ListView1.ListItems.Count Then
         'TODOS, luego cad no ponemos subconsultas
-        Cad = ""
+        cad = ""
     Else
-        Cad = "(" & Cad & ")"
+        cad = "(" & cad & ")"
     End If
             
     
     'Vamos a coger los pagos k faltan
     If vDeshacerPago Then
         'Es un update
-        SQL = "UPDATE Pagos SET Pagado = 0 "
+        Sql = "UPDATE Pagos SET Pagado = 0 "
     Else
-        SQL = "SELECT Pagos.Trabajador, Pagos.Importe, Pagos.Pagado, Pagos.Fecha, "
-        SQL = SQL & " Trabajadores.NomTrabajador, Trabajadores.DomTrabajador, Trabajadores.PobTrabajador"
-        SQL = SQL & ", Trabajadores.CodPosTrabajador, Trabajadores.entidad, Trabajadores.oficina, Trabajadores.pagobancario,"
-        SQL = SQL & " Trabajadores.controlcta, Trabajadores.cuenta,Pagos.tipo,Trabajadores.pagobancario"
-        SQL = SQL & " FROM Trabajadores INNER JOIN Pagos ON Trabajadores.IdTrabajador = Pagos.Trabajador"
+        Sql = "SELECT Pagos.Trabajador, Pagos.Importe, Pagos.Pagado, Pagos.Fecha, "
+        Sql = Sql & " Trabajadores.NomTrabajador, Trabajadores.DomTrabajador, Trabajadores.PobTrabajador"
+        Sql = Sql & ", Trabajadores.CodPosTrabajador, Trabajadores.entidad, Trabajadores.oficina, Trabajadores.pagobancario,"
+        Sql = Sql & " Trabajadores.controlcta, Trabajadores.cuenta,Pagos.tipo,Trabajadores.pagobancario"
+        Sql = Sql & " FROM Trabajadores INNER JOIN Pagos ON Trabajadores.IdTrabajador = Pagos.Trabajador"
     End If
     
-    SQL = SQL & " WHERE Pagos.Pagado= "
+    Sql = Sql & " WHERE Pagos.Pagado= "
     
     If vDeshacerPago Then
-        SQL = SQL & " 1"
+        Sql = Sql & " 1"
     Else
-        SQL = SQL & " 0"
+        Sql = Sql & " 0"
     End If
     'Las fechas
     If Not vDeshacerPago Then
-        SQL = SQL & " AND Fecha >='" & Format(txtFec(0).Text, FormatoFecha) & "'"
-        SQL = SQL & " AND Fecha <='" & Format(txtFec(1).Text, FormatoFecha) & "'"
+        Sql = Sql & " AND Fecha >='" & Format(txtFec(0).Text, FormatoFecha) & "'"
+        Sql = Sql & " AND Fecha <='" & Format(txtFec(1).Text, FormatoFecha) & "'"
     Else
-        SQL = SQL & " AND Fecha = '" & Format(txtFec(3).Text, FormatoFecha) & "'"
+        Sql = Sql & " AND Fecha = '" & Format(txtFec(3).Text, FormatoFecha) & "'"
     End If
     'Los tipos
-    If Cad <> "" Then SQL = SQL & " AND " & Cad
+    If cad <> "" Then Sql = Sql & " AND " & cad
     
     
 End Sub

@@ -293,6 +293,7 @@ Begin VB.Form frmHorario
       _ExtentX        =   19711
       _ExtentY        =   9022
       _Version        =   393216
+      Tab             =   1
       TabHeight       =   520
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
@@ -305,15 +306,16 @@ Begin VB.Form frmHorario
       EndProperty
       TabCaption(0)   =   "Horario semanal"
       TabPicture(0)   =   "frmHorario.frx":000C
-      Tab(0).ControlEnabled=   -1  'True
+      Tab(0).ControlEnabled=   0   'False
       Tab(0).Control(0)=   "Frame3"
-      Tab(0).Control(0).Enabled=   0   'False
       Tab(0).ControlCount=   1
       TabCaption(1)   =   "Paradas"
       TabPicture(1)   =   "frmHorario.frx":0028
-      Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Frame1(1)"
-      Tab(1).Control(1)=   "Label8"
+      Tab(1).ControlEnabled=   -1  'True
+      Tab(1).Control(0)=   "Label8"
+      Tab(1).Control(0).Enabled=   0   'False
+      Tab(1).Control(1)=   "Frame1(1)"
+      Tab(1).Control(1).Enabled=   0   'False
       Tab(1).ControlCount=   2
       TabCaption(2)   =   "Rectificación"
       TabPicture(2)   =   "frmHorario.frx":0044
@@ -332,7 +334,16 @@ Begin VB.Form frmHorario
             Alignment       =   1  'Right Justify
             Appearance      =   0  'Flat
             BorderStyle     =   0  'None
-            Height          =   290
+            BeginProperty Font 
+               Name            =   "Verdana"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   360
             Index           =   0
             Left            =   2640
             MaxLength       =   8
@@ -347,7 +358,16 @@ Begin VB.Form frmHorario
             Alignment       =   1  'Right Justify
             Appearance      =   0  'Flat
             BorderStyle     =   0  'None
-            Height          =   290
+            BeginProperty Font 
+               Name            =   "Verdana"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   360
             Index           =   1
             Left            =   240
             MaxLength       =   8
@@ -362,7 +382,16 @@ Begin VB.Form frmHorario
             Alignment       =   1  'Right Justify
             Appearance      =   0  'Flat
             BorderStyle     =   0  'None
-            Height          =   290
+            BeginProperty Font 
+               Name            =   "Verdana"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   360
             Index           =   2
             Left            =   1080
             MaxLength       =   8
@@ -376,7 +405,16 @@ Begin VB.Form frmHorario
          Begin VB.TextBox txtAux2 
             Appearance      =   0  'Flat
             BorderStyle     =   0  'None
-            Height          =   290
+            BeginProperty Font 
+               Name            =   "Verdana"
+               Size            =   9.75
+               Charset         =   0
+               Weight          =   400
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            Height          =   360
             Index           =   3
             Left            =   1560
             MaxLength       =   8
@@ -560,7 +598,7 @@ Begin VB.Form frmHorario
       End
       Begin VB.Frame Frame3 
          Height          =   4455
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   80
          Top             =   480
          Width           =   10815
@@ -1454,7 +1492,7 @@ Begin VB.Form frmHorario
       Begin VB.Frame Frame1 
          Height          =   4155
          Index           =   1
-         Left            =   -74880
+         Left            =   120
          TabIndex        =   65
          Top             =   480
          Width           =   10935
@@ -1772,7 +1810,7 @@ Begin VB.Form frmHorario
       Begin VB.Label Label8 
          Alignment       =   1  'Right Justify
          Height          =   255
-         Left            =   -70200
+         Left            =   4800
          TabIndex        =   64
          Top             =   4320
          Width           =   3555
@@ -1923,7 +1961,7 @@ Dim v As Integer
 End Sub
 
 Private Sub CheckF_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub cmdAceptar_Click()
@@ -1992,7 +2030,7 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -2428,7 +2466,7 @@ Dim cad As String
             Set frmB = New frmBuscaGrid
             frmB.vCampos = cad
             frmB.vTabla = NombreTabla
-            frmB.vSQL = CadB
+            frmB.vSql = CadB
             HaDevueltoDatos = False
             '###A mano
             frmB.vDevuelve = "0|1|2|"
@@ -3180,7 +3218,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
                 End Select
             End If
         Else
-            KeyPress KeyAscii
+            Keypress KeyAscii
         End If
     End If
 End Sub
@@ -3190,7 +3228,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
     If Not Text1(Index).MultiLine Then KEYdown KeyCode
 End Sub
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -3315,12 +3353,12 @@ Private Sub txtaux_Change(Index As Integer)
     HanCambiadoSubHorarios = True
 End Sub
 
-Private Sub txtaux_GotFocus(Index As Integer)
+Private Sub txtAux_GotFocus(Index As Integer)
     ConseguirFoco txtAux(Index), Modo
 End Sub
 
-Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
+    Keypress KeyAscii
 End Sub
 
 Private Sub txtAux_LostFocus(Index As Integer)
@@ -3690,10 +3728,11 @@ On Error GoTo ECarga
             'si es visible|control|tipo campo|nombre campo|ancho control|formato campo|
 '            tots = "N||||0|;S|txtAux(1)|T|NºLinea|800|;" 'numexped,numlinea
             tots = "N||||0|;" 'idhorario
-            tots = tots & "S|txtAux2(1)|T|Inicio|1000|;S|txtAux2(2)|T|Fin|1000|;" 'nombre, apellido
-            tots = tots & "S|txtAux2(3)|T|Modificada|1000|;"
+            tots = tots & "S|txtAux2(1)|T|Inicio|1100|;S|txtAux2(2)|T|Fin|1100|;" 'nombre, apellido
+            tots = tots & "S|txtAux2(3)|T|Modificada|1100|;"
             
             arregla tots, DataGridAux(Index), Me
+            DataGridAux(Index).RowHeight = 330
 '            DataGridAux(Index).Columns(4).Alignment = dbgCenter
     End Select
     DataGridAux(Index).ScrollBars = dbgAutomatic
@@ -3943,7 +3982,7 @@ Private Function MontaSQLCarga(Index As Integer, enlaza As Boolean) As String
 ' Si ENLAZA -> Enlaza con el data1
 '           -> Si no lo cargamos sin enlazar a ningun campo
 '--------------------------------------------------------------------
-Dim Sql As String
+Dim SQL As String
 Dim Tabla As String
     
     Select Case Index
@@ -3972,15 +4011,15 @@ Dim Tabla As String
 '            SQL = SQL & " ORDER BY provdpto.numlinea"
 
         Case 0 'Viajeros del expediente
-            Sql = "Select idhorario,inicio,fin,modificada FROM modificarfichajes"
+            SQL = "Select idhorario,inicio,fin,modificada FROM modificarfichajes"
             If enlaza Then
-                Sql = Sql & ObtenerWhereCab(True)
+                SQL = SQL & ObtenerWhereCab(True)
             Else
-                Sql = Sql & " WHERE idhorario = -1"
+                SQL = SQL & " WHERE idhorario = -1"
             End If
-            Sql = Sql & " ORDER BY inicio "
+            SQL = SQL & " ORDER BY inicio "
     End Select
-    MontaSQLCarga = Sql
+    MontaSQLCarga = SQL
 End Function
 
 
@@ -3998,7 +4037,7 @@ Private Sub txtAux2_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtAux2_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub txtAux2_LostFocus(Index As Integer)
@@ -4046,7 +4085,7 @@ End Sub
 
 
 Private Sub BotonEliminarLinea(Index As Integer)
-Dim Sql As String
+Dim SQL As String
 Dim vWhere As String
 Dim VEliminar As Boolean
 
@@ -4071,16 +4110,16 @@ Dim VEliminar As Boolean
     ' canviar els noms, els formats i el DELETE *****
     Select Case Index
         Case 0 'cltebanc
-            Sql = "¿Seguro que desea eliminar la rectificación?" & vbCrLf
+            SQL = "¿Seguro que desea eliminar la rectificación?" & vbCrLf
             For i = 1 To 3
             
-                Sql = Sql & DataGridAux(0).Columns(i).Caption & " : "
-                Sql = Sql & Space(30 - Len(DataGridAux(0).Columns(i).Caption)) & DataGridAux(0).Columns(i).Text & vbCrLf
+                SQL = SQL & DataGridAux(0).Columns(i).Caption & " : "
+                SQL = SQL & Space(30 - Len(DataGridAux(0).Columns(i).Caption)) & DataGridAux(0).Columns(i).Text & vbCrLf
             Next i
-            If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
+            If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
                 VEliminar = True
-                Sql = "DELETE FROM modificarfichajes"
-                Sql = Sql & vWhere & " AND inicio= '" & Format(AdoAux(Index).Recordset!Inicio, "hh:mm:ss") & "'"
+                SQL = "DELETE FROM modificarfichajes"
+                SQL = SQL & vWhere & " AND inicio= '" & Format(AdoAux(Index).Recordset!Inicio, "hh:mm:ss") & "'"
             End If
             
     End Select
@@ -4088,7 +4127,7 @@ Dim VEliminar As Boolean
     If VEliminar Then
         NumRegElim = AdoAux(Index).Recordset.AbsolutePosition
         TerminaBloquear
-        conn.Execute Sql
+        conn.Execute SQL
         ' *** si n'hi han tabs sense datagrid, posar l'If ***
         If Index <> 3 Then _
             CargaGrid Index, True

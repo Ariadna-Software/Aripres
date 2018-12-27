@@ -155,6 +155,12 @@ Attribute frmc.VB_VarHelpID = -1
 Dim Sql As String
 
 Private Sub cmdAceptar_Click()
+    Screen.MousePointer = vbHourglass
+    HacerProceso
+    Screen.MousePointer = vbDefault
+End Sub
+
+Private Sub HacerProceso()
 Dim Co As Collection
 Dim MasDeUnDiaDiferencia As Boolean
 Dim UltimoDia As Date
@@ -300,6 +306,30 @@ Dim F As Date
         End If
     
     End If
+    
+    
+    If vEmpresa.Reloj2 > 0 Then
+        'MAS DE UN RELOJ. Coopic.
+        'Veamos que las entradas salidas se producen sobre un mismo reloj
+        If TieneErroresEntradaSalidaDiferentesRelojes Then
+            SeHaHechoPregunta = True
+            Sql = "Trabajadores con entradas /salidas en diferentes relojes"
+            Sql = Sql & vbCrLf & vbCrLf & "¿Desea continuar igualmente?"
+            Sql = MsgBox(Sql, vbQuestion + vbYesNoCancel + vbDefaultButton2)
+            If CByte(Sql) <> vbYes Then
+                If CByte(Sql) = vbNo Then
+                    If MsgBox("Quiere ver marcajes del dia " & Text1(0).Text & "?", vbQuestion + vbYesNo) = vbYes Then
+                
+                        frmTareaActual.QueFecha = CDate(Text1(0).Text)
+                        frmTareaActual.Opcion = 1
+                        frmTareaActual.Show vbModal
+                    End If
+                End If
+                Exit Sub
+            End If
+        End If
+    End If
+    
     
     'Pregunta
     If Not SeHaHechoPregunta Then
@@ -643,3 +673,48 @@ Private Sub ObtenerSiguienteFechaProceso()
     
     
 End Sub
+
+
+Private Function TieneErroresEntradaSalidaDiferentesRelojes() As Boolean
+Dim B As Boolean
+Dim Par As Boolean
+Dim Rel As Integer
+
+    On Error GoTo eTieneErroresEntradaSalidaDiferentesRelojes
+    TieneErroresEntradaSalidaDiferentesRelojes = False
+    Set miRsAux = Nothing
+    Set miRsAux = New ADODB.Recordset
+    NumRegElim = -1
+    Sql = "SELECT * from entradafichajes where fecha= " & DBSet(Text1(0).Text, "F") & " ORDER BY idtrabajador ,hora"
+    miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not miRsAux.EOF Then
+        B = True
+        While B
+            If miRsAux!idTrabajador <> NumRegElim Then
+                NumRegElim = miRsAux!idTrabajador
+                Par = False
+            End If
+            If Par Then
+                If Rel <> miRsAux!Reloj Then
+                    B = False
+                    TieneErroresEntradaSalidaDiferentesRelojes = True
+                End If
+                Par = False
+            Else
+                Rel = miRsAux!Reloj
+                Par = True
+            End If
+            If B Then
+                miRsAux.MoveNext
+                B = Not miRsAux.EOF
+            End If
+        Wend
+    End If
+    miRsAux.Close
+eTieneErroresEntradaSalidaDiferentesRelojes:
+    If Err.Number <> 0 Then
+        MuestraError Err.Number, Err.Description
+        Set miRsAux = Nothing
+        Set miRsAux = New ADODB.Recordset
+    End If
+End Function

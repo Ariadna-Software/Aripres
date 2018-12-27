@@ -3,37 +3,37 @@ Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
 Begin VB.Form frmBuscaGrid 
    Caption         =   "Formulario de búsqueda"
-   ClientHeight    =   5655
+   ClientHeight    =   6180
    ClientLeft      =   60
    ClientTop       =   345
-   ClientWidth     =   7605
+   ClientWidth     =   8985
    Icon            =   "frmBuscaGrid.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   5655
-   ScaleWidth      =   7605
+   ScaleHeight     =   6180
+   ScaleWidth      =   8985
    StartUpPosition =   2  'CenterScreen
    Begin MSDataGridLib.DataGrid DataGrid1 
       Bindings        =   "frmBuscaGrid.frx":058A
-      Height          =   3590
+      Height          =   4185
       Left            =   120
       TabIndex        =   1
       Top             =   1320
       Visible         =   0   'False
-      Width           =   7275
-      _ExtentX        =   12832
-      _ExtentY        =   6324
+      Width           =   8715
+      _ExtentX        =   15372
+      _ExtentY        =   7382
       _Version        =   393216
       AllowUpdate     =   0   'False
       BorderStyle     =   0
       ColumnHeaders   =   -1  'True
       HeadLines       =   1
-      RowHeight       =   15
+      RowHeight       =   19
       RowDividerStyle =   1
       BeginProperty HeadFont {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Name            =   "Verdana"
+         Size            =   9
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -41,8 +41,8 @@ Begin VB.Form frmBuscaGrid
          Strikethrough   =   0   'False
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
+         Name            =   "Verdana"
+         Size            =   9.75
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -87,8 +87,8 @@ Begin VB.Form frmBuscaGrid
    End
    Begin MSAdodcLib.Adodc Adodc1 
       Height          =   375
-      Left            =   1560
-      Top             =   5160
+      Left            =   1200
+      Top             =   5760
       Visible         =   0   'False
       Width           =   2535
       _ExtentX        =   4471
@@ -134,24 +134,51 @@ Begin VB.Form frmBuscaGrid
    End
    Begin VB.CommandButton cmdRegresar 
       Caption         =   "&Regresar"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   435
-      Left            =   4440
+      Left            =   5520
       TabIndex        =   2
-      Top             =   5100
+      Top             =   5580
       Width           =   1455
    End
    Begin VB.CommandButton cmdSalir 
       Cancel          =   -1  'True
       Caption         =   "&Salir"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   435
-      Left            =   6000
+      Left            =   7080
       TabIndex        =   3
-      Top             =   5100
+      Top             =   5580
       Width           =   1455
    End
    Begin VB.TextBox Text1 
       Enabled         =   0   'False
-      Height          =   345
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   360
       Left            =   120
       TabIndex        =   0
       Top             =   840
@@ -159,6 +186,15 @@ Begin VB.Form frmBuscaGrid
    End
    Begin VB.Label Label3 
       Caption         =   "Búsqueda"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
       Height          =   255
       Left            =   120
       TabIndex        =   6
@@ -169,8 +205,8 @@ Begin VB.Form frmBuscaGrid
       Alignment       =   1  'Right Justify
       Caption         =   "TITULO"
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   18
+         Name            =   "Verdana"
+         Size            =   15.75
          Charset         =   0
          Weight          =   700
          Underline       =   0   'False
@@ -181,7 +217,7 @@ Begin VB.Form frmBuscaGrid
       Left            =   120
       TabIndex        =   4
       Top             =   0
-      Width           =   7215
+      Width           =   8655
    End
    Begin VB.Label Label2 
       AutoSize        =   -1  'True
@@ -220,7 +256,7 @@ Public vTabla As String
 Public vCampos As String 'columnas en la tabla.Empipados
 Public vSelElem As Integer
 Public vTitulo As String
-Public vSQL As String
+Public vSql As String
 'Dentro de campos vendra cada grupo separado por ·
 'Y cada grupo sera Desc|Tabla|Tipo|Porcentaje de ancho
 Public vDevuelve As String 'Empipados los campos que devuelve
@@ -244,7 +280,7 @@ Private DbClick As Boolean
 
 Private Sub Adodc1_MoveComplete(ByVal adReason As ADODB.EventReasonEnum, ByVal pError As ADODB.Error, adStatus As ADODB.EventStatusEnum, ByVal pRecordset As ADODB.Recordset)
 Dim columna As String
-Dim j As Byte
+Dim J As Byte
 
     If busca Then
         busca = False
@@ -257,22 +293,26 @@ Dim j As Byte
 
     If adodc1.Recordset.RecordCount > 0 Then
         columna = CabTablas(vSelElem)
-        j = InStr(1, columna, ".")
-        If j > 0 Then columna = Mid(columna, j + 1)
+        J = InStr(1, columna, ".")
+        If J > 0 Then columna = Mid(columna, J + 1)
         '---- Añade: Laura 28/04/2005
-        j = InStr(1, columna, " as ") 'si columna tiene if o case renombramos ( as nomcolum )
-        If j > 0 Then
-            columna = Mid(columna, j + 4)
+        J = InStr(1, columna, " as ") 'si columna tiene if o case renombramos ( as nomcolum )
+        If J > 0 Then
+            columna = Mid(columna, J + 4)
             columna = Trim(columna)
         End If
         '---- Modifica: LAura 27/04/2005 ------------------------
         '---- se añade el formato del campo
         'Antes:
         'Text1.Text = Adodc1.Recordset.Fields(columna)
-        If FormatoCampo(vSelElem) <> "" Then
-            Text1.Text = Format(adodc1.Recordset.Fields(columna), FormatoCampo(vSelElem))
+        If adodc1.Recordset.EOF Then
+        
         Else
-            Text1.Text = DBLet(adodc1.Recordset.Fields(columna), TipoCampo(vSelElem))
+            If FormatoCampo(vSelElem) <> "" Then
+                Text1.Text = Format(adodc1.Recordset.Fields(columna), FormatoCampo(vSelElem))
+            Else
+                Text1.Text = DBLet(adodc1.Recordset.Fields(columna), TipoCampo(vSelElem))
+            End If
         End If
         '--------------------------------------------------------
     End If
@@ -280,9 +320,9 @@ End Sub
 
 Private Sub cmdRegresar_Click()
 Dim vDes As String
-Dim i, j As Integer
+Dim i, J As Integer
 Dim k As Byte
-Dim V As String
+Dim v As String
 Dim NomColum As String
 
 If adodc1.Recordset Is Nothing Then Exit Sub
@@ -290,16 +330,16 @@ If adodc1.Recordset.EOF Then Exit Sub
 i = 0
 vDes = ""
 Do
-    j = i + 1
-    i = InStr(j, vDevuelve, "|")
+    J = i + 1
+    i = InStr(J, vDevuelve, "|")
     If i > 0 Then
-        V = Mid(vDevuelve, j, i - j)
-        If V <> "" Then
-            If IsNumeric(V) Then
-                NomColum = CabTablas(Val(V))
+        v = Mid(vDevuelve, J, i - J)
+        If v <> "" Then
+            If IsNumeric(v) Then
+                NomColum = CabTablas(Val(v))
                 k = InStr(1, NomColum, ".")
                 If k > 0 Then NomColum = Mid(NomColum, k + 1)
-                If Val(V) <= TotalArray Then vDes = vDes & adodc1.Recordset(NomColum) & "|"
+                If Val(v) <= TotalArray Then vDes = vDes & adodc1.Recordset(NomColum) & "|"
             End If
         End If
     End If
@@ -338,13 +378,13 @@ End If
 End Sub
 
 Private Sub Form_Activate()
-Dim Ok As Boolean
+Dim OK As Boolean
 If PrimeraVez Then
     PrimeraVez = False
     Screen.MousePointer = vbHourglass
-    Ok = ObtenerTamanyosArray
-    If Ok Then Ok = SeparaCampos
-    If Not Ok Then
+    OK = ObtenerTamanyosArray
+    If OK Then OK = SeparaCampos
+    If Not OK Then
         'Error en SQL
         'Salimos
         Unload Me
@@ -367,20 +407,20 @@ Private Function SeparaCampos() As Boolean
 Dim cad As String
 Dim Grupo As String
 Dim i As Integer
-Dim j As Integer
-Dim c As Integer 'Contrador dentro del array
+Dim J As Integer
+Dim C As Integer 'Contrador dentro del array
 
 SeparaCampos = False
 i = 0
-c = 0
+C = 0
 Do
-    j = i + 1
-    i = InStr(j, vCampos, "·")
+    J = i + 1
+    i = InStr(J, vCampos, "·")
     If i > 0 Then
-        Grupo = Mid(vCampos, j, i - j)
+        Grupo = Mid(vCampos, J, i - J)
         'Y en la martriz
-        InsertaGrupo Grupo, c
-        c = c + 1
+        InsertaGrupo Grupo, C
+        C = C + 1
     End If
 Loop Until i = 0
 SeparaCampos = True
@@ -388,27 +428,27 @@ End Function
 
 Private Sub InsertaGrupo(Grupo As String, Contador As Integer)
 Dim i As Integer
-Dim j As Integer
+Dim J As Integer
 Dim cad As String
-j = 0
+J = 0
 
 
     cad = ""
     
     'Cabeceras
-    j = InStr(1, Grupo, "|")
-    If j > 0 Then
-        cad = Mid(Grupo, 1, j - 1)
-        Grupo = Mid(Grupo, j + 1)
-        j = 1
+    J = InStr(1, Grupo, "|")
+    If J > 0 Then
+        cad = Mid(Grupo, 1, J - 1)
+        Grupo = Mid(Grupo, J + 1)
+        J = 1
     End If
     Cabeceras(Contador) = cad
     
     'TAblas BD
-    j = InStr(1, Grupo, "|")
-    If j > 0 Then
-        cad = Mid(Grupo, 1, j - 1)
-        Grupo = Mid(Grupo, j + 1)
+    J = InStr(1, Grupo, "|")
+    If J > 0 Then
+        cad = Mid(Grupo, 1, J - 1)
+        Grupo = Mid(Grupo, J + 1)
     Else
         cad = ""
         Grupo = ""
@@ -417,10 +457,10 @@ j = 0
     CabTablas(Contador) = cad
     
     'El tipo
-    j = InStr(1, Grupo, "|")
-    If j > 0 Then
-        cad = Mid(Grupo, 1, j - 1)
-        Grupo = Mid(Grupo, j + 1)
+    J = InStr(1, Grupo, "|")
+    If J > 0 Then
+        cad = Mid(Grupo, 1, J - 1)
+        Grupo = Mid(Grupo, J + 1)
         Else
             cad = ""
             Grupo = ""
@@ -428,10 +468,10 @@ j = 0
     TipoCampo(Contador) = cad
     
     'El formato
-    j = InStr(1, Grupo, "|")
-    If j > 0 Then
-        cad = Mid(Grupo, 1, j - 1)
-        Grupo = Mid(Grupo, j + 1)
+    J = InStr(1, Grupo, "|")
+    If J > 0 Then
+        cad = Mid(Grupo, 1, J - 1)
+        Grupo = Mid(Grupo, J + 1)
     Else
         cad = ""
         Grupo = ""
@@ -446,18 +486,18 @@ End Sub
 
 Private Function ObtenerTamanyosArray() As Boolean
 Dim i As Integer
-Dim j As Integer
+Dim J As Integer
 Dim Grupo As String
 
 ObtenerTamanyosArray = False
 'Primero a los campos de la tabla
 TotalArray = -1
-j = 0
+J = 0
 Do
-    i = j + 1
-    j = InStr(i, vCampos, "·")
-    If j > 0 Then TotalArray = TotalArray + 1
-Loop Until j = 0
+    i = J + 1
+    J = InStr(i, vCampos, "·")
+    If J > 0 Then TotalArray = TotalArray + 1
+Loop Until J = 0
 If TotalArray < 0 Then Exit Function
 'Las redimensionaremos
 ReDim Cabeceras(TotalArray)
@@ -483,7 +523,7 @@ Dim anc As Single
         cad = cad & CabTablas(i)
     Next i
     cad = "SELECT " & cad & " FROM " & vTabla
-    If vSQL <> "" Then cad = cad & " WHERE " & vSQL
+    If vSql <> "" Then cad = cad & " WHERE " & vSql
     '---- Modifica: Laura 28/04/2005  ----------------------
     'antes:
     'cad = cad & " ORDER BY " & CabTablas(vSelElem)
@@ -494,7 +534,7 @@ Dim anc As Single
     '--------------------------------------------------------
     
     DataGrid1.AllowRowSizing = False
-    adodc1.ConnectionString = Conn
+    adodc1.ConnectionString = conn
     adodc1.RecordSource = cad
     adodc1.Refresh
     
@@ -563,6 +603,7 @@ End Sub
 Private Sub Text1_Change()
 Dim SQLDBGRID As String
 Dim i As Byte
+Dim C As String
 
     If DbClick Then
         DbClick = False
@@ -600,7 +641,11 @@ Dim i As Byte
             End If
             '-----------------------------------------------------
         Case "T"
-            SQLDBGRID = SQLDBGRID & " >= '" & Trim(Text1) & "'"
+            If Trim(Text1) = "" Then
+                SQLDBGRID = SQLDBGRID & " <>''"
+            Else
+                SQLDBGRID = SQLDBGRID & " like '%" & Trim(Text1) & "%'"
+            End If
     End Select
     Screen.MousePointer = vbHourglass
     
@@ -611,8 +656,8 @@ Dim i As Byte
 End Sub
 
 Private Sub Text1_GotFocus()
-Text1.SelStart = 0
-Text1.SelLength = Len(Text1.Text)
+    Text1.SelStart = 0
+    Text1.SelLength = Len(Text1.Text)
 End Sub
 
 Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)

@@ -339,7 +339,7 @@ Begin VB.Form frmTareaActual
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   4
+         NumListImages   =   5
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":8DC9
             Key             =   ""
@@ -354,6 +354,10 @@ Begin VB.Form frmTareaActual
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":9E0F
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmTareaActual.frx":FA31
             Key             =   ""
          EndProperty
       EndProperty
@@ -428,7 +432,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdImpTarea 
          Height          =   375
          Left            =   3720
-         Picture         =   "frmTareaActual.frx":FA31
+         Picture         =   "frmTareaActual.frx":10443
          Style           =   1  'Graphical
          TabIndex        =   29
          Top             =   300
@@ -478,7 +482,7 @@ Begin VB.Form frmTareaActual
          Height          =   240
          Index           =   0
          Left            =   720
-         Picture         =   "frmTareaActual.frx":11AA3
+         Picture         =   "frmTareaActual.frx":124B5
          ToolTipText     =   "Buscar fecha"
          Top             =   120
          Width           =   240
@@ -579,7 +583,7 @@ Attribute frmB.VB_VarHelpID = -1
 Dim PrimeraVez As Boolean
 Dim Tamanyo As Long
 Dim Contador As Long
-Dim cad As String
+Dim Cad As String
 Dim Modifi As Boolean
 
 
@@ -746,12 +750,12 @@ Dim valor As Long
                 MsgBox "Campo fecha incorrecto", vbExclamation
                 Exit Sub
             End If
-            cad = "Codigo|idTrabajador|N|00000|15·"
-            cad = cad & "Nombre|nomtrabajador|T||60·"
-            cad = cad & "Tarjeta|numtarjeta|T||20·"
+            Cad = "Codigo|idTrabajador|N|00000|15·"
+            Cad = Cad & "Nombre|nomtrabajador|T||60·"
+            Cad = Cad & "Tarjeta|numtarjeta|T||20·"
             Set frmB = New frmBuscaGrid
             frmB.vTabla = "Trabajadores"
-            frmB.vCampos = cad
+            frmB.vCampos = Cad
             frmB.vDevuelve = "0|1|"
             frmB.vSelElem = 0
             frmB.vTitulo = "TRABAJADORES"
@@ -760,9 +764,10 @@ Dim valor As Long
             
             
             If Contador > 0 Then
-                cad = "Va a crear marcajes para el trabajador: " & Me.Tag
-                cad = cad & "   ¿Desea continuar?"
-                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
+                Cad = "Va a crear marcajes para el trabajador: " & Me.Tag
+                Cad = Cad & "   ¿Desea continuar?"
+                'Agosto 2018. NO hago la pregunta
+                'If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Contador = -1
             End If
         End If
         If Contador < 1 Then Exit Sub
@@ -772,13 +777,13 @@ Dim valor As Long
         
     Case 2
         'ELIMINAR
-                cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
-                cad = cad & "   ¿Desea continuar?"
-                If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+                Cad = "Va a eliminar ""TODOS"" los marcajes para el trabajador: " & ListView2.SelectedItem.SubItems(1) & " en la fecha: " & Text1(1).Text
+                Cad = Cad & "   ¿Desea continuar?"
+                If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
                     
-                cad = "DELETE from EntradaFichajes WHERE idTrabajador=" & ListView2.SelectedItem.Text
-                cad = cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
-                conn.Execute cad
+                Cad = "DELETE from EntradaFichajes WHERE idTrabajador=" & ListView2.SelectedItem.Text
+                Cad = Cad & " AND Fecha = '" & Format(CDate(Text1(1).Text), FormatoFecha) & "'"
+                conn.Execute Cad
                 Modifi = True
     End Select
     If Modifi Then
@@ -820,19 +825,19 @@ Dim idCal As String
     If vEmpresa.CreaCalDiariaTra Then
         'Por ejemplo TEINSA.
         'Cad trabajador tienen una entrada en calendariot
-        cad = DevuelveDesdeBD("idhorario", "calendariot", "idTrabajador", vM.idTrabajador, "N")
+        Cad = DevuelveDesdeBD("idhorario", "calendariot", "idTrabajador", vM.idTrabajador, "N")
     Else
         
         'En alzira los horarios no van POR trabajador, si no que lo tiene el calendario
-        cad = "trabajadores.idcal=calendariol.idcal AND idtrabajador"
-        cad = DevuelveDesdeBD("idhorario", "trabajadores,calendariol", cad, vM.idTrabajador, "N")
+        Cad = "trabajadores.idcal=calendariol.idcal AND idtrabajador"
+        Cad = DevuelveDesdeBD("idhorario", "trabajadores,calendariol", Cad, vM.idTrabajador, "N")
     End If
     
     
-    If cad = "" Then
+    If Cad = "" Then
         Contador = 0
     Else
-        Contador = Val(cad)
+        Contador = Val(Cad)
     End If
     If Contador < 1 Then
         MsgBox "Error obteniendo horario", vbExclamation
@@ -873,17 +878,17 @@ Private Sub Command3_Click(Index As Integer)
     Screen.MousePointer = vbHourglass
     Contador = 0
     'Añadiremos en tmpCambioHor
-    cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
-    conn.Execute cad
+    Cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
+    conn.Execute Cad
     espera 0.2
-    cad = "INSERT INTO tmpCambioHor values ("
+    Cad = "INSERT INTO tmpCambioHor values ("
     For Tamanyo = 1 To ListView2.ListItems.Count
         If ListView2.ListItems(Tamanyo).Selected Then
-            conn.Execute cad & ListView2.ListItems(Tamanyo).Text & "," & vUsu.Codigo & ")"
+            conn.Execute Cad & ListView2.ListItems(Tamanyo).Text & "," & vUsu.Codigo & ")"
             Contador = Contador + 1
         End If
     Next Tamanyo
-    If Contador > 0 Then
+ '   If Contador > 0 Then
             
                
          'Segun index
@@ -896,7 +901,7 @@ Private Sub Command3_Click(Index As Integer)
         frmCambioHorario2.Fecha = CDate(Me.Text1(1).Text)
         frmCambioHorario2.Show vbModal
         PonMarcajes
-    End If
+  '  End If
     
     Screen.MousePointer = vbDefault
 End Sub
@@ -940,8 +945,8 @@ Private Sub Form_Load()
     Combo1.AddItem "Sección.."
     Combo1.ListIndex = 0
     Set miRsAux = New ADODB.Recordset
-    cad = "select idseccion,nombre from secciones"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "select idseccion,nombre from secciones"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
         Combo1.AddItem miRsAux!Nombre
         Combo1.ItemData(Combo1.NewIndex) = miRsAux!IdSeccion
@@ -1340,9 +1345,9 @@ End Sub
 
 Private Function CodigoCorrecto(Trabajador As Boolean, Marcaje As String, valor As Long) As Boolean
 Dim Sql As String
-Dim RT As ADODB.Recordset
+Dim Rt As ADODB.Recordset
 
-    Set RT = New ADODB.Recordset
+    Set Rt = New ADODB.Recordset
     CodigoCorrecto = False
     If Trabajador Then
         Sql = "Select idTrabajador from Trabajadores where numtarjeta = '" & Marcaje & "';"
@@ -1351,15 +1356,15 @@ Dim RT As ADODB.Recordset
     End If
 
         
-    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not RT.EOF Then
+    Rt.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not Rt.EOF Then
         CodigoCorrecto = True
-        valor = RT.Fields(0)
+        valor = Rt.Fields(0)
     Else
         valor = -1
     End If
-    RT.Close
-    Set RT = Nothing
+    Rt.Close
+    Set Rt = Nothing
     
 End Function
 
@@ -1368,23 +1373,23 @@ End Function
 'Devolvera si hay k insertar o no
 Private Function DevuelveUltimo(Trabajador As Long, Hora As Date, Tarea As Long) As Boolean
 Dim Sql As String
-Dim RT As ADODB.Recordset
+Dim Rt As ADODB.Recordset
 
-    Set RT = New ADODB.Recordset
+    Set Rt = New ADODB.Recordset
     Sql = "Select * from tmpTareasRealizadas WHERE Trabajador = " & Trabajador
     Sql = Sql & " AND Hora<='" & Format(Text2.Text, "hh:mm") & "' ORDER BY Hora"
-    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Rt.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     DevuelveUltimo = False
-    If Not RT.EOF Then
+    If Not Rt.EOF Then
         Do
-            Hora = RT!Hora
-            Tarea = RT!Tarea
-            RT.MoveNext
-        Loop Until RT.EOF
+            Hora = Rt!Hora
+            Tarea = Rt!Tarea
+            Rt.MoveNext
+        Loop Until Rt.EOF
         DevuelveUltimo = True
     End If
-    RT.Close
-    Set RT = Nothing
+    Rt.Close
+    Set Rt = Nothing
 End Function
 
 
@@ -1444,10 +1449,11 @@ Private Sub PonMarcajes()
     'Dos recordsets
     Dim i As Integer
     Dim RS As ADODB.Recordset
-    Dim RT As ADODB.Recordset
+    Dim Rt As ADODB.Recordset
     Dim Sql As String
     Dim Item As ListItem
-    
+    Dim RelojAnterior As Integer
+    Dim RelojesIncorrectos As Boolean
     Dim HoraPintar As Date
     
     ListView2.ListItems.Clear
@@ -1467,26 +1473,31 @@ Private Sub PonMarcajes()
     End If
     
     Set RS = New ADODB.Recordset
-    Set RT = New ADODB.Recordset
+    Set Rt = New ADODB.Recordset
     RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     
-    Sql = "horareal"
+    
     If vEmpresa.HorarioNocturno2 Then
         
-            Sql = "if(horareal<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(horareal)>24,ADDTIME(hora , '-24:00:00' ),horareal))"
+            Sql = "if(horareal<'0:00:00',ADDTIME(hora , '24:00:00' ),if(hour(horareal)>=24,ADDTIME(hora , '-24:00:00' ),horareal))"
+
+    Else
+        'Puede tener fichajes mas alla de las 24:00
+        Sql = "if(hour(horareal)>=24,ADDTIME(hora , '-24:00:00' ),horareal)"
 
     End If
     Sql = "Select EntradaFichajes.*," & Sql
     Sql = Sql & " as acabalga FROM EntradaFichajes WHERE Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "'"
     Sql = Sql & " AND idTrabajador = "
     While Not RS.EOF
-        RT.Open Sql & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Rt.Open Sql & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         i = 2
         
+        RelojesIncorrectos = False
         Set Item = ListView2.ListItems.Add(, , RS.Fields(0))
         Item.SubItems(1) = RS.Fields(1)
-        While Not RT.EOF
+        While Not Rt.EOF
             'If i < 8 Then  He puesto 2 mas
             If i < 17 Then
                 
@@ -1498,24 +1509,41 @@ Private Sub PonMarcajes()
                 '    HoraPintar = RT!HoraReal
                 '
                 'End If
-                Item.SubItems(i) = Format(RT!acabalga, "hh:mm")
+                Item.SubItems(i) = Format(Rt!acabalga, "hh:mm")
+                
+                If vEmpresa.Reloj2 > 0 Then
+                    If (i Mod 2) = 0 Then
+                        RelojAnterior = Rt!Reloj
+                    Else
+                        If Rt!Reloj <> RelojAnterior Then RelojesIncorrectos = True
+                    End If
+                End If
             End If
             i = i + 1
-            RT.MoveNext
+            Rt.MoveNext
         Wend
         
-        'El icono
+        'El icono. Si son pares, y hay mas de un tipo de reloj(biostar 2 en coopic), las entradas salidas deberian ser por reloj
+        'con lo cual si alguna entrad salid difiere de reloj, lo indicamos con el icono 5
+        
         If i Mod 2 = 0 Then
-            Item.SmallIcon = 3
+        
+            If RelojesIncorrectos Then
+                Item.SmallIcon = 5  'Pares pero distintos relojes E/S
+                Item.ToolTipText = "Diferentes relojes"
+            Else
+                Item.SmallIcon = 3 'OK. Todo
+            End If
         Else
-            Item.SmallIcon = 4
+            Item.SmallIcon = 4  'Numero IMpar
+            Item.ToolTipText = "Falta salida"
         End If
-        RT.Close
+        Rt.Close
         RS.MoveNext
     Wend
     RS.Close
     Set RS = Nothing
-    Set RT = Nothing
+    Set Rt = Nothing
 End Sub
 
 

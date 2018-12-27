@@ -1083,7 +1083,7 @@ Begin VB.Form frmRevision
       Height          =   240
       Index           =   0
       Left            =   8640
-      Picture         =   "frmRevision1.frx":E039
+      Picture         =   "frmRevision1.frx":81E9
       ToolTipText     =   "Insertar"
       Top             =   3840
       Width           =   240
@@ -1192,7 +1192,7 @@ Begin VB.Form frmRevision
    Begin VB.Image Image3 
       Height          =   240
       Left            =   4560
-      Picture         =   "frmRevision1.frx":E5C3
+      Picture         =   "frmRevision1.frx":8773
       Top             =   3840
       Visible         =   0   'False
       Width           =   240
@@ -2111,7 +2111,7 @@ If SiNo Then
             
             espera 0.05
             'Si tiene produccion
-            If vEmpresa.reloj = vbKimaldi Then
+            If vEmpresa.Reloj = vbKimaldi Then
                ' ImpFechaIni = "#" & Format(vM.Fecha, "yyyy/mm/dd") & "#"
                ' frmProcMarcajes2.ListaTrabajadores = vM.idTrabajador & "|"
                ' frmProcMarcajes2.Opcion = 1
@@ -2982,9 +2982,9 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     If Not SoloIncidenciasGeneradas Then
         Sql = "select hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
         Sql = Sql & ",hour(horareal) lahorar,minute(horareal) minutosr,second(horareal) segundosr"
-        Sql = Sql & " ,entradamarcajes.idInci ,nominci,if(hora<'0:00:00',1,0) Negativa,hora horabd,horareal "
+        Sql = Sql & " ,entradamarcajes.idInci ,nominci,if(hora<'0:00:00',1,0) Negativa,hora horabd,horareal,reloj "
         Sql = Sql & " from entradamarcajes,incidencias where entradamarcajes.idinci=incidencias.idinci AND "
-        Sql = Sql & " idmarcaje=" & adodc1.Recordset!Entrada & " ORDER BY hora"
+        Sql = Sql & " idmarcaje=" & adodc1.Recordset!Entrada & " ORDER BY horareal,reloj"
         RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not RS.EOF
         
@@ -3022,6 +3022,13 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
             Sql = Format(i, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
             End If
             Set IT = ListView3.ListItems.Add(, , Sql)
+            
+            If vEmpresa.Reloj2 > 0 Then
+                If DBLet(RS!Reloj, "N") > 0 Then
+                    IT.ToolTipText = "Biostar2"
+                    IT.SmallIcon = 4
+                End If
+            End If
             
             RS.MoveNext
         Wend

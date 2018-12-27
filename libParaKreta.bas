@@ -14,7 +14,7 @@ Public GesHuellaDB As BaseDatos2
 
 '    Hay que comentar este trozo
 Public ColK2 As ColKreta2    'CON KRETA
-'Public ColK2
+'Public ColK2                'SIN  "
 
 
 Public Sub CerrarConexionesKreta()

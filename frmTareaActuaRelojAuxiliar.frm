@@ -244,7 +244,7 @@ Begin VB.Form frmTareaActuaRelojAuxiliar
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   4
+         NumListImages   =   5
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActuaRelojAuxiliar.frx":0000
             Key             =   ""
@@ -259,6 +259,10 @@ Begin VB.Form frmTareaActuaRelojAuxiliar
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActuaRelojAuxiliar.frx":1046
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmTareaActuaRelojAuxiliar.frx":6C68
             Key             =   ""
          EndProperty
       EndProperty
@@ -591,7 +595,9 @@ Private Sub PonMarcajes()
     Dim RT As ADODB.Recordset
     Dim SQL As String
     Dim Item As ListItem
-    
+    Dim HN As Date
+    Dim HT As Currency
+    Dim Difer As Currency
     Dim HoraPintar As Date
     
     ListView2.ListItems.Clear
@@ -629,6 +635,7 @@ Private Sub PonMarcajes()
         Item.SubItems(1) = RS.Fields(1)
         Item.SubItems(2) = " "
         i = 3
+        HT = 0
         While Not RT.EOF
             
             If i < MaxCol + 3 Then
@@ -645,15 +652,37 @@ Private Sub PonMarcajes()
             Else
                 Item.SubItems(2) = "*"
             End If
+            
+            If i > 3 Then
+                'Se calcula cada dos. Primero entrada y segundo salida
+                If i Mod 2 = 0 Then
+                    Difer = DateDiff("n", HN, RT!acabalga)
+                    HT = HT + Difer
+                End If
+            End If
+            HN = RT!acabalga
             i = i + 1
             RT.MoveNext
         Wend
         
         'El icono
         If i Mod 2 = 0 Then
-            Item.SmallIcon = 3
+            
+                Item.SmallIcon = 4
+                Item.ToolTipText = "Impares"
+                
+            
         Else
-            Item.SmallIcon = 4
+        
+            If HT > 60 Then
+                'Mas de una HORA de parada
+                
+                Item.SmallIcon = 5
+                Item.ToolTipText = "> 1 hora.     " & HT & " min."
+            Else
+                Item.ToolTipText = ""
+                Item.SmallIcon = 3
+            End If
         End If
         RT.Close
         RS.MoveNext

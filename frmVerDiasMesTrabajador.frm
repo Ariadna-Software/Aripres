@@ -711,8 +711,16 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
-        Text4(2).Visible = vEmpresa.QueEmpresa = 4
+        Text4(2).Visible = False
+        If vEmpresa.QueEmpresa = 4 Then
+            Text4(2).Visible = True
+            ListView1.ColumnHeaders(4).Text = "extra"
+            
+        End If
         Text3.Text = ""
+        
+        
+        
         CargaGrid
         Label1.Caption = RecuperaValor(Trabajador, 1)
         Caption = "Datos: " & Label1.Caption
@@ -720,7 +728,7 @@ Private Sub Form_Load()
         Shape1.Visible = JornadasSemanales
         FrameMedias.Visible = Not JornadasSemanales And MediosDias <> ""
         FrameJornadasSemanales.Left = 4440
-        
+        Me.Command1.Cancel = True
 End Sub
 
 
@@ -737,7 +745,7 @@ Dim Dias As Currency
 Dim Semana As Integer
 Dim ContadorMier As Byte
 Dim ContadorSab As Byte
-Dim K As Integer
+Dim k As Integer
 Dim H As Currency
 
 Dim IdInci As Integer
@@ -815,6 +823,7 @@ Dim ExcesoDefecto As Boolean
         'Dias trbajados
         Text1(0).Tag = Text1(0).Tag + 1
         Set itmX = ListView1.ListItems.Add
+        itmX.ToolTipText = ""
         cad = Format(RS!Fecha, "dd/mm/yyyy")
         i = Val(Format(RS!Fecha, "ww"))
         

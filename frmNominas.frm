@@ -398,7 +398,7 @@ Private CadenaConsulta As String
 Dim CadAncho As Boolean  'Para cuando llamemos al al form de lineas
 Dim Modo As Byte
 Dim JJ As Integer
-Dim Sql As String
+Dim SQL As String
 
 '----------------------------------------------
 '----------------------------------------------
@@ -565,7 +565,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim Sql As String
+Dim SQL As String
     On Error GoTo Error2
     'Ciertas comprobaciones
     If adodc1.Recordset.EOF Then Exit Sub
@@ -574,15 +574,15 @@ Dim Sql As String
  
     
     '### a mano
-    Sql = "Seguro que desea eliminar la baja :"
-    Sql = Sql & vbCrLf & "Trabajador: " & adodc1.Recordset.Fields(4)
-    Sql = Sql & vbCrLf & "Codigo: " & adodc1.Recordset.Fields(3)
-    Sql = Sql & vbCrLf & "Fecha baja: " & adodc1.Recordset.Fields(0)
-    If MsgBox(Sql, vbQuestion + vbYesNoCancel) = vbYes Then
+    SQL = "Seguro que desea eliminar la baja :"
+    SQL = SQL & vbCrLf & "Trabajador: " & adodc1.Recordset.Fields(4)
+    SQL = SQL & vbCrLf & "Codigo: " & adodc1.Recordset.Fields(3)
+    SQL = SQL & vbCrLf & "Fecha baja: " & adodc1.Recordset.Fields(0)
+    If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
         'Hay que eliminar
-        Sql = "Delete from bajas where idtrab = " & adodc1.Recordset.Fields(3)
-        Sql = Sql & " AND FechaBaja = " & DBSet(adodc1.Recordset.Fields(0), "F")
-        conn.Execute Sql
+        SQL = "Delete from bajas where idtrab = " & adodc1.Recordset.Fields(3)
+        SQL = SQL & " AND FechaBaja = " & DBSet(adodc1.Recordset.Fields(0), "F")
+        conn.Execute SQL
         espera 0.5
         CargaGrid ""
         adodc1.Recordset.Cancel
@@ -675,22 +675,22 @@ End Sub
 
 
 Private Sub cmdTr_Click()
-    Sql = "Codigo|idTrabajador|N||15·"
-    Sql = Sql & "Nombre|nomtrabajador|T||60·"
-    Sql = Sql & "Tarjeta|numtarjeta|T||20·"
+    SQL = "Codigo|idTrabajador|N||15·"
+    SQL = SQL & "Nombre|nomtrabajador|T||60·"
+    SQL = SQL & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = Sql
+    frmB.vCampos = SQL
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
-    Sql = ""
+    SQL = ""
     frmB.Show vbModal
     Set frmB = Nothing
-    If Sql <> "" Then
+    If SQL <> "" Then
     
-        txtAux(1).Text = RecuperaValor(Sql, 1)
-        txtAux(2).Text = RecuperaValor(Sql, 2)
+        txtAux(1).Text = RecuperaValor(SQL, 1)
+        txtAux(2).Text = RecuperaValor(SQL, 2)
     End If
 End Sub
 
@@ -752,7 +752,7 @@ Private Sub frmC_DatoSeleccionado(CadenaSeleccion As String)
 End Sub
 
 Private Sub frmB_Selecionado(CadenaDevuelta As String)
-    Sql = CadenaDevuelta
+    SQL = CadenaDevuelta
 End Sub
 
 Private Sub mnBuscar_Click()
@@ -821,20 +821,20 @@ Private Sub DespalzamientoVisible(bol As Boolean)
     Next i
 End Sub
 
-Private Sub CargaGrid(Optional vSQL As String)
+Private Sub CargaGrid(Optional vSql As String)
     Dim J As Integer
     Dim TotalAncho As Integer
     Dim i As Integer
     
     adodc1.ConnectionString = conn
-    Sql = ""
-    vSQL = Sql & vSQL
+    SQL = ""
+    vSql = SQL & vSql
     
     PonerSQL
-    If vSQL <> "" Then Sql = Sql & " AND " & vSQL
+    If vSql <> "" Then SQL = SQL & " AND " & vSql
     
-    Sql = Sql & " ORDER BY fecha,nominas.idtrabajador"
-    adodc1.RecordSource = Sql
+    SQL = SQL & " ORDER BY fecha desc ,nominas.idtrabajador"
+    adodc1.RecordSource = SQL
     adodc1.CursorType = adOpenDynamic
     adodc1.LockType = adLockOptimistic
     adodc1.Refresh
@@ -916,18 +916,18 @@ Private Sub CargaGrid(Optional vSQL As String)
 '    End If
 End Sub
 
-Private Sub txtaux_GotFocus(Index As Integer)
+Private Sub txtAux_GotFocus(Index As Integer)
 With txtAux(Index)
     .SelStart = 0
     .SelLength = Len(.Text)
 End With
 End Sub
 
-Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
+    Keypress KeyAscii
 End Sub
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     'Caption = KeyAscii
     If KeyAscii = 13 Then
         KeyAscii = 0
@@ -1001,11 +1001,11 @@ Dim RS As ADODB.Recordset
     'Datos bien. Ahora comprobaremos que si es insertar el trabajador no tiene ninguna
     ' inicdencia abierta
     If Modo = 1 Then
-        Sql = "Select * from Bajas where idTrab =" & txtAux(3).Text
-        Sql = Sql & " AND fechabaja >=" & DBSet(txtAux(0).Text, "F")
-        Sql = Sql & " AND fechaalta is null"
+        SQL = "Select * from Bajas where idTrab =" & txtAux(3).Text
+        SQL = SQL & " AND fechabaja >=" & DBSet(txtAux(0).Text, "F")
+        SQL = SQL & " AND fechaalta is null"
         Set RS = New ADODB.Recordset
-        RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         If Not RS.EOF Then
             If Not IsNull(RS.Fields(0)) Then B = False
         End If
@@ -1036,14 +1036,14 @@ End Sub
 
 
 Private Sub PonerSQL()
-    Sql = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
+    SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
     If vEmpresa.QueEmpresa = 4 Then
         'Catadau
-        Sql = Sql & " Bruto,ImporEstruc 'Imp est',Plus, LlevaPlus PlusH "
+        SQL = SQL & " Bruto,ImporEstruc 'Imp est',Plus, LlevaPlus PlusH "
     Else
-        Sql = Sql & " BolsaAntes Antes,BolsaDespues despues,anticipos"
+        SQL = SQL & " BolsaAntes Antes,BolsaDespues despues,anticipos"
     End If
-    Sql = Sql & " FROM nominas,Trabajadores WHERE  Trabajadores.IdTrabajador = nominas.IdTrabajador"
+    SQL = SQL & " FROM nominas,Trabajadores WHERE  Trabajadores.IdTrabajador = nominas.IdTrabajador"
 End Sub
 
 

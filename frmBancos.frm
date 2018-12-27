@@ -2,91 +2,104 @@ VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Begin VB.Form frmListadoAnticipos 
+Begin VB.Form frmBancos 
    BorderStyle     =   3  'Fixed Dialog
-   Caption         =   "Listado pagos banco"
-   ClientHeight    =   7485
+   Caption         =   "BANCOS"
+   ClientHeight    =   7575
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   11925
-   Icon            =   "frmListadoAnticipos.frx":0000
+   ClientWidth     =   10860
+   Icon            =   "frmBancos.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   7485
-   ScaleWidth      =   11925
+   ScaleHeight     =   7575
+   ScaleWidth      =   10860
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
-   Begin VB.CommandButton cmdTra 
-      Caption         =   "+"
-      Height          =   255
-      Left            =   3840
-      TabIndex        =   15
+   Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   7
+      Left            =   9360
+      MaxLength       =   3
+      TabIndex        =   7
+      Tag             =   "sufijoN34 |T|N|||bancos|sufijoN34|||"
       Top             =   4920
-      Visible         =   0   'False
-      Width           =   135
+      Width           =   1035
    End
    Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   6
+      Left            =   8400
+      MaxLength       =   10
+      TabIndex        =   6
+      Tag             =   "Cuenta |T|N|||bancos|Cuenta|||"
+      Top             =   5040
+      Width           =   1035
+   End
+   Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
+      Appearance      =   0  'Flat
+      BorderStyle     =   0  'None
+      Height          =   290
+      Index           =   5
+      Left            =   7320
+      MaxLength       =   2
+      TabIndex        =   5
+      Tag             =   "CodControl|T|N|||bancos|CodControl|00||"
+      Top             =   4920
+      Width           =   1035
+   End
+   Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
       Appearance      =   0  'Flat
       BorderStyle     =   0  'None
       Height          =   290
       Index           =   4
-      Left            =   8040
+      Left            =   6240
+      MaxLength       =   4
       TabIndex        =   4
-      Tag             =   "Importe|T|S|||pagos|Observaciones|||"
+      Tag             =   "Sucursal|T|N|||bancos|Sucursal|0000||"
       Top             =   4920
-      Width           =   795
+      Width           =   1035
    End
    Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
       Appearance      =   0  'Flat
       BorderStyle     =   0  'None
       Height          =   290
       Index           =   3
-      Left            =   5760
-      TabIndex        =   2
-      Tag             =   "Importe|N|N|||pagos|importe|#,##0.00||"
+      Left            =   5160
+      MaxLength       =   4
+      TabIndex        =   3
+      Tag             =   "Entidad |T|N|||bancos|Entidad|0000|| "
       Top             =   4920
       Width           =   795
    End
-   Begin VB.ComboBox Combo1 
-      Height          =   315
-      Index           =   1
-      ItemData        =   "frmListadoAnticipos.frx":000C
-      Left            =   8880
-      List            =   "frmListadoAnticipos.frx":000E
-      Style           =   2  'Dropdown List
-      TabIndex        =   5
-      Tag             =   "Importe|N|N|||pagos|pagado|||"
-      Top             =   4920
-      Width           =   1335
-   End
-   Begin VB.ComboBox Combo1 
-      Height          =   315
-      Index           =   0
-      ItemData        =   "frmListadoAnticipos.frx":0010
-      Left            =   6600
-      List            =   "frmListadoAnticipos.frx":0012
-      Style           =   2  'Dropdown List
-      TabIndex        =   3
-      Tag             =   "Importe|N|N|||pagos|tipo||S|"
-      Top             =   4920
-      Width           =   1335
-   End
    Begin VB.TextBox txtAux 
+      Alignment       =   1  'Right Justify
       Appearance      =   0  'Flat
       BorderStyle     =   0  'None
       Height          =   290
       Index           =   2
-      Left            =   2280
-      TabIndex        =   6
+      Left            =   3840
+      MaxLength       =   4
+      TabIndex        =   2
+      Tag             =   "IBAN|T|N|||bancos|IBAN|||"
       Top             =   4920
-      Width           =   3195
+      Width           =   915
    End
    Begin VB.CommandButton cmdAceptar 
       Caption         =   "&Aceptar"
       Height          =   375
-      Left            =   8520
-      TabIndex        =   7
+      Left            =   8160
+      TabIndex        =   8
       Top             =   6960
       Visible         =   0   'False
       Width           =   1035
@@ -95,8 +108,8 @@ Begin VB.Form frmListadoAnticipos
       Cancel          =   -1  'True
       Caption         =   "&Cancelar"
       Height          =   375
-      Left            =   9720
-      TabIndex        =   8
+      Left            =   9360
+      TabIndex        =   9
       Top             =   6960
       Visible         =   0   'False
       Width           =   1095
@@ -107,10 +120,12 @@ Begin VB.Form frmListadoAnticipos
       Height          =   290
       Index           =   1
       Left            =   900
+      MaxLength       =   50
       TabIndex        =   1
-      Tag             =   "Traba|N|N|0||pagos|trabajador|0|S|"
+      TabStop         =   0   'False
+      Tag             =   "O |T|N|||bancos|Observa|||"
       Top             =   4920
-      Width           =   1275
+      Width           =   2835
    End
    Begin VB.TextBox txtAux 
       Alignment       =   1  'Right Justify
@@ -119,19 +134,20 @@ Begin VB.Form frmListadoAnticipos
       Height          =   290
       Index           =   0
       Left            =   60
+      MaxLength       =   6
       TabIndex        =   0
-      Tag             =   "Fecha|F|N|||pagos|Fecha||S|"
+      Tag             =   "Código|N|N|0||bancos|id|000|S|"
       Top             =   4920
-      Width           =   1155
+      Width           =   800
    End
    Begin MSDataGridLib.DataGrid DataGrid1 
-      Bindings        =   "frmListadoAnticipos.frx":0014
+      Bindings        =   "frmBancos.frx":000C
       Height          =   6195
       Left            =   240
-      TabIndex        =   12
+      TabIndex        =   13
       Top             =   540
-      Width           =   11565
-      _ExtentX        =   20399
+      Width           =   10125
+      _ExtentX        =   17859
       _ExtentY        =   10927
       _Version        =   393216
       AllowUpdate     =   0   'False
@@ -197,8 +213,8 @@ Begin VB.Form frmListadoAnticipos
    Begin VB.CommandButton cmdRegresar 
       Caption         =   "&Regresar"
       Height          =   375
-      Left            =   9720
-      TabIndex        =   11
+      Left            =   9360
+      TabIndex        =   12
       Top             =   6960
       Visible         =   0   'False
       Width           =   1095
@@ -207,7 +223,7 @@ Begin VB.Form frmListadoAnticipos
       Height          =   555
       Index           =   1
       Left            =   120
-      TabIndex        =   9
+      TabIndex        =   10
       Top             =   6840
       Width           =   2385
       Begin VB.Label lblIndicador 
@@ -224,15 +240,15 @@ Begin VB.Form frmListadoAnticipos
          EndProperty
          Height          =   255
          Left            =   40
-         TabIndex        =   10
+         TabIndex        =   11
          Top             =   240
          Width           =   2295
       End
    End
    Begin MSAdodcLib.Adodc adodc1 
       Height          =   330
-      Left            =   1320
-      Top             =   7080
+      Left            =   2400
+      Top             =   120
       Visible         =   0   'False
       Width           =   2055
       _ExtentX        =   3625
@@ -280,10 +296,10 @@ Begin VB.Form frmListadoAnticipos
       Align           =   1  'Align Top
       Height          =   360
       Left            =   0
-      TabIndex        =   13
+      TabIndex        =   14
       Top             =   0
-      Width           =   11925
-      _ExtentX        =   21034
+      Width           =   10860
+      _ExtentX        =   19156
       _ExtentY        =   635
       ButtonWidth     =   609
       ButtonHeight    =   582
@@ -341,8 +357,8 @@ Begin VB.Form frmListadoAnticipos
       Begin VB.CheckBox chkVistaPrevia 
          Caption         =   "Vista previa"
          Height          =   195
-         Left            =   8760
-         TabIndex        =   14
+         Left            =   9120
+         TabIndex        =   15
          Top             =   120
          Visible         =   0   'False
          Width           =   1215
@@ -382,7 +398,7 @@ Begin VB.Form frmListadoAnticipos
       End
    End
 End
-Attribute VB_Name = "frmListadoAnticipos"
+Attribute VB_Name = "frmBancos"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -416,8 +432,8 @@ Attribute VB_Exposed = False
 ' 12. En la funció SepuedeBorrar() canviar les comprovacions per a vore si es pot
 '    borrar el registre
 ' ********************************************************************************
-
 Option Explicit
+
 
 Public DatosADevolverBusqueda As String    'Tendra el nº de text que quiere que devuelva, empipados
 Public Event DatoSeleccionado(CadenaSeleccion As String)
@@ -433,12 +449,11 @@ Public CodigoActual As String
 Public DeConsulta As Boolean
 
 
-Private WithEvents frmb As frmBuscaGrid
-Attribute frmb.VB_VarHelpID = -1
 
 
 
-'Private CadenaConsulta As String
+
+Private CadenaConsulta As String
 Private cadSeleccion As String
 Private CadB As String
 
@@ -452,50 +467,55 @@ Dim Modo As Byte
 '   4.-  Modificar
 '--------------------------------------------------
 Dim PrimeraVez As Boolean
-
+Dim i As Integer
 
 Private Sub PonerModo(vModo)
 Dim B As Boolean
-Dim i As Byte
 
     Modo = vModo
     
-    B = (Modo = 2) Or Modo = 0
+    B = (Modo = 2)
     If B Then
         Me.lblIndicador.Caption = PonerContRegistros(Me.adodc1)
     Else
         PonerIndicador lblIndicador, Modo
     End If
     
-    For i = 0 To Me.txtAux.Count - 1
-        txtAux(i).Visible = Not B
-        If i < 2 Then Combo1(i).Visible = Not B
-    Next
-    If Not B Then BloquearTxt txtAux(2), True
+
+    
+    
     cmdAceptar.Visible = Not B
     cmdCancelar.Visible = Not B
     DataGrid1.Enabled = B
     
-    Me.cmdTra.Visible = Modo = 3 Or Modo = 1
-    
     'Si es regresar
     If DatosADevolverBusqueda <> "" Then cmdRegresar.Visible = B
+    
+        
+    txtAux(0).Visible = Not B
+    txtAux(1).Visible = Not B
+    txtAux(2).Visible = Not B
+    txtAux(3).Visible = Not B
+    txtAux(4).Visible = Not B
+    txtAux(5).Visible = Not B
+    txtAux(6).Visible = Not B
+    txtAux(7).Visible = Not B
+
+    
     
     PonerLongCampos
     PonerModoOpcionesMenu 'Activar/Desact botones de menu segun Modo
     PonerOpcionesMenu 'Activar/Desact botones de menu segun permisos del usuario
     
     'Si estamo mod or insert
-    BloquearTxt txtAux(0), (Modo = 4)
-    BloquearTxt txtAux(1), (Modo = 4)
-    If Modo = 4 Then Combo1(0).Locked = True
+    BloquearTxt txtAux(0), True
 End Sub
 
 Private Sub PonerModoOpcionesMenu()
 'Activa/Desactiva botons de la toolbar i del menu, según el modo en que estiguem
 Dim B As Boolean
 
-    B = (Modo = 2) Or Modo = 0
+    B = (Modo = 2)
     'Búsqueda
     Toolbar1.Buttons(2).Enabled = B
     Me.mnBuscar.Enabled = B
@@ -515,7 +535,7 @@ Dim B As Boolean
     Toolbar1.Buttons(8).Enabled = B
     Me.mnEliminar.Enabled = B
     'Imprimir
-    Toolbar1.Buttons(11).Enabled = False
+    Toolbar1.Buttons(11).Enabled = B
 
 End Sub
 
@@ -524,10 +544,16 @@ Private Sub BotonAnyadir()
 Dim NumF As String
 Dim anc As Single
     
-
-    
     CargaGrid 'primer de tot carregue tot el grid
-  
+    CadB = ""
+    '******************** canviar taula i camp **************************
+    If (DatosADevolverBusqueda <> "") And NuevoCodigo <> "" Then
+        NumF = NuevoCodigo
+    Else
+        NumF = SugerirCodigoSiguienteStr("bancos", "id")
+    End If
+    '********************************************************************
+
     'Situamos el grid al final
     AnyadirLinea DataGrid1, adodc1
          
@@ -541,15 +567,11 @@ Dim anc As Single
     txtAux(0).Text = NumF
     FormateaCampo txtAux(0)
     txtAux(1).Text = ""
-    Combo1(0).ListIndex = 0
     LLamaLineas anc, 3
        
-    'Ponemos el foco
-    If (DatosADevolverBusqueda <> "") And NuevoCodigo <> "" Then
-        PonerFoco txtAux(1)
-    Else
-        PonerFoco txtAux(0)
-    End If
+    
+    PonerFoco txtAux(1)
+   
 End Sub
 
 Private Sub BotonVerTodos()
@@ -561,11 +583,10 @@ End Sub
 
 Private Sub BotonBuscar()
     ' ***************** canviar per la clau primaria ********
-    CargaGrid "Tipo = -1"
+    CargaGrid "false"
     '*******************************************************************************
     Limpiar Me
-    Combo1(0).ListIndex = -1
-    Combo1(1).ListIndex = -1
+
     LLamaLineas DataGrid1.Top + 206, 1
     PonerFoco txtAux(0)
 End Sub
@@ -573,7 +594,7 @@ End Sub
 
 Private Sub BotonModificar()
     Dim anc As Single
-    Dim i As Integer
+    
 
     If adodc1.Recordset.EOF Then Exit Sub
     If adodc1.Recordset.RecordCount < 1 Then Exit Sub
@@ -581,7 +602,7 @@ Private Sub BotonModificar()
     Screen.MousePointer = vbHourglass
 
     'El registre de codi 0 no es pot Modificar ni Eliminar
-    If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
+    'f EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
         i = DataGrid1.Bookmark - DataGrid1.FirstRow
@@ -595,106 +616,64 @@ Private Sub BotonModificar()
         anc = DataGrid1.RowTop(DataGrid1.Row) + 545
     End If
 
-    'Llamamos al form
-    
-    txtAux(0).Text = DataGrid1.Columns(0).Text
-    txtAux(1).Text = DataGrid1.Columns(1).Text
-    txtAux(2).Text = DataGrid1.Columns(2).Text
-    txtAux(3).Text = DataGrid1.Columns(3).Text
-    txtAux(4).Text = DataGrid1.Columns(5).Text
-    
-    i = adodc1.Recordset!tipo
-    PosicionarCombo Combo1(0), i
-    
-    
-    i = adodc1.Recordset!pagado
-    PosicionarCombo Combo1(1), i
-    
     LLamaLineas anc, 4
 
+
+    anc = 7
+    For i = 0 To Val(anc)
+        txtAux(i).Text = DataGrid1.Columns(i).Text
+    Next i
+    
     'Como es modificar
-    PonerFoco txtAux(3)
+    PonerFoco txtAux(1)
     Screen.MousePointer = vbDefault
 End Sub
 
 
 Private Sub LLamaLineas(alto As Single, xModo As Byte)
-
     DeseleccionaGrid Me.DataGrid1
     PonerModo xModo
     
     'Fijamos el ancho
-    Combo1(0).Top = alto
-    Combo1(1).Top = alto
-    txtAux(0).Top = alto
-    txtAux(1).Top = alto
-    txtAux(2).Top = alto
-    txtAux(3).Top = alto
-    txtAux(4).Top = alto
-    cmdTra.Left = DataGrid1.Columns(2).Left + 240
-    cmdTra.Top = alto
+    For i = 0 To txtAux.Count - 1
+        txtAux(i).Top = alto
+    Next i
     
-
 
 End Sub
 
 
 Private Sub BotonEliminar()
-Dim Sql As String
+Dim SQL As String
 'Dim temp As Boolean
-    
-    If Modo <> 2 Then Exit Sub
-    If adodc1.Recordset.EOF Then Exit Sub
-
 
     On Error GoTo Error2
     'Ciertas comprobaciones
-   
+    If adodc1.Recordset.EOF Then Exit Sub
+    If Not SepuedeBorrar(SQL) Then Exit Sub
 
     'El registre de codi 0 no es pot Modificar ni Eliminar
     'If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     '*************** canviar els noms i el DELETE **********************************
-    Sql = "¿Seguro que desea eliminar el pago seleccionado?"
-    Sql = Sql & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(1), FormatoCampo(txtAux(1))) & " " & adodc1.Recordset.Fields(2)
-    Sql = Sql & vbCrLf & "Fecha: " & adodc1.Recordset.Fields(0)
-    Sql = Sql & vbCrLf & "Tipo: " & adodc1.Recordset!descripcion & "  " & adodc1.Recordset!Importe & "€"
-    
-    If Val(adodc1.Recordset!pagado) = 1 Then Sql = Sql & vbCrLf & vbCrLf & String(30, "*") & vbCrLf & "        P A G A D O"
-    
-    
-    
-    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
+    SQL = "¿Seguro que desea eliminar el banco?"
+    SQL = SQL & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(0), FormatoCampo(txtAux(0)))
+    SQL = SQL & vbCrLf & "Descripción: " & adodc1.Recordset.Fields(1)
+    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
-        
-        Sql = " Fecha =" & DBSet(adodc1.Recordset!Fecha, "F") & " AND  Tipo = " & adodc1.Recordset!tipo & " AND trabajador = " & adodc1.Recordset!Trabajador
-        Sql = "Delete from pagos where " & Sql
-        conn.Execute Sql
-        
-        
-        NumRegElim = InStr(1, adodc1.RecordSource, " WHERE ")
-        CadB = ""
-        If NumRegElim > 0 Then
-            CadB = Mid(adodc1.RecordSource, NumRegElim + 7)
-            NumRegElim = InStr(1, CadB, " ORDER BY ")
-            If NumRegElim = 0 Then
-                CadB = " true "
-            Else
-                CadB = Mid(CadB, 1, NumRegElim - 1)
-            End If
-            
-        Else
-            CadB = " true "
-        End If
-
         NumRegElim = adodc1.Recordset.AbsolutePosition
-        
-        CargaGrid CadB
-        lblIndicador.Caption = " " & PonerContRegistros(Me.adodc1)
-        
+        SQL = "Delete from bancos where id=" & adodc1.Recordset!Id
+        conn.Execute SQL
+        If CadB <> "" Then
+            CargaGrid CadB
+            lblIndicador.Caption = "BUSQUEDA: " & PonerContRegistros(Me.adodc1)
+        Else
+            CargaGrid ""
+            lblIndicador.Caption = ""
+        End If
         SituarDataTrasEliminar adodc1, NumRegElim, True
         PonerModoOpcionesMenu
-      
+        adodc1.Recordset.Cancel
     End If
     Exit Sub
 
@@ -723,7 +702,7 @@ Private Sub btnBuscar_Click(Index As Integer)
 End Sub
 
 Private Sub cmdAceptar_Click()
-Dim i As Long
+Dim i As Integer
 
     Select Case Modo
         Case 3 'INSERTAR
@@ -748,29 +727,16 @@ Dim i As Long
             If DatosOk Then
                 If ModificaDesdeFormulario(Me) Then
                     TerminaBloquear
-                    
-                    i = InStr(1, adodc1.RecordSource, " WHERE ")
-                    CadB = ""
-                    If i > 0 Then
-                        CadB = Mid(adodc1.RecordSource, i + 7)
-                        i = InStr(1, CadB, " ORDER BY ")
-                        If i = 0 Then
-                            CadB = " true "
-                        Else
-                            CadB = Mid(CadB, 1, i - 1)
-                        End If
-                        
-                    Else
-                        CadB = " true "
-                    End If
-                    i = adodc1.Recordset.AbsolutePosition
+                    i = adodc1.Recordset.Fields(0)
                     PonerModo 2
-                    
-                    CargaGrid CadB
-                    lblIndicador.Caption = PonerContRegistros(Me.adodc1)
-                
-                    
-                    adodc1.Recordset.Move i
+                    If CadB <> "" Then
+                        CargaGrid CadB
+                        lblIndicador.Caption = "BUSQUEDA: " & PonerContRegistros(Me.adodc1)
+                    Else
+                        CargaGrid
+                        lblIndicador.Caption = ""
+                    End If
+                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & i)
                 End If
             End If
            
@@ -779,7 +745,7 @@ Dim i As Long
             If CadB <> "" Then
                 CargaGrid CadB
                 PonerModo 2
-                lblIndicador.Caption = " " & PonerContRegistros(Me.adodc1)
+                lblIndicador.Caption = "BUSQUEDA: " & PonerContRegistros(Me.adodc1)
                 PonerFocoGrid Me.DataGrid1
             End If
         End Select
@@ -803,7 +769,7 @@ Private Sub cmdCancelar_Click()
     
     PonerModo 2
     
-    If CadB <> "" Then lblIndicador.Caption = " " & PonerContRegistros(Me.adodc1)
+    If CadB <> "" Then lblIndicador.Caption = "BUSQUEDA: " & PonerContRegistros(Me.adodc1)
    
    PonerFocoGrid Me.DataGrid1
 '    If Err.Number <> 0 Then Err.Clear
@@ -837,36 +803,14 @@ End Sub
 
 
 
-Private Sub cmdTra_Click()
-    CadB = "Codigo|idTrabajador|N||15·"
-    CadB = CadB & "Nombre|nomtrabajador|T||60·"
-    CadB = CadB & "Tarjeta|numtarjeta|T||20·"
-    Set frmb = New frmBuscaGrid
-    frmb.vTabla = "Trabajadores"
-    frmb.vCampos = CadB
-    frmb.vDevuelve = "0|1|"
-    frmb.vSelElem = 1
-    frmb.vTitulo = "TRABAJADORES"
-    CadB = ""
-    frmb.Show vbModal
-    Set frmb = Nothing
-    If CadB <> "" Then
-        txtAux(1).Text = RecuperaValor(CadB, 1)
-        txtAux(2).Text = RecuperaValor(CadB, 2)
-        PonerFoco txtAux(3)
-    End If
-End Sub
 
-Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
-End Sub
 
 Private Sub DataGrid1_DblClick()
     If cmdRegresar.Visible Then cmdRegresar_Click
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -874,7 +818,7 @@ Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
         If CadB = "" Then
             lblIndicador.Caption = PonerContRegistros(Me.adodc1)
         Else
-            lblIndicador.Caption = "" & PonerContRegistros(Me.adodc1)
+            lblIndicador.Caption = "BUSQUEDA: " & PonerContRegistros(Me.adodc1)
         End If
     End If
 End Sub
@@ -884,13 +828,19 @@ Private Sub Form_Activate()
     
     If PrimeraVez Then
         PrimeraVez = False
-        
-        PonerModo 0
-
+        If (DatosADevolverBusqueda <> "") And NuevoCodigo <> "" Then
+            BotonAnyadir
+        Else
+            PonerModo 2
+            If Me.CodigoActual <> "" Then
+                SituarData Me.adodc1, "id =" & CodigoActual, "", True
+            End If
+        End If
     End If
 End Sub
 
 Private Sub Form_Load()
+
     PrimeraVez = True
 
 '    btnPrimero = 14 'index del botó "primero"
@@ -909,17 +859,30 @@ Private Sub Form_Load()
         .Buttons(11).Image = 10  'Imprimir
         .Buttons(12).Image = 11  'Salir
     End With
-
-    '## A mano
-'    chkVistaPrevia.Value = CheckValueLeer(Name)
-
-
-    CargaCombos
-
     
+    If vEmpresa.laboral Then
+        Me.Width = 9645
+        Me.cmdCancelar.Left = 8280
+        
+    Else
+        Me.Width = 6060
+        Me.cmdCancelar.Left = 4800
+    End If
+    Me.cmdRegresar.Left = Me.cmdCancelar.Left
+    Me.cmdAceptar.Left = Me.cmdCancelar.Left - 1200
+    DataGrid1.Width = Me.Width - 480
+    
+    '## A mano
+    '    chkVistaPrevia.Value = CheckValueLeer(Name)
+    
+
+
+    '****************** canviar la consulta *********************************+
+    CadenaConsulta = "SELECT id,Observa,IBAN,Entidad,Sucursal,CodControl,Cuenta,sufijoN34 from bancos "
+    '************************************************************************
     
     CadB = ""
-    CargaGrid "Tipo = -1"
+    CargaGrid
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -927,10 +890,6 @@ Private Sub Form_Unload(Cancel As Integer)
     Screen.MousePointer = vbDefault
 End Sub
 
-
-Private Sub frmb_Selecionado(CadenaDevuelta As String)
-    CadB = CadenaDevuelta
-End Sub
 
 Private Sub mnBuscar_Click()
     BotonBuscar
@@ -941,7 +900,7 @@ Private Sub mnEliminar_Click()
 End Sub
 
 Private Sub mnModificar_Click()
-    BotonModificar
+    If BLOQUEADesdeFormulario2(Me, adodc1, 1) Then BotonModificar
 End Sub
 
 Private Sub mnNuevo_Click()
@@ -970,73 +929,82 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
                 BotonEliminar
         Case 11
 '                'MsgBox "Imprimir...copiar de l'atre manteniment"
-'                printNou
+                printNou
         Case 12
                 mnSalir_Click
     End Select
 End Sub
 
 
-Private Sub CargaGrid(Optional vSQL As String)
-    Dim Sql As String
+Private Sub CargaGrid(Optional vSql As String)
+    Dim SQL As String
     Dim tots As String
     
 '    adodc1.ConnectionString = Conn
-    Sql = DevuelveSQL(vSQL)
+    SQL = CadenaConsulta
     
     
+    If vSql <> "" Then SQL = SQL & " WHERE " & vSql
+    '    SQL = CadenaConsulta & " WHERE " & cadSeleccion & " AND " & vSQL
+    'Else
+    '    SQL = CadenaConsulta & " WHERE " & cadSeleccion
+    'End If
+    '********************* canviar el ORDER BY *********************++
+    SQL = SQL & " ORDER BY id"
+    '**************************************************************++
     
-    CargaGridGnral Me.DataGrid1, Me.adodc1, Sql, False
+    
+    CargaGridGnral Me.DataGrid1, Me.adodc1, SQL, False
     
     'tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Nombre|3080|;S|txtAux(2)|T|Pob.|800|;S|btnBuscar(0)|B||0|;S|txtAux2(2)|T|Población|2200|;"
     
-    tots = "S|txtAux(0)|T|Fecha|1100|;S|txtAux(1)|T|Trab.|800|;S|txtAux(2)|T|Nombre|3200|;"
-    tots = tots & "S|txtAux(3)|T|Importe|800|;S|Combo1(0)|C|Tipo|1200|;S|txtAux(4)|T|Descripcion|3000|;"
-    tots = tots & "S|Combo1(1)|C|Pag.|800|;N|||||;N|||||;"
+    tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Descripcion|2800|;"
+    tots = tots & "S|txtAux(2)|T|IBAN|750|;" & "S|txtAux(3)|T|Enitidad|750|;" & "S|txtAux(4)|T|Oficina|750|;"
+    tots = tots & "S|txtAux(5)|T|CC|400|;" & "S|txtAux(6)|T|Cuenta|1200|;" & "S|txtAux(7)|T|Sufijo|600|;"
+    
     
     arregla tots, DataGrid1, Me
-      
+    
     DataGrid1.Columns(0).Alignment = dbgRight
     DataGrid1.ScrollBars = dbgAutomatic
 End Sub
 
-Private Sub txtaux_GotFocus(Index As Integer)
+Private Sub txtAux_GotFocus(Index As Integer)
     ConseguirFocoLin txtAux(Index)
 End Sub
 
-Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
+Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
     If Index = 2 And KeyAscii = teclaBuscar Then
         KeyAscii = 0
         btnBuscar_Click (0)
     Else
-        KeyPress KeyAscii
+        Keypress KeyAscii
     End If
 End Sub
 
 Private Sub txtAux_LostFocus(Index As Integer)
-Dim C As String
-
     If Not PerderFocoGnral(txtAux(Index), Modo) Then Exit Sub
-    If Modo = 1 Then Exit Sub
     
-    If Index = 1 Then
-        C = ""
-        If Not PonerFormatoEntero(txtAux(Index)) Then
+    txtAux(Index).Text = Trim(txtAux(Index))
+    If txtAux(Index).Text = "" Then Exit Sub
+    Select Case Index
+    Case 0, 3, 4, 5
+        If Not PonerFormatoEntero(txtAux(Index)) Then txtAux(Index).Text = ""
+                
+    Case 2
+        If Len(txtAux(Index).Text) <> 4 Then
+            MsgBox "Longitud incorrecta", vbExclamation
+            PonerFoco txtAux(Index)
+        End If
+        txtAux(Index).Text = UCase(txtAux(Index))
+    Case 6
+        If Not IsNumeric(txtAux(Index).Text) Then
+            MsgBox "No es numerico", vbExclamation
             txtAux(Index).Text = ""
         Else
-            C = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtAux(Index).Text)
-            If C = "" Then
-                MsgBox "No existe el trabajador", vbExclamation
-                txtAux(Index).Text = ""
-            End If
+            txtAux(Index).Text = Right(String(10, "0") & txtAux(Index).Text, 10)
         End If
-        txtAux(2).Text = C
-        
-    Else
-        If Index = 0 Then
-            If Not EsFechaOK(txtAux(Index)) Then txtAux(Index).Text = ""
-        End If
-    End If
+    End Select
 End Sub
 
 
@@ -1048,17 +1016,10 @@ Dim B As Boolean
     If Not B Then Exit Function
 
 
-
+    
     If Modo = 3 Then
-        Datos = " Fecha =" & DBSet(txtAux(0).Text, "F") & " AND  Tipo = " & Combo1(0).ItemData(Combo1(0).ListIndex) & " AND trabajador"
         
-         Datos = DevuelveDesdeBD("fecha", "pagos", Datos, txtAux(1).Text, "N")
-         If Datos <> "" Then
-            MsgBox "Ya existe el pago con estos datos ", vbExclamation
-            DatosOk = False
-            PonerFoco txtAux(0)
-            Exit Function
-        End If
+        
         '*************************************************************************************
     End If
 
@@ -1071,18 +1032,15 @@ Private Sub PonerOpcionesMenu()
 End Sub
 
 Private Function SepuedeBorrar(ByRef C As String) As Boolean
-    SepuedeBorrar = False
-'    C = DevuelveDesdeBD("tarea", "tareasrealizadas", "tarea", CStr(adodc1.Recordset!idtarea), "N")
-'    If C <> "" Then
-'        MsgBox "Existen tareas realizadas asignadas", vbExclamation
-'    Else
-'        SepuedeBorrar = True
-'    End If
+
+    
+        SepuedeBorrar = True
+    
     
 End Function
 
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1090,6 +1048,27 @@ Private Sub KeyPress(KeyAscii As Integer)
     End If
 End Sub
 
+Private Sub printNou()
+'    With frmImprimir2
+'        .cadTabla2 = "bancos"
+'        .Informe2 = "rCategoria.rpt"
+'        If CadB <> "" Then
+'            .cadRegSelec = Replace(SQL2SF(CadB), "categorias", "categorias_1")
+'        Else
+'            .cadRegSelec = ""
+'        End If
+'        .cadRegActua = Replace(POS2SF(adodc1, Me), "categorias", "categorias_1")
+'        .cadTodosReg = ""
+'        '.OtrosParametros2 = "pEmpresa='" & vEmpresa.NomEmpre & "'|pOrden={clientes.ape_raso}|"
+'        .OtrosParametros2 = "pEmpresa='" & vEmpresa.NomEmpresa & "'|laboral= " & Abs(vEmpresa.laboral) & "|"
+'        .NumeroParametros2 = 2
+'        .MostrarTree2 = False
+'        .InfConta2 = False
+'        .ConSubInforme2 = False
+'
+'        .Show vbModal
+'    End With
+End Sub
 
 ' ### [DavidV] 26/04/2006: Activar/desactivar la rueda del ratón.
 Private Sub DataGrid1_GotFocus()
@@ -1097,29 +1076,27 @@ Private Sub DataGrid1_GotFocus()
 End Sub
 
 Private Sub DataGrid1_Lostfocus()
- ' WheelUnHook
+  'WheelUnHook
 End Sub
 
-Private Sub CargaCombos()
-
-    CargaComboDesdeBD Combo1(0), "select idTipopago,Descripcion from tipopago"
-    
-    Combo1(1).AddItem "Si"
-    Combo1(1).ItemData(Combo1(1).NewIndex) = 1
-    
-    Combo1(1).AddItem "No"
-    Combo1(1).ItemData(Combo1(1).NewIndex) = 0
-    
-    
-End Sub
-
-Private Function DevuelveSQL(Sql As String) As String
-
-    DevuelveSQL = "SELECT Pagos.Fecha, Pagos.Trabajador, Trabajadores.NomTrabajador, "
-    DevuelveSQL = DevuelveSQL & "Pagos.Importe, TipoPago.Descripcion, Pagos.Observaciones"
-    DevuelveSQL = DevuelveSQL & ",If(Pagado=1,""Si"","""") AS P ,tipo,Pagado"
-    DevuelveSQL = DevuelveSQL & " FROM (Pagos INNER JOIN TipoPago ON Pagos.Tipo = TipoPago.idTipopago) INNER JOIN "
-    DevuelveSQL = DevuelveSQL & "Trabajadores ON Pagos.Trabajador = Trabajadores.IdTrabajador"
-    If Sql <> "" Then DevuelveSQL = DevuelveSQL & " WHERE " & Sql
-    DevuelveSQL = DevuelveSQL & " ORDER BY Fecha,Pagos.Trabajador"
-End Function
+'Private Sub CargaCombo(Index As Integer)
+'
+''            miSQL = "Select * from stipocontrol "
+''            Set miRs = New ADODB.Recordset
+''            miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+''            While Not miRs.EOF
+''                Combo1(Index).AddItem miRs!desccontrol
+''                Combo1(Index).ItemData(Combo1(Index).NewIndex) = miRs!tipocontrol
+''                miRs.MoveNext
+''            Wend
+''            miRs.Close
+''            Set miRs = Nothing
+'
+'    Combo1(Index).AddItem "Normal"
+'    Combo1(Index).ItemData(Combo1(Index).NewIndex) = 0
+'
+'    Combo1(Index).AddItem "Salida"
+'    Combo1(Index).ItemData(Combo1(Index).NewIndex) = 1
+'
+'
+'End Sub

@@ -1,6 +1,6 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
-Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "Comdlg32.ocx"
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmPpal 
    Caption         =   "Form1"
    ClientHeight    =   6930
@@ -177,7 +177,7 @@ Begin VB.Form frmPpal
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   3
+         NumListImages   =   4
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmPpal.frx":3C73
             Key             =   ""
@@ -188,6 +188,10 @@ Begin VB.Form frmPpal
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmPpal.frx":42A7
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmPpal.frx":45C1
             Key             =   ""
          EndProperty
       EndProperty
@@ -229,7 +233,7 @@ Option Explicit
 
 
 Public Sub GetIconsFromLibrary(ByVal sLibraryFilePath As String, ByVal op As Integer, ByVal tam As Integer)
-    Dim I As Integer
+    Dim i As Integer
     Dim tRes As ResType, iCount As Integer
         
     opcio = op

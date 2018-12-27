@@ -92,7 +92,9 @@ Private mvarAcabalgadoDiaInicio As Boolean
 Private mvarAcabalgadoHora As Date
 Private mvarAcabalgadoIncremento As Currency
 
-
+'Se pueden ir a casa a las 12:00 (o mas ) del dia siguiente
+Private mvarMaximaHoraDiaSiguiente As Date   'Es decir , si pongo las 4:00 significa que hasta esa hora, los fichajes son del dia de antes
+Private mvarAcabaJornadaDiaSiguiente As Boolean
 
 
 'Catadu
@@ -104,6 +106,7 @@ Private mvarTieneCentrosA3 As Boolean
 
 
 ' Para poder añadir otro reloj mas a  la lectura. De momento un BIostar2 (y solo COOPIC)
+'       0: NO tiene     1: Tiene
 Private mvarReloj2 As Byte 'copia local
 Private mvarRelojConfig2 As String 'copia local
 
@@ -495,18 +498,18 @@ Public Property Get Cuenta() As String
 End Property
 
 
-Public Property Let Repeticion(ByVal vData As Integer)
+Public Property Let Repeticion_(ByVal vData As Integer)
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado izquierdo de la asignacion
 'Syntax: X.Repeticion = 5
      mvarRepeticion = vData
 End Property
 
-Public Property Get Repeticion() As Integer
+Public Property Get Repeticion_() As Integer
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado derecho de la asignacion
 'Syntax: Debug.Print X.Repeticion
-     Repeticion = mvarRepeticion
+     Repeticion_ = mvarRepeticion
 End Property
 
 
@@ -675,7 +678,7 @@ Public Property Get imgtrabaj() As Boolean
 End Property
 
 
-Public Property Let reloj(ByVal vData As Byte)
+Public Property Let Reloj(ByVal vData As Byte)
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado izquierdo de la asignacion
 'Syntax: X.reloj = 5
@@ -683,11 +686,11 @@ Public Property Let reloj(ByVal vData As Byte)
 End Property
 
 'vbTCP3 = 1  vbKimaldi = 2      vbAlzira = 3     vbRobotics = 4
-Public Property Get reloj() As Byte
+Public Property Get Reloj() As Byte
 'se usa cuando se asigna un valor a la propiedad, en el
 'lado derecho de la asignacion
 'Syntax: Debug.Print X.reloj
-     reloj = mvarReloj
+     Reloj = mvarReloj
 End Property
 
 
@@ -825,7 +828,7 @@ Public Property Get TieneCentrosA3() As Boolean
      TieneCentrosA3 = mvarTieneCentrosA3
 End Property
 
-
+'0 NO     1 Tiene un biostar2
 Public Property Get Reloj2() As Integer
      Reloj2 = mvarReloj2
 End Property
@@ -833,6 +836,15 @@ End Property
 Public Property Get RelojConfig2() As String
      RelojConfig2 = mvarRelojConfig2
 End Property
+
+
+Public Property Get MaximaHoraDiaSiguiente() As String
+     MaximaHoraDiaSiguiente = mvarMaximaHoraDiaSiguiente
+End Property
+Public Property Get AcabaJornadaDiaSiguiente() As Boolean
+     AcabaJornadaDiaSiguiente = mvarAcabaJornadaDiaSiguiente
+End Property
+
 
 
 
@@ -888,7 +900,7 @@ Dim i As Integer
             mvarlaboral = RS!laboral = 1
             mvarproduccion = RS!produccion = 1
             mvarimgtrabaj = RS!imgtrabaj = 1
-            mvarReloj = RS!reloj
+            mvarReloj = RS!Reloj
             mvarTodosLosDias = (RS!TodosLosDias = 1)
             'mvarFechaInicio="01/04/2006"  'Para probar años partidos
             mvarFechaInicio = Format(RS!FechaInicio, "dd/mm/yyyy")
@@ -920,10 +932,11 @@ Dim i As Integer
                 mvarAcabalgadoHora = "22:30:00"
                 If Not IsNull(RS!AcabalHora) Then mvarAcabalgadoHora = Format(RS!AcabalHora, "hh:mm")
                 mvarAcabalgadoIncremento = DBLet(RS!AcabalIncrementoxDia, "N")
+            
+                
+                
+                
             End If
-            
-            
-            
             'USuarios
             mvarServer = DBLet(RS!Servidor)
             
@@ -958,6 +971,14 @@ Dim i As Integer
             
             mvarReloj2 = DBLet(RS!Reloj2, "N")
             mvarRelojConfig2 = DBLet(RS!configreloj2, "T")
+            
+            'Noviembre2018
+            mvarAcabaJornadaDiaSiguiente = False
+            If Not IsNull(RS!HoraDiaSiguiente) Then
+                mvarMaximaHoraDiaSiguiente = Format(RS!HoraDiaSiguiente, "hh:nn:ss")
+                mvarAcabaJornadaDiaSiguiente = True
+            End If
+            
             
             
             
