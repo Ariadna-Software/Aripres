@@ -1,11 +1,11 @@
 Attribute VB_Name = "ExpresionBusqueda"
 
-Public Function SeparaCampoBusqueda(tipo As String, campo As String, CADENA As String, ByRef DevSQL As String) As Byte
+Public Function SeparaCampoBusqueda(tipo As String, Campo As String, CADENA As String, ByRef DevSQL As String) As Byte
 Dim cad As String
 Dim Aux As String
 Dim Ch As String
 Dim Fin As Boolean
-Dim i, j As String
+Dim i, J As String
 
 On Error GoTo ErrSepara
 SeparaCampoBusqueda = 1
@@ -28,7 +28,7 @@ Case "N"
         
         '+-+-+- 23/05/2005 Canvi de Cèsar: per a que DevSQL tinga este aspecte: (taula.camp) >= 5 AND (taula.camp) <= 7 -+-+-+-+-
         'DevSQL = campo & " >= " & cad & " AND " & campo & " <= " & Aux
-        DevSQL = campo & " >= " & cad & ") AND (" & campo & " <= " & Aux
+        DevSQL = Campo & " >= " & cad & ") AND (" & Campo & " <= " & Aux
         '+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-
         
         'ELSE
@@ -57,11 +57,12 @@ Case "N"
                     If Not IsNumeric(Aux) Then Exit Function
                     'Si que es numero. Entonces, si Cad="" entronces le ponemos =
                     If cad = "" Then cad = " = "
-                    DevSQL = campo & " " & cad & " " & Aux
+                    DevSQL = Campo & " " & cad & " " & Aux
             End If
         End If
 Case "F"
      '---------------- FECHAS ------------------
+     
     i = CararacteresCorrectos(CADENA, "F")
     If i = 1 Then Exit Function
     'Comprobamos si hay intervalo ':'
@@ -77,7 +78,7 @@ Case "F"
         Aux = Format(Aux, FormatoFecha)
         'En my sql es la ' no el #
         'DevSQL = Campo & " >=#" & Cad & "# AND " & Campo & " <= #" & AUX & "#"
-        DevSQL = campo & " >='" & cad & "' AND " & campo & " <= '" & Aux & "'"
+        DevSQL = Campo & " >='" & cad & "' AND " & Campo & " <= '" & Aux & "'"
         '----
         'ELSE
         Else
@@ -103,13 +104,13 @@ Case "F"
                 'En aux debemos tener el numero
                 If Not EsFechaOKString(Aux) Then Exit Function
                 'Si que es numero. Entonces, si Cad="" entronces le ponemos =
-                If Not Left(campo, 1) = "{" Then
+                If Not Left(Campo, 1) = "{" Then
                     Aux = "'" & Format(Aux, FormatoFecha) & "'"
                 Else
                     Aux = "Date(" & Year(Aux) & "," & Month(Aux) & "," & Day(Aux) & ")"
                 End If
                 If cad = "" Then cad = " = "
-                DevSQL = campo & " " & cad & " " & Aux
+                DevSQL = Campo & " " & cad & " " & Aux
             End If
         End If
     
@@ -134,31 +135,31 @@ Case "T"
 '        If Not IsNumeric(cad) Or Not IsNumeric(Aux) Then Exit Function  'No son numeros
         'Intervalo correcto
         'Construimos la cadena
-        DevSQL = campo & " >= '" & cad & "' AND " & campo & " <= '" & Aux & "'"
+        DevSQL = Campo & " >= '" & cad & "' AND " & Campo & " <= '" & Aux & "'"
     Else
     
         'Comprobamos si es LIKE o NOT LIKE
         cad = Mid(CADENA, 1, 2)
         If cad = "<>" Then
             CADENA = Mid(CADENA, 3)
-            If Left(campo, 1) <> "{" Then
+            If Left(Campo, 1) <> "{" Then
                 'No es consulta seleccion para Report.
-                DevSQL = campo & " NOT LIKE '"
+                DevSQL = Campo & " NOT LIKE '"
             Else
                 'Consulta de seleccion para Crystal Report
-                DevSQL = "NOT (" & campo & " LIKE """ & CADENA & """)"
+                DevSQL = "NOT (" & Campo & " LIKE """ & CADENA & """)"
             End If
         Else
-            If Left(campo, 1) <> "{" Then
+            If Left(Campo, 1) <> "{" Then
             'NO es para report
-                DevSQL = campo & " LIKE '"
+                DevSQL = Campo & " LIKE '"
             Else  'Es para report
                 i = InStr(1, CADENA, "*")
                 'Poner Consulta de seleccion para Crystal Report
                 If i > 0 Then
-                    DevSQL = campo & " LIKE """ & CADENA & """"
+                    DevSQL = Campo & " LIKE """ & CADENA & """"
                 Else
-                    DevSQL = campo & " = """ & CADENA & """"
+                    DevSQL = Campo & " = """ & CADENA & """"
                 End If
             End If
         End If
@@ -167,7 +168,7 @@ Case "T"
         'Cambiamos el * por % puesto que en ADO es el caraacter para like
         i = 1
         Aux = CADENA
-        If Not Left(campo, 1) = "{" Then
+        If Not Left(Campo, 1) = "{" Then
           'No es para report
            While i <> 0
                i = InStr(1, Aux, "*")
@@ -185,7 +186,7 @@ Case "T"
         Wend
     
         'Poner el valor de la expresion
-        If Left(campo, 1) <> "{" Then
+        If Left(Campo, 1) <> "{" Then
             'No es consulta seleccion para Report.
             DevSQL = DevSQL & Aux & "'"
         'Else
@@ -244,7 +245,7 @@ Case "B"
             Aux = "False"
     End If
     'Ponemos la cadena
-    DevSQL = campo & " " & cad & " " & Aux
+    DevSQL = Campo & " " & cad & " " & Aux
     
 Case Else
     'No hacemos nada
@@ -345,25 +346,34 @@ Public Function ContieneCaracterBusqueda(CADENA As String) As Boolean
 'Comprueba si la cadena contiene algun caracter especial de busqueda
 ' >,>,>=,: , ....
 'si encuentra algun caracter de busqueda devuelve TRUE y sale
-Dim b As Boolean
+Dim B As Boolean
 Dim i As Integer
 
-    'For i = 1 To Len(cadena)
+    
+    
+    'NULL
+    If UCase(CADENA) = "NULL" Then
+        ContieneCaracterBusqueda = True
+        Exit Function
+    End If
+    
+    
+    
     i = 1
-    b = False
+    B = False
     Do
         Ch = Mid(CADENA, i, 1)
         Select Case Ch
             Case "<", ">", ":", "="
-                b = True
+                B = True
             Case "*", "%", "?", "_", "\", ":" ', "."
-                b = True
+                B = True
             Case Else
-                b = False
+                B = False
         End Select
     'Next i
         i = i + 1
-    Loop Until (b = True) Or (i > Len(CADENA))
-    ContieneCaracterBusqueda = b
+    Loop Until (B = True) Or (i > Len(CADENA))
+    ContieneCaracterBusqueda = B
 End Function
 

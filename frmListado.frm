@@ -15,6 +15,692 @@ Begin VB.Form frmListado
    ScaleHeight     =   7170
    ScaleWidth      =   14880
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame FrameTrabajadores 
+      Height          =   5535
+      Left            =   120
+      TabIndex        =   41
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   6615
+      Begin VB.ComboBox cboBaja 
+         Height          =   315
+         ItemData        =   "frmListado.frx":6852
+         Left            =   1560
+         List            =   "frmListado.frx":685F
+         Style           =   2  'Dropdown List
+         TabIndex        =   339
+         Top             =   3360
+         Width           =   2895
+      End
+      Begin VB.CheckBox chkTarjeta 
+         Caption         =   "Tarjeta"
+         Height          =   255
+         Left            =   1440
+         TabIndex        =   298
+         Top             =   4680
+         Width           =   975
+      End
+      Begin VB.Frame Frame1 
+         BorderStyle     =   0  'None
+         Caption         =   "Frame1"
+         Height          =   615
+         Left            =   240
+         TabIndex        =   97
+         Top             =   4080
+         Width           =   2535
+         Begin VB.OptionButton optOrdenTraba 
+            Caption         =   "Codigo"
+            Height          =   255
+            Index           =   0
+            Left            =   120
+            TabIndex        =   99
+            Top             =   240
+            Value           =   -1  'True
+            Width           =   1095
+         End
+         Begin VB.OptionButton optOrdenTraba 
+            Caption         =   "Nombre"
+            Height          =   255
+            Index           =   1
+            Left            =   1440
+            TabIndex        =   98
+            Top             =   240
+            Width           =   1095
+         End
+      End
+      Begin VB.Frame FrameTapaSecc 
+         BorderStyle     =   0  'None
+         Caption         =   "Frame1"
+         Height          =   999
+         Left            =   240
+         TabIndex        =   96
+         Top             =   2160
+         Width           =   6135
+      End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   0
+         Left            =   2160
+         TabIndex        =   44
+         Top             =   2520
+         Width           =   855
+      End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   1
+         Left            =   2160
+         TabIndex        =   45
+         Top             =   2880
+         Width           =   855
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   0
+         Left            =   3000
+         TabIndex        =   95
+         Top             =   2520
+         Width           =   3375
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   1
+         Left            =   3000
+         TabIndex        =   94
+         Top             =   2880
+         Width           =   3375
+      End
+      Begin VB.CheckBox chkFoto 
+         Caption         =   "Foto"
+         Height          =   255
+         Left            =   360
+         TabIndex        =   90
+         Top             =   4680
+         Width           =   975
+      End
+      Begin VB.CheckBox chkSeccion 
+         Caption         =   "Sección"
+         Height          =   255
+         Left            =   360
+         TabIndex        =   89
+         Top             =   3840
+         Width           =   975
+      End
+      Begin VB.OptionButton optListTrab 
+         Caption         =   "Datos extendidos"
+         Height          =   255
+         Index           =   1
+         Left            =   4560
+         TabIndex        =   55
+         Top             =   3840
+         Width           =   1575
+      End
+      Begin VB.OptionButton optListTrab 
+         Caption         =   "Datos básicos"
+         Height          =   255
+         Index           =   0
+         Left            =   2760
+         TabIndex        =   54
+         Top             =   3840
+         Value           =   -1  'True
+         Width           =   1335
+      End
+      Begin VB.CommandButton cmdTraba 
+         Caption         =   "&Aceptar"
+         Height          =   375
+         Left            =   3600
+         TabIndex        =   46
+         Top             =   4800
+         Width           =   1215
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "C&ancelar"
+         Height          =   375
+         Index           =   8
+         Left            =   5040
+         TabIndex        =   49
+         Top             =   4800
+         Width           =   1215
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   5
+         Left            =   3000
+         TabIndex        =   48
+         Top             =   1800
+         Width           =   3375
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   4
+         Left            =   3000
+         TabIndex        =   47
+         Top             =   1320
+         Width           =   3375
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   5
+         Left            =   2160
+         TabIndex        =   43
+         Top             =   1800
+         Width           =   855
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   4
+         Left            =   2160
+         TabIndex        =   42
+         Top             =   1320
+         Width           =   855
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Situacion"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   36
+         Left            =   240
+         TabIndex        =   340
+         Top             =   3360
+         Width           =   1335
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   0
+         Left            =   1920
+         Top             =   2520
+         Width           =   255
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   1
+         Left            =   1920
+         Top             =   2880
+         Width           =   255
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   20
+         Left            =   1320
+         TabIndex        =   93
+         Top             =   2880
+         Width           =   420
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   19
+         Left            =   1320
+         TabIndex        =   92
+         Top             =   2520
+         Width           =   465
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Seccion"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   8
+         Left            =   240
+         TabIndex        =   91
+         Top             =   2280
+         Width           =   1335
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   5
+         Left            =   1920
+         Top             =   1800
+         Width           =   255
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   4
+         Left            =   1920
+         Top             =   1320
+         Width           =   255
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   11
+         Left            =   1440
+         TabIndex        =   53
+         Top             =   1320
+         Width           =   465
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   10
+         Left            =   1440
+         TabIndex        =   52
+         Top             =   1800
+         Width           =   420
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Trabajador"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   5
+         Left            =   240
+         TabIndex        =   51
+         Top             =   960
+         Width           =   1335
+      End
+      Begin VB.Label lblTitulo 
+         Alignment       =   2  'Center
+         Caption         =   "Listado trabajadores"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00800000&
+         Height          =   495
+         Index           =   2
+         Left            =   600
+         TabIndex        =   50
+         Top             =   240
+         Width           =   5415
+      End
+   End
+   Begin VB.Frame FrameActual 
+      Height          =   5895
+      Left            =   120
+      TabIndex        =   137
+      Top             =   0
+      Width           =   6495
+      Begin VB.CheckBox chkSinProcesar 
+         Caption         =   "Adapta horario"
+         Height          =   255
+         Index           =   3
+         Left            =   1440
+         TabIndex        =   338
+         Top             =   4920
+         Width           =   2175
+      End
+      Begin VB.CheckBox chkSinProcesar 
+         Caption         =   "Agrupa por seccion"
+         Height          =   255
+         Index           =   2
+         Left            =   3960
+         TabIndex        =   308
+         Top             =   4560
+         Width           =   2175
+      End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   11
+         Left            =   1920
+         TabIndex        =   147
+         Top             =   3480
+         Width           =   855
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   11
+         Left            =   2880
+         TabIndex        =   278
+         Top             =   3480
+         Width           =   3375
+      End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   10
+         Left            =   1920
+         TabIndex        =   146
+         Top             =   3120
+         Width           =   855
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   10
+         Left            =   2880
+         TabIndex        =   275
+         Top             =   3120
+         Width           =   3375
+      End
+      Begin VB.CheckBox chkSinProcesar 
+         Caption         =   "Agrupa por trabajador"
+         Height          =   255
+         Index           =   0
+         Left            =   1440
+         TabIndex        =   150
+         Top             =   4560
+         Width           =   2175
+      End
+      Begin VB.OptionButton optActual 
+         Caption         =   "Nombre"
+         Height          =   255
+         Index           =   1
+         Left            =   3120
+         TabIndex        =   149
+         Top             =   4080
+         Width           =   855
+      End
+      Begin VB.OptionButton optActual 
+         Caption         =   "Código"
+         Height          =   255
+         Index           =   0
+         Left            =   1440
+         TabIndex        =   148
+         Top             =   4080
+         Value           =   -1  'True
+         Width           =   855
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "&Cancelar"
+         Height          =   375
+         Index           =   12
+         Left            =   5040
+         TabIndex        =   152
+         Top             =   5280
+         Width           =   1215
+      End
+      Begin VB.CommandButton cmdActual 
+         Caption         =   "&Aceptar"
+         Height          =   375
+         Left            =   3720
+         TabIndex        =   151
+         Top             =   5280
+         Width           =   1215
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   11
+         Left            =   2880
+         TabIndex        =   154
+         Top             =   2400
+         Width           =   3375
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   10
+         Left            =   2880
+         TabIndex        =   153
+         Top             =   2040
+         Width           =   3375
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   11
+         Left            =   1920
+         TabIndex        =   145
+         Top             =   2400
+         Width           =   855
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   10
+         Left            =   1920
+         TabIndex        =   144
+         Top             =   2040
+         Width           =   855
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   9
+         Left            =   4320
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   141
+         Text            =   "Text1"
+         Top             =   1035
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   8
+         Left            =   1920
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   138
+         Text            =   "Text1"
+         Top             =   1035
+         Width           =   1215
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Ordenado"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   28
+         Left            =   240
+         TabIndex        =   280
+         Top             =   3960
+         Width           =   1335
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   11
+         Left            =   1560
+         Top             =   3480
+         Width           =   255
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   56
+         Left            =   960
+         TabIndex        =   279
+         Top             =   3480
+         Width           =   465
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   10
+         Left            =   1560
+         Top             =   3120
+         Width           =   255
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   55
+         Left            =   960
+         TabIndex        =   277
+         Top             =   3120
+         Width           =   465
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Sección"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   27
+         Left            =   240
+         TabIndex        =   276
+         Top             =   2880
+         Width           =   1335
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   11
+         Left            =   1560
+         Top             =   2400
+         Width           =   255
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   10
+         Left            =   1560
+         Top             =   2040
+         Width           =   255
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   30
+         Left            =   960
+         TabIndex        =   157
+         Top             =   2400
+         Width           =   465
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   29
+         Left            =   960
+         TabIndex        =   156
+         Top             =   2040
+         Width           =   540
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Trabajador"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   13
+         Left            =   240
+         TabIndex        =   155
+         Top             =   1680
+         Width           =   1335
+      End
+      Begin VB.Label lblTitulo 
+         Alignment       =   2  'Center
+         Caption         =   "Marcajes sin procesar"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00800000&
+         Height          =   495
+         Index           =   7
+         Left            =   360
+         TabIndex        =   143
+         Top             =   240
+         Width           =   5415
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   9
+         Left            =   3960
+         Picture         =   "frmListado.frx":6874
+         ToolTipText     =   "Buscar fecha"
+         Top             =   1050
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   28
+         Left            =   3360
+         TabIndex        =   142
+         Top             =   1080
+         Width           =   465
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Fecha"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   12
+         Left            =   240
+         TabIndex        =   140
+         Top             =   840
+         Width           =   735
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   8
+         Left            =   1560
+         Picture         =   "frmListado.frx":68FF
+         ToolTipText     =   "Buscar fecha"
+         Top             =   1050
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   27
+         Left            =   960
+         TabIndex        =   139
+         Top             =   1080
+         Width           =   465
+      End
+   End
    Begin VB.Frame frHorascombinado 
       Height          =   6135
       Left            =   120
@@ -23,9 +709,9 @@ Begin VB.Form frmListado
       Width           =   6495
       Begin VB.ComboBox cboReloj 
          Height          =   315
-         ItemData        =   "frmListado.frx":6852
+         ItemData        =   "frmListado.frx":698A
          Left            =   1560
-         List            =   "frmListado.frx":685F
+         List            =   "frmListado.frx":6997
          Style           =   2  'Dropdown List
          TabIndex        =   175
          Top             =   4080
@@ -346,7 +1032,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   11
          Left            =   3960
-         Picture         =   "frmListado.frx":687F
+         Picture         =   "frmListado.frx":69B7
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -383,7 +1069,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   10
          Left            =   1560
-         Picture         =   "frmListado.frx":690A
+         Picture         =   "frmListado.frx":6A42
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -398,9 +1084,9 @@ Begin VB.Form frmListado
       Width           =   6015
       Begin VB.ComboBox cboCentroTrabajo 
          Height          =   315
-         ItemData        =   "frmListado.frx":6995
+         ItemData        =   "frmListado.frx":6ACD
          Left            =   1920
-         List            =   "frmListado.frx":6997
+         List            =   "frmListado.frx":6ACF
          TabIndex        =   303
          Tag             =   "Centro trabajo trabajo|N|S|||trabajadores|idCentroA3|||"
          Text            =   "Combo1"
@@ -466,7 +1152,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   20
          Left            =   2400
-         Picture         =   "frmListado.frx":6999
+         Picture         =   "frmListado.frx":6AD1
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -741,7 +1427,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   22
          Left            =   4680
-         Picture         =   "frmListado.frx":6A24
+         Picture         =   "frmListado.frx":6B5C
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -750,7 +1436,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   21
          Left            =   1560
-         Picture         =   "frmListado.frx":6AAF
+         Picture         =   "frmListado.frx":6BE7
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -802,733 +1488,6 @@ Begin VB.Form frmListado
          TabIndex        =   320
          Top             =   240
          Width           =   5415
-      End
-   End
-   Begin VB.Frame FrameCostesTrabajador 
-      Height          =   6975
-      Left            =   120
-      TabIndex        =   246
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   6615
-      Begin VB.CheckBox chkResumeTrabajador 
-         Caption         =   "Por trabajador"
-         Height          =   195
-         Index           =   1
-         Left            =   3960
-         TabIndex        =   310
-         Top             =   5760
-         Visible         =   0   'False
-         Width           =   1695
-      End
-      Begin VB.CheckBox chkResumeTrabajador 
-         Caption         =   "Resumen entrega "
-         Height          =   195
-         Index           =   0
-         Left            =   840
-         TabIndex        =   309
-         Top             =   5760
-         Visible         =   0   'False
-         Width           =   1695
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   9
-         Left            =   2760
-         TabIndex        =   273
-         Top             =   3120
-         Width           =   3375
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   9
-         Left            =   1800
-         TabIndex        =   252
-         Top             =   3120
-         Width           =   855
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   8
-         Left            =   2760
-         TabIndex        =   270
-         Top             =   2760
-         Width           =   3375
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   8
-         Left            =   1800
-         TabIndex        =   251
-         Top             =   2760
-         Width           =   855
-      End
-      Begin VB.OptionButton optHorasPorecesadas 
-         Caption         =   "Trabajador - Horas"
-         Height          =   255
-         Index           =   1
-         Left            =   3360
-         TabIndex        =   269
-         Top             =   5160
-         Width           =   2055
-      End
-      Begin VB.OptionButton optHorasPorecesadas 
-         Caption         =   "Empresa"
-         Height          =   255
-         Index           =   0
-         Left            =   1440
-         TabIndex        =   268
-         Top             =   5160
-         Value           =   -1  'True
-         Width           =   1455
-      End
-      Begin VB.CheckBox chkDesglosaDias 
-         Caption         =   "Agrupa por empresa"
-         Height          =   255
-         Index           =   1
-         Left            =   840
-         TabIndex        =   253
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.ListBox List1 
-         Height          =   735
-         Left            =   1080
-         Style           =   1  'Checkbox
-         TabIndex        =   266
-         Top             =   4080
-         Width           =   5055
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   19
-         Left            =   1800
-         TabIndex        =   250
-         Top             =   2160
-         Width           =   855
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   19
-         Left            =   2760
-         TabIndex        =   264
-         Top             =   2160
-         Width           =   3375
-      End
-      Begin VB.CheckBox chkDesglosaDias 
-         Caption         =   "Desglosa trabajador"
-         Height          =   255
-         Index           =   0
-         Left            =   3960
-         TabIndex        =   254
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   18
-         Left            =   1800
-         TabIndex        =   249
-         Top             =   1800
-         Width           =   855
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   18
-         Left            =   2760
-         TabIndex        =   261
-         Top             =   1800
-         Width           =   3375
-      End
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "&Cancelar"
-         Height          =   375
-         Index           =   17
-         Left            =   4920
-         TabIndex        =   256
-         Top             =   6360
-         Width           =   1215
-      End
-      Begin VB.CommandButton cmdHorasProcesadas 
-         Caption         =   "Aceptar"
-         Height          =   375
-         Left            =   3480
-         TabIndex        =   255
-         Top             =   6360
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   17
-         Left            =   4920
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   248
-         Text            =   "Text1"
-         Top             =   960
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   16
-         Left            =   1800
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   247
-         Text            =   "Text1"
-         Top             =   960
-         Width           =   1215
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   54
-         Left            =   840
-         TabIndex        =   274
-         Top             =   3120
-         Width           =   465
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   9
-         Left            =   1440
-         Top             =   3120
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Sección"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   26
-         Left            =   120
-         TabIndex        =   272
-         Top             =   2520
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   53
-         Left            =   840
-         TabIndex        =   271
-         Top             =   2760
-         Width           =   465
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   8
-         Left            =   1440
-         Top             =   2760
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Empresa"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   25
-         Left            =   120
-         TabIndex        =   267
-         Top             =   3720
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   52
-         Left            =   840
-         TabIndex        =   265
-         Top             =   2160
-         Width           =   465
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   19
-         Left            =   1440
-         Top             =   2160
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Trabajador"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   24
-         Left            =   120
-         TabIndex        =   263
-         Top             =   1440
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   51
-         Left            =   840
-         TabIndex        =   262
-         Top             =   1800
-         Width           =   540
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   18
-         Left            =   1440
-         Top             =   1800
-         Width           =   255
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   17
-         Left            =   4560
-         Picture         =   "frmListado.frx":6B3A
-         ToolTipText     =   "Buscar fecha"
-         Top             =   960
-         Width           =   240
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   50
-         Left            =   4080
-         TabIndex        =   260
-         Top             =   960
-         Width           =   465
-      End
-      Begin VB.Label lblTitulo 
-         Alignment       =   2  'Center
-         Caption         =   "Horas procesadas"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   18
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00800000&
-         Height          =   495
-         Index           =   11
-         Left            =   480
-         TabIndex        =   259
-         Top             =   120
-         Width           =   5415
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   49
-         Left            =   840
-         TabIndex        =   258
-         Top             =   960
-         Width           =   465
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Fecha"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   23
-         Left            =   120
-         TabIndex        =   257
-         Top             =   720
-         Width           =   735
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   16
-         Left            =   1440
-         Picture         =   "frmListado.frx":6BC5
-         ToolTipText     =   "Buscar fecha"
-         Top             =   960
-         Width           =   240
-      End
-   End
-   Begin VB.Frame FrameActual 
-      Height          =   5895
-      Left            =   120
-      TabIndex        =   137
-      Top             =   0
-      Width           =   6495
-      Begin VB.CheckBox chkSinProcesar 
-         Caption         =   "Agrupa por seccion"
-         Height          =   255
-         Index           =   2
-         Left            =   3960
-         TabIndex        =   308
-         Top             =   4560
-         Width           =   2175
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   11
-         Left            =   1920
-         TabIndex        =   147
-         Top             =   3480
-         Width           =   855
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   11
-         Left            =   2880
-         TabIndex        =   278
-         Top             =   3480
-         Width           =   3375
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   10
-         Left            =   1920
-         TabIndex        =   146
-         Top             =   3120
-         Width           =   855
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   10
-         Left            =   2880
-         TabIndex        =   275
-         Top             =   3120
-         Width           =   3375
-      End
-      Begin VB.CheckBox chkSinProcesar 
-         Caption         =   "Agrupa por trabajador"
-         Height          =   255
-         Index           =   0
-         Left            =   1440
-         TabIndex        =   150
-         Top             =   4560
-         Width           =   2175
-      End
-      Begin VB.OptionButton optActual 
-         Caption         =   "Nombre"
-         Height          =   255
-         Index           =   1
-         Left            =   3120
-         TabIndex        =   149
-         Top             =   4080
-         Width           =   855
-      End
-      Begin VB.OptionButton optActual 
-         Caption         =   "Código"
-         Height          =   255
-         Index           =   0
-         Left            =   1920
-         TabIndex        =   148
-         Top             =   4080
-         Value           =   -1  'True
-         Width           =   855
-      End
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "&Cancelar"
-         Height          =   375
-         Index           =   12
-         Left            =   5040
-         TabIndex        =   152
-         Top             =   5160
-         Width           =   1215
-      End
-      Begin VB.CommandButton cmdActual 
-         Caption         =   "&Aceptar"
-         Height          =   375
-         Left            =   3720
-         TabIndex        =   151
-         Top             =   5160
-         Width           =   1215
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   11
-         Left            =   2880
-         TabIndex        =   154
-         Top             =   2400
-         Width           =   3375
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   10
-         Left            =   2880
-         TabIndex        =   153
-         Top             =   2040
-         Width           =   3375
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   11
-         Left            =   1920
-         TabIndex        =   145
-         Top             =   2400
-         Width           =   855
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   10
-         Left            =   1920
-         TabIndex        =   144
-         Top             =   2040
-         Width           =   855
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   9
-         Left            =   4320
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   141
-         Text            =   "Text1"
-         Top             =   1035
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   8
-         Left            =   1920
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   138
-         Text            =   "Text1"
-         Top             =   1035
-         Width           =   1215
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Ordenado"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   28
-         Left            =   240
-         TabIndex        =   280
-         Top             =   3960
-         Width           =   1335
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   11
-         Left            =   1560
-         Top             =   3480
-         Width           =   255
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   56
-         Left            =   960
-         TabIndex        =   279
-         Top             =   3480
-         Width           =   465
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   10
-         Left            =   1560
-         Top             =   3120
-         Width           =   255
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   55
-         Left            =   960
-         TabIndex        =   277
-         Top             =   3120
-         Width           =   465
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Sección"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   27
-         Left            =   240
-         TabIndex        =   276
-         Top             =   2880
-         Width           =   1335
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   11
-         Left            =   1560
-         Top             =   2400
-         Width           =   255
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   10
-         Left            =   1560
-         Top             =   2040
-         Width           =   255
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   30
-         Left            =   960
-         TabIndex        =   157
-         Top             =   2400
-         Width           =   465
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   29
-         Left            =   960
-         TabIndex        =   156
-         Top             =   2040
-         Width           =   540
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Trabajador"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   13
-         Left            =   240
-         TabIndex        =   155
-         Top             =   1680
-         Width           =   1335
-      End
-      Begin VB.Label lblTitulo 
-         Alignment       =   2  'Center
-         Caption         =   "Marcajes sin procesar"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   18
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00800000&
-         Height          =   495
-         Index           =   7
-         Left            =   360
-         TabIndex        =   143
-         Top             =   240
-         Width           =   5415
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   9
-         Left            =   3960
-         Picture         =   "frmListado.frx":6C50
-         ToolTipText     =   "Buscar fecha"
-         Top             =   1050
-         Width           =   240
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   28
-         Left            =   3360
-         TabIndex        =   142
-         Top             =   1080
-         Width           =   465
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Fecha"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   12
-         Left            =   240
-         TabIndex        =   140
-         Top             =   840
-         Width           =   735
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   8
-         Left            =   1560
-         Picture         =   "frmListado.frx":6CDB
-         ToolTipText     =   "Buscar fecha"
-         Top             =   1050
-         Width           =   240
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   27
-         Left            =   960
-         TabIndex        =   139
-         Top             =   1080
-         Width           =   465
       End
    End
    Begin MSComDlg.CommonDialog cd1 
@@ -1814,7 +1773,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   14
          Left            =   1800
-         Picture         =   "frmListado.frx":6D66
+         Picture         =   "frmListado.frx":6C72
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -1851,7 +1810,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   15
          Left            =   4200
-         Picture         =   "frmListado.frx":6DF1
+         Picture         =   "frmListado.frx":6CFD
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -2032,7 +1991,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   5
          Left            =   4320
-         Picture         =   "frmListado.frx":6E7C
+         Picture         =   "frmListado.frx":6D88
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2050,7 +2009,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   4
          Left            =   1680
-         Picture         =   "frmListado.frx":6F07
+         Picture         =   "frmListado.frx":6E13
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2309,7 +2268,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   3
          Left            =   1680
-         Picture         =   "frmListado.frx":6F92
+         Picture         =   "frmListado.frx":6E9E
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2327,7 +2286,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   2
          Left            =   4320
-         Picture         =   "frmListado.frx":701D
+         Picture         =   "frmListado.frx":6F29
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2648,7 +2607,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   7
          Left            =   4680
-         Picture         =   "frmListado.frx":70A8
+         Picture         =   "frmListado.frx":6FB4
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -2666,7 +2625,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   6
          Left            =   1560
-         Picture         =   "frmListado.frx":7133
+         Picture         =   "frmListado.frx":703F
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -2826,7 +2785,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   13
          Left            =   4800
-         Picture         =   "frmListado.frx":71BE
+         Picture         =   "frmListado.frx":70CA
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -2844,7 +2803,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   12
          Left            =   1680
-         Picture         =   "frmListado.frx":7249
+         Picture         =   "frmListado.frx":7155
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -3403,7 +3362,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   1
          Left            =   4200
-         Picture         =   "frmListado.frx":72D4
+         Picture         =   "frmListado.frx":71E0
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -3421,7 +3380,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   0
          Left            =   1560
-         Picture         =   "frmListado.frx":735F
+         Picture         =   "frmListado.frx":726B
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -3546,7 +3505,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   0
          Left            =   240
-         Picture         =   "frmListado.frx":73EA
+         Picture         =   "frmListado.frx":72F6
          ToolTipText     =   "Seleccionar todos"
          Top             =   4900
          Width           =   240
@@ -3555,7 +3514,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   1
          Left            =   600
-         Picture         =   "frmListado.frx":7534
+         Picture         =   "frmListado.frx":7440
          ToolTipText     =   "Quitar seleccion"
          Top             =   4900
          Width           =   240
@@ -3741,7 +3700,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   19
          Left            =   4320
-         Picture         =   "frmListado.frx":767E
+         Picture         =   "frmListado.frx":758A
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -3759,7 +3718,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   18
          Left            =   1560
-         Picture         =   "frmListado.frx":7709
+         Picture         =   "frmListado.frx":7615
          ToolTipText     =   "Buscar fecha"
          Top             =   1200
          Width           =   240
@@ -3803,216 +3762,223 @@ Begin VB.Form frmListado
          Width           =   5415
       End
    End
-   Begin VB.Frame FrameTrabajadores 
-      Height          =   5535
+   Begin VB.Frame FrameCostesTrabajador 
+      Height          =   6975
       Left            =   120
-      TabIndex        =   41
+      TabIndex        =   246
       Top             =   0
       Visible         =   0   'False
       Width           =   6615
-      Begin VB.CheckBox chkTarjeta 
-         Caption         =   "Tarjeta"
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Asesoria"
          Height          =   255
-         Left            =   1440
-         TabIndex        =   298
-         Top             =   4680
-         Width           =   975
-      End
-      Begin VB.Frame Frame1 
-         BorderStyle     =   0  'None
-         Caption         =   "Frame1"
-         Height          =   615
-         Left            =   240
-         TabIndex        =   97
-         Top             =   3960
-         Width           =   2535
-         Begin VB.OptionButton optOrdenTraba 
-            Caption         =   "Codigo"
-            Height          =   255
-            Index           =   0
-            Left            =   120
-            TabIndex        =   99
-            Top             =   240
-            Value           =   -1  'True
-            Width           =   1095
-         End
-         Begin VB.OptionButton optOrdenTraba 
-            Caption         =   "Nombre"
-            Height          =   255
-            Index           =   1
-            Left            =   1440
-            TabIndex        =   98
-            Top             =   240
-            Width           =   1095
-         End
-      End
-      Begin VB.Frame FrameTapaSecc 
-         BorderStyle     =   0  'None
-         Caption         =   "Frame1"
-         Height          =   1335
-         Left            =   240
-         TabIndex        =   96
-         Top             =   2160
-         Width           =   6135
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   0
-         Left            =   2160
-         TabIndex        =   44
-         Top             =   2520
-         Width           =   855
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   1
-         Left            =   2160
-         TabIndex        =   45
-         Top             =   3000
-         Width           =   855
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   0
-         Left            =   3000
-         TabIndex        =   95
-         Top             =   2520
-         Width           =   3375
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   1
-         Left            =   3000
-         TabIndex        =   94
-         Top             =   3000
-         Width           =   3375
-      End
-      Begin VB.CheckBox chkFoto 
-         Caption         =   "Foto"
-         Height          =   255
-         Left            =   360
-         TabIndex        =   90
-         Top             =   4680
-         Width           =   975
-      End
-      Begin VB.CheckBox chkSeccion 
-         Caption         =   "Sección"
-         Height          =   255
-         Left            =   360
-         TabIndex        =   89
-         Top             =   3600
-         Width           =   975
-      End
-      Begin VB.OptionButton optListTrab 
-         Caption         =   "Datos extendidos"
-         Height          =   255
-         Index           =   1
-         Left            =   4560
-         TabIndex        =   55
-         Top             =   3600
+         Index           =   2
+         Left            =   4800
+         TabIndex        =   337
+         Top             =   5160
          Width           =   1575
       End
-      Begin VB.OptionButton optListTrab 
-         Caption         =   "Datos básicos"
-         Height          =   255
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Resumen horas x traba(€)"
+         Height          =   195
+         Index           =   2
+         Left            =   600
+         TabIndex        =   336
+         Top             =   6120
+         Width           =   2655
+      End
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Por trabajador"
+         Height          =   195
+         Index           =   1
+         Left            =   3960
+         TabIndex        =   310
+         Top             =   5760
+         Visible         =   0   'False
+         Width           =   1695
+      End
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Resumen entrega "
+         Height          =   195
          Index           =   0
+         Left            =   600
+         TabIndex        =   309
+         Top             =   5760
+         Visible         =   0   'False
+         Width           =   3135
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   9
          Left            =   2760
-         TabIndex        =   54
-         Top             =   3600
-         Value           =   -1  'True
-         Width           =   1335
+         TabIndex        =   273
+         Top             =   3120
+         Width           =   3375
       End
-      Begin VB.CommandButton cmdTraba 
-         Caption         =   "&Aceptar"
-         Height          =   375
-         Left            =   3600
-         TabIndex        =   46
-         Top             =   4800
-         Width           =   1215
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   9
+         Left            =   1800
+         TabIndex        =   252
+         Top             =   3120
+         Width           =   855
       End
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "C&ancelar"
-         Height          =   375
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
          Index           =   8
-         Left            =   5040
-         TabIndex        =   49
-         Top             =   4800
-         Width           =   1215
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   5
-         Left            =   3000
-         TabIndex        =   48
-         Top             =   1800
+         Left            =   2760
+         TabIndex        =   270
+         Top             =   2760
          Width           =   3375
       End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
+      Begin VB.TextBox txtSecc 
          Height          =   285
-         Index           =   4
-         Left            =   3000
-         TabIndex        =   47
-         Top             =   1320
-         Width           =   3375
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   5
-         Left            =   2160
-         TabIndex        =   43
-         Top             =   1800
+         Index           =   8
+         Left            =   1800
+         TabIndex        =   251
+         Top             =   2760
          Width           =   855
       End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   4
-         Left            =   2160
-         TabIndex        =   42
-         Top             =   1320
-         Width           =   855
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   0
-         Left            =   1920
-         Top             =   2520
-         Width           =   255
-      End
-      Begin VB.Image imgSecc 
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Trabajador - Horas"
          Height          =   255
          Index           =   1
-         Left            =   1920
-         Top             =   3000
-         Width           =   255
+         Left            =   2400
+         TabIndex        =   269
+         Top             =   5160
+         Width           =   2055
+      End
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Empresa"
+         Height          =   255
+         Index           =   0
+         Left            =   840
+         TabIndex        =   268
+         Top             =   5160
+         Value           =   -1  'True
+         Width           =   1455
+      End
+      Begin VB.CheckBox chkDesglosaDias 
+         Caption         =   "Agrupa por empresa"
+         Height          =   255
+         Index           =   1
+         Left            =   840
+         TabIndex        =   253
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.ListBox List1 
+         Height          =   735
+         Left            =   1080
+         Style           =   1  'Checkbox
+         TabIndex        =   266
+         Top             =   4080
+         Width           =   5055
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   19
+         Left            =   1800
+         TabIndex        =   250
+         Top             =   2160
+         Width           =   855
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   19
+         Left            =   2760
+         TabIndex        =   264
+         Top             =   2160
+         Width           =   3375
+      End
+      Begin VB.CheckBox chkDesglosaDias 
+         Caption         =   "Desglosa trabajador"
+         Height          =   255
+         Index           =   0
+         Left            =   3960
+         TabIndex        =   254
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   18
+         Left            =   1800
+         TabIndex        =   249
+         Top             =   1800
+         Width           =   855
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   18
+         Left            =   2760
+         TabIndex        =   261
+         Top             =   1800
+         Width           =   3375
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "&Cancelar"
+         Height          =   375
+         Index           =   17
+         Left            =   4920
+         TabIndex        =   256
+         Top             =   6480
+         Width           =   1215
+      End
+      Begin VB.CommandButton cmdHorasProcesadas 
+         Caption         =   "Aceptar"
+         Height          =   375
+         Left            =   3480
+         TabIndex        =   255
+         Top             =   6480
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   17
+         Left            =   4920
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   248
+         Text            =   "Text1"
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   16
+         Left            =   1800
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   247
+         Text            =   "Text1"
+         Top             =   960
+         Width           =   1215
       End
       Begin VB.Label lblFecha 
          Caption         =   "Hasta"
          Height          =   195
-         Index           =   20
-         Left            =   1320
-         TabIndex        =   93
-         Top             =   3000
-         Width           =   420
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   19
-         Left            =   1320
-         TabIndex        =   92
-         Top             =   2520
+         Index           =   54
+         Left            =   840
+         TabIndex        =   274
+         Top             =   3120
          Width           =   465
       End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   9
+         Left            =   1440
+         Top             =   3120
+         Width           =   255
+      End
       Begin VB.Label Label1 
-         Caption         =   "Seccion"
+         Caption         =   "Sección"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -4024,43 +3990,62 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00000080&
          Height          =   255
-         Index           =   8
-         Left            =   240
-         TabIndex        =   91
-         Top             =   2280
+         Index           =   26
+         Left            =   120
+         TabIndex        =   272
+         Top             =   2520
          Width           =   1335
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   5
-         Left            =   1920
-         Top             =   1800
-         Width           =   255
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   4
-         Left            =   1920
-         Top             =   1320
-         Width           =   255
       End
       Begin VB.Label lblFecha 
          Caption         =   "Desde"
          Height          =   195
-         Index           =   11
-         Left            =   1440
-         TabIndex        =   53
-         Top             =   1320
+         Index           =   53
+         Left            =   840
+         TabIndex        =   271
+         Top             =   2760
          Width           =   465
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   8
+         Left            =   1440
+         Top             =   2760
+         Width           =   255
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Empresa"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   25
+         Left            =   120
+         TabIndex        =   267
+         Top             =   3720
+         Width           =   1335
       End
       Begin VB.Label lblFecha 
          Caption         =   "Hasta"
          Height          =   195
-         Index           =   10
+         Index           =   52
+         Left            =   840
+         TabIndex        =   265
+         Top             =   2160
+         Width           =   465
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   19
          Left            =   1440
-         TabIndex        =   52
-         Top             =   1800
-         Width           =   420
+         Top             =   2160
+         Width           =   255
       End
       Begin VB.Label Label1 
          Caption         =   "Trabajador"
@@ -4075,15 +4060,49 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00000080&
          Height          =   255
-         Index           =   5
-         Left            =   240
-         TabIndex        =   51
-         Top             =   960
+         Index           =   24
+         Left            =   120
+         TabIndex        =   263
+         Top             =   1440
          Width           =   1335
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   51
+         Left            =   840
+         TabIndex        =   262
+         Top             =   1800
+         Width           =   540
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   18
+         Left            =   1440
+         Top             =   1800
+         Width           =   255
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   17
+         Left            =   4560
+         Picture         =   "frmListado.frx":76A0
+         ToolTipText     =   "Buscar fecha"
+         Top             =   960
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   50
+         Left            =   4080
+         TabIndex        =   260
+         Top             =   960
+         Width           =   465
       End
       Begin VB.Label lblTitulo 
          Alignment       =   2  'Center
-         Caption         =   "Listado trabajadores"
+         Caption         =   "Horas procesadas"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   18
@@ -4095,11 +4114,48 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00800000&
          Height          =   495
-         Index           =   2
-         Left            =   600
-         TabIndex        =   50
-         Top             =   240
+         Index           =   11
+         Left            =   480
+         TabIndex        =   259
+         Top             =   120
          Width           =   5415
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   49
+         Left            =   840
+         TabIndex        =   258
+         Top             =   960
+         Width           =   465
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Fecha"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   23
+         Left            =   120
+         TabIndex        =   257
+         Top             =   720
+         Width           =   735
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   16
+         Left            =   1440
+         Picture         =   "frmListado.frx":772B
+         ToolTipText     =   "Buscar fecha"
+         Top             =   960
+         Width           =   240
       End
    End
 End
@@ -4140,8 +4196,8 @@ Public Opcion As Byte
     '22  Horas por relojes
     
     
-Private WithEvents frmc As frmCal
-Attribute frmc.VB_VarHelpID = -1
+Private WithEvents frmC As frmCal
+Attribute frmC.VB_VarHelpID = -1
 Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
 
@@ -4232,7 +4288,7 @@ Private Sub chkDesglosaDias_KeyPress(Index As Integer, KeyAscii As Integer)
 End Sub
 
 Private Sub chkFoto_Click()
-    Me.chkTarjeta.Value = IIf(Me.chkFoto.Value = 1, 0, 1)
+  '  Me.chkTarjeta.Value = IIf(Me.chkFoto.Value = 1, 0, 1)
 End Sub
 
 Private Sub ChkIncorr_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -4256,19 +4312,37 @@ Private Sub chkSeccion_Click()
     Me.FrameTapaSecc.Visible = chkSeccion.Value = 0
 End Sub
 
+Private Sub chkSinProcesar_Click(Index As Integer)
+    
+    If Index = 3 And chkSinProcesar(3).Value = 1 Then
+        chkSinProcesar(0).Value = 0
+        chkSinProcesar(2).Value = 0
+    End If
+End Sub
+
 Private Sub chkSinProcesar_KeyPress(Index As Integer, KeyAscii As Integer)
     Keypress KeyAscii
 End Sub
 
 Private Sub chkTarjeta_Click()
     
-    Me.chkFoto.Value = IIf(Me.chkTarjeta.Value = 1, 0, 1)
+   ' Me.chkFoto.Value = IIf(Me.chkTarjeta.Value = 1, 0, 1)
+    
 End Sub
 
 Private Sub cmdActual_Click()
 Dim B As Boolean
         
     Screen.MousePointer = vbHourglass
+    
+    If chkSinProcesar(3).Value = 1 Then
+        chkSinProcesar(0).Value = 0
+        chkSinProcesar(2).Value = 0
+    End If
+    
+    
+    
+    
     B = ImprimirTicajeActual
         
     Screen.MousePointer = vbDefault
@@ -4307,7 +4381,20 @@ Dim B As Boolean
         
         
         If chkSinProcesar(2).Value = 0 Then
-            frmImprimir.Opcion = 67
+            If Me.chkSinProcesar(3).Value = 1 Then
+                'Adapta horario
+                frmImprimir.Opcion = 73
+            Else
+                If Me.chkSinProcesar(0).Value = 1 Then
+                    frmImprimir.Opcion = 74
+                    'por trabajador
+                    If optActual(0).Value Then cad = cad & "AgrupadoPor= {tmpcombinada.idtrabajador}|"
+                    
+                Else
+                    frmImprimir.Opcion = 67
+                    
+                End If
+            End If
         Else
                 'Agrupa seccion
             If Me.chkSinProcesar(0).Value = 1 Then
@@ -4604,6 +4691,15 @@ Dim F1 As Date
     vSql = ""
     cad = ""
     
+    'Opcion asesoria. LAs fechas obligadas
+    If Me.optHorasPorecesadas(2).Value Then
+        If txtFec(16).Text = "" Or txtFec(17).Text = "" Then
+            MsgBox "Fechas obligadas para el listado de datos asesoria", vbExclamation
+            Exit Sub
+        End If
+    End If
+        
+        
     
     
     F1 = "01/01/2001"
@@ -4680,17 +4776,24 @@ Dim F1 As Date
         If Me.chkDesglosaDias(1).Value = 1 Then cad = cad & "Emp"
         cad = cad & ".rpt"
     
+    ElseIf Me.optHorasPorecesadas(2).Value Then
+        cad = "resHorasTrabajaNominaAse.rpt"
+    
     Else
         'Desglose trabajador
-        If chkResumeTrabajador(1).Value = 1 Then
-                    cad = "resHorasTrabaja.rpt"
+        If chkResumeTrabajador(2).Value = 1 Then
+            cad = "resHorasTrabajaNomina.rpt"
         Else
-            If vEmpresa.QueEmpresa = 4 Or vEmpresa.QueEmpresa = 5 Then
-                cad = "picHorasTrabajador.rpt"
+            If chkResumeTrabajador(1).Value = 1 Then
+                        cad = "resHorasTrabaja.rpt"
             Else
-                cad = "AlzHorasTrabajador.rpt"
+                If vEmpresa.QueEmpresa = 4 Or vEmpresa.QueEmpresa = 5 Then
+                    cad = "picHorasTrabajador.rpt"
+                Else
+                    cad = "AlzHorasTrabajador.rpt"
+                End If
+                
             End If
-            
         End If
     End If
     
@@ -5244,6 +5347,11 @@ Private Sub cmdTraba_Click()
 Dim d As String
 Dim formu As String
 
+    If chkFoto.Value = 1 And Me.chkTarjeta.Value = 1 Then
+        MsgBox "Seleccione una o ninguna de las opciones ( FOTO - TARJETA )", vbExclamation
+        Exit Sub
+    End If
+
   'lanzaremos el informe
     NumPa = 0
     CadPa = ""
@@ -5264,11 +5372,25 @@ Dim formu As String
     vSql = vSql & DesdeHastaSelect(1, 5, "idtrabajador<=", " AND ")
     
     
+    If Me.cboBaja.ListIndex > 0 Then
+         vSql = vSql & " AND "
+        
+        If Me.cboBaja.ListIndex = 1 Then
+            d = d & "    ACTIVOS"
+        Else
+            d = d & "    DE BAJA"
+            vSql = vSql & " NOT "
+            formu = " NOT "
+        End If
+        vSql = vSql & " FecBaja is  null"
+        formu = formu & " isnull({trabajadores.FecBaja})"
+    End If
+    
     If chkSeccion.Value = 1 Then
         If txtSecc(0).Text <> "" Then
             
             d = d & "   Desde " & txtSecc(0).Text & " " & txtDSecc(0).Text
-            formu = "{secciones.idseccion}>=" & txtSecc(0).Text
+            formu = formu & "{secciones.idseccion}>=" & txtSecc(0).Text
         End If
         vSql = vSql & DesdeHastaSelect(2, 0, "trabajadores.seccion >=", " AND ")
                     
@@ -5419,7 +5541,7 @@ Dim IndiceCancelar As Integer
     
     Case 8
         
-        'INSERTAR MODIFICAR INCIDENCIAS GENERADAS
+        'IListado trabajadores
         H = Me.FrameTrabajadores.Height
         W = Me.FrameTrabajadores.Width
         
@@ -5468,7 +5590,7 @@ Dim IndiceCancelar As Integer
         
         
     Case 12
-        ' I N C I D E N C I A S
+        '
         
         imgTra(10).Picture = frmPpal.imgListImages16.ListImages(3).Picture
         imgTra(11).Picture = frmPpal.imgListImages16.ListImages(3).Picture
@@ -5568,7 +5690,7 @@ Dim IndiceCancelar As Integer
             List1.AddItem "Cooperativa"
             List1.Selected(0) = True
         End If
-
+        optHorasPorecesadas_Click 0
     
     Case 18, 19
         Caption = "Relojes auxiliares"
@@ -5662,7 +5784,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
 
 End Sub
 
-Private Sub frmc_Selec(vFecha As Date)
+Private Sub frmC_Selec(vFecha As Date)
     txtFec(CInt(imgFec(0).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -5693,7 +5815,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim Obj As Object
 
-    Set frmc = New frmCal
+    Set frmC = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -5709,16 +5831,16 @@ Private Sub imgFec_Click(Index As Integer)
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
     
     
-    frmc.Left = esq + imgFec(Index).Parent.Left + 30
-    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmC.Left = esq + imgFec(Index).Parent.Left + 30
+    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If txtFec(Index).Text <> "" Then frmc.NovaData = txtFec(Index).Text
+    If txtFec(Index).Text <> "" Then frmC.NovaData = txtFec(Index).Text
     ' ********************************************
 
-    frmc.Show vbModal
-    Set frmc = Nothing
+    frmC.Show vbModal
+    Set frmC = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco txtFec(CByte(imgFec(0).Tag)) '<===
     ' ********************************************
@@ -5780,9 +5902,13 @@ End Sub
 Private Sub optHorasPorecesadas_Click(Index As Integer)
     chkDesglosaDias(0).Visible = Index = 0
     chkDesglosaDias(1).Visible = Index = 0
+    
     chkResumeTrabajador(0).Visible = Index = 1
     chkResumeTrabajador(1).Visible = Index = 1
-    If Index = 1 Then chkResumeTrabajador(0).Value = 1
+    chkResumeTrabajador(2).Visible = Index = 1
+    'If Index = 1 Then
+    '    chkResumeTrabajador(0).Value = 1
+        
 End Sub
 
 Private Sub optTrab_KeyPress(Index As Integer, KeyAscii As Integer)
@@ -6074,6 +6200,19 @@ End Sub
 
 
 Private Function ImprimirTicajeActual() As Boolean
+Dim B As Boolean
+    
+    
+    If Me.chkSinProcesar(3).Value = 1 Then
+        B = ImprimirTicajeActualAdaptado
+    Else
+        B = ImprimirTicajeActualNormal
+    End If
+    
+    ImprimirTicajeActual = B
+End Function
+
+Private Function ImprimirTicajeActualNormal() As Boolean
 Dim SQL As String
 Dim F As Date
 Dim T As Long
@@ -6097,7 +6236,7 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
 
 
     On Error GoTo eImprimirTicajeActual
-
+    ImprimirTicajeActualNormal = False
 
     SQL = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
     conn.Execute SQL
@@ -6311,9 +6450,8 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
    Set vH = Nothing
    If T > 0 Then
         InsertaProcesarActual vHora, Horas, Ajustadas, QuitoMeriendaAlmuerzo, Entrada = True
-        ImprimirTicajeActual = True
-   Else
-        ImprimirTicajeActual = False
+        ImprimirTicajeActualNormal = True
+        
    End If
    
    Exit Function
@@ -8361,6 +8499,362 @@ On Error GoTo ErrSQL
     Exit Function
 ErrSQL:
     MsgBox "Error: " & Err.Description, vbExclamation
+End Function
+
+
+
+
+
+
+
+
+
+'Adaptacion del ticaje NORMAL al horario
+Private Function ImprimirTicajeActualAdaptado() As Boolean
+Dim SQL As String
+Dim F As Date
+Dim T As Long
+Dim vHora As Integer
+
+
+Dim PuedeQuitarParadas As Boolean
+Dim Entrada As Boolean
+'De momento no trabajao con esto
+Dim FueraIntervalo As Integer     '0 NORMAL    1. Hora negativa     2. Hora mayor=24
+
+Dim vH As CHorarios
+Dim Minutos As Integer
+Dim HI As Date
+Dim HF As Date
+Dim HIAustada As Date
+Dim Difer As Currency
+Dim Horas  As Currency
+Dim Ajustadas As Currency
+
+Dim QuitoMeriendaAlmuerzo As Currency
+Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    2. Quito la merienda
+Dim EsLaUltima As Boolean
+Dim AuxiliarResta As Integer
+Dim MaximoMinutosDias As Integer
+Dim Restamoas As Boolean
+Dim DiaSem As Integer
+
+
+
+    On Error GoTo eImprimirTicaje2
+
+    ImprimirTicajeActualAdaptado = False
+    
+    SQL = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
+    conn.Execute SQL
+    Set vH = New CHorarios
+    '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
+    SQL = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos ,Control, "
+    If vEmpresa.AcabalgadoDiaInicio Then
+        SQL = SQL & " 0 "   'Acabalgdo dia inicio no hay hpras negativas
+    Else
+        SQL = SQL & "if(hora<0,1,0) "
+    End If
+    SQL = SQL & " HorasNegativas from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
+    cad = ""
+    If Me.txtFec(8).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
+    If Me.txtFec(9).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
+    If Me.txtTrab(10).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
+    If Me.txtTrab(11).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
+    
+    'Abril 2014
+    If Me.txtSecc(10).Text <> "" Then cad = cad & " AND t.seccion >= " & txtSecc(10).Text
+    If Me.txtSecc(11).Text <> "" Then cad = cad & " AND t.seccion <= " & txtSecc(11).Text
+    
+    
+    
+    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
+    cad = cad & " ORDER BY fecha,idtrabajador,hora"
+        
+    Set miRsAux = New ADODB.Recordset
+    SQL = SQL & cad
+    miRsAux.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    F = CDate("01/01/1911")
+    T = 0
+    While Not miRsAux.EOF
+        If miRsAux!Fecha <> F Then
+            If T > 0 Then T = 9999999
+        End If
+        If T <> miRsAux!idTrabajador Then
+            
+            If T > 0 Then InsertaProcesarActual vHora, Horas, Ajustadas, QuitoMeriendaAlmuerzo, Entrada = True
+                
+            
+            'Empezamos con el SQL
+            F = miRsAux!Fecha
+            T = miRsAux!idTrabajador
+            
+            
+            vHora = 0
+            QuitoMeriendaAlmuerzo = 0   'Currency de cuanto he quitado
+            QuitoMeriAlm = 0  '0 no he quitado nada   1. El almuezro    2 La merienda
+            Entrada = True
+            Ajustadas = 0
+            Horas = 0
+            PuedeQuitarParadas = False
+            EsLaUltima = False
+    
+            
+                'Veamos el horario para el trabajador, dia
+                cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
+                CadPa = "trabajadores.idcal"
+                cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(T), "N", CadPa)
+                If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
+                
+                If Val(cad) <> vH.IdHorario Then
+                    If vH.Leer(CInt(cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
+                End If
+                
+                'Si puede quitar paradas, y el horario lo tiene:
+                Minutos = 0
+                
+'                    If vH.Rectificar > 0 Then
+'                      If vH.Rectificar = vbRecESCuarto Then
+'                        Minutos = 15
+'                      Else
+'                          Minutos = 30   'Entradas salidas cada media hora
+'                      End If
+'                    End If
+                 
+                If vH.DtoMer = 0 And vH.DtoAlm = 0 Then PuedeQuitarParadas = False
+  
+                 
+            
+            vSql = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
+            vSql = vSql & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
+            cad = ""
+        End If
+        
+        
+        If vHora < 16 Then   'solo ionserto 16
+                
+    
+           ' If miRsAux!HorasNegativas = 1 Then
+           '     FueraIntervalo2 = 1
+           '     i = 24 - miRsAux!LaHora
+           ' Else
+           '     If miRsAux!LaHora >= 0 And miRsAux!LaHora <= 23 Then
+           '         i = miRsAux!LaHora
+           '         FueraIntervalo2 = 0
+           '     Else
+           '         FueraIntervalo2 = 2
+           '         i = miRsAux!LaHora - 24
+           '
+           '     End If
+           ' End If
+           i = miRsAux!LaHora
+            CadPa = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+            
+            If Entrada Then HIAustada = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+            
+            
+            
+            If PuedeQuitarParadas Then
+                'If vH.DtoAlm > 0 And FueraIntervalo2 <> 1 Then
+                If vH.DtoAlm > 0 Then
+                    If QuitoMeriAlm = 0 Then
+                        'Compruebo si el ticaje es menor que la hora del almuerzo
+                        If HIAustada < vH.HoraDtoAlm Then
+                            QuitoMeriAlm = 1
+                            QuitoMeriendaAlmuerzo = vH.DtoAlm
+                        End If
+                    End If
+                End If
+                'If vH.DtoMer > 0 And FueraIntervalo2 <> 1 Then
+                If vH.DtoMer > 0 Then
+                    If QuitoMeriAlm < 2 Then
+                        i = 0
+                        'If FueraIntervalo2 = 2 Then
+                        '    'Seguro que quito la merienda
+                        '    i = 1
+                        'Else
+                            If Not Entrada Then
+                                If HF > vH.HoraDtoMer Then i = 1
+                            End If
+                        'End If
+                        If i = 1 Then
+                            QuitoMeriAlm = 2
+                            QuitoMeriendaAlmuerzo = QuitoMeriendaAlmuerzo + vH.DtoMer
+                        End If
+                        
+                    End If
+                End If
+            End If
+            
+            
+            
+            
+            
+            
+            If Not Entrada Then
+            
+                miRsAux.MoveNext
+                
+                If miRsAux.EOF Then
+                     EsLaUltima = True
+                Else
+                    If miRsAux!idTrabajador <> T Then
+                        EsLaUltima = True
+                    Else
+                        If miRsAux!Fecha <> F Then EsLaUltima = True
+                    End If
+                End If
+
+                miRsAux.MovePrevious  'volvemos al sitio
+                
+                HF = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+               ' If HI > HF Then
+               '     'Hora acabalgada . Ha entrado el dia de antes
+               '     Difer = DateDiff("n", HF, HI)
+               '     Difer = 1440 - Difer
+               ' Else
+                    'Lo que habia hasta ahora
+                    Difer = DateDiff("n", HI, HF)
+               ' End If
+                
+              
+               
+        
+               
+                Ajustadas = Ajustadas + Difer
+                    
+                If EsLaUltima Then
+                
+                    MaximoMinutosDias = vH.TotalHoras * 60
+                    
+                    MaximoMinutosDias = MaximoMinutosDias + (QuitoMeriendaAlmuerzo * 60)   'maximo minutos es Horas * 8 +as paradas
+                    
+                    If vH.TotalHoras = 0 Then MaximoMinutosDias = 32000
+                    If Ajustadas > MaximoMinutosDias Then
+                        
+                        MaximoMinutosDias = Ajustadas - MaximoMinutosDias - 1
+                        'Para que no seam exactos
+                        'En vez de random, por si acaso reimprime muchas veces el mismo listado, que siempre salga lo mismo
+                        
+                        
+                        Restamoas = False
+                        DiaSem = Weekday(F)
+                        DiaSem = DiaSem Mod 4
+                        Select Case DiaSem
+                        Case 1
+                            AuxiliarResta = (miRsAux!idTrabajador Mod 8) + 1
+                            If AuxiliarResta = 1 Or AuxiliarResta = 5 Then Restamoas = True
+                            
+                            If (AuxiliarResta Mod 3) = 0 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 4
+                            ElseIf (AuxiliarResta Mod 3) = 1 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 5
+                            Else
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 3
+                            End If
+                        Case 2
+                            AuxiliarResta = (miRsAux!idTrabajador Mod 8) + 1
+                            If AuxiliarResta = 2 Or AuxiliarResta = 6 Then Restamoas = True
+                            
+                            If (AuxiliarResta Mod 3) = 0 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 1
+                                ElseIf (AuxiliarResta Mod 3) = 1 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 2
+                            Else
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 3
+                            End If
+                            AuxiliarResta = AuxiliarResta + 1
+                        
+                        
+                        Case 3
+                            AuxiliarResta = (miRsAux!idTrabajador Mod 8) + 1
+                            If AuxiliarResta = 3 Or AuxiliarResta = 7 Then Restamoas = True
+                            
+                            If (AuxiliarResta Mod 3) = 0 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 2
+                            ElseIf (AuxiliarResta Mod 3) = 2 Then
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 3
+                            Else
+                                AuxiliarResta = (AuxiliarResta + 1) Mod 1
+                            End If
+                            AuxiliarResta = AuxiliarResta + 1
+                        
+                        
+                        
+                        Case Else
+                            AuxiliarResta = (miRsAux!idTrabajador Mod 8) + 1
+                            If AuxiliarResta = 0 Or AuxiliarResta = 8 Then Restamoas = True
+                            
+                            If (AuxiliarResta Mod 2) = 0 Then
+                                AuxiliarResta = (miRsAux!idTrabajador + 1) Mod 3
+                            Else
+                                AuxiliarResta = (miRsAux!idTrabajador + 1) Mod 5
+                            End If
+                        
+                        End Select
+                        
+                        
+                        
+                        If Restamoas Then AuxiliarResta = -1 * AuxiliarResta
+                            
+                        
+                        MaximoMinutosDias = MaximoMinutosDias - AuxiliarResta
+                        
+                        
+                        
+                        HF = DateAdd("n", -MaximoMinutosDias, HF)
+                        
+                    Else
+                        MaximoMinutosDias = 0
+                    End If
+                    Difer = Difer - MaximoMinutosDias
+                    
+                End If
+                CadPa = Format(HF, "hh:nn:ss")
+                Horas = Horas + Difer
+                cad = cad & ",'" & CadPa & "'"
+            
+            
+            Else
+                cad = cad & ",'" & CadPa & "'"
+                HI = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+                'If Minutos > 0 Then
+                '    HIAustada = HoraRectificada(HI, vEmpresa.AjusteEntrada, Minutos)
+                'Else
+                '    HIAustada = HI
+                'End If
+              
+                HIAustada = HI
+            End If
+            
+            
+ 
+                        
+                        
+            
+            
+            
+            
+            Entrada = Not Entrada
+            
+
+        End If
+        vHora = vHora + 1
+        miRsAux.MoveNext
+   Wend
+   miRsAux.Close
+   Set miRsAux = Nothing
+   Set vH = Nothing
+   If T > 0 Then
+        InsertaProcesarActual vHora, Horas, Ajustadas, QuitoMeriendaAlmuerzo, Entrada = True
+        ImprimirTicajeActualAdaptado = True
+   
+   End If
+   
+   Exit Function
+eImprimirTicaje2:
+    MuestraError Err.Number, Err.Description
+   
 End Function
 
 

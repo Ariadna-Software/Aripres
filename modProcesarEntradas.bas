@@ -12,7 +12,7 @@ Dim QuitarAlmuerzo
 Dim quitarmerienda
 Dim TotalParadas2 As Currency
 
-Dim vSQL2 As String
+Dim vSQL3 As String
 
 
 Public Sub ProcesarEntradasFichajes(Fecha As Date, ByRef lblPpal As Label, ByRef lblDetall As Label)
@@ -729,8 +729,9 @@ Dim ValorModificadoParadas As Currency
         RS.MoveFirst
     End If
     'EL SQL para los inserts
-    vSQL2 = "INSERT INTO entradamarcajes (Secuencia, idTrabajador, idMarcaje, Fecha, Hora, "
-    vSQL2 = vSQL2 & "idInci, HoraReal, reloj) VALUES ( "
+    vSQL3 = "INSERT INTO entradamarcajes (Secuencia, idTrabajador, idMarcaje, Fecha, Hora, "
+    vSQL3 = vSQL3 & "idInci, HoraReal, reloj , latitud,longitud,ssid,imei,observaciones,appinfo,revisado"
+    vSQL3 = vSQL3 & ") VALUES ( "
     Set RTra = New ADODB.Recordset
     Num = 0
     MiCal = 0
@@ -1441,8 +1442,11 @@ End If
         While Not Rss.EOF
             cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
             cad = cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
-            cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj & ")"
-            conn.Execute vSQL2 & cad
+            cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj
+            ' latitud,longitud,ssid,imei,observaciones,appinfo,revisado
+            cad = cad & "," & DBSet(Rss!latitud, "T", "S") & "," & DBSet(Rss!Longitud, "T", "S") & "," & DBSet(Rss!ssid, "T", "S")
+            cad = cad & "," & DBSet(Rss!imei, "T", "S") & "," & DBSet(Rss!observaciones, "T", "S") & "," & DBSet(Rss!appinfo, "T", "S") & "," & DBSet(Rss!revisado, "N") & ")"
+            conn.Execute vSQL3 & cad
             i = i + 1
             Rss.MoveNext
         Wend
@@ -1787,12 +1791,18 @@ End If
             End If
             cad = Trim(Rss!lareal)
             cad = Replace(cad, Chr(0), "")
-            cad = "'," & Rss!IdInci & ",'" & cad & "'," & Rss!Reloj & ")"
+            cad = "'," & Rss!IdInci & ",'" & cad & "'," & Rss!Reloj
+            ' latitud,longitud,ssid,imei,observaciones,appinfo,revisado
+            cad = cad & "," & DBSet(Rss!latitud, "T", "S") & "," & DBSet(Rss!Longitud, "T", "S") & "," & DBSet(Rss!ssid, "T", "S")
+            cad = cad & "," & DBSet(Rss!imei, "T", "S") & "," & DBSet(Rss!observaciones, "T", "S") & "," & DBSet(Rss!appinfo, "T", "S") & "," & DBSet(Rss!revisado, "N") & ")"
+        
+            
+            
             cad = ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & HoraPintar & cad
             
             cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada & cad
             Debug.Print cad
-            conn.Execute vSQL2 & cad
+            conn.Execute vSQL3 & cad
             i = i + 1
             Rss.MoveNext
         Wend
@@ -2003,8 +2013,12 @@ End If 'De DIAFESTIVO
                 
                 cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
                 cad = cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
-                cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj & ")"
-                conn.Execute vSQL2 & cad
+                cad = cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj
+                  ' latitud,longitud,ssid,imei,observaciones,appinfo,revisado
+                cad = cad & "," & DBSet(Rss!latitud, "T", "S") & "," & DBSet(Rss!Longitud, "T", "S") & "," & DBSet(Rss!ssid, "T", "S")
+                cad = cad & "," & DBSet(Rss!imei, "T", "S") & "," & DBSet(Rss!observaciones, "T", "S") & "," & DBSet(Rss!appinfo, "T", "S") & "," & DBSet(Rss!revisado, "N") & ")"
+        
+                conn.Execute vSQL3 & cad
             
             Else
                 cad = "ERROR " & vbCrLf & vbCrLf & "Trab: " & vMar.idTrabajador & " Secuencia: " & Rss!Secuencia

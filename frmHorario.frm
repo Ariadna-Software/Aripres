@@ -293,7 +293,6 @@ Begin VB.Form frmHorario
       _ExtentX        =   19711
       _ExtentY        =   9022
       _Version        =   393216
-      Tab             =   1
       TabHeight       =   520
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "MS Sans Serif"
@@ -306,12 +305,13 @@ Begin VB.Form frmHorario
       EndProperty
       TabCaption(0)   =   "Horario semanal"
       TabPicture(0)   =   "frmHorario.frx":000C
-      Tab(0).ControlEnabled=   0   'False
+      Tab(0).ControlEnabled=   -1  'True
       Tab(0).Control(0)=   "Frame3"
+      Tab(0).Control(0).Enabled=   0   'False
       Tab(0).ControlCount=   1
       TabCaption(1)   =   "Paradas"
       TabPicture(1)   =   "frmHorario.frx":0028
-      Tab(1).ControlEnabled=   -1  'True
+      Tab(1).ControlEnabled=   0   'False
       Tab(1).Control(0)=   "Label8"
       Tab(1).Control(0).Enabled=   0   'False
       Tab(1).Control(1)=   "Frame1(1)"
@@ -320,9 +320,9 @@ Begin VB.Form frmHorario
       TabCaption(2)   =   "Rectificación"
       TabPicture(2)   =   "frmHorario.frx":0044
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "FrameAux0"
+      Tab(2).Control(0)=   "Label5"
       Tab(2).Control(1)=   "Combo1(0)"
-      Tab(2).Control(2)=   "Label5"
+      Tab(2).Control(2)=   "FrameAux0"
       Tab(2).ControlCount=   3
       Begin VB.Frame FrameAux0 
          Height          =   4575
@@ -598,7 +598,7 @@ Begin VB.Form frmHorario
       End
       Begin VB.Frame Frame3 
          Height          =   4455
-         Left            =   -74880
+         Left            =   120
          TabIndex        =   80
          Top             =   480
          Width           =   10815
@@ -1492,7 +1492,7 @@ Begin VB.Form frmHorario
       Begin VB.Frame Frame1 
          Height          =   4155
          Index           =   1
-         Left            =   120
+         Left            =   -74880
          TabIndex        =   65
          Top             =   480
          Width           =   10935
@@ -1810,7 +1810,7 @@ Begin VB.Form frmHorario
       Begin VB.Label Label8 
          Alignment       =   1  'Right Justify
          Height          =   255
-         Left            =   4800
+         Left            =   -70200
          TabIndex        =   64
          Top             =   4320
          Width           =   3555

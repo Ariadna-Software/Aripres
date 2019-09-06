@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "Mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmVerCalendario 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Ver Calendario"
@@ -40,14 +40,14 @@ Begin VB.Form frmVerCalendario
       Default         =   -1  'True
       Height          =   375
       Left            =   9000
-      TabIndex        =   460
+      TabIndex        =   0
       Top             =   120
       Width           =   1455
    End
    Begin MSComctlLib.ListView ListView2 
       Height          =   3855
       Left            =   6840
-      TabIndex        =   109
+      TabIndex        =   110
       Top             =   960
       Width           =   3855
       _ExtentX        =   6800
@@ -74,7 +74,7 @@ Begin VB.Form frmVerCalendario
    Begin MSComctlLib.ListView ListView1 
       Height          =   3255
       Left            =   6840
-      TabIndex        =   457
+      TabIndex        =   458
       Top             =   5160
       Width           =   3855
       _ExtentX        =   6800
@@ -126,7 +126,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   1
       Left            =   6840
-      TabIndex        =   459
+      TabIndex        =   460
       Top             =   720
       Width           =   1455
    End
@@ -144,7 +144,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   0
       Left            =   6840
-      TabIndex        =   458
+      TabIndex        =   459
       Top             =   4920
       Width           =   1455
    End
@@ -232,7 +232,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   2
       Left            =   4800
-      TabIndex        =   447
+      TabIndex        =   448
       Top             =   720
       Width           =   1815
    End
@@ -257,7 +257,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   1
       Left            =   2520
-      TabIndex        =   446
+      TabIndex        =   447
       Top             =   720
       Width           =   1815
    End
@@ -276,7 +276,7 @@ Begin VB.Form frmVerCalendario
       Index           =   36
       Left            =   5160
       OLEDropMode     =   1  'Manual
-      TabIndex        =   445
+      TabIndex        =   446
       Top             =   2280
       Width           =   180
    End
@@ -288,7 +288,7 @@ Begin VB.Form frmVerCalendario
       Index           =   35
       Left            =   4920
       OLEDropMode     =   1  'Manual
-      TabIndex        =   444
+      TabIndex        =   445
       Top             =   2280
       Width           =   180
    End
@@ -306,7 +306,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   0
       Left            =   240
-      TabIndex        =   443
+      TabIndex        =   444
       Top             =   720
       Width           =   1815
    End
@@ -316,7 +316,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   600
-      TabIndex        =   442
+      TabIndex        =   443
       Top             =   4200
       Width           =   180
    End
@@ -326,7 +326,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   360
-      TabIndex        =   441
+      TabIndex        =   442
       Top             =   4200
       Width           =   180
    End
@@ -345,7 +345,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   1800
-      TabIndex        =   440
+      TabIndex        =   441
       Top             =   3960
       Width           =   210
    End
@@ -355,6 +355,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   1560
+      TabIndex        =   440
+      Top             =   3960
+      Width           =   180
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   1320
       TabIndex        =   439
       Top             =   3960
       Width           =   180
@@ -363,8 +373,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   1320
+      Index           =   31
+      Left            =   1080
       TabIndex        =   438
       Top             =   3960
       Width           =   180
@@ -373,8 +383,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   1080
+      Index           =   30
+      Left            =   840
       TabIndex        =   437
       Top             =   3960
       Width           =   180
@@ -383,8 +393,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   840
+      Index           =   29
+      Left            =   600
       TabIndex        =   436
       Top             =   3960
       Width           =   180
@@ -393,19 +403,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   600
-      TabIndex        =   435
-      Top             =   3960
-      Width           =   180
-   End
-   Begin VB.Label Label4 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   360
-      TabIndex        =   434
+      TabIndex        =   435
       Top             =   3960
       Width           =   180
    End
@@ -424,7 +424,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   1800
-      TabIndex        =   433
+      TabIndex        =   434
       Top             =   3720
       Width           =   210
    End
@@ -434,6 +434,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   1560
+      TabIndex        =   433
+      Top             =   3720
+      Width           =   180
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   1320
       TabIndex        =   432
       Top             =   3720
       Width           =   180
@@ -442,8 +452,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   1320
+      Index           =   24
+      Left            =   1080
       TabIndex        =   431
       Top             =   3720
       Width           =   180
@@ -452,8 +462,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   1080
+      Index           =   23
+      Left            =   840
       TabIndex        =   430
       Top             =   3720
       Width           =   180
@@ -462,8 +472,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   840
+      Index           =   22
+      Left            =   600
       TabIndex        =   429
       Top             =   3720
       Width           =   180
@@ -472,19 +482,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   600
-      TabIndex        =   428
-      Top             =   3720
-      Width           =   180
-   End
-   Begin VB.Label Label4 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   360
-      TabIndex        =   427
+      TabIndex        =   428
       Top             =   3720
       Width           =   180
    End
@@ -503,7 +503,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   1800
-      TabIndex        =   426
+      TabIndex        =   427
       Top             =   3480
       Width           =   210
    End
@@ -513,6 +513,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   1560
+      TabIndex        =   426
+      Top             =   3480
+      Width           =   180
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   1320
       TabIndex        =   425
       Top             =   3480
       Width           =   180
@@ -521,8 +531,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   1320
+      Index           =   17
+      Left            =   1080
       TabIndex        =   424
       Top             =   3480
       Width           =   180
@@ -531,8 +541,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   1080
+      Index           =   16
+      Left            =   840
       TabIndex        =   423
       Top             =   3480
       Width           =   180
@@ -541,8 +551,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   840
+      Index           =   15
+      Left            =   600
       TabIndex        =   422
       Top             =   3480
       Width           =   180
@@ -551,19 +561,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   600
-      TabIndex        =   421
-      Top             =   3480
-      Width           =   180
-   End
-   Begin VB.Label Label4 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   360
-      TabIndex        =   420
+      TabIndex        =   421
       Top             =   3480
       Width           =   180
    End
@@ -582,7 +582,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   1800
-      TabIndex        =   419
+      TabIndex        =   420
       Top             =   3240
       Width           =   210
    End
@@ -592,6 +592,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   1560
+      TabIndex        =   419
+      Top             =   3240
+      Width           =   180
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   1320
       TabIndex        =   418
       Top             =   3240
       Width           =   180
@@ -600,8 +610,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   1320
+      Index           =   10
+      Left            =   1080
       TabIndex        =   417
       Top             =   3240
       Width           =   180
@@ -610,8 +620,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   1080
+      Index           =   9
+      Left            =   840
       TabIndex        =   416
       Top             =   3240
       Width           =   180
@@ -620,8 +630,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   840
+      Index           =   8
+      Left            =   600
       TabIndex        =   415
       Top             =   3240
       Width           =   180
@@ -630,19 +640,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   600
-      TabIndex        =   414
-      Top             =   3240
-      Width           =   180
-   End
-   Begin VB.Label Label4 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   360
-      TabIndex        =   413
+      TabIndex        =   414
       Top             =   3240
       Width           =   180
    End
@@ -661,7 +661,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   1800
-      TabIndex        =   412
+      TabIndex        =   413
       Top             =   3000
       Width           =   210
    End
@@ -671,6 +671,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   1560
+      TabIndex        =   412
+      Top             =   3000
+      Width           =   180
+   End
+   Begin VB.Label Label4 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   1320
       TabIndex        =   411
       Top             =   3000
       Width           =   180
@@ -679,8 +689,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   1320
+      Index           =   3
+      Left            =   1080
       TabIndex        =   410
       Top             =   3000
       Width           =   180
@@ -689,8 +699,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   1080
+      Index           =   2
+      Left            =   840
       TabIndex        =   409
       Top             =   3000
       Width           =   180
@@ -699,8 +709,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   840
+      Index           =   1
+      Left            =   600
       TabIndex        =   408
       Top             =   3000
       Width           =   180
@@ -709,19 +719,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   600
-      TabIndex        =   407
-      Top             =   3000
-      Width           =   180
-   End
-   Begin VB.Label Label4 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   360
-      TabIndex        =   406
+      TabIndex        =   407
       Top             =   3000
       Width           =   180
    End
@@ -731,7 +731,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   600
-      TabIndex        =   405
+      TabIndex        =   406
       Top             =   8280
       Width           =   180
    End
@@ -741,7 +741,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   360
-      TabIndex        =   404
+      TabIndex        =   405
       Top             =   8280
       Width           =   180
    End
@@ -760,7 +760,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   1800
-      TabIndex        =   403
+      TabIndex        =   404
       Top             =   8040
       Width           =   210
    End
@@ -770,6 +770,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   1560
+      TabIndex        =   403
+      Top             =   8040
+      Width           =   180
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   1320
       TabIndex        =   402
       Top             =   8040
       Width           =   180
@@ -778,8 +788,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   1320
+      Index           =   31
+      Left            =   1080
       TabIndex        =   401
       Top             =   8040
       Width           =   180
@@ -788,8 +798,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   1080
+      Index           =   30
+      Left            =   840
       TabIndex        =   400
       Top             =   8040
       Width           =   180
@@ -798,8 +808,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   840
+      Index           =   29
+      Left            =   600
       TabIndex        =   399
       Top             =   8040
       Width           =   180
@@ -808,19 +818,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   600
-      TabIndex        =   398
-      Top             =   8040
-      Width           =   180
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   360
-      TabIndex        =   397
+      TabIndex        =   398
       Top             =   8040
       Width           =   180
    End
@@ -839,7 +839,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   1800
-      TabIndex        =   396
+      TabIndex        =   397
       Top             =   7800
       Width           =   210
    End
@@ -849,6 +849,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   1560
+      TabIndex        =   396
+      Top             =   7800
+      Width           =   180
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   1320
       TabIndex        =   395
       Top             =   7800
       Width           =   180
@@ -857,8 +867,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   1320
+      Index           =   24
+      Left            =   1080
       TabIndex        =   394
       Top             =   7800
       Width           =   180
@@ -867,8 +877,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   1080
+      Index           =   23
+      Left            =   840
       TabIndex        =   393
       Top             =   7800
       Width           =   180
@@ -877,8 +887,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   840
+      Index           =   22
+      Left            =   600
       TabIndex        =   392
       Top             =   7800
       Width           =   180
@@ -887,19 +897,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   600
-      TabIndex        =   391
-      Top             =   7800
-      Width           =   180
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   360
-      TabIndex        =   390
+      TabIndex        =   391
       Top             =   7800
       Width           =   180
    End
@@ -918,7 +918,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   1800
-      TabIndex        =   389
+      TabIndex        =   390
       Top             =   7560
       Width           =   210
    End
@@ -928,6 +928,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   1560
+      TabIndex        =   389
+      Top             =   7560
+      Width           =   180
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   1320
       TabIndex        =   388
       Top             =   7560
       Width           =   180
@@ -936,8 +946,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   1320
+      Index           =   17
+      Left            =   1080
       TabIndex        =   387
       Top             =   7560
       Width           =   180
@@ -946,8 +956,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   1080
+      Index           =   16
+      Left            =   840
       TabIndex        =   386
       Top             =   7560
       Width           =   180
@@ -956,8 +966,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   840
+      Index           =   15
+      Left            =   600
       TabIndex        =   385
       Top             =   7560
       Width           =   180
@@ -966,19 +976,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   600
-      TabIndex        =   384
-      Top             =   7560
-      Width           =   180
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   360
-      TabIndex        =   383
+      TabIndex        =   384
       Top             =   7560
       Width           =   180
    End
@@ -997,7 +997,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   1800
-      TabIndex        =   382
+      TabIndex        =   383
       Top             =   7320
       Width           =   210
    End
@@ -1007,6 +1007,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   1560
+      TabIndex        =   382
+      Top             =   7320
+      Width           =   180
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   1320
       TabIndex        =   381
       Top             =   7320
       Width           =   180
@@ -1015,8 +1025,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   1320
+      Index           =   10
+      Left            =   1080
       TabIndex        =   380
       Top             =   7320
       Width           =   180
@@ -1025,8 +1035,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   1080
+      Index           =   9
+      Left            =   840
       TabIndex        =   379
       Top             =   7320
       Width           =   180
@@ -1035,8 +1045,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   840
+      Index           =   8
+      Left            =   600
       TabIndex        =   378
       Top             =   7320
       Width           =   180
@@ -1045,19 +1055,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   600
-      TabIndex        =   377
-      Top             =   7320
-      Width           =   180
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   360
-      TabIndex        =   376
+      TabIndex        =   377
       Top             =   7320
       Width           =   180
    End
@@ -1076,7 +1076,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   1800
-      TabIndex        =   375
+      TabIndex        =   376
       Top             =   7080
       Width           =   210
    End
@@ -1086,6 +1086,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   1560
+      TabIndex        =   375
+      Top             =   7080
+      Width           =   180
+   End
+   Begin VB.Label Label10 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   1320
       TabIndex        =   374
       Top             =   7080
       Width           =   180
@@ -1094,8 +1104,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   1320
+      Index           =   3
+      Left            =   1080
       TabIndex        =   373
       Top             =   7080
       Width           =   180
@@ -1104,8 +1114,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   1080
+      Index           =   2
+      Left            =   840
       TabIndex        =   372
       Top             =   7080
       Width           =   180
@@ -1114,8 +1124,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   840
+      Index           =   1
+      Left            =   600
       TabIndex        =   371
       Top             =   7080
       Width           =   180
@@ -1124,19 +1134,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   600
-      TabIndex        =   370
-      Top             =   7080
-      Width           =   180
-   End
-   Begin VB.Label Label10 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   360
-      TabIndex        =   369
+      TabIndex        =   370
       Top             =   7080
       Width           =   180
    End
@@ -1146,7 +1146,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   5160
-      TabIndex        =   368
+      TabIndex        =   369
       Top             =   8280
       Width           =   180
    End
@@ -1156,7 +1156,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   4920
-      TabIndex        =   367
+      TabIndex        =   368
       Top             =   8280
       Width           =   180
    End
@@ -1175,7 +1175,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   6360
-      TabIndex        =   366
+      TabIndex        =   367
       Top             =   8040
       Width           =   210
    End
@@ -1185,6 +1185,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   6120
+      TabIndex        =   366
+      Top             =   8040
+      Width           =   180
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   5880
       TabIndex        =   365
       Top             =   8040
       Width           =   180
@@ -1193,8 +1203,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   5880
+      Index           =   31
+      Left            =   5640
       TabIndex        =   364
       Top             =   8040
       Width           =   180
@@ -1203,8 +1213,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   5640
+      Index           =   30
+      Left            =   5400
       TabIndex        =   363
       Top             =   8040
       Width           =   180
@@ -1213,8 +1223,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   5400
+      Index           =   29
+      Left            =   5160
       TabIndex        =   362
       Top             =   8040
       Width           =   180
@@ -1223,19 +1233,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   5160
-      TabIndex        =   361
-      Top             =   8040
-      Width           =   180
-   End
-   Begin VB.Label Label12 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   4920
-      TabIndex        =   360
+      TabIndex        =   361
       Top             =   8040
       Width           =   180
    End
@@ -1254,7 +1254,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   6360
-      TabIndex        =   359
+      TabIndex        =   360
       Top             =   7800
       Width           =   210
    End
@@ -1264,6 +1264,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   6120
+      TabIndex        =   359
+      Top             =   7800
+      Width           =   180
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   5880
       TabIndex        =   358
       Top             =   7800
       Width           =   180
@@ -1272,8 +1282,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   5880
+      Index           =   24
+      Left            =   5640
       TabIndex        =   357
       Top             =   7800
       Width           =   180
@@ -1282,8 +1292,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   5640
+      Index           =   23
+      Left            =   5400
       TabIndex        =   356
       Top             =   7800
       Width           =   180
@@ -1292,8 +1302,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   5400
+      Index           =   22
+      Left            =   5160
       TabIndex        =   355
       Top             =   7800
       Width           =   180
@@ -1302,19 +1312,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   5160
-      TabIndex        =   354
-      Top             =   7800
-      Width           =   180
-   End
-   Begin VB.Label Label12 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   4920
-      TabIndex        =   353
+      TabIndex        =   354
       Top             =   7800
       Width           =   180
    End
@@ -1333,7 +1333,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   6360
-      TabIndex        =   352
+      TabIndex        =   353
       Top             =   7560
       Width           =   210
    End
@@ -1343,6 +1343,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   6120
+      TabIndex        =   352
+      Top             =   7560
+      Width           =   180
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   5880
       TabIndex        =   351
       Top             =   7560
       Width           =   180
@@ -1351,8 +1361,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   5880
+      Index           =   17
+      Left            =   5640
       TabIndex        =   350
       Top             =   7560
       Width           =   180
@@ -1361,8 +1371,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   5640
+      Index           =   16
+      Left            =   5400
       TabIndex        =   349
       Top             =   7560
       Width           =   180
@@ -1371,8 +1381,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   5400
+      Index           =   15
+      Left            =   5160
       TabIndex        =   348
       Top             =   7560
       Width           =   180
@@ -1381,19 +1391,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   5160
-      TabIndex        =   347
-      Top             =   7560
-      Width           =   180
-   End
-   Begin VB.Label Label12 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   4920
-      TabIndex        =   346
+      TabIndex        =   347
       Top             =   7560
       Width           =   180
    End
@@ -1412,7 +1412,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   6360
-      TabIndex        =   345
+      TabIndex        =   346
       Top             =   7320
       Width           =   210
    End
@@ -1422,6 +1422,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   6120
+      TabIndex        =   345
+      Top             =   7320
+      Width           =   180
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   5880
       TabIndex        =   344
       Top             =   7320
       Width           =   180
@@ -1430,8 +1440,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   5880
+      Index           =   10
+      Left            =   5640
       TabIndex        =   343
       Top             =   7320
       Width           =   180
@@ -1440,8 +1450,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   5640
+      Index           =   9
+      Left            =   5400
       TabIndex        =   342
       Top             =   7320
       Width           =   180
@@ -1450,8 +1460,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   5400
+      Index           =   8
+      Left            =   5160
       TabIndex        =   341
       Top             =   7320
       Width           =   180
@@ -1460,19 +1470,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   5160
-      TabIndex        =   340
-      Top             =   7320
-      Width           =   180
-   End
-   Begin VB.Label Label12 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   4920
-      TabIndex        =   339
+      TabIndex        =   340
       Top             =   7320
       Width           =   180
    End
@@ -1491,7 +1491,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   6360
-      TabIndex        =   338
+      TabIndex        =   339
       Top             =   7080
       Width           =   210
    End
@@ -1501,6 +1501,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   6120
+      TabIndex        =   338
+      Top             =   7080
+      Width           =   180
+   End
+   Begin VB.Label Label12 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   5880
       TabIndex        =   337
       Top             =   7080
       Width           =   180
@@ -1509,8 +1519,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   5880
+      Index           =   3
+      Left            =   5640
       TabIndex        =   336
       Top             =   7080
       Width           =   180
@@ -1519,8 +1529,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   5640
+      Index           =   2
+      Left            =   5400
       TabIndex        =   335
       Top             =   7080
       Width           =   180
@@ -1529,8 +1539,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   5400
+      Index           =   1
+      Left            =   5160
       TabIndex        =   334
       Top             =   7080
       Width           =   180
@@ -1539,19 +1549,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   5160
-      TabIndex        =   333
-      Top             =   7080
-      Width           =   180
-   End
-   Begin VB.Label Label12 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   4920
-      TabIndex        =   332
+      TabIndex        =   333
       Top             =   7080
       Width           =   180
    End
@@ -1561,7 +1561,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   2880
-      TabIndex        =   331
+      TabIndex        =   332
       Top             =   8280
       Width           =   180
    End
@@ -1571,7 +1571,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   2640
-      TabIndex        =   330
+      TabIndex        =   331
       Top             =   8280
       Width           =   180
    End
@@ -1590,7 +1590,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   4080
-      TabIndex        =   329
+      TabIndex        =   330
       Top             =   8040
       Width           =   210
    End
@@ -1600,6 +1600,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   3840
+      TabIndex        =   329
+      Top             =   8040
+      Width           =   180
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   3600
       TabIndex        =   328
       Top             =   8040
       Width           =   180
@@ -1608,8 +1618,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   3600
+      Index           =   31
+      Left            =   3360
       TabIndex        =   327
       Top             =   8040
       Width           =   180
@@ -1618,8 +1628,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   3360
+      Index           =   30
+      Left            =   3120
       TabIndex        =   326
       Top             =   8040
       Width           =   180
@@ -1628,8 +1638,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   3120
+      Index           =   29
+      Left            =   2880
       TabIndex        =   325
       Top             =   8040
       Width           =   180
@@ -1638,19 +1648,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   2880
-      TabIndex        =   324
-      Top             =   8040
-      Width           =   180
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   2640
-      TabIndex        =   323
+      TabIndex        =   324
       Top             =   8040
       Width           =   180
    End
@@ -1669,7 +1669,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   4080
-      TabIndex        =   322
+      TabIndex        =   323
       Top             =   7800
       Width           =   210
    End
@@ -1679,6 +1679,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   3840
+      TabIndex        =   322
+      Top             =   7800
+      Width           =   180
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   3600
       TabIndex        =   321
       Top             =   7800
       Width           =   180
@@ -1687,8 +1697,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   3600
+      Index           =   24
+      Left            =   3360
       TabIndex        =   320
       Top             =   7800
       Width           =   180
@@ -1697,8 +1707,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   3360
+      Index           =   23
+      Left            =   3120
       TabIndex        =   319
       Top             =   7800
       Width           =   180
@@ -1707,8 +1717,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   3120
+      Index           =   22
+      Left            =   2880
       TabIndex        =   318
       Top             =   7800
       Width           =   180
@@ -1717,19 +1727,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   2880
-      TabIndex        =   317
-      Top             =   7800
-      Width           =   180
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   2640
-      TabIndex        =   316
+      TabIndex        =   317
       Top             =   7800
       Width           =   180
    End
@@ -1748,7 +1748,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   4080
-      TabIndex        =   315
+      TabIndex        =   316
       Top             =   7560
       Width           =   210
    End
@@ -1758,6 +1758,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   3840
+      TabIndex        =   315
+      Top             =   7560
+      Width           =   180
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   3600
       TabIndex        =   314
       Top             =   7560
       Width           =   180
@@ -1766,8 +1776,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   3600
+      Index           =   17
+      Left            =   3360
       TabIndex        =   313
       Top             =   7560
       Width           =   180
@@ -1776,8 +1786,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   3360
+      Index           =   16
+      Left            =   3120
       TabIndex        =   312
       Top             =   7560
       Width           =   180
@@ -1786,8 +1796,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   3120
+      Index           =   15
+      Left            =   2880
       TabIndex        =   311
       Top             =   7560
       Width           =   180
@@ -1796,19 +1806,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   2880
-      TabIndex        =   310
-      Top             =   7560
-      Width           =   180
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   2640
-      TabIndex        =   309
+      TabIndex        =   310
       Top             =   7560
       Width           =   180
    End
@@ -1827,7 +1827,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   4080
-      TabIndex        =   308
+      TabIndex        =   309
       Top             =   7320
       Width           =   210
    End
@@ -1837,6 +1837,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   3840
+      TabIndex        =   308
+      Top             =   7320
+      Width           =   180
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   3600
       TabIndex        =   307
       Top             =   7320
       Width           =   180
@@ -1845,8 +1855,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   3600
+      Index           =   10
+      Left            =   3360
       TabIndex        =   306
       Top             =   7320
       Width           =   180
@@ -1855,8 +1865,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   3360
+      Index           =   9
+      Left            =   3120
       TabIndex        =   305
       Top             =   7320
       Width           =   180
@@ -1865,8 +1875,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   3120
+      Index           =   8
+      Left            =   2880
       TabIndex        =   304
       Top             =   7320
       Width           =   180
@@ -1875,19 +1885,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   2880
-      TabIndex        =   303
-      Top             =   7320
-      Width           =   180
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   2640
-      TabIndex        =   302
+      TabIndex        =   303
       Top             =   7320
       Width           =   180
    End
@@ -1906,7 +1906,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   4080
-      TabIndex        =   301
+      TabIndex        =   302
       Top             =   7080
       Width           =   210
    End
@@ -1916,6 +1916,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   3840
+      TabIndex        =   301
+      Top             =   7080
+      Width           =   180
+   End
+   Begin VB.Label Label11 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   3600
       TabIndex        =   300
       Top             =   7080
       Width           =   180
@@ -1924,8 +1934,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   3600
+      Index           =   3
+      Left            =   3360
       TabIndex        =   299
       Top             =   7080
       Width           =   180
@@ -1934,8 +1944,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   3360
+      Index           =   2
+      Left            =   3120
       TabIndex        =   298
       Top             =   7080
       Width           =   180
@@ -1944,8 +1954,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   3120
+      Index           =   1
+      Left            =   2880
       TabIndex        =   297
       Top             =   7080
       Width           =   180
@@ -1954,19 +1964,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   2880
-      TabIndex        =   296
-      Top             =   7080
-      Width           =   180
-   End
-   Begin VB.Label Label11 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   2640
-      TabIndex        =   295
+      TabIndex        =   296
       Top             =   7080
       Width           =   180
    End
@@ -1976,7 +1976,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   5160
-      TabIndex        =   294
+      TabIndex        =   295
       Top             =   6240
       Width           =   180
    End
@@ -1986,7 +1986,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   4920
-      TabIndex        =   293
+      TabIndex        =   294
       Top             =   6240
       Width           =   180
    End
@@ -2005,7 +2005,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   6360
-      TabIndex        =   292
+      TabIndex        =   293
       Top             =   6000
       Width           =   210
    End
@@ -2015,6 +2015,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   6120
+      TabIndex        =   292
+      Top             =   6000
+      Width           =   180
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   5880
       TabIndex        =   291
       Top             =   6000
       Width           =   180
@@ -2023,8 +2033,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   5880
+      Index           =   31
+      Left            =   5640
       TabIndex        =   290
       Top             =   6000
       Width           =   180
@@ -2033,8 +2043,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   5640
+      Index           =   30
+      Left            =   5400
       TabIndex        =   289
       Top             =   6000
       Width           =   180
@@ -2043,8 +2053,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   5400
+      Index           =   29
+      Left            =   5160
       TabIndex        =   288
       Top             =   6000
       Width           =   180
@@ -2053,19 +2063,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   5160
-      TabIndex        =   287
-      Top             =   6000
-      Width           =   180
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   4920
-      TabIndex        =   286
+      TabIndex        =   287
       Top             =   6000
       Width           =   180
    End
@@ -2084,7 +2084,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   6360
-      TabIndex        =   285
+      TabIndex        =   286
       Top             =   5760
       Width           =   210
    End
@@ -2094,6 +2094,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   6120
+      TabIndex        =   285
+      Top             =   5760
+      Width           =   180
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   5880
       TabIndex        =   284
       Top             =   5760
       Width           =   180
@@ -2102,8 +2112,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   5880
+      Index           =   24
+      Left            =   5640
       TabIndex        =   283
       Top             =   5760
       Width           =   180
@@ -2112,8 +2122,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   5640
+      Index           =   23
+      Left            =   5400
       TabIndex        =   282
       Top             =   5760
       Width           =   180
@@ -2122,8 +2132,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   5400
+      Index           =   22
+      Left            =   5160
       TabIndex        =   281
       Top             =   5760
       Width           =   180
@@ -2132,19 +2142,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   5160
-      TabIndex        =   280
-      Top             =   5760
-      Width           =   180
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   4920
-      TabIndex        =   279
+      TabIndex        =   280
       Top             =   5760
       Width           =   180
    End
@@ -2163,7 +2163,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   6360
-      TabIndex        =   278
+      TabIndex        =   279
       Top             =   5520
       Width           =   210
    End
@@ -2173,6 +2173,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   6120
+      TabIndex        =   278
+      Top             =   5520
+      Width           =   180
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   5880
       TabIndex        =   277
       Top             =   5520
       Width           =   180
@@ -2181,8 +2191,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   5880
+      Index           =   17
+      Left            =   5640
       TabIndex        =   276
       Top             =   5520
       Width           =   180
@@ -2191,8 +2201,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   5640
+      Index           =   16
+      Left            =   5400
       TabIndex        =   275
       Top             =   5520
       Width           =   180
@@ -2201,8 +2211,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   5400
+      Index           =   15
+      Left            =   5160
       TabIndex        =   274
       Top             =   5520
       Width           =   180
@@ -2211,19 +2221,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   5160
-      TabIndex        =   273
-      Top             =   5520
-      Width           =   180
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   4920
-      TabIndex        =   272
+      TabIndex        =   273
       Top             =   5520
       Width           =   180
    End
@@ -2242,7 +2242,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   6360
-      TabIndex        =   271
+      TabIndex        =   272
       Top             =   5280
       Width           =   210
    End
@@ -2252,6 +2252,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   6120
+      TabIndex        =   271
+      Top             =   5280
+      Width           =   180
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   5880
       TabIndex        =   270
       Top             =   5280
       Width           =   180
@@ -2260,8 +2270,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   5880
+      Index           =   10
+      Left            =   5640
       TabIndex        =   269
       Top             =   5280
       Width           =   180
@@ -2270,8 +2280,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   5640
+      Index           =   9
+      Left            =   5400
       TabIndex        =   268
       Top             =   5280
       Width           =   180
@@ -2280,8 +2290,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   5400
+      Index           =   8
+      Left            =   5160
       TabIndex        =   267
       Top             =   5280
       Width           =   180
@@ -2290,19 +2300,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   5160
-      TabIndex        =   266
-      Top             =   5280
-      Width           =   180
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   4920
-      TabIndex        =   265
+      TabIndex        =   266
       Top             =   5280
       Width           =   180
    End
@@ -2321,7 +2321,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   6360
-      TabIndex        =   264
+      TabIndex        =   265
       Top             =   5040
       Width           =   210
    End
@@ -2331,6 +2331,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   6120
+      TabIndex        =   264
+      Top             =   5040
+      Width           =   180
+   End
+   Begin VB.Label Label9 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   5880
       TabIndex        =   263
       Top             =   5040
       Width           =   180
@@ -2339,8 +2349,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   5880
+      Index           =   3
+      Left            =   5640
       TabIndex        =   262
       Top             =   5040
       Width           =   180
@@ -2349,8 +2359,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   5640
+      Index           =   2
+      Left            =   5400
       TabIndex        =   261
       Top             =   5040
       Width           =   180
@@ -2359,8 +2369,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   5400
+      Index           =   1
+      Left            =   5160
       TabIndex        =   260
       Top             =   5040
       Width           =   180
@@ -2369,19 +2379,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   5160
-      TabIndex        =   259
-      Top             =   5040
-      Width           =   180
-   End
-   Begin VB.Label Label9 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   4920
-      TabIndex        =   258
+      TabIndex        =   259
       Top             =   5040
       Width           =   180
    End
@@ -2391,7 +2391,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   2880
-      TabIndex        =   257
+      TabIndex        =   258
       Top             =   6240
       Width           =   180
    End
@@ -2401,7 +2401,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   2640
-      TabIndex        =   256
+      TabIndex        =   257
       Top             =   6240
       Width           =   180
    End
@@ -2420,7 +2420,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   4080
-      TabIndex        =   255
+      TabIndex        =   256
       Top             =   6000
       Width           =   210
    End
@@ -2430,6 +2430,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   3840
+      TabIndex        =   255
+      Top             =   6000
+      Width           =   180
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   3600
       TabIndex        =   254
       Top             =   6000
       Width           =   180
@@ -2438,8 +2448,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   3600
+      Index           =   31
+      Left            =   3360
       TabIndex        =   253
       Top             =   6000
       Width           =   180
@@ -2448,8 +2458,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   3360
+      Index           =   30
+      Left            =   3120
       TabIndex        =   252
       Top             =   6000
       Width           =   180
@@ -2458,8 +2468,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   3120
+      Index           =   29
+      Left            =   2880
       TabIndex        =   251
       Top             =   6000
       Width           =   180
@@ -2468,19 +2478,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   2880
-      TabIndex        =   250
-      Top             =   6000
-      Width           =   180
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   2640
-      TabIndex        =   249
+      TabIndex        =   250
       Top             =   6000
       Width           =   180
    End
@@ -2499,7 +2499,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   4080
-      TabIndex        =   248
+      TabIndex        =   249
       Top             =   5760
       Width           =   210
    End
@@ -2509,6 +2509,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   3840
+      TabIndex        =   248
+      Top             =   5760
+      Width           =   180
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   3600
       TabIndex        =   247
       Top             =   5760
       Width           =   180
@@ -2517,8 +2527,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   3600
+      Index           =   24
+      Left            =   3360
       TabIndex        =   246
       Top             =   5760
       Width           =   180
@@ -2527,8 +2537,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   3360
+      Index           =   23
+      Left            =   3120
       TabIndex        =   245
       Top             =   5760
       Width           =   180
@@ -2537,8 +2547,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   3120
+      Index           =   22
+      Left            =   2880
       TabIndex        =   244
       Top             =   5760
       Width           =   180
@@ -2547,19 +2557,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   2880
-      TabIndex        =   243
-      Top             =   5760
-      Width           =   180
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   2640
-      TabIndex        =   242
+      TabIndex        =   243
       Top             =   5760
       Width           =   180
    End
@@ -2578,7 +2578,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   4080
-      TabIndex        =   241
+      TabIndex        =   242
       Top             =   5520
       Width           =   210
    End
@@ -2588,6 +2588,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   3840
+      TabIndex        =   241
+      Top             =   5520
+      Width           =   180
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   3600
       TabIndex        =   240
       Top             =   5520
       Width           =   180
@@ -2596,8 +2606,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   3600
+      Index           =   17
+      Left            =   3360
       TabIndex        =   239
       Top             =   5520
       Width           =   180
@@ -2606,8 +2616,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   3360
+      Index           =   16
+      Left            =   3120
       TabIndex        =   238
       Top             =   5520
       Width           =   180
@@ -2616,8 +2626,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   3120
+      Index           =   15
+      Left            =   2880
       TabIndex        =   237
       Top             =   5520
       Width           =   180
@@ -2626,19 +2636,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   2880
-      TabIndex        =   236
-      Top             =   5520
-      Width           =   180
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   2640
-      TabIndex        =   235
+      TabIndex        =   236
       Top             =   5520
       Width           =   180
    End
@@ -2657,7 +2657,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   4080
-      TabIndex        =   234
+      TabIndex        =   235
       Top             =   5280
       Width           =   210
    End
@@ -2667,6 +2667,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   3840
+      TabIndex        =   234
+      Top             =   5280
+      Width           =   180
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   3600
       TabIndex        =   233
       Top             =   5280
       Width           =   180
@@ -2675,8 +2685,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   3600
+      Index           =   10
+      Left            =   3360
       TabIndex        =   232
       Top             =   5280
       Width           =   180
@@ -2685,8 +2695,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   3360
+      Index           =   9
+      Left            =   3120
       TabIndex        =   231
       Top             =   5280
       Width           =   180
@@ -2695,8 +2705,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   3120
+      Index           =   8
+      Left            =   2880
       TabIndex        =   230
       Top             =   5280
       Width           =   180
@@ -2705,19 +2715,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   2880
-      TabIndex        =   229
-      Top             =   5280
-      Width           =   180
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   7
       Left            =   2640
-      TabIndex        =   228
+      TabIndex        =   229
       Top             =   5280
       Width           =   180
    End
@@ -2736,7 +2736,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   4080
-      TabIndex        =   227
+      TabIndex        =   228
       Top             =   5040
       Width           =   210
    End
@@ -2746,6 +2746,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   3840
+      TabIndex        =   227
+      Top             =   5040
+      Width           =   180
+   End
+   Begin VB.Label Label8 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   4
+      Left            =   3600
       TabIndex        =   226
       Top             =   5040
       Width           =   180
@@ -2754,8 +2764,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   3600
+      Index           =   3
+      Left            =   3360
       TabIndex        =   225
       Top             =   5040
       Width           =   180
@@ -2764,8 +2774,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   3360
+      Index           =   2
+      Left            =   3120
       TabIndex        =   224
       Top             =   5040
       Width           =   180
@@ -2774,8 +2784,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   3120
+      Index           =   1
+      Left            =   2880
       TabIndex        =   223
       Top             =   5040
       Width           =   180
@@ -2784,19 +2794,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   2880
-      TabIndex        =   222
-      Top             =   5040
-      Width           =   180
-   End
-   Begin VB.Label Label8 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   0
       Left            =   2640
-      TabIndex        =   221
+      TabIndex        =   222
       Top             =   5040
       Width           =   180
    End
@@ -2806,7 +2806,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   600
-      TabIndex        =   220
+      TabIndex        =   221
       Top             =   6240
       Width           =   180
    End
@@ -2816,7 +2816,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   360
-      TabIndex        =   219
+      TabIndex        =   220
       Top             =   6240
       Width           =   180
    End
@@ -2835,7 +2835,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   1800
-      TabIndex        =   218
+      TabIndex        =   219
       Top             =   6000
       Width           =   210
    End
@@ -2845,6 +2845,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   1560
+      TabIndex        =   218
+      Top             =   6000
+      Width           =   180
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   32
+      Left            =   1320
       TabIndex        =   217
       Top             =   6000
       Width           =   180
@@ -2853,8 +2863,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   32
-      Left            =   1320
+      Index           =   31
+      Left            =   1080
       TabIndex        =   216
       Top             =   6000
       Width           =   180
@@ -2863,8 +2873,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   31
-      Left            =   1080
+      Index           =   30
+      Left            =   840
       TabIndex        =   215
       Top             =   6000
       Width           =   180
@@ -2873,8 +2883,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   30
-      Left            =   840
+      Index           =   29
+      Left            =   600
       TabIndex        =   214
       Top             =   6000
       Width           =   180
@@ -2883,19 +2893,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   29
-      Left            =   600
-      TabIndex        =   213
-      Top             =   6000
-      Width           =   180
-   End
-   Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   28
       Left            =   360
-      TabIndex        =   212
+      TabIndex        =   213
       Top             =   6000
       Width           =   180
    End
@@ -2914,7 +2914,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   1800
-      TabIndex        =   211
+      TabIndex        =   212
       Top             =   5760
       Width           =   210
    End
@@ -2924,6 +2924,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   1560
+      TabIndex        =   211
+      Top             =   5760
+      Width           =   180
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   25
+      Left            =   1320
       TabIndex        =   210
       Top             =   5760
       Width           =   180
@@ -2932,8 +2942,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   25
-      Left            =   1320
+      Index           =   24
+      Left            =   1080
       TabIndex        =   209
       Top             =   5760
       Width           =   180
@@ -2942,8 +2952,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   1080
+      Index           =   23
+      Left            =   840
       TabIndex        =   208
       Top             =   5760
       Width           =   180
@@ -2952,8 +2962,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   840
+      Index           =   22
+      Left            =   600
       TabIndex        =   207
       Top             =   5760
       Width           =   180
@@ -2962,19 +2972,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   600
-      TabIndex        =   206
-      Top             =   5760
-      Width           =   180
-   End
-   Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   21
       Left            =   360
-      TabIndex        =   205
+      TabIndex        =   206
       Top             =   5760
       Width           =   180
    End
@@ -2993,7 +2993,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   1800
-      TabIndex        =   204
+      TabIndex        =   205
       Top             =   5520
       Width           =   210
    End
@@ -3003,6 +3003,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   1560
+      TabIndex        =   204
+      Top             =   5520
+      Width           =   180
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   18
+      Left            =   1320
       TabIndex        =   203
       Top             =   5520
       Width           =   180
@@ -3011,8 +3021,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   1320
+      Index           =   17
+      Left            =   1080
       TabIndex        =   202
       Top             =   5520
       Width           =   180
@@ -3021,8 +3031,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   1080
+      Index           =   16
+      Left            =   840
       TabIndex        =   201
       Top             =   5520
       Width           =   180
@@ -3031,8 +3041,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   840
+      Index           =   15
+      Left            =   600
       TabIndex        =   200
       Top             =   5520
       Width           =   180
@@ -3041,19 +3051,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   600
-      TabIndex        =   199
-      Top             =   5520
-      Width           =   180
-   End
-   Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   14
       Left            =   360
-      TabIndex        =   198
+      TabIndex        =   199
       Top             =   5520
       Width           =   180
    End
@@ -3072,7 +3072,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   1800
-      TabIndex        =   197
+      TabIndex        =   198
       Top             =   5280
       Width           =   210
    End
@@ -3082,6 +3082,16 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   1560
+      TabIndex        =   197
+      Top             =   5280
+      Width           =   180
+   End
+   Begin VB.Label Label7 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   11
+      Left            =   1320
       TabIndex        =   196
       Top             =   5280
       Width           =   180
@@ -3090,19 +3100,9 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   1320
-      TabIndex        =   195
-      Top             =   5280
-      Width           =   180
-   End
-   Begin VB.Label Label7 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   10
       Left            =   1080
-      TabIndex        =   194
+      TabIndex        =   195
       Top             =   5280
       Width           =   180
    End
@@ -3112,7 +3112,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   9
       Left            =   840
-      TabIndex        =   193
+      TabIndex        =   194
       Top             =   5280
       Width           =   180
    End
@@ -3122,7 +3122,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   8
       Left            =   600
-      TabIndex        =   192
+      TabIndex        =   193
       Top             =   5280
       Width           =   180
    End
@@ -3132,7 +3132,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   7
       Left            =   360
-      TabIndex        =   191
+      TabIndex        =   192
       Top             =   5280
       Width           =   180
    End
@@ -3151,7 +3151,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   1800
-      TabIndex        =   190
+      TabIndex        =   191
       Top             =   5040
       Width           =   210
    End
@@ -3161,7 +3161,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   1560
-      TabIndex        =   189
+      TabIndex        =   190
       Top             =   5040
       Width           =   180
    End
@@ -3171,7 +3171,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   4
       Left            =   1320
-      TabIndex        =   188
+      TabIndex        =   189
       Top             =   5040
       Width           =   180
    End
@@ -3181,7 +3181,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   3
       Left            =   1080
-      TabIndex        =   187
+      TabIndex        =   188
       Top             =   5040
       Width           =   180
    End
@@ -3191,7 +3191,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   2
       Left            =   840
-      TabIndex        =   186
+      TabIndex        =   187
       Top             =   5040
       Width           =   180
    End
@@ -3201,7 +3201,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   1
       Left            =   600
-      TabIndex        =   185
+      TabIndex        =   186
       Top             =   5040
       Width           =   180
    End
@@ -3211,7 +3211,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   0
       Left            =   360
-      TabIndex        =   184
+      TabIndex        =   185
       Top             =   5040
       Width           =   180
    End
@@ -3221,7 +3221,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   5160
-      TabIndex        =   183
+      TabIndex        =   184
       Top             =   4200
       Width           =   180
    End
@@ -3231,7 +3231,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   4920
-      TabIndex        =   182
+      TabIndex        =   183
       Top             =   4200
       Width           =   180
    End
@@ -3250,7 +3250,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   6360
-      TabIndex        =   181
+      TabIndex        =   182
       Top             =   3960
       Width           =   210
    End
@@ -3260,7 +3260,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   6120
-      TabIndex        =   180
+      TabIndex        =   181
       Top             =   3960
       Width           =   180
    End
@@ -3270,7 +3270,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   32
       Left            =   5880
-      TabIndex        =   179
+      TabIndex        =   180
       Top             =   3960
       Width           =   180
    End
@@ -3280,7 +3280,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   31
       Left            =   5640
-      TabIndex        =   178
+      TabIndex        =   179
       Top             =   3960
       Width           =   180
    End
@@ -3290,7 +3290,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   30
       Left            =   5400
-      TabIndex        =   177
+      TabIndex        =   178
       Top             =   3960
       Width           =   180
    End
@@ -3300,7 +3300,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   29
       Left            =   5160
-      TabIndex        =   176
+      TabIndex        =   177
       Top             =   3960
       Width           =   180
    End
@@ -3310,7 +3310,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   28
       Left            =   4920
-      TabIndex        =   175
+      TabIndex        =   176
       Top             =   3960
       Width           =   180
    End
@@ -3329,7 +3329,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   6360
-      TabIndex        =   174
+      TabIndex        =   175
       Top             =   3720
       Width           =   210
    End
@@ -3339,7 +3339,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   6120
-      TabIndex        =   173
+      TabIndex        =   174
       Top             =   3720
       Width           =   180
    End
@@ -3349,7 +3349,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   25
       Left            =   5880
-      TabIndex        =   172
+      TabIndex        =   173
       Top             =   3720
       Width           =   180
    End
@@ -3359,7 +3359,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   24
       Left            =   5640
-      TabIndex        =   171
+      TabIndex        =   172
       Top             =   3720
       Width           =   180
    End
@@ -3369,7 +3369,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   23
       Left            =   5400
-      TabIndex        =   170
+      TabIndex        =   171
       Top             =   3720
       Width           =   180
    End
@@ -3379,7 +3379,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   22
       Left            =   5160
-      TabIndex        =   169
+      TabIndex        =   170
       Top             =   3720
       Width           =   180
    End
@@ -3389,7 +3389,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   21
       Left            =   4920
-      TabIndex        =   168
+      TabIndex        =   169
       Top             =   3720
       Width           =   180
    End
@@ -3408,7 +3408,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   6360
-      TabIndex        =   167
+      TabIndex        =   168
       Top             =   3480
       Width           =   210
    End
@@ -3418,7 +3418,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   6120
-      TabIndex        =   166
+      TabIndex        =   167
       Top             =   3480
       Width           =   180
    End
@@ -3428,7 +3428,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   18
       Left            =   5880
-      TabIndex        =   165
+      TabIndex        =   166
       Top             =   3480
       Width           =   180
    End
@@ -3438,7 +3438,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   17
       Left            =   5640
-      TabIndex        =   164
+      TabIndex        =   165
       Top             =   3480
       Width           =   180
    End
@@ -3448,7 +3448,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   16
       Left            =   5400
-      TabIndex        =   163
+      TabIndex        =   164
       Top             =   3480
       Width           =   180
    End
@@ -3458,7 +3458,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   15
       Left            =   5160
-      TabIndex        =   162
+      TabIndex        =   163
       Top             =   3480
       Width           =   180
    End
@@ -3468,7 +3468,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   14
       Left            =   4920
-      TabIndex        =   161
+      TabIndex        =   162
       Top             =   3480
       Width           =   180
    End
@@ -3487,7 +3487,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   6360
-      TabIndex        =   160
+      TabIndex        =   161
       Top             =   3240
       Width           =   210
    End
@@ -3497,7 +3497,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   6120
-      TabIndex        =   159
+      TabIndex        =   160
       Top             =   3240
       Width           =   180
    End
@@ -3507,7 +3507,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   11
       Left            =   5880
-      TabIndex        =   158
+      TabIndex        =   159
       Top             =   3240
       Width           =   180
    End
@@ -3517,7 +3517,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   10
       Left            =   5640
-      TabIndex        =   157
+      TabIndex        =   158
       Top             =   3240
       Width           =   180
    End
@@ -3527,7 +3527,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   9
       Left            =   5400
-      TabIndex        =   156
+      TabIndex        =   157
       Top             =   3240
       Width           =   180
    End
@@ -3537,7 +3537,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   8
       Left            =   5160
-      TabIndex        =   155
+      TabIndex        =   156
       Top             =   3240
       Width           =   180
    End
@@ -3547,7 +3547,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   7
       Left            =   4920
-      TabIndex        =   154
+      TabIndex        =   155
       Top             =   3240
       Width           =   180
    End
@@ -3566,7 +3566,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   6360
-      TabIndex        =   153
+      TabIndex        =   154
       Top             =   3000
       Width           =   210
    End
@@ -3576,7 +3576,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   6120
-      TabIndex        =   152
+      TabIndex        =   153
       Top             =   3000
       Width           =   180
    End
@@ -3586,7 +3586,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   4
       Left            =   5880
-      TabIndex        =   151
+      TabIndex        =   152
       Top             =   3000
       Width           =   180
    End
@@ -3596,7 +3596,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   3
       Left            =   5640
-      TabIndex        =   150
+      TabIndex        =   151
       Top             =   3000
       Width           =   180
    End
@@ -3606,7 +3606,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   2
       Left            =   5400
-      TabIndex        =   149
+      TabIndex        =   150
       Top             =   3000
       Width           =   180
    End
@@ -3616,7 +3616,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   1
       Left            =   5160
-      TabIndex        =   148
+      TabIndex        =   149
       Top             =   3000
       Width           =   180
    End
@@ -3626,7 +3626,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   0
       Left            =   4920
-      TabIndex        =   147
+      TabIndex        =   148
       Top             =   3000
       Width           =   180
    End
@@ -3636,7 +3636,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   36
       Left            =   2880
-      TabIndex        =   146
+      TabIndex        =   147
       Top             =   4200
       Width           =   180
    End
@@ -3646,7 +3646,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   35
       Left            =   2640
-      TabIndex        =   145
+      TabIndex        =   146
       Top             =   4200
       Width           =   180
    End
@@ -3665,7 +3665,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   34
       Left            =   4080
-      TabIndex        =   144
+      TabIndex        =   145
       Top             =   3960
       Width           =   210
    End
@@ -3675,7 +3675,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   33
       Left            =   3840
-      TabIndex        =   143
+      TabIndex        =   144
       Top             =   3960
       Width           =   180
    End
@@ -3685,7 +3685,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   32
       Left            =   3600
-      TabIndex        =   142
+      TabIndex        =   143
       Top             =   3960
       Width           =   180
    End
@@ -3695,7 +3695,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   31
       Left            =   3360
-      TabIndex        =   141
+      TabIndex        =   142
       Top             =   3960
       Width           =   180
    End
@@ -3705,7 +3705,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   30
       Left            =   3120
-      TabIndex        =   140
+      TabIndex        =   141
       Top             =   3960
       Width           =   180
    End
@@ -3715,7 +3715,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   29
       Left            =   2880
-      TabIndex        =   139
+      TabIndex        =   140
       Top             =   3960
       Width           =   180
    End
@@ -3725,7 +3725,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   28
       Left            =   2640
-      TabIndex        =   138
+      TabIndex        =   139
       Top             =   3960
       Width           =   180
    End
@@ -3744,7 +3744,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   27
       Left            =   4080
-      TabIndex        =   137
+      TabIndex        =   138
       Top             =   3720
       Width           =   210
    End
@@ -3754,7 +3754,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   26
       Left            =   3840
-      TabIndex        =   136
+      TabIndex        =   137
       Top             =   3720
       Width           =   180
    End
@@ -3764,7 +3764,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   25
       Left            =   3600
-      TabIndex        =   135
+      TabIndex        =   136
       Top             =   3720
       Width           =   180
    End
@@ -3774,7 +3774,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   24
       Left            =   3360
-      TabIndex        =   134
+      TabIndex        =   135
       Top             =   3720
       Width           =   180
    End
@@ -3784,7 +3784,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   23
       Left            =   3120
-      TabIndex        =   133
+      TabIndex        =   134
       Top             =   3720
       Width           =   180
    End
@@ -3794,7 +3794,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   22
       Left            =   2880
-      TabIndex        =   132
+      TabIndex        =   133
       Top             =   3720
       Width           =   180
    End
@@ -3804,7 +3804,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   21
       Left            =   2640
-      TabIndex        =   131
+      TabIndex        =   132
       Top             =   3720
       Width           =   180
    End
@@ -3823,7 +3823,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   20
       Left            =   4080
-      TabIndex        =   130
+      TabIndex        =   131
       Top             =   3480
       Width           =   210
    End
@@ -3833,7 +3833,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   19
       Left            =   3840
-      TabIndex        =   129
+      TabIndex        =   130
       Top             =   3480
       Width           =   180
    End
@@ -3843,7 +3843,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   18
       Left            =   3600
-      TabIndex        =   128
+      TabIndex        =   129
       Top             =   3480
       Width           =   180
    End
@@ -3853,7 +3853,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   17
       Left            =   3360
-      TabIndex        =   127
+      TabIndex        =   128
       Top             =   3480
       Width           =   180
    End
@@ -3863,7 +3863,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   16
       Left            =   3120
-      TabIndex        =   126
+      TabIndex        =   127
       Top             =   3480
       Width           =   180
    End
@@ -3873,7 +3873,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   15
       Left            =   2880
-      TabIndex        =   125
+      TabIndex        =   126
       Top             =   3480
       Width           =   180
    End
@@ -3883,7 +3883,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   14
       Left            =   2640
-      TabIndex        =   124
+      TabIndex        =   125
       Top             =   3480
       Width           =   180
    End
@@ -3902,7 +3902,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   13
       Left            =   4080
-      TabIndex        =   123
+      TabIndex        =   124
       Top             =   3240
       Width           =   210
    End
@@ -3912,7 +3912,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   12
       Left            =   3840
-      TabIndex        =   122
+      TabIndex        =   123
       Top             =   3240
       Width           =   180
    End
@@ -3922,7 +3922,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   11
       Left            =   3600
-      TabIndex        =   121
+      TabIndex        =   122
       Top             =   3240
       Width           =   180
    End
@@ -3932,7 +3932,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   10
       Left            =   3360
-      TabIndex        =   120
+      TabIndex        =   121
       Top             =   3240
       Width           =   180
    End
@@ -3942,7 +3942,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   9
       Left            =   3120
-      TabIndex        =   119
+      TabIndex        =   120
       Top             =   3240
       Width           =   180
    End
@@ -3952,7 +3952,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   8
       Left            =   2880
-      TabIndex        =   118
+      TabIndex        =   119
       Top             =   3240
       Width           =   180
    End
@@ -3962,7 +3962,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   7
       Left            =   2640
-      TabIndex        =   117
+      TabIndex        =   118
       Top             =   3240
       Width           =   180
    End
@@ -3981,7 +3981,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   6
       Left            =   4080
-      TabIndex        =   116
+      TabIndex        =   117
       Top             =   3000
       Width           =   210
    End
@@ -3991,7 +3991,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   5
       Left            =   3840
-      TabIndex        =   115
+      TabIndex        =   116
       Top             =   3000
       Width           =   180
    End
@@ -4001,7 +4001,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   4
       Left            =   3600
-      TabIndex        =   114
+      TabIndex        =   115
       Top             =   3000
       Width           =   180
    End
@@ -4011,7 +4011,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   3
       Left            =   3360
-      TabIndex        =   113
+      TabIndex        =   114
       Top             =   3000
       Width           =   180
    End
@@ -4021,7 +4021,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   2
       Left            =   3120
-      TabIndex        =   112
+      TabIndex        =   113
       Top             =   3000
       Width           =   180
    End
@@ -4031,7 +4031,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   1
       Left            =   2880
-      TabIndex        =   111
+      TabIndex        =   112
       Top             =   3000
       Width           =   180
    End
@@ -4041,7 +4041,7 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   0
       Left            =   2640
-      TabIndex        =   110
+      TabIndex        =   111
       Top             =   3000
       Width           =   180
    End
@@ -4052,6 +4052,18 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   0
       Left            =   4920
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   109
+      Top             =   1080
+      Width           =   180
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      DragMode        =   1  'Automatic
+      Height          =   180
+      Index           =   1
+      Left            =   5160
       OLEDropMode     =   1  'Manual
       TabIndex        =   108
       Top             =   1080
@@ -4062,8 +4074,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   1
-      Left            =   5160
+      Index           =   2
+      Left            =   5400
       OLEDropMode     =   1  'Manual
       TabIndex        =   107
       Top             =   1080
@@ -4074,8 +4086,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   2
-      Left            =   5400
+      Index           =   3
+      Left            =   5640
       OLEDropMode     =   1  'Manual
       TabIndex        =   106
       Top             =   1080
@@ -4086,8 +4098,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   3
-      Left            =   5640
+      Index           =   4
+      Left            =   5880
       OLEDropMode     =   1  'Manual
       TabIndex        =   105
       Top             =   1080
@@ -4098,22 +4110,10 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   4
-      Left            =   5880
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   104
-      Top             =   1080
-      Width           =   180
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      DragMode        =   1  'Automatic
-      Height          =   180
       Index           =   5
       Left            =   6120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   103
+      TabIndex        =   104
       Top             =   1080
       Width           =   180
    End
@@ -4134,7 +4134,7 @@ Begin VB.Form frmVerCalendario
       Index           =   6
       Left            =   6360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   102
+      TabIndex        =   103
       Top             =   1080
       Width           =   210
    End
@@ -4145,6 +4145,18 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   7
       Left            =   4920
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   102
+      Top             =   1320
+      Width           =   180
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      DragMode        =   1  'Automatic
+      Height          =   180
+      Index           =   8
+      Left            =   5160
       OLEDropMode     =   1  'Manual
       TabIndex        =   101
       Top             =   1320
@@ -4155,8 +4167,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   8
-      Left            =   5160
+      Index           =   9
+      Left            =   5400
       OLEDropMode     =   1  'Manual
       TabIndex        =   100
       Top             =   1320
@@ -4167,8 +4179,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   9
-      Left            =   5400
+      Index           =   10
+      Left            =   5640
       OLEDropMode     =   1  'Manual
       TabIndex        =   99
       Top             =   1320
@@ -4179,8 +4191,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   10
-      Left            =   5640
+      Index           =   11
+      Left            =   5880
       OLEDropMode     =   1  'Manual
       TabIndex        =   98
       Top             =   1320
@@ -4191,22 +4203,10 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   11
-      Left            =   5880
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   97
-      Top             =   1320
-      Width           =   180
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      DragMode        =   1  'Automatic
-      Height          =   180
       Index           =   12
       Left            =   6120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   96
+      TabIndex        =   97
       Top             =   1320
       Width           =   180
    End
@@ -4227,7 +4227,7 @@ Begin VB.Form frmVerCalendario
       Index           =   13
       Left            =   6360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   95
+      TabIndex        =   96
       Top             =   1320
       Width           =   210
    End
@@ -4238,6 +4238,18 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   14
       Left            =   4920
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   95
+      Top             =   1560
+      Width           =   180
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      DragMode        =   1  'Automatic
+      Height          =   180
+      Index           =   15
+      Left            =   5160
       OLEDropMode     =   1  'Manual
       TabIndex        =   94
       Top             =   1560
@@ -4248,8 +4260,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   15
-      Left            =   5160
+      Index           =   16
+      Left            =   5400
       OLEDropMode     =   1  'Manual
       TabIndex        =   93
       Top             =   1560
@@ -4260,8 +4272,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   16
-      Left            =   5400
+      Index           =   17
+      Left            =   5640
       OLEDropMode     =   1  'Manual
       TabIndex        =   92
       Top             =   1560
@@ -4272,8 +4284,8 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   17
-      Left            =   5640
+      Index           =   18
+      Left            =   5880
       OLEDropMode     =   1  'Manual
       TabIndex        =   91
       Top             =   1560
@@ -4284,22 +4296,10 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   18
-      Left            =   5880
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   90
-      Top             =   1560
-      Width           =   180
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      DragMode        =   1  'Automatic
-      Height          =   180
       Index           =   19
       Left            =   6120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   89
+      TabIndex        =   90
       Top             =   1560
       Width           =   180
    End
@@ -4320,7 +4320,7 @@ Begin VB.Form frmVerCalendario
       Index           =   20
       Left            =   6360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   88
+      TabIndex        =   89
       Top             =   1560
       Width           =   210
    End
@@ -4331,6 +4331,18 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   21
       Left            =   4920
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   88
+      Top             =   1800
+      Width           =   180
+   End
+   Begin VB.Label Label3 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      DragMode        =   1  'Automatic
+      Height          =   180
+      Index           =   22
+      Left            =   5160
       OLEDropMode     =   1  'Manual
       TabIndex        =   87
       Top             =   1800
@@ -4341,22 +4353,10 @@ Begin VB.Form frmVerCalendario
       Caption         =   "1"
       DragMode        =   1  'Automatic
       Height          =   180
-      Index           =   22
-      Left            =   5160
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   86
-      Top             =   1800
-      Width           =   180
-   End
-   Begin VB.Label Label3 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      DragMode        =   1  'Automatic
-      Height          =   180
       Index           =   23
       Left            =   5400
       OLEDropMode     =   1  'Manual
-      TabIndex        =   85
+      TabIndex        =   86
       Top             =   1800
       Width           =   180
    End
@@ -4368,7 +4368,7 @@ Begin VB.Form frmVerCalendario
       Index           =   24
       Left            =   5640
       OLEDropMode     =   1  'Manual
-      TabIndex        =   84
+      TabIndex        =   85
       Top             =   1800
       Width           =   180
    End
@@ -4380,7 +4380,7 @@ Begin VB.Form frmVerCalendario
       Index           =   25
       Left            =   5880
       OLEDropMode     =   1  'Manual
-      TabIndex        =   83
+      TabIndex        =   84
       Top             =   1800
       Width           =   180
    End
@@ -4392,7 +4392,7 @@ Begin VB.Form frmVerCalendario
       Index           =   26
       Left            =   6120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   82
+      TabIndex        =   83
       Top             =   1800
       Width           =   180
    End
@@ -4413,7 +4413,7 @@ Begin VB.Form frmVerCalendario
       Index           =   27
       Left            =   6360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   81
+      TabIndex        =   82
       Top             =   1800
       Width           =   210
    End
@@ -4425,7 +4425,7 @@ Begin VB.Form frmVerCalendario
       Index           =   28
       Left            =   4920
       OLEDropMode     =   1  'Manual
-      TabIndex        =   80
+      TabIndex        =   81
       Top             =   2040
       Width           =   180
    End
@@ -4437,7 +4437,7 @@ Begin VB.Form frmVerCalendario
       Index           =   29
       Left            =   5160
       OLEDropMode     =   1  'Manual
-      TabIndex        =   79
+      TabIndex        =   80
       Top             =   2040
       Width           =   180
    End
@@ -4449,7 +4449,7 @@ Begin VB.Form frmVerCalendario
       Index           =   30
       Left            =   5400
       OLEDropMode     =   1  'Manual
-      TabIndex        =   78
+      TabIndex        =   79
       Top             =   2040
       Width           =   180
    End
@@ -4461,7 +4461,7 @@ Begin VB.Form frmVerCalendario
       Index           =   31
       Left            =   5640
       OLEDropMode     =   1  'Manual
-      TabIndex        =   77
+      TabIndex        =   78
       Top             =   2040
       Width           =   180
    End
@@ -4473,7 +4473,7 @@ Begin VB.Form frmVerCalendario
       Index           =   32
       Left            =   5880
       OLEDropMode     =   1  'Manual
-      TabIndex        =   76
+      TabIndex        =   77
       Top             =   2040
       Width           =   180
    End
@@ -4485,7 +4485,7 @@ Begin VB.Form frmVerCalendario
       Index           =   33
       Left            =   6120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   75
+      TabIndex        =   76
       Top             =   2040
       Width           =   180
    End
@@ -4506,7 +4506,7 @@ Begin VB.Form frmVerCalendario
       Index           =   34
       Left            =   6360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   74
+      TabIndex        =   75
       Top             =   2040
       Width           =   210
    End
@@ -4516,6 +4516,17 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   0
       Left            =   2640
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   74
+      Top             =   1080
+      Width           =   180
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   1
+      Left            =   2880
       OLEDropMode     =   1  'Manual
       TabIndex        =   73
       Top             =   1080
@@ -4525,8 +4536,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   1
-      Left            =   2880
+      Index           =   2
+      Left            =   3120
       OLEDropMode     =   1  'Manual
       TabIndex        =   72
       Top             =   1080
@@ -4536,8 +4547,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   2
-      Left            =   3120
+      Index           =   3
+      Left            =   3360
       OLEDropMode     =   1  'Manual
       TabIndex        =   71
       Top             =   1080
@@ -4547,8 +4558,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   3
-      Left            =   3360
+      Index           =   4
+      Left            =   3600
       OLEDropMode     =   1  'Manual
       TabIndex        =   70
       Top             =   1080
@@ -4558,21 +4569,10 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   4
-      Left            =   3600
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   69
-      Top             =   1080
-      Width           =   180
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   5
       Left            =   3840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   68
+      TabIndex        =   69
       Top             =   1080
       Width           =   180
    End
@@ -4592,7 +4592,7 @@ Begin VB.Form frmVerCalendario
       Index           =   6
       Left            =   4080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   67
+      TabIndex        =   68
       Top             =   1080
       Width           =   210
    End
@@ -4602,6 +4602,17 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   7
       Left            =   2640
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   67
+      Top             =   1320
+      Width           =   180
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   8
+      Left            =   2880
       OLEDropMode     =   1  'Manual
       TabIndex        =   66
       Top             =   1320
@@ -4611,8 +4622,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   8
-      Left            =   2880
+      Index           =   9
+      Left            =   3120
       OLEDropMode     =   1  'Manual
       TabIndex        =   65
       Top             =   1320
@@ -4622,8 +4633,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   9
-      Left            =   3120
+      Index           =   10
+      Left            =   3360
       OLEDropMode     =   1  'Manual
       TabIndex        =   64
       Top             =   1320
@@ -4633,8 +4644,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   10
-      Left            =   3360
+      Index           =   11
+      Left            =   3600
       OLEDropMode     =   1  'Manual
       TabIndex        =   63
       Top             =   1320
@@ -4644,21 +4655,10 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   11
-      Left            =   3600
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   62
-      Top             =   1320
-      Width           =   180
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   12
       Left            =   3840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   61
+      TabIndex        =   62
       Top             =   1320
       Width           =   180
    End
@@ -4678,7 +4678,7 @@ Begin VB.Form frmVerCalendario
       Index           =   13
       Left            =   4080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   60
+      TabIndex        =   61
       Top             =   1320
       Width           =   210
    End
@@ -4688,6 +4688,17 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   14
       Left            =   2640
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   60
+      Top             =   1560
+      Width           =   180
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   15
+      Left            =   2880
       OLEDropMode     =   1  'Manual
       TabIndex        =   59
       Top             =   1560
@@ -4697,8 +4708,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   15
-      Left            =   2880
+      Index           =   16
+      Left            =   3120
       OLEDropMode     =   1  'Manual
       TabIndex        =   58
       Top             =   1560
@@ -4708,8 +4719,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   16
-      Left            =   3120
+      Index           =   17
+      Left            =   3360
       OLEDropMode     =   1  'Manual
       TabIndex        =   57
       Top             =   1560
@@ -4719,8 +4730,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   17
-      Left            =   3360
+      Index           =   18
+      Left            =   3600
       OLEDropMode     =   1  'Manual
       TabIndex        =   56
       Top             =   1560
@@ -4730,21 +4741,10 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   18
-      Left            =   3600
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   55
-      Top             =   1560
-      Width           =   180
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   19
       Left            =   3840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   54
+      TabIndex        =   55
       Top             =   1560
       Width           =   180
    End
@@ -4764,7 +4764,7 @@ Begin VB.Form frmVerCalendario
       Index           =   20
       Left            =   4080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   53
+      TabIndex        =   54
       Top             =   1560
       Width           =   210
    End
@@ -4774,6 +4774,17 @@ Begin VB.Form frmVerCalendario
       Height          =   180
       Index           =   21
       Left            =   2640
+      OLEDropMode     =   1  'Manual
+      TabIndex        =   53
+      Top             =   1800
+      Width           =   180
+   End
+   Begin VB.Label Label2 
+      Alignment       =   1  'Right Justify
+      Caption         =   "1"
+      Height          =   180
+      Index           =   22
+      Left            =   2880
       OLEDropMode     =   1  'Manual
       TabIndex        =   52
       Top             =   1800
@@ -4783,8 +4794,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   22
-      Left            =   2880
+      Index           =   23
+      Left            =   3120
       OLEDropMode     =   1  'Manual
       TabIndex        =   51
       Top             =   1800
@@ -4794,8 +4805,8 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   23
-      Left            =   3120
+      Index           =   24
+      Left            =   3360
       OLEDropMode     =   1  'Manual
       TabIndex        =   50
       Top             =   1800
@@ -4805,21 +4816,10 @@ Begin VB.Form frmVerCalendario
       Alignment       =   1  'Right Justify
       Caption         =   "1"
       Height          =   180
-      Index           =   24
-      Left            =   3360
-      OLEDropMode     =   1  'Manual
-      TabIndex        =   49
-      Top             =   1800
-      Width           =   180
-   End
-   Begin VB.Label Label2 
-      Alignment       =   1  'Right Justify
-      Caption         =   "1"
-      Height          =   180
       Index           =   25
       Left            =   3600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   48
+      TabIndex        =   49
       Top             =   1800
       Width           =   180
    End
@@ -4830,7 +4830,7 @@ Begin VB.Form frmVerCalendario
       Index           =   26
       Left            =   3840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   47
+      TabIndex        =   48
       Top             =   1800
       Width           =   180
    End
@@ -4850,7 +4850,7 @@ Begin VB.Form frmVerCalendario
       Index           =   27
       Left            =   4080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   46
+      TabIndex        =   47
       Top             =   1800
       Width           =   210
    End
@@ -4861,7 +4861,7 @@ Begin VB.Form frmVerCalendario
       Index           =   28
       Left            =   2640
       OLEDropMode     =   1  'Manual
-      TabIndex        =   45
+      TabIndex        =   46
       Top             =   2040
       Width           =   180
    End
@@ -4872,7 +4872,7 @@ Begin VB.Form frmVerCalendario
       Index           =   29
       Left            =   2880
       OLEDropMode     =   1  'Manual
-      TabIndex        =   44
+      TabIndex        =   45
       Top             =   2040
       Width           =   180
    End
@@ -4883,7 +4883,7 @@ Begin VB.Form frmVerCalendario
       Index           =   30
       Left            =   3120
       OLEDropMode     =   1  'Manual
-      TabIndex        =   43
+      TabIndex        =   44
       Top             =   2040
       Width           =   180
    End
@@ -4894,7 +4894,7 @@ Begin VB.Form frmVerCalendario
       Index           =   31
       Left            =   3360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   42
+      TabIndex        =   43
       Top             =   2040
       Width           =   180
    End
@@ -4905,7 +4905,7 @@ Begin VB.Form frmVerCalendario
       Index           =   32
       Left            =   3600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   41
+      TabIndex        =   42
       Top             =   2040
       Width           =   180
    End
@@ -4916,7 +4916,7 @@ Begin VB.Form frmVerCalendario
       Index           =   33
       Left            =   3840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   40
+      TabIndex        =   41
       Top             =   2040
       Width           =   180
    End
@@ -4936,7 +4936,7 @@ Begin VB.Form frmVerCalendario
       Index           =   34
       Left            =   4080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   39
+      TabIndex        =   40
       Top             =   2040
       Width           =   210
    End
@@ -4947,7 +4947,7 @@ Begin VB.Form frmVerCalendario
       Index           =   35
       Left            =   2640
       OLEDropMode     =   1  'Manual
-      TabIndex        =   38
+      TabIndex        =   39
       Top             =   2280
       Width           =   180
    End
@@ -4958,7 +4958,7 @@ Begin VB.Form frmVerCalendario
       Index           =   36
       Left            =   2880
       OLEDropMode     =   1  'Manual
-      TabIndex        =   37
+      TabIndex        =   38
       Top             =   2280
       Width           =   180
    End
@@ -4969,7 +4969,7 @@ Begin VB.Form frmVerCalendario
       Index           =   36
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   36
+      TabIndex        =   37
       Top             =   2280
       Width           =   180
    End
@@ -4980,7 +4980,7 @@ Begin VB.Form frmVerCalendario
       Index           =   35
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   35
+      TabIndex        =   36
       Top             =   2280
       Width           =   180
    End
@@ -5000,7 +5000,7 @@ Begin VB.Form frmVerCalendario
       Index           =   34
       Left            =   1800
       OLEDropMode     =   1  'Manual
-      TabIndex        =   34
+      TabIndex        =   35
       Top             =   2040
       Width           =   210
    End
@@ -5011,7 +5011,7 @@ Begin VB.Form frmVerCalendario
       Index           =   33
       Left            =   1560
       OLEDropMode     =   1  'Manual
-      TabIndex        =   33
+      TabIndex        =   34
       Top             =   2040
       Width           =   180
    End
@@ -5022,7 +5022,7 @@ Begin VB.Form frmVerCalendario
       Index           =   32
       Left            =   1320
       OLEDropMode     =   1  'Manual
-      TabIndex        =   32
+      TabIndex        =   33
       Top             =   2040
       Width           =   180
    End
@@ -5033,7 +5033,7 @@ Begin VB.Form frmVerCalendario
       Index           =   31
       Left            =   1080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   31
+      TabIndex        =   32
       Top             =   2040
       Width           =   180
    End
@@ -5044,7 +5044,7 @@ Begin VB.Form frmVerCalendario
       Index           =   30
       Left            =   840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   30
+      TabIndex        =   31
       Top             =   2040
       Width           =   180
    End
@@ -5055,7 +5055,7 @@ Begin VB.Form frmVerCalendario
       Index           =   29
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   29
+      TabIndex        =   30
       Top             =   2040
       Width           =   180
    End
@@ -5066,7 +5066,7 @@ Begin VB.Form frmVerCalendario
       Index           =   28
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   28
+      TabIndex        =   29
       Top             =   2040
       Width           =   180
    End
@@ -5086,7 +5086,7 @@ Begin VB.Form frmVerCalendario
       Index           =   27
       Left            =   1800
       OLEDropMode     =   1  'Manual
-      TabIndex        =   27
+      TabIndex        =   28
       Top             =   1800
       Width           =   210
    End
@@ -5097,7 +5097,7 @@ Begin VB.Form frmVerCalendario
       Index           =   26
       Left            =   1560
       OLEDropMode     =   1  'Manual
-      TabIndex        =   26
+      TabIndex        =   27
       Top             =   1800
       Width           =   180
    End
@@ -5108,7 +5108,7 @@ Begin VB.Form frmVerCalendario
       Index           =   25
       Left            =   1320
       OLEDropMode     =   1  'Manual
-      TabIndex        =   25
+      TabIndex        =   26
       Top             =   1800
       Width           =   180
    End
@@ -5119,7 +5119,7 @@ Begin VB.Form frmVerCalendario
       Index           =   24
       Left            =   1080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   24
+      TabIndex        =   25
       Top             =   1800
       Width           =   180
    End
@@ -5130,7 +5130,7 @@ Begin VB.Form frmVerCalendario
       Index           =   23
       Left            =   840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   23
+      TabIndex        =   24
       Top             =   1800
       Width           =   180
    End
@@ -5141,7 +5141,7 @@ Begin VB.Form frmVerCalendario
       Index           =   22
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   22
+      TabIndex        =   23
       Top             =   1800
       Width           =   180
    End
@@ -5152,7 +5152,7 @@ Begin VB.Form frmVerCalendario
       Index           =   21
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   21
+      TabIndex        =   22
       Top             =   1800
       Width           =   180
    End
@@ -5172,7 +5172,7 @@ Begin VB.Form frmVerCalendario
       Index           =   20
       Left            =   1800
       OLEDropMode     =   1  'Manual
-      TabIndex        =   20
+      TabIndex        =   21
       Top             =   1560
       Width           =   210
    End
@@ -5183,7 +5183,7 @@ Begin VB.Form frmVerCalendario
       Index           =   19
       Left            =   1560
       OLEDropMode     =   1  'Manual
-      TabIndex        =   19
+      TabIndex        =   20
       Top             =   1560
       Width           =   180
    End
@@ -5194,7 +5194,7 @@ Begin VB.Form frmVerCalendario
       Index           =   18
       Left            =   1320
       OLEDropMode     =   1  'Manual
-      TabIndex        =   18
+      TabIndex        =   19
       Top             =   1560
       Width           =   180
    End
@@ -5205,7 +5205,7 @@ Begin VB.Form frmVerCalendario
       Index           =   17
       Left            =   1080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   17
+      TabIndex        =   18
       Top             =   1560
       Width           =   180
    End
@@ -5216,7 +5216,7 @@ Begin VB.Form frmVerCalendario
       Index           =   16
       Left            =   840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   16
+      TabIndex        =   17
       Top             =   1560
       Width           =   180
    End
@@ -5227,7 +5227,7 @@ Begin VB.Form frmVerCalendario
       Index           =   15
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   15
+      TabIndex        =   16
       Top             =   1560
       Width           =   180
    End
@@ -5238,7 +5238,7 @@ Begin VB.Form frmVerCalendario
       Index           =   14
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   14
+      TabIndex        =   15
       Top             =   1560
       Width           =   180
    End
@@ -5258,7 +5258,7 @@ Begin VB.Form frmVerCalendario
       Index           =   13
       Left            =   1800
       OLEDropMode     =   1  'Manual
-      TabIndex        =   13
+      TabIndex        =   14
       Top             =   1320
       Width           =   210
    End
@@ -5269,7 +5269,7 @@ Begin VB.Form frmVerCalendario
       Index           =   12
       Left            =   1560
       OLEDropMode     =   1  'Manual
-      TabIndex        =   12
+      TabIndex        =   13
       Top             =   1320
       Width           =   180
    End
@@ -5280,7 +5280,7 @@ Begin VB.Form frmVerCalendario
       Index           =   11
       Left            =   1320
       OLEDropMode     =   1  'Manual
-      TabIndex        =   11
+      TabIndex        =   12
       Top             =   1320
       Width           =   180
    End
@@ -5291,7 +5291,7 @@ Begin VB.Form frmVerCalendario
       Index           =   10
       Left            =   1080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   10
+      TabIndex        =   11
       Top             =   1320
       Width           =   180
    End
@@ -5302,7 +5302,7 @@ Begin VB.Form frmVerCalendario
       Index           =   9
       Left            =   840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   9
+      TabIndex        =   10
       Top             =   1320
       Width           =   180
    End
@@ -5313,7 +5313,7 @@ Begin VB.Form frmVerCalendario
       Index           =   8
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   1320
       Width           =   180
    End
@@ -5324,7 +5324,7 @@ Begin VB.Form frmVerCalendario
       Index           =   7
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   7
+      TabIndex        =   8
       Top             =   1320
       Width           =   180
    End
@@ -5344,7 +5344,7 @@ Begin VB.Form frmVerCalendario
       Index           =   6
       Left            =   1800
       OLEDropMode     =   1  'Manual
-      TabIndex        =   6
+      TabIndex        =   7
       Top             =   1080
       Width           =   210
    End
@@ -5355,7 +5355,7 @@ Begin VB.Form frmVerCalendario
       Index           =   5
       Left            =   1560
       OLEDropMode     =   1  'Manual
-      TabIndex        =   5
+      TabIndex        =   6
       Top             =   1080
       Width           =   180
    End
@@ -5366,7 +5366,7 @@ Begin VB.Form frmVerCalendario
       Index           =   4
       Left            =   1320
       OLEDropMode     =   1  'Manual
-      TabIndex        =   4
+      TabIndex        =   5
       Top             =   1080
       Width           =   180
    End
@@ -5377,7 +5377,7 @@ Begin VB.Form frmVerCalendario
       Index           =   3
       Left            =   1080
       OLEDropMode     =   1  'Manual
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   1080
       Width           =   180
    End
@@ -5388,7 +5388,7 @@ Begin VB.Form frmVerCalendario
       Index           =   2
       Left            =   840
       OLEDropMode     =   1  'Manual
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   1080
       Width           =   180
    End
@@ -5399,7 +5399,7 @@ Begin VB.Form frmVerCalendario
       Index           =   1
       Left            =   600
       OLEDropMode     =   1  'Manual
-      TabIndex        =   1
+      TabIndex        =   2
       Top             =   1080
       Width           =   180
    End
@@ -5410,7 +5410,7 @@ Begin VB.Form frmVerCalendario
       Index           =   0
       Left            =   360
       OLEDropMode     =   1  'Manual
-      TabIndex        =   0
+      TabIndex        =   1
       Top             =   1080
       Width           =   180
    End
@@ -5428,6 +5428,24 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   5
       Left            =   4800
+      TabIndex        =   451
+      Top             =   2640
+      Width           =   1815
+   End
+   Begin VB.Label LabelMes 
+      Caption         =   "Label13"
+      BeginProperty Font 
+         Name            =   "MS Sans Serif"
+         Size            =   8.25
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   255
+      Index           =   4
+      Left            =   2520
       TabIndex        =   450
       Top             =   2640
       Width           =   1815
@@ -5444,27 +5462,9 @@ Begin VB.Form frmVerCalendario
          Strikethrough   =   0   'False
       EndProperty
       Height          =   255
-      Index           =   4
-      Left            =   2520
-      TabIndex        =   449
-      Top             =   2640
-      Width           =   1815
-   End
-   Begin VB.Label LabelMes 
-      Caption         =   "Label13"
-      BeginProperty Font 
-         Name            =   "MS Sans Serif"
-         Size            =   8.25
-         Charset         =   0
-         Weight          =   700
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   255
       Index           =   3
       Left            =   240
-      TabIndex        =   448
+      TabIndex        =   449
       Top             =   2640
       Width           =   1815
    End
@@ -5482,7 +5482,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   11
       Left            =   4800
-      TabIndex        =   456
+      TabIndex        =   457
       Top             =   6720
       Width           =   1815
    End
@@ -5500,7 +5500,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   10
       Left            =   2520
-      TabIndex        =   455
+      TabIndex        =   456
       Top             =   6720
       Width           =   1815
    End
@@ -5518,7 +5518,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   9
       Left            =   240
-      TabIndex        =   454
+      TabIndex        =   455
       Top             =   6720
       Width           =   1815
    End
@@ -5536,7 +5536,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   6
       Left            =   240
-      TabIndex        =   451
+      TabIndex        =   452
       Top             =   4680
       Width           =   1815
    End
@@ -5554,7 +5554,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   7
       Left            =   2520
-      TabIndex        =   452
+      TabIndex        =   453
       Top             =   4680
       Width           =   1815
    End
@@ -5572,7 +5572,7 @@ Begin VB.Form frmVerCalendario
       Height          =   255
       Index           =   8
       Left            =   4800
-      TabIndex        =   453
+      TabIndex        =   454
       Top             =   4680
       Width           =   1815
    End
@@ -5599,8 +5599,8 @@ Dim Desplazamiento As Integer 'Desplazamiento para cargar temporads partidas
 
 
 
-Private Sub LabelDia(mes As Integer, Indice As Integer, Texto As String)
-    Select Case mes
+Private Sub LabelDia(Mes As Integer, Indice As Integer, Texto As String)
+    Select Case Mes
     Case 1
         Label1(Indice).Caption = Texto
     Case 2
@@ -5629,7 +5629,7 @@ Private Sub LabelDia(mes As Integer, Indice As Integer, Texto As String)
 End Sub
 
 
-Private Sub PintaDia(mes As Integer, Indice As Integer, IdHorario As Integer)
+Private Sub PintaDia(Mes As Integer, Indice As Integer, IdHorario As Integer)
 Dim Color
 Dim vMEs As Integer
     If IdHorario > 15 Then
@@ -5639,9 +5639,9 @@ Dim vMEs As Integer
     End If
     
     If Desplazamiento = 0 Then
-        vMEs = mes
+        vMEs = Mes
     Else
-        vMEs = mes + Desplazamiento
+        vMEs = Mes + Desplazamiento
         If vMEs < 1 Then vMEs = 12 + vMEs
     End If
     'El primer dia
@@ -5677,13 +5677,13 @@ End Sub
 
 
 
-Private Sub PintaFestivo(mes As Integer, Indice As Integer)
+Private Sub PintaFestivo(Mes As Integer, Indice As Integer)
 Dim vMEs As Integer
     
     If Desplazamiento = 0 Then
-        vMEs = mes
+        vMEs = Mes
     Else
-        vMEs = mes + Desplazamiento
+        vMEs = Mes + Desplazamiento
         If vMEs < 1 Then vMEs = 12 + vMEs
     End If
     'El primer dia
@@ -5733,7 +5733,7 @@ Private Sub CargarElCalendario()
 
 End Sub
 
-Private Sub CargaCalendario(MesIni As Integer, MesFin As Integer, Anyo As Integer)
+Private Sub CargaCalendario(MesIni As Integer, MesFin As Integer, anyo As Integer)
 Dim Dias As Integer
 Dim PrimerDia As Integer
 Dim i As Integer
@@ -5742,7 +5742,7 @@ Dim vLabel As Integer
 Dim AnyadeAnyo As String
 
     If MesFin - MesIni <> 11 Then
-        AnyadeAnyo = "  " & Anyo
+        AnyadeAnyo = "  " & anyo
     Else
         AnyadeAnyo = ""
     End If
@@ -5753,12 +5753,12 @@ Dim AnyadeAnyo As String
         If vLabel < 1 Then vLabel = 12 + vLabel
         
     
-        Me.LabelMes(vLabel - 1).Caption = UCase(Format("01/" & J & "/" & Anyo, "mmm")) & AnyadeAnyo
+        Me.LabelMes(vLabel - 1).Caption = UCase(Format("01/" & J & "/" & anyo, "mmm")) & AnyadeAnyo
         
         'cARGAMOS EL MES
         '----------------------
-        Dias = DiasMes(J, Anyo)
-        PrimerDia = Format("01/" & J & "/" & Anyo, "w", vbMonday)
+        Dias = DiasMes(J, anyo)
+        PrimerDia = Format("01/" & J & "/" & anyo, "w", vbMonday)
         
         Me.LabelMes(vLabel - 1).Tag = PrimerDia - 1 'Guardo el desplazamiento aqui
         'Vaciamos los primeros textos
@@ -5792,7 +5792,7 @@ Private Sub CargaTrabajador()
     miSQL = miSQL & "' and fecha<='" & Format(vEmpresa.FechaFin, FormatoFecha)
     miSQL = miSQL & "' and idtrabajador =" & CodigoTrab
     Set miRs = New ADODB.Recordset
-    miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRs.EOF
         PintaDia Month(miRs!Fecha), Day(miRs!Fecha), miRs!IdHorario
         miRs.MoveNext
@@ -5800,6 +5800,10 @@ Private Sub CargaTrabajador()
     miRs.Close
     Set miRs = Nothing
     PonDiasFestivos
+    
+    
+    
+    
 End Sub
 
 Private Sub CargaDatosCalendario()
@@ -5807,7 +5811,7 @@ Private Sub CargaDatosCalendario()
     miSQL = miSQL & "' and fecha<='" & Format(vEmpresa.FechaFin, FormatoFecha)
     miSQL = miSQL & "' and idcal =" & idCal
     Set miRs = New ADODB.Recordset
-    miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRs.EOF
         PintaDia Month(miRs!Fecha), Day(miRs!Fecha), miRs!IdHorario
         miRs.MoveNext
@@ -5840,7 +5844,7 @@ Private Sub Form_Load()
     PrimeraVez = True
     miSQL = "Select idhorario,nomhorario from horarios order by idhorario"
     Set miRs = New ADODB.Recordset
-    miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRs.EOF
         Set IT = ListView2.ListItems.Add
         IT.Text = miRs!NomHorario
@@ -5881,6 +5885,9 @@ Private Sub Form_Load()
     
     
     
+    
+    
+    
     CargaFestivos  'Los carga en el list
     PonDiasFestivos 'los pinta de rojo
 End Sub
@@ -5892,7 +5899,7 @@ Private Sub CargaFestivos()
     miSQL = miSQL & "' and fecha<='" & Format(vEmpresa.FechaFin, FormatoFecha)
     miSQL = miSQL & "' order by fecha"
     Set miRs = New ADODB.Recordset
-    miRs.Open miSQL, Conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRs.EOF
         Set IT = ListView1.ListItems.Add
         IT.Text = Format(miRs!Fecha, "dd/mm/yyyy")

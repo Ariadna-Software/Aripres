@@ -14,6 +14,23 @@ Begin VB.Form frmBuscaGrid
    ScaleHeight     =   6180
    ScaleWidth      =   8985
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CheckBox Check1 
+      Caption         =   "Tecla enter para validar búsqueda"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   -1  'True
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   120
+      TabIndex        =   7
+      Top             =   5640
+      Width           =   3735
+   End
    Begin MSDataGridLib.DataGrid DataGrid1 
       Bindings        =   "frmBuscaGrid.frx":058A
       Height          =   4185
@@ -87,8 +104,8 @@ Begin VB.Form frmBuscaGrid
    End
    Begin MSAdodcLib.Adodc Adodc1 
       Height          =   375
-      Left            =   1200
-      Top             =   5760
+      Left            =   6120
+      Top             =   5640
       Visible         =   0   'False
       Width           =   2535
       _ExtentX        =   4471
@@ -318,6 +335,16 @@ Dim J As Byte
     End If
 End Sub
 
+Private Sub Check1_Click()
+    Text1.Text = ""
+    If Me.Check1.Value = 1 Then
+        Me.cmdRegresar.Default = False
+    Else
+        Me.cmdRegresar.Default = True
+    End If
+    PonerFoco Text1
+End Sub
+
 Private Sub cmdRegresar_Click()
 Dim vDes As String
 Dim i, J As Integer
@@ -370,11 +397,22 @@ If ColIndex <= TotalArray Then
     Me.Refresh
     Screen.MousePointer = vbHourglass
     vSelElem = ColIndex
-    CargaGrid
+    CargaGrid ""
     Screen.MousePointer = vbDefault
     Else
     MsgBox "Error cargando tabla. Imposible ordenacion", vbCritical
 End If
+End Sub
+
+Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
+    If KeyAscii = 13 Then
+        If Check1.Value = 1 Then
+            KeyAscii = 0
+            If adodc1.Recordset Is Nothing Then Exit Sub
+            If adodc1.Recordset.EOF Then Exit Sub
+            cmdRegresar_Click
+        End If
+    End If
 End Sub
 
 Private Sub Form_Activate()
@@ -391,7 +429,7 @@ If PrimeraVez Then
         Exit Sub
     End If
     DoEvents
-    CargaGrid
+    CargaGrid ""
 End If
 Screen.MousePointer = vbDefault
 End Sub
@@ -400,7 +438,9 @@ Private Sub Form_Load()
 PrimeraVez = True
 Label1.Caption = vTitulo
 DbClick = True
-'Adodc1.Password = vUsu.Passwd
+
+    Me.Check1.Value = IIf(BuscaGridDefaultCheck, 1, 0)
+
 End Sub
 
 Private Function SeparaCampos() As Boolean
@@ -509,11 +549,11 @@ ObtenerTamanyosArray = True
 End Function
 
 
-Private Sub CargaGrid()
+Private Sub CargaGrid(SQL As String)
 Dim cad As String, Orden As String
 Dim i As Integer
 Dim anc As Single
-
+Dim C As String
 
     'On Error GoTo ECargaGRid '##QUITAR
     'Generamos SQL
@@ -523,7 +563,13 @@ Dim anc As Single
         cad = cad & CabTablas(i)
     Next i
     cad = "SELECT " & cad & " FROM " & vTabla
-    If vSql <> "" Then cad = cad & " WHERE " & vSql
+    
+    C = vSql
+    If SQL <> "" Then
+        If C <> "" Then C = C & " AND "
+        C = C & SQL
+    End If
+    If C <> "" Then cad = cad & " WHERE " & C
     '---- Modifica: Laura 28/04/2005  ----------------------
     'antes:
     'cad = cad & " ORDER BY " & CabTablas(vSelElem)
@@ -598,17 +644,27 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
     DataGrid1.Enabled = False
+    BuscaGridDefaultCheck = Check1.Value = 1
 End Sub
 
 Private Sub Text1_Change()
-Dim SQLDBGRID As String
-Dim i As Byte
-Dim C As String
 
     If DbClick Then
         DbClick = False
         Exit Sub
     End If
+    
+    If Me.Check1.Value = 1 Then Exit Sub
+    
+    HazBusqueda False
+End Sub
+    
+    
+Private Sub HazBusqueda(DesdeEnter As Boolean)
+Dim SQLDBGRID As String
+Dim i As Byte
+Dim C As String
+
     busca = True
     SQLDBGRID = CabTablas(vSelElem)
     
@@ -649,9 +705,12 @@ Dim C As String
     End Select
     Screen.MousePointer = vbHourglass
     
-    
-        
-    adodc1.Recordset.Find SQLDBGRID, , adSearchForward, 1
+    If DesdeEnter Then
+        CargaGrid SQLDBGRID
+        If Not adodc1.Recordset.EOF Then PonerFocoGrid DataGrid1
+    Else
+        adodc1.Recordset.Find SQLDBGRID, , adSearchForward, 1
+    End If
     Screen.MousePointer = vbDefault
 End Sub
 
@@ -662,7 +721,12 @@ End Sub
 
 Private Sub Text1_KeyDown(KeyCode As Integer, Shift As Integer)
 If KeyCode = 13 Then
-    cmdRegresar_Click
+    If Check1.Value = 1 Then
+       HazBusqueda True
+       If Not adodc1.Recordset.EOF Then PonerFocoGrid DataGrid1
+    Else
+        cmdRegresar_Click
+    End If
 End If
 End Sub
 

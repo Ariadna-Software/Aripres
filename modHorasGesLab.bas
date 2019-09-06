@@ -359,9 +359,14 @@ Dim idCal As Integer
     
     
 
+                        
+            SQL = "SELECT jornadassemanalesalz.idTrabajador,jornadassemanalesalz.fecha, "
+            'Febrero 2019
+            'En catadau, toooodos los dias que vienen son LABORABLES
+            If vEmpresa.QueEmpresa = 4 Then SQL = SQL & " 1 "
             
-            SQL = "SELECT jornadassemanalesalz.idTrabajador,jornadassemanalesalz.fecha, laborable"
-            SQL = SQL & " FROM Trabajadores INNER JOIN jornadassemanalesalz ON Trabajadores.IdTrabajador = jornadassemanalesalz.idTrabajador "
+            
+            SQL = SQL & " laborable FROM Trabajadores INNER JOIN jornadassemanalesalz ON Trabajadores.IdTrabajador = jornadassemanalesalz.idTrabajador "
             SQL = SQL & " WHERE jornadassemanalesalz.Fecha >= '" & Format(Fini, FormatoFecha) & "'"
             SQL = SQL & " and jornadassemanalesalz.Fecha <= '" & Format(FFin, FormatoFecha) & "'"
             SQL = SQL & strControlNomina

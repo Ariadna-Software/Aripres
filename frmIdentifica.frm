@@ -3,20 +3,19 @@ Begin VB.Form frmIdentifica
    BackColor       =   &H00E0E0E0&
    BorderStyle     =   0  'None
    Caption         =   "Form1"
-   ClientHeight    =   5520
+   ClientHeight    =   5775
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   7965
+   ClientWidth     =   9690
    LinkTopic       =   "Form1"
-   ScaleHeight     =   5520
-   ScaleWidth      =   7965
+   ScaleHeight     =   5775
+   ScaleWidth      =   9690
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -30,18 +29,17 @@ Begin VB.Form frmIdentifica
       Height          =   330
       IMEMode         =   3  'DISABLE
       Index           =   1
-      Left            =   4920
+      Left            =   6240
       PasswordChar    =   "*"
       TabIndex        =   1
       Text            =   "Text1"
-      Top             =   4920
+      Top             =   4800
       Width           =   2655
    End
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
       Appearance      =   0  'Flat
       BackColor       =   &H00FFFFFF&
-      BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   12
@@ -54,7 +52,7 @@ Begin VB.Form frmIdentifica
       ForeColor       =   &H00404040&
       Height          =   330
       Index           =   0
-      Left            =   4920
+      Left            =   6240
       TabIndex        =   0
       Text            =   "Text1"
       Top             =   3960
@@ -73,12 +71,12 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
+      ForeColor       =   &H00C0C0C0&
       Height          =   375
       Index           =   4
-      Left            =   0
+      Left            =   5880
       TabIndex        =   6
-      Top             =   5160
+      Top             =   5520
       Width           =   3015
    End
    Begin VB.Label Label1 
@@ -115,12 +113,12 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
+      ForeColor       =   &H00C0C0C0&
       Height          =   375
       Index           =   2
-      Left            =   5160
+      Left            =   6840
       TabIndex        =   4
-      Top             =   4920
+      Top             =   4800
       Width           =   2175
    End
    Begin VB.Label Label1 
@@ -135,12 +133,12 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
+      ForeColor       =   &H00C0C0C0&
       Height          =   375
       Index           =   1
-      Left            =   4920
+      Left            =   6240
       TabIndex        =   3
-      Top             =   4560
+      Top             =   4440
       Width           =   2175
    End
    Begin VB.Label Label1 
@@ -155,20 +153,19 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00FFFFFF&
+      ForeColor       =   &H00C0C0C0&
       Height          =   375
       Index           =   0
-      Left            =   4920
+      Left            =   6240
       TabIndex        =   2
       Top             =   3600
       Width           =   2175
    End
    Begin VB.Image Image1 
-      Height          =   5535
+      Height          =   5895
       Left            =   0
-      Stretch         =   -1  'True
       Top             =   0
-      Width           =   7935
+      Width           =   9735
    End
 End
 Attribute VB_Name = "frmIdentifica"
@@ -221,14 +218,14 @@ Private Sub Form_Load()
     Text1(1).Text = ""
     PrimeraVez = True
     CargaImagen
-    Me.Height = 5520
-    Me.Width = 7965
+  '  Me.Height = 5520
+  '  Me.Width = 7965
 End Sub
 
 
 Private Sub CargaImagen()
     On Error Resume Next
-    Me.Image1 = LoadPicture(App.Path & "\arifon2.dat")
+    Me.Image1 = LoadPicture(App.Path & "\arifon2.dll")
     If Err.Number <> 0 Then
         MsgBox Err.Description & vbCrLf & vbCrLf & "Error cargando", vbCritical
         'Set Conn = Nothing
@@ -341,29 +338,29 @@ End Sub
 'a la que ha entrado, y el usuario
 Private Sub NumeroEmpresaMemorizar(Leer As Boolean)
 Dim NF As Integer
-Dim Cad As String
+Dim cad As String
 On Error GoTo ENumeroEmpresaMemorizar
 
 
 
-    Cad = App.Path & "\ultusu.dat"
+    cad = App.Path & "\ultusu.dat"
     If Leer Then
-        If Dir(Cad) <> "" Then
+        If Dir(cad) <> "" Then
             NF = FreeFile
-            Open Cad For Input As #NF
-            Line Input #NF, Cad
+            Open cad For Input As #NF
+            Line Input #NF, cad
             Close #NF
-            Cad = Trim(Cad)
+            cad = Trim(cad)
 
                 'El primer pipe es el usuario
-                Text1(0).Text = Cad
+                Text1(0).Text = cad
 
         End If
     Else 'Escribir
         NF = FreeFile
-        Open Cad For Output As #NF
-        Cad = Text1(0).Text
-        Print #NF, Cad
+        Open cad For Output As #NF
+        cad = Text1(0).Text
+        Print #NF, cad
         Close #NF
     End If
 ENumeroEmpresaMemorizar:

@@ -111,7 +111,7 @@ Private mvarReloj2 As Byte 'copia local
 Private mvarRelojConfig2 As String 'copia local
 
 
-Private Sql As String  'Para la sentencia
+Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
 Private RS As ADODB.Recordset 'Para la base de datos
 Private RC As Byte
@@ -779,6 +779,7 @@ End Property
 
 
 'Solo tienen GET  '0. TEinsa     1.- Libre    2.- Alzira   4.- "Catadau "    5.- Coopic
+                  '6.- BELGIDA
 Public Property Get QueEmpresa() As Byte
 
      QueEmpresa = mvarQueEmpresa
@@ -855,10 +856,10 @@ Dim i As Integer
 
     On Error GoTo Err3
 
-    Sql = "SELECT * FROM empresas"
-    Sql = Sql & " WHERE "
-    Sql = Sql & " IdEmpresa = " & vIdIdEmpresa
-    RS.Open Sql, conn, , , adCmdText
+    SQL = "SELECT * FROM empresas"
+    SQL = SQL & " WHERE "
+    SQL = SQL & " IdEmpresa = " & vIdIdEmpresa
+    RS.Open SQL, conn, , , adCmdText
     If RS.EOF Then
         Leer = 1
         'ELSE
@@ -954,14 +955,14 @@ Dim i As Integer
             Else
                 
                 
-                Sql = Mid(conn.ConnectionString, i + 8)
-                i = InStr(1, Sql, ";")
+                SQL = Mid(conn.ConnectionString, i + 8)
+                i = InStr(1, SQL, ";")
                 If i = 0 Then
-                    MsgBox "Error grave. Cadena no encontrada. 2º;" & vbCrLf & Sql, vbCritical
+                    MsgBox "Error grave. Cadena no encontrada. 2º;" & vbCrLf & SQL, vbCritical
                     End
                 End If
-                Sql = UCase(Mid(Sql, 1, i - 1))
-                If Sql = UCase(mvarServer) Then
+                SQL = UCase(Mid(SQL, 1, i - 1))
+                If SQL = UCase(mvarServer) Then
                     'PERFECTO. SOn el mismo servidor
                     mvarServer = ""
                 Else
@@ -1008,8 +1009,8 @@ Private Sub FijaCentrosA3()
     On Error GoTo eF
     mvarTieneCentrosA3 = False
     
-    Sql = "SELECT * FROM CentrosA3"
-    RS.Open Sql, conn, , , adCmdText
+    SQL = "SELECT * FROM CentrosA3"
+    RS.Open SQL, conn, , , adCmdText
     If Not RS.EOF Then
         If RS.Fields(0).Value >= 0 Then mvarTieneCentrosA3 = True
     End If

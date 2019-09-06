@@ -199,6 +199,8 @@ Public Opcion As Integer
             
             '68    Listado ora s por Reloj
 
+            '74     marcaje actual sin secciones , pero ordenado por trabajador
+
 Public FormulaSeleccion As String
 Public SoloImprimir As Boolean
 Public OtrosParametros As String   ' El grupo acaba en |
@@ -600,7 +602,15 @@ Case 68, 69, 70, 71
     MostrarTree = True
     
     
+Case 73
+    Text1.Text = "Datos fichajes "
+    Nombre = "marcactualAjuCal.rpt"
+    MostrarTree = True
     
+Case 74
+    Text1.Text = "Datos fichajes x trabajador "
+    Nombre = "marcactualPlanoTr.rpt"
+    MostrarTree = True
     
     
     

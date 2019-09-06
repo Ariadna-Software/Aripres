@@ -37,26 +37,26 @@ Begin VB.Form frmKreta3
       TabCaption(1)   =   "Configurar terminales"
       TabPicture(1)   =   "frmKreta3.frx":001C
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "cmdGrabar"
-      Tab(1).Control(1)=   "chkConfig(3)"
-      Tab(1).Control(2)=   "chkConfig(2)"
-      Tab(1).Control(3)=   "chkConfig(1)"
-      Tab(1).Control(4)=   "chkConfig(0)"
-      Tab(1).Control(5)=   "Label1"
+      Tab(1).Control(0)=   "Label1"
+      Tab(1).Control(1)=   "chkConfig(0)"
+      Tab(1).Control(2)=   "chkConfig(1)"
+      Tab(1).Control(3)=   "chkConfig(2)"
+      Tab(1).Control(4)=   "chkConfig(3)"
+      Tab(1).Control(5)=   "cmdGrabar"
       Tab(1).ControlCount=   6
       TabCaption(2)   =   "Grabar trabajador"
       TabPicture(2)   =   "frmKreta3.frx":0038
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "cmdSeccion"
-      Tab(2).Control(1)=   "chkSeccionBorrar"
-      Tab(2).Control(2)=   "cboSeccion"
-      Tab(2).Control(3)=   "Command1"
-      Tab(2).Control(4)=   "Text5(1)"
-      Tab(2).Control(5)=   "Text5(0)"
-      Tab(2).Control(6)=   "Label2(1)"
-      Tab(2).Control(7)=   "Line1"
-      Tab(2).Control(8)=   "Image2(0)"
-      Tab(2).Control(9)=   "Label2(0)"
+      Tab(2).Control(0)=   "Label2(0)"
+      Tab(2).Control(1)=   "Image2(0)"
+      Tab(2).Control(2)=   "Line1"
+      Tab(2).Control(3)=   "Label2(1)"
+      Tab(2).Control(4)=   "Text5(0)"
+      Tab(2).Control(5)=   "Text5(1)"
+      Tab(2).Control(6)=   "Command1"
+      Tab(2).Control(7)=   "cboSeccion"
+      Tab(2).Control(8)=   "chkSeccionBorrar"
+      Tab(2).Control(9)=   "cmdSeccion"
       Tab(2).ControlCount=   10
       Begin VB.CommandButton cmdSeccion 
          Caption         =   "grabar seccion"
@@ -1045,7 +1045,7 @@ Public Function LeerMarcajes(Directorio As String) As Boolean
     Dim SQL As String
     'Dim rs As ADODB.Recordset
     Dim i As Integer
-    
+        
     lblInf.Caption = "Inicio proceso lectura"
     lblInf.Refresh
     

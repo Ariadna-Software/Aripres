@@ -16,7 +16,7 @@ Begin VB.Form frmSoloHora
    Begin VB.ComboBox cboReloj 
       Height          =   315
       ItemData        =   "frmSoloHora.frx":6852
-      Left            =   1440
+      Left            =   1560
       List            =   "frmSoloHora.frx":685C
       Style           =   2  'Dropdown List
       TabIndex        =   4
@@ -198,7 +198,7 @@ Private PrimeraVez As Boolean
 
 
 Private Sub cboReloj_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
@@ -447,7 +447,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
 End Sub
 
 Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
@@ -504,7 +504,7 @@ End Select
 
 End Sub
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

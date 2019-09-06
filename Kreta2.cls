@@ -99,7 +99,7 @@ Public Function ComprobarConexion() As Boolean
 End Function
 
 Public Function CargarConfiguracion() As Boolean
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
@@ -107,8 +107,8 @@ Public Function CargarConfiguracion() As Boolean
     '   en un terminal determinado
     If Not ComprobarConexion() Then Exit Function
     CargarConfiguracion = True
-    Sql = "select * from parametros"
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from parametros"
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -123,7 +123,7 @@ Public Function CargarConfiguracion() As Boolean
 End Function
 
 Public Function CargarMensajes() As Boolean
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
@@ -131,8 +131,8 @@ Public Function CargarMensajes() As Boolean
     '   en un terminal determinado
     If Not ComprobarConexion() Then Exit Function
     CargarMensajes = True
-    Sql = "select * from mensajes"
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from mensajes"
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -147,7 +147,7 @@ Public Function CargarMensajes() As Boolean
 End Function
 
 Public Function CargarDias() As Boolean
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
@@ -155,8 +155,8 @@ Public Function CargarDias() As Boolean
     '   en un terminal determinado
     If Not ComprobarConexion() Then Exit Function
     CargarDias = True
-    Sql = "select * from dias"
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from dias"
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -171,7 +171,7 @@ Public Function CargarDias() As Boolean
 End Function
 
 Public Function CargarMeses() As Boolean
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
@@ -179,8 +179,8 @@ Public Function CargarMeses() As Boolean
     '   en un terminal determinado
     If Not ComprobarConexion() Then Exit Function
     CargarMeses = True
-    Sql = "select * from meses"
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from meses"
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -194,7 +194,7 @@ Public Function CargarMeses() As Boolean
     End If
 End Function
 Public Function CargarIncidencias() As Boolean
-    Dim Sql As String
+    Dim SQL As String
     Dim RS As ADODB.Recordset
     Dim Envio As String
     Dim Espero As String
@@ -202,8 +202,8 @@ Public Function CargarIncidencias() As Boolean
     '   en un terminal determinado
     If Not ComprobarConexion() Then Exit Function
     CargarIncidencias = True
-    Sql = "select * from incidencias"
-    Set RS = GesHuellaDB.cursor(Sql)
+    SQL = "select * from incidencias"
+    Set RS = GesHuellaDB.cursor(SQL)
     If Not RS.EOF Then
         RS.MoveFirst
         While Not RS.EOF
@@ -385,12 +385,12 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
     Wend
     
     
-    'SOLO ERA PARA BELGIDA. Si entra en el 4 habra que ajustar esto
-    If PrimeraVez And vEmpresa.QueEmpresa = 2222 Then
+    
+    If PrimeraVez And vEmpresa.QueEmpresa = vbBelgida Then
         '1ª y BELGIç
         lbl.Caption = "Leyendo aritick"
         lbl.Refresh
-        Aux = "Select * from entradafichajes order by Secuencia desc"
+        Aux = "Select * from entradafichajes WHERE revisado =0 order by Secuencia desc"
         Set RS = New ADODB.Recordset
         RS.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Espero = ""
@@ -418,7 +418,7 @@ Public Function LeerMarcajes(Directorio As String, PrimeraVez As Boolean, ByRef 
                     RS.MoveNext
             Wend
             
-            Aux = "DELETE from entradafichajes where secuencia <= " & Envio
+            Aux = "UPDATE  entradafichajes SET revisado =1 where revisado=0"
             conn.Execute Aux
             
             TieneDatos = True 'Tiene datos

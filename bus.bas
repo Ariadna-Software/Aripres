@@ -2,8 +2,18 @@ Attribute VB_Name = "bus"
  'NOTA: en este mòdul, ademés, n'hi han funcions generals que no siguen de formularis
 Option Explicit
 
+
+Private Declare Function GetVersion Lib "kernel32" () As Long
+
+
+
+Public Const vbBelgida = 6
+
+
 Public vEmpresa As Cempresas
 Public vUsu As Usuario
+
+
 
 
 
@@ -32,6 +42,7 @@ Public FormatoDec10d2 As String 'Decimal(10,2)
 
 Public teclaBuscar As Integer 'llamada desde prismaticos
 
+Public BuscaGridDefaultCheck As Boolean
 
 
 Public CadenaDesdeOtroForm As String
@@ -87,12 +98,6 @@ Dim cad As String
     
     
     
-     'Cad = "Provider=MSDASQL.1;Extended Properties=""DATABASE=Usuarios;DESCRIPTION=MySQL ODBC 3.51 Driver DSN;DSN=Aripres4;OPTION=3;;PORT=3306;;"
-   
-    
-    
-    
-    
     conn.ConnectionString = cad
     conn.Open
     AbrirConnParaUsuarios = True
@@ -118,6 +123,9 @@ End Function
 Public Sub Main()
 
 
+     
+     GetWinVersion
+     ValorBD = VersionSO
      
      'obric la conexio
     If AbrirConexion() = False Then
@@ -1053,6 +1061,10 @@ Public Sub InicializarFormatos()
     
     FormatoExp = "0000000000"
 '    FormatoKms = "#,##0.00##" 'Decimal(8,4)
+
+
+    BuscaGridDefaultCheck = True
+
 End Sub
 
 
@@ -1081,14 +1093,14 @@ End Sub
 
 Public Function DevuelveTextoIncidencia(vId As Integer, Optional ByRef vSigno As Single) As String
 Dim RS As ADODB.Recordset
-Dim Sql As String
+Dim SQL As String
 
     DevuelveTextoIncidencia = ""
     vSigno = 0
     Set RS = New ADODB.Recordset
-    Sql = "SELECT * From Incidencias " & _
+    SQL = "SELECT * From Incidencias " & _
         " WHERE Incidencias.IdInci =" & vId
-    RS.Open Sql, conn, , , adCmdText
+    RS.Open SQL, conn, , , adCmdText
     If Not RS.EOF Then
             DevuelveTextoIncidencia = RS.Fields(1)
             If RS!ExcesoDefecto Then
@@ -1107,12 +1119,12 @@ End Function
 
 Public Function DevuelveCodigo(vNUmTar) As Long
 Dim RS As ADODB.Recordset
-Dim Sql As String
+Dim SQL As String
     DevuelveCodigo = -1
     Set RS = New ADODB.Recordset
-    Sql = "SELECT idTrabajador From Trabajadores " & _
+    SQL = "SELECT idTrabajador From Trabajadores " & _
         " WHERE NumTarjeta ='" & vNUmTar & "'"
-    RS.Open Sql, conn, , , adCmdText
+    RS.Open SQL, conn, , , adCmdText
     If Not RS.EOF Then
             DevuelveCodigo = RS.Fields(0)
     End If
@@ -1126,18 +1138,18 @@ End Function
 
 
 
-Public Function MarcajesCorrectos(Correctos As Boolean, vSQL As String) As Boolean
+Public Function MarcajesCorrectos(Correctos As Boolean, vSql As String) As Boolean
 Dim RS As ADODB.Recordset
     
     Set RS = New ADODB.Recordset
-    If vSQL <> "" Then
-        vSQL = vSQL & " AND "
+    If vSql <> "" Then
+        vSql = vSql & " AND "
     Else
-        vSQL = vSQL & " WHERE "
+        vSql = vSql & " WHERE "
     End If
-    vSQL = vSQL & " correcto = " & Abs(Correctos)
-    vSQL = "Select count(*) from marcajes " & vSQL
-    RS.Open vSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    vSql = vSql & " correcto = " & Abs(Correctos)
+    vSql = "Select count(*) from marcajes " & vSql
+    RS.Open vSql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     MarcajesCorrectos = False
     If Not RS.EOF Then
         If DBLet(RS.Fields(0), "N") > 0 Then MarcajesCorrectos = True
@@ -1204,7 +1216,7 @@ End Function
 
 
 
-Public Sub KeyPress(ByRef KeyAscii As Integer)
+Public Sub Keypress(ByRef KeyAscii As Integer)
     If KeyAscii = 13 Then
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1216,13 +1228,13 @@ End Sub
 
 'Esto estaba en GESALB, en otro modulo
 Public Sub CargaComboSecciones(ByRef CBO As ComboBox, AñadirTodas As Boolean)
-Dim Sql As String
+Dim SQL As String
 Dim RS As ADODB.Recordset
 
     CBO.Clear
-    Sql = "select IdSeccion,nombre from secciones order by NOMBRE"
+    SQL = "select IdSeccion,nombre from secciones order by NOMBRE"
     Set RS = New ADODB.Recordset
-    RS.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If AñadirTodas Then
         CBO.AddItem "Todas las secciones"
         CBO.ItemData(CBO.NewIndex) = -1
@@ -1244,4 +1256,13 @@ Dim RS As ADODB.Recordset
         If AñadirTodas Then CBO.ListIndex = 0
     End If
 End Sub
+
+
+Private Function GetWinVersion() As String
+Dim Ver As Long, WinVer As Long
+    Ver = GetVersion()
+    WinVer = Ver And &HFFFF&
+    'retrieve the windows version
+    GetWinVersion = Format((WinVer Mod 256) + ((WinVer \ 256) / 100), "Fixed")
+End Function
 

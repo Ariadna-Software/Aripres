@@ -433,8 +433,8 @@ Option Explicit
 
 Public DatosADevolverBusqueda As String    'Tendra el nº de text que quiere que devuelva, empipados
 Public Event DatoSeleccionado(CadenaSeleccion As String)
-Private WithEvents frmb As frmBuscaGrid
-Attribute frmb.VB_VarHelpID = -1
+Private WithEvents frmB As frmBuscaGrid
+Attribute frmB.VB_VarHelpID = -1
 
 'Private CadenaConsulta As String
 Private cadSeleccion As String
@@ -659,7 +659,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim Sql As String
+Dim SQL As String
 'Dim temp As Boolean
 
 
@@ -672,28 +672,28 @@ Dim Sql As String
     'If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     '*************** canviar els noms i el DELETE **********************************
-    Sql = "¿Seguro que desea eliminar la linea ?"
-    Sql = Sql & vbCrLf & "Trabajador: " & Format(adodc1.Recordset.Fields(0), FormatoCampo(txtAux(0)))
-    Sql = Sql & vbCrLf & "Nombre: " & adodc1.Recordset.Fields(1)
-    Sql = Sql & vbCrLf & "Dia: " & adodc1.Recordset.Fields(2)
-    Sql = Sql & vbCrLf & "Horas " & adodc1.Recordset.Fields(4) & ": " & adodc1.Recordset.Fields(6)
-    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
+    SQL = "¿Seguro que desea eliminar la linea ?"
+    SQL = SQL & vbCrLf & "Trabajador: " & Format(adodc1.Recordset.Fields(0), FormatoCampo(txtAux(0)))
+    SQL = SQL & vbCrLf & "Nombre: " & adodc1.Recordset.Fields(1)
+    SQL = SQL & vbCrLf & "Dia: " & adodc1.Recordset.Fields(2)
+    SQL = SQL & vbCrLf & "Horas " & adodc1.Recordset.Fields(4) & ": " & adodc1.Recordset.Fields(6)
+    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         NumRegElim = adodc1.Recordset.AbsolutePosition
         
       
-        Sql = "DELETE FROM jornadassemanalesalz WHERE fecha =" & DBSet(adodc1.Recordset!Fecha, "F")
-        Sql = Sql & " AND tipohoras  = " & adodc1.Recordset!TipoHoras
+        SQL = "DELETE FROM jornadassemanalesalz WHERE fecha =" & DBSet(adodc1.Recordset!Fecha, "F")
+        SQL = SQL & " AND tipohoras  = " & adodc1.Recordset!TipoHoras
         If vEmpresa.QueEmpresa = 2 Then
             Err.Raise 513, "NO puede eliminar "
         Else
-            Sql = Sql & " AND paraempresa= 0 "
+            SQL = SQL & " AND paraempresa= 0 "
         End If
-        Sql = Sql & " AND idTrabajador =" & adodc1.Recordset!idTrabajador
+        SQL = SQL & " AND idTrabajador =" & adodc1.Recordset!idTrabajador
         
         
         
-        conn.Execute Sql
+        conn.Execute SQL
         CadB = adodc1.Recordset.Source
         
         CargaGrid2 False, CadB
@@ -823,15 +823,15 @@ Private Sub cmdTra_Click()
     CadB = "Codigo|idTrabajador|N||15·"
     CadB = CadB & "Nombre|nomtrabajador|T||60·"
     CadB = CadB & "Tarjeta|numtarjeta|T||20·"
-    Set frmb = New frmBuscaGrid
-    frmb.vTabla = "Trabajadores"
-    frmb.vCampos = CadB
-    frmb.vDevuelve = "0|1|"
-    frmb.vSelElem = 1
-    frmb.vTitulo = "TRABAJADORES"
+    Set frmB = New frmBuscaGrid
+    frmB.vTabla = "Trabajadores"
+    frmB.vCampos = CadB
+    frmB.vDevuelve = "0|1|"
+    frmB.vSelElem = 1
+    frmB.vTitulo = "TRABAJADORES"
     CadB = ""
-    frmb.Show vbModal
-    Set frmb = Nothing
+    frmB.Show vbModal
+    Set frmB = Nothing
     If CadB <> "" Then
         txtAux(0).Text = RecuperaValor(CadB, 1)
         Text2(0).Text = RecuperaValor(CadB, 2)
@@ -840,7 +840,7 @@ Private Sub cmdTra_Click()
 End Sub
 
 Private Sub Combo1_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_DblClick()
@@ -921,7 +921,7 @@ Dim F1 As Date
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -997,7 +997,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 
-Private Sub frmb_Selecionado(CadenaDevuelta As String)
+Private Sub frmB_Selecionado(CadenaDevuelta As String)
     CadB = CadenaDevuelta
 End Sub
 
@@ -1057,20 +1057,20 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
 End Sub
 
 
-Private Sub CargaGrid2(MontaElSelect As Boolean, vSQL As String)
-    Dim Sql As String
+Private Sub CargaGrid2(MontaElSelect As Boolean, vSql As String)
+    Dim SQL As String
     Dim tots As String
     
 '    adodc1.ConnectionString = Conn
     If MontaElSelect Then
-        Sql = DevuelveSQL(vSQL)
+        SQL = DevuelveSQL(vSql)
     Else
-        Sql = vSQL
+        SQL = vSql
     End If
     
     
     
-    CargaGridGnral Me.DataGrid1, Me.adodc1, Sql, False
+    CargaGridGnral Me.DataGrid1, Me.adodc1, SQL, False
     
     'tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Nombre|3080|;S|txtAux(2)|T|Pob.|800|;S|btnBuscar(0)|B||0|;S|txtAux2(2)|T|Población|2200|;"
     
@@ -1082,19 +1082,19 @@ Private Sub CargaGrid2(MontaElSelect As Boolean, vSQL As String)
       
     DataGrid1.Columns(0).Alignment = dbgRight
     DataGrid1.ScrollBars = dbgAutomatic
-    Me.cmdTra.Left = Text2(0).Left - 150
+    Me.cmdTra.Left = Text2(0).Left - 30
 End Sub
 
-Private Sub txtaux_GotFocus(Index As Integer)
+Private Sub txtAux_GotFocus(Index As Integer)
     ConseguirFocoLin txtAux(Index)
 End Sub
 
-Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
+Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
     If Index = 0 And KeyAscii = teclaBuscar Then
         KeyAscii = 0
-        'BotonBuscar
+        cmdTra_Click
     Else
-        KeyPress KeyAscii
+        Keypress KeyAscii
     End If
 End Sub
 
@@ -1169,7 +1169,7 @@ SepuedeBorrar = False
 End Function
 
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1209,7 +1209,7 @@ Private Sub DataGrid1_Lostfocus()
 End Sub
 
 
-Private Function DevuelveSQL(Sql As String) As String
+Private Function DevuelveSQL(SQL As String) As String
 
 
     DevuelveSQL = "select jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,"
@@ -1224,6 +1224,6 @@ Private Function DevuelveSQL(Sql As String) As String
     
     'Si cambiamos el WHERE este, hay que tener cuidado que la regresar de editar horas busco el ultimo trozo , hasta aqui
     
-    If Sql <> "" Then DevuelveSQL = DevuelveSQL & " AND " & Sql
+    If SQL <> "" Then DevuelveSQL = DevuelveSQL & " AND " & SQL
     DevuelveSQL = DevuelveSQL & " ORDER BY jornadassemanalesalz.idTrabajador,fecha,tipohoras,paraempresa"
 End Function

@@ -433,8 +433,8 @@ Public CodigoActual As String
 Public DeConsulta As Boolean
 
 
-Private WithEvents frmb As frmBuscaGrid
-Attribute frmb.VB_VarHelpID = -1
+Private WithEvents frmB As frmBuscaGrid
+Attribute frmB.VB_VarHelpID = -1
 
 
 
@@ -541,7 +541,7 @@ Dim anc As Single
     txtAux(0).Text = NumF
     FormateaCampo txtAux(0)
     txtAux(1).Text = ""
-    Combo1(0).ListIndex = 0
+    Combo1(0).ListIndex = 1
     LLamaLineas anc, 3
        
     'Ponemos el foco
@@ -640,7 +640,7 @@ End Sub
 
 
 Private Sub BotonEliminar()
-Dim Sql As String
+Dim SQL As String
 'Dim temp As Boolean
     
     If Modo <> 2 Then Exit Sub
@@ -655,21 +655,21 @@ Dim Sql As String
     'If EsCodigoCero(CStr(adodc1.Recordset.Fields(0).Value), FormatoCampo(txtAux(0))) Then Exit Sub
 
     '*************** canviar els noms i el DELETE **********************************
-    Sql = "¿Seguro que desea eliminar el pago seleccionado?"
-    Sql = Sql & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(1), FormatoCampo(txtAux(1))) & " " & adodc1.Recordset.Fields(2)
-    Sql = Sql & vbCrLf & "Fecha: " & adodc1.Recordset.Fields(0)
-    Sql = Sql & vbCrLf & "Tipo: " & adodc1.Recordset!descripcion & "  " & adodc1.Recordset!Importe & "€"
+    SQL = "¿Seguro que desea eliminar el pago seleccionado?"
+    SQL = SQL & vbCrLf & "Código: " & Format(adodc1.Recordset.Fields(1), FormatoCampo(txtAux(1))) & " " & adodc1.Recordset.Fields(2)
+    SQL = SQL & vbCrLf & "Fecha: " & adodc1.Recordset.Fields(0)
+    SQL = SQL & vbCrLf & "Tipo: " & adodc1.Recordset!descripcion & "  " & adodc1.Recordset!Importe & "€"
     
-    If Val(adodc1.Recordset!pagado) = 1 Then Sql = Sql & vbCrLf & vbCrLf & String(30, "*") & vbCrLf & "        P A G A D O"
+    If Val(adodc1.Recordset!pagado) = 1 Then SQL = SQL & vbCrLf & vbCrLf & String(30, "*") & vbCrLf & "        P A G A D O"
     
     
     
-    If MsgBox(Sql, vbQuestion + vbYesNo) = vbYes Then
+    If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         
-        Sql = " Fecha =" & DBSet(adodc1.Recordset!Fecha, "F") & " AND  Tipo = " & adodc1.Recordset!tipo & " AND trabajador = " & adodc1.Recordset!Trabajador
-        Sql = "Delete from pagos where " & Sql
-        conn.Execute Sql
+        SQL = " Fecha =" & DBSet(adodc1.Recordset!Fecha, "F") & " AND  Tipo = " & adodc1.Recordset!tipo & " AND trabajador = " & adodc1.Recordset!Trabajador
+        SQL = "Delete from pagos where " & SQL
+        conn.Execute SQL
         
         
         NumRegElim = InStr(1, adodc1.RecordSource, " WHERE ")
@@ -841,15 +841,15 @@ Private Sub cmdTra_Click()
     CadB = "Codigo|idTrabajador|N||15·"
     CadB = CadB & "Nombre|nomtrabajador|T||60·"
     CadB = CadB & "Tarjeta|numtarjeta|T||20·"
-    Set frmb = New frmBuscaGrid
-    frmb.vTabla = "Trabajadores"
-    frmb.vCampos = CadB
-    frmb.vDevuelve = "0|1|"
-    frmb.vSelElem = 1
-    frmb.vTitulo = "TRABAJADORES"
+    Set frmB = New frmBuscaGrid
+    frmB.vTabla = "Trabajadores"
+    frmB.vCampos = CadB
+    frmB.vDevuelve = "0|1|"
+    frmB.vSelElem = 1
+    frmB.vTitulo = "TRABAJADORES"
     CadB = ""
-    frmb.Show vbModal
-    Set frmb = Nothing
+    frmB.Show vbModal
+    Set frmB = Nothing
     If CadB <> "" Then
         txtAux(1).Text = RecuperaValor(CadB, 1)
         txtAux(2).Text = RecuperaValor(CadB, 2)
@@ -858,7 +858,7 @@ Private Sub cmdTra_Click()
 End Sub
 
 Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_DblClick()
@@ -866,7 +866,7 @@ Private Sub DataGrid1_DblClick()
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -928,7 +928,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 
-Private Sub frmb_Selecionado(CadenaDevuelta As String)
+Private Sub frmB_Selecionado(CadenaDevuelta As String)
     CadB = CadenaDevuelta
 End Sub
 
@@ -977,16 +977,16 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
 End Sub
 
 
-Private Sub CargaGrid(Optional vSQL As String)
-    Dim Sql As String
+Private Sub CargaGrid(Optional vSql As String)
+    Dim SQL As String
     Dim tots As String
     
 '    adodc1.ConnectionString = Conn
-    Sql = DevuelveSQL(vSQL)
+    SQL = DevuelveSQL(vSql)
     
     
     
-    CargaGridGnral Me.DataGrid1, Me.adodc1, Sql, False
+    CargaGridGnral Me.DataGrid1, Me.adodc1, SQL, False
     
     'tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Nombre|3080|;S|txtAux(2)|T|Pob.|800|;S|btnBuscar(0)|B||0|;S|txtAux2(2)|T|Población|2200|;"
     
@@ -1000,16 +1000,17 @@ Private Sub CargaGrid(Optional vSQL As String)
     DataGrid1.ScrollBars = dbgAutomatic
 End Sub
 
-Private Sub txtaux_GotFocus(Index As Integer)
+Private Sub txtAux_GotFocus(Index As Integer)
     ConseguirFocoLin txtAux(Index)
 End Sub
 
-Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
-    If Index = 2 And KeyAscii = teclaBuscar Then
+Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
+    If Index = 1 And KeyAscii = teclaBuscar Then
         KeyAscii = 0
-        btnBuscar_Click (0)
+ '       btnBuscar_Click (0)
+        cmdTra_Click
     Else
-        KeyPress KeyAscii
+        Keypress KeyAscii
     End If
 End Sub
 
@@ -1043,12 +1044,15 @@ End Sub
 Private Function DatosOk() As Boolean
 Dim Datos As String
 Dim B As Boolean
-
+    DatosOk = False
     B = CompForm(Me)
     If Not B Then Exit Function
 
-
-
+    
+    Datos = DevuelveDesdeBD("embargo", "trabajadores", "idTrabajador", txtAux(1).Text, "N")
+    If Val(Datos) > 0 Then
+        If MsgBox("Trabajador en situacion de embargo. ¿Continuar?", vbQuestion + vbYesNoCancel) <> vbYes Then Exit Function
+    End If
     If Modo = 3 Then
         Datos = " Fecha =" & DBSet(txtAux(0).Text, "F") & " AND  Tipo = " & Combo1(0).ItemData(Combo1(0).ListIndex) & " AND trabajador"
         
@@ -1082,7 +1086,7 @@ Private Function SepuedeBorrar(ByRef C As String) As Boolean
 End Function
 
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1113,13 +1117,13 @@ Private Sub CargaCombos()
     
 End Sub
 
-Private Function DevuelveSQL(Sql As String) As String
+Private Function DevuelveSQL(SQL As String) As String
 
     DevuelveSQL = "SELECT Pagos.Fecha, Pagos.Trabajador, Trabajadores.NomTrabajador, "
     DevuelveSQL = DevuelveSQL & "Pagos.Importe, TipoPago.Descripcion, Pagos.Observaciones"
     DevuelveSQL = DevuelveSQL & ",If(Pagado=1,""Si"","""") AS P ,tipo,Pagado"
     DevuelveSQL = DevuelveSQL & " FROM (Pagos INNER JOIN TipoPago ON Pagos.Tipo = TipoPago.idTipopago) INNER JOIN "
     DevuelveSQL = DevuelveSQL & "Trabajadores ON Pagos.Trabajador = Trabajadores.IdTrabajador"
-    If Sql <> "" Then DevuelveSQL = DevuelveSQL & " WHERE " & Sql
+    If SQL <> "" Then DevuelveSQL = DevuelveSQL & " WHERE " & SQL
     DevuelveSQL = DevuelveSQL & " ORDER BY Fecha,Pagos.Trabajador"
 End Function

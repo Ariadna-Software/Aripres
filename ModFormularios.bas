@@ -1034,14 +1034,14 @@ Public Function EsNumerico(Texto As String) As Boolean
 Dim i As Integer
 Dim C As Integer
 Dim L As Integer
-Dim cad As String
+Dim Cad As String
 Dim B As Boolean
     
     EsNumerico = False
     B = True
-    cad = ""
+    Cad = ""
     If Not IsNumeric(Texto) Then
-        cad = "El campo debe ser numérico"
+        Cad = "El campo debe ser numérico"
         B = False
         '======= Añade Laura
         'formato: (.25)
@@ -1062,7 +1062,7 @@ Dim B As Boolean
             End If
         Loop Until i = 0
         If C > 1 Then
-            cad = "Numero de comas incorrecto"
+            Cad = "Numero de comas incorrecto"
             B = False
         End If
         
@@ -1077,13 +1077,13 @@ Dim B As Boolean
                 End If
             Loop Until i = 0
             If C > 1 Then
-                cad = "Numero incorrecto"
+                Cad = "Numero incorrecto"
                 B = False
             End If
         End If
     End If
     If Not B Then
-        MsgBox cad, vbExclamation
+        MsgBox Cad, vbExclamation
     Else
         EsNumerico = B
     End If
@@ -1093,7 +1093,7 @@ End Function
 Public Function PonerFormatoEntero(ByRef T As TextBox) As Boolean
 'Comprueba que el valor del textbox es un entero y le pone el formato
 Dim mTag As CTag
-Dim cad As String
+Dim Cad As String
 Dim Formato As String
 On Error GoTo EPonerFormato
 
@@ -1104,14 +1104,14 @@ On Error GoTo EPonerFormato
     Set mTag = New CTag
     mTag.Cargar T
     If mTag.Cargado Then
-       cad = mTag.Nombre 'descripcion del campo
+       Cad = mTag.Nombre 'descripcion del campo
        Formato = mTag.Formato
     End If
     Set mTag = Nothing
 
     If Not EsEntero(T.Text) Then
         PonerFormatoEntero = False
-        MsgBox "El campo " & cad & " tiene que ser numérico.", vbExclamation
+        MsgBox "El campo " & Cad & " tiene que ser numérico.", vbExclamation
         PonerFoco T
     Else
          'T.Text = Format(T.Text, Formato)
@@ -1133,7 +1133,7 @@ End Function
 Public Function PosarFormatTelefon(ByRef T As TextBox) As Boolean
 'Comprova que el Telèfon/Fax/Mòbil no te espais en blanc i només té números
 Dim mTag As CTag
-Dim cad As String
+Dim Cad As String
 
 On Error GoTo EPosarFormatTelefon
 
@@ -1145,13 +1145,13 @@ On Error GoTo EPosarFormatTelefon
     Set mTag = New CTag
     mTag.Cargar T
     If mTag.Cargado Then
-       cad = mTag.Nombre 'descripció del camp
+       Cad = mTag.Nombre 'descripció del camp
     End If
     Set mTag = Nothing
 
     If (InStr(1, T.Text, ",") > 0) Or (InStr(1, T.Text, ".") > 0) Or (InStr(1, T.Text, "+") > 0) Or (InStr(1, T.Text, "-") > 0) Or (Not IsNumeric(T.Text)) Then
         PosarFormatTelefon = False
-        MsgBox "El campo " & cad & " tiene que ser numérico.", vbExclamation
+        MsgBox "El campo " & Cad & " tiene que ser numérico.", vbExclamation
         PonerFoco T
     End If
     
@@ -2036,6 +2036,7 @@ Public Function ValidarCuentaBancaria(ByRef txtB As TextBox, ByRef txtS As TextB
 '    'Cuenta Bancaria
 '    If txtC.Text <> "" And Len(txtC.Text) < 10 Then
 '        MsgBox "El campo Cuenta Bancaria debe tener 10 dígitos", vbExclamation
+
 '        PonerFoco txtC
 '        Exit Function
 '    End If
@@ -2043,4 +2044,12 @@ Public Function ValidarCuentaBancaria(ByRef txtB As TextBox, ByRef txtS As TextB
 End Function
 
 
+
+
+
+
+'Abrir visor documentos MIME
+Public Function LanzaVisorMimeDocumento(Formhwnd As Long, Archivo As String)
+    Call ShellExecute(Formhwnd, "Open", Archivo, "", "", 1)
+End Function
 

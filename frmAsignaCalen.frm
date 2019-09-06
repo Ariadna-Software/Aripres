@@ -245,7 +245,7 @@ End Sub
 
 
 Private Sub cmdAceptar_Click()
-Dim Cad As String
+Dim cad As String
 Dim TodoAsignado As Boolean
     If Not CambiosRealizados Then Exit Sub
     
@@ -284,8 +284,8 @@ Dim TodoAsignado As Boolean
     
     
     
-    Cad = "Las modificaciones serán aplicadas. Desea continuar?"
-    If MsgBox(Cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+    cad = "Las modificaciones serán aplicadas. Desea continuar?"
+    If MsgBox(cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
     
     
 
@@ -396,8 +396,8 @@ End Sub
 '
 Private Sub CargarDeOtraForma(Opcion As Integer, FI As Date, FF As Date)
 Dim N As Node
-Dim Cad As String
-Dim I As Integer
+Dim cad As String
+Dim i As Integer
 Dim J As Integer
 Dim F As Date
 Dim Intervalo As Integer
@@ -416,21 +416,21 @@ Dim Padre As String
         
         'Inicio
         F = FI
-        I = ((Month(F) - 1) \ 3) + 1
+        i = ((Month(F) - 1) \ 3) + 1
         'Fin
         F = FF
         J = ((Month(F) - 1) \ 3) + 1
         
         
         
-        For Intervalo = I To J
+        For Intervalo = i To J
             If (Intervalo Mod 2) = 0 Then
-                Cad = "º"
+                cad = "º"
             Else
-                Cad = "er"
+                cad = "er"
             End If
-            Cad = Intervalo & Cad & " TRIM."
-            Set N = TreeView1.Nodes.Add("A" & Year(FI), tvwChild, "T" & Intervalo & Year(FI), Cad)
+            cad = Intervalo & cad & " TRIM."
+            Set N = TreeView1.Nodes.Add("A" & Year(FI), tvwChild, "T" & Intervalo & Year(FI), cad)
             N.Image = 2
             N.Expanded = True
         
@@ -443,12 +443,12 @@ Dim Padre As String
     If Opcion And 4 Then
         
         F = CDate(FI)
-        I = Month(F)
+        i = Month(F)
         'Fin
         F = CDate(FF)
         J = Month(F)
         
-        For Intervalo = I To J
+        For Intervalo = i To J
 
             If Anterior = "A" Then
                 Padre = "A" & Year(FI)
@@ -457,8 +457,8 @@ Dim Padre As String
                 Padre = "T" & Padre & Year(FI)
             End If
                 
-            Cad = Format("01/" & Intervalo & "/2006", "mmmm")
-            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "M" & Intervalo & Year(FI), Cad)
+            cad = Format("01/" & Intervalo & "/2006", "mmmm")
+            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "M" & Intervalo & Year(FI), cad)
             N.Image = 3
         Next Intervalo
         Anterior = "M"
@@ -469,11 +469,11 @@ Dim Padre As String
     If Opcion And 8 Then
         F = CDate(FI)
         
-        I = 0
+        i = 0
         
         While F <= CDate(FF)
             
-            If I = 0 Then
+            If i = 0 Then
                 'ES el primer dia. Veremos la semana primera cuantos dias tiene
                 Intervalo = Format(F, "w", vbMonday)
                 Intervalo = 7 - Intervalo
@@ -492,14 +492,14 @@ Dim Padre As String
                 End If
             End If
             Padre = Padre & Year(FI)
-            I = Format(F, "ww", vbMonday)
+            i = Format(F, "ww", vbMonday)
             
-            Cad = "Sem: " & Format(I, "00")
-            Cad = Cad & "    " & Format(F, "dd/mm") & " - "
+            cad = "Sem: " & Format(i, "00")
+            cad = cad & "    " & Format(F, "dd/mm") & " - "
             F = DateAdd("d", Intervalo, F)  'El ultimo de la semana
-            Cad = Cad & Format(F, "dd/mm")
+            cad = cad & Format(F, "dd/mm")
             F = DateAdd("d", 1, F) 'el dia siguiente
-            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "S" & Format(I, "00") & Year(FI), Cad)
+            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "S" & Format(i, "00") & Year(FI), cad)
             N.Image = 4
           
             
@@ -515,10 +515,10 @@ Dim Padre As String
         
 
     
-        I = TreeView1.Nodes.Count
+        i = TreeView1.Nodes.Count
         F = FI
         While F <= FF
-            I = I + 1
+            i = i + 1
             If Anterior = "A" Then
                 Padre = "A"
             Else
@@ -538,7 +538,7 @@ Dim Padre As String
             End If
             Padre = Padre & Year(F)
             
-            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "D" & I, Format(F, "dd/mmm"))
+            Set N = TreeView1.Nodes.Add(Padre, tvwChild, "D" & i, Format(F, "dd/mmm"))
             N.Image = 5
             F = DateAdd("d", 1, F)
                         
@@ -608,7 +608,8 @@ Private Sub TreeView1_OLEDragDrop(data As MSComctlLib.DataObject, Effect As Long
             If MsgBox(miSQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
             CambiosRealizados = True
             HacerASignacionHorarios TreeView1.DropHighlight
-    
+             ListView2.SelectedItem.Selected = False
+             Set ListView2.SelectedItem = Nothing
     End If
     Set TreeView1.DropHighlight = Nothing
 End Sub
@@ -709,7 +710,7 @@ Private Sub HacerSQLUpdateCalendario(ByRef Nodo As Node, anyo As String)
 Dim F1 As Date
 Dim F2 As Date
 Dim F3 As Date
-Dim I As Integer
+Dim i As Integer
 Dim J As Integer
 Dim FESTIVOS As String
 Dim C As String
@@ -725,35 +726,35 @@ Dim C3 As String
         
     Case "T"
         '
-         I = Val(Mid(Nodo.Key, 2, 1))
+         i = Val(Mid(Nodo.Key, 2, 1))
          F1 = CDate("01/01/" & anyo)
          
-         F1 = DateAdd("m", 3 * (I - 1), F1)   'LE sumo los trimestres correspondiente -1
+         F1 = DateAdd("m", 3 * (i - 1), F1)   'LE sumo los trimestres correspondiente -1
          J = Month(F1) + 2
-         I = DiasMes(J, Year(F1))
-         F2 = CDate(I & "/" & J & "/" & Year(F1))
+         i = DiasMes(J, Year(F1))
+         F2 = CDate(i & "/" & J & "/" & Year(F1))
         
     Case "M"
         
         J = Mid(Nodo.Key, 2)
         F1 = CDate("01/" & J & "/" & anyo)
-        I = DiasMes(J, CInt(TreeView1.Nodes(1).Text))
-        F2 = CDate(I & "/" & J & "/" & anyo)
+        i = DiasMes(J, CInt(TreeView1.Nodes(1).Text))
+        F2 = CDate(i & "/" & J & "/" & anyo)
     Case "S"
         'Semana
         F1 = CDate("01/01/" & anyo)
         
         'Dias que caben en la primera semana +1
-        I = Format(F1, "w", vbMonday) - 1
-        I = (7 - I)
+        i = Format(F1, "w", vbMonday) - 1
+        i = (7 - i)
         
         J = Val(Mid(Nodo.Key, 2, 2))
         If J > 1 Then
-            J = ((J - 2) * 7) + I 'los dias de desplazamiento
-            I = 6
+            J = ((J - 2) * 7) + i 'los dias de desplazamiento
+            i = 6
         Else
             J = 0
-            I = I - 1
+            i = i - 1
         End If
        
         
@@ -761,7 +762,7 @@ Dim C3 As String
         
         F1 = DateAdd("d", J, F1)
         
-        F2 = DateAdd("d", I, F1)
+        F2 = DateAdd("d", i, F1)
             
         
         
