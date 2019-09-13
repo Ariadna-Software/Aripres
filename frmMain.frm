@@ -155,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "16:33"
+            TextSave        =   "18:18"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -538,6 +538,9 @@ Begin VB.MDIForm frmMain
       NegotiatePosition=   1  'Left
       Begin VB.Menu mnVerMarcajes 
          Caption         =   "&Marcajes"
+      End
+      Begin VB.Menu mnHistoricoMarcajes 
+         Caption         =   "Histórico de marcajes"
       End
       Begin VB.Menu mnbarra2_10 
          Caption         =   "-"
@@ -1183,6 +1186,11 @@ End Sub
 
 Private Sub mnGeneradas_Click()
     AbrirListado 15
+End Sub
+
+Private Sub mnHistoricoMarcajes_Click()
+    frmRevisionHCO.Show vbModal
+    
 End Sub
 
 Private Sub mnHorarios_Click()
