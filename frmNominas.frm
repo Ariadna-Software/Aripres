@@ -825,6 +825,7 @@ Private Sub CargaGrid(Optional vSql As String)
     Dim J As Integer
     Dim TotalAncho As Integer
     Dim i As Integer
+    Dim Inicio As Integer
     
     adodc1.ConnectionString = conn
     SQL = ""
@@ -863,20 +864,27 @@ Private Sub CargaGrid(Optional vSql As String)
         
     i = 3
         DataGrid1.Columns(i).Caption = "Dias"
-        DataGrid1.Columns(i).Width = 800
+        DataGrid1.Columns(i).Width = 600
         DataGrid1.Columns(i).Alignment = dbgRight
         
     
     For i = 4 To 6
         DataGrid1.Columns(i).Caption = RecuperaValor("Horas|Estr.|Extra|", i - 3)
-        DataGrid1.Columns(i).Width = 800
+        DataGrid1.Columns(i).Width = IIf(i < 6, 780, 750)
         DataGrid1.Columns(i).Alignment = dbgRight
         DataGrid1.Columns(i).NumberFormat = FormatoImporte
     Next
+    Inicio = 7
+    i = 7
+    If vEmpresa.CompensaHorasNominaMES Then
+        DataGrid1.Columns(i).Caption = "Plus"
+        DataGrid1.Columns(i).Width = 750
+        DataGrid1.Columns(i).Alignment = dbgRight
+        DataGrid1.Columns(i).NumberFormat = FormatoImporte
+        Inicio = 8
+    End If
     
-    
-    
-    For i = 7 To Me.DataGrid1.Columns.Count - 1
+    For i = Inicio To Me.DataGrid1.Columns.Count - 1
         DataGrid1.Columns(i).NumberFormat = FormatoImporte
         DataGrid1.Columns(i).Alignment = dbgRight
         If i = DataGrid1.Columns.Count - 1 Then
@@ -1036,12 +1044,21 @@ End Sub
 
 
 Private Sub PonerSQL()
-    SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
+    
     If vEmpresa.QueEmpresa = 4 Then
         'Catadau
+        SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
         SQL = SQL & " Bruto,ImporEstruc 'Imp est',Plus, LlevaPlus PlusH "
     Else
-        SQL = SQL & " BolsaAntes Antes,BolsaDespues despues,anticipos"
+        'Quien lleve horas
+        If vEmpresa.CompensaHorasNominaMES Then
+            SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HE,if(HP=0,'',hp) as hp, "
+            SQL = SQL & " BolsaAntes Antes,BolsaDespues despues,bruto "
+        Else
+            'Resto del mundo
+            SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
+            SQL = SQL & " BolsaAntes Antes,BolsaDespues despues,anticipos "
+        End If
     End If
     SQL = SQL & " FROM nominas,Trabajadores WHERE  Trabajadores.IdTrabajador = nominas.IdTrabajador"
 End Sub

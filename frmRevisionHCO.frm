@@ -1008,8 +1008,8 @@ Private CorrectosIncorrectos As Byte  '0.- Ambos  1.- Correctos  2.-Incorrectos
 
 Private WithEvents frmHoras As frmHorasMarcajes
 Attribute frmHoras.VB_VarHelpID = -1
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 
 ' *** per a cridar ad atres formularis ***
 Private WithEvents frmB As frmBuscaGrid
@@ -1602,7 +1602,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim Obj As Object
     If Modo = 4 Then Exit Sub
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -1616,15 +1616,15 @@ Private Sub imgFec_Click(Index As Integer)
     Wend
     
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
     imgFec(3).Tag = Index '<===
 
-    If Text1(Index).Text <> "" Then frmC.NovaData = Text1(Index).Text
+    If Text1(Index).Text <> "" Then frmc.NovaData = Text1(Index).Text
 
 
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
 
     PonerFoco Text1(CByte(imgFec(3).Tag)) '<===
 
@@ -2399,7 +2399,7 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
             End If
             
             Set IT = ListView1.ListItems.Add(, , SQL)
-            If RS!IdInci > 0 Then IT.SubItems(1) = RS!NomInci
+            If RS!IdInci > 0 Then IT.SubItems(1) = RS!nominci
             IT.SubItems(2) = RS!LaHora & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             IT.Tag = RS!Negativa
             
@@ -2445,7 +2445,7 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     SQL = SQL & Adodc2.Recordset!Entrada & " ORDER BY id"
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
-        Set IT = ListView2.ListItems.Add(, , RS!NomInci)
+        Set IT = ListView2.ListItems.Add(, , RS!nominci)
         IT.SubItems(1) = DevuelveHora(RS!Horas)
         IT.SubItems(2) = Format(RS!Horas, "0.00")
         IT.SubItems(3) = RS!IdInci
@@ -2543,8 +2543,8 @@ Dim OK  As Boolean
         lblIndicador.Refresh
 
         cad = "INSERT IGNORE INTO entradamarcajeshco(Secuencia,idTrabajador,idMarcaje,Fecha,Hora,idInci,HoraReal,Reloj,latitud,longitud,ssid,imei,observaciones,appinfo,nominci)"
-        cad = cad & " select Secuencia,idTrabajador,idMarcaje,Fecha,Hora,entradamarcajes.idInci,HoraReal,Reloj"
-        cad = cad & " latitud,longitud,ssid,imei,observaciones,appinfo,nominci,coalesce(nominci ,'')"
+        cad = cad & " select Secuencia,idTrabajador,idMarcaje,Fecha,Hora,entradamarcajes.idInci,HoraReal,Reloj,"
+        cad = cad & " latitud,longitud,ssid,imei,observaciones,appinfo,coalesce(nominci ,'')"
         cad = cad & " from entradamarcajes left join incidencias on entradamarcajes.idinci=incidencias.idinci where"
         cad = cad & " idmarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
         If Not EjecutaSQL(cad) Then OK = False

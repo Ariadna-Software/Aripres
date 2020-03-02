@@ -806,7 +806,7 @@ Dim FInicioSeccion As Date
 Dim i As Integer
 Dim cad As String
 
-Private Sub KeyPress(KeyAscii As Integer)
+Private Sub Keypress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1125,6 +1125,7 @@ Private Sub cmdCalcularHorasTrabajadasSemana_Click()
         End If  'de por semanas
     End If
     If cad <> "" Then
+    
         MsgBox cad, vbExclamation
         Exit Sub
     End If
@@ -1157,7 +1158,7 @@ End Sub
 Private Sub HazCalcularHorasTrabajadasSemana()
 Dim ColTraba  As Collection
 Dim N As Byte
-
+Dim Salir As Boolean
         
         
         
@@ -1221,25 +1222,35 @@ Dim N As Byte
     cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
     conn.Execute cad
     
-    For N = 1 To ColTraba.Count
-        If Me.cboSeccion.Tag = 1 Then
-            'Proceso de horas. Horas normales, extra, extrucutrales...
-            ProcesoCalculaHorasTipoAlzira " AND idtrabajador in (" & ColTraba.Item(N) & ")"
-            
-        Else
-            'Proceso de calculo de horas por conteo (sums)
-            'Este calculo es sencillo ya que los trabajadores de estas secciones
-            'NO, repito NO, tripito NO,
-            'llevan control de horas , por lo tanto, todas las horas trabajadas son de tipo 0
-            MsgBox "Proceso en desarrollo", vbExclamation
-            Exit Sub
-        End If
-    Next
     
+    Salir = True
+    If ColTraba.Count = 0 Then
+        MsgBox "Ningun trabajador a procesar para el intervalo", vbExclamation
+        Salir = False
+        
+    Else
+    
+        For N = 1 To ColTraba.Count
+            If Me.cboSeccion.Tag = 1 Then
+                'Proceso de horas. Horas normales, extra, extrucutrales...
+                ProcesoCalculaHorasTipoAlzira " AND idtrabajador in (" & ColTraba.Item(N) & ")"
+                
+            Else
+                'Proceso de calculo de horas por conteo (sums)
+                'Este calculo es sencillo ya que los trabajadores de estas secciones
+                'NO, repito NO, tripito NO,
+                'llevan control de horas , por lo tanto, todas las horas trabajadas son de tipo 0
+                MsgBox "Proceso en desarrollo", vbExclamation
+                Exit Sub
+            End If
+        Next
+        
+        CadenaDesdeOtroForm = txtFecha(5).Text & "|" & txtFecha(6).Text & "|" & IIf(Me.cboSeccion.ListIndex < 0, 1, 0) & "|"
+    End If
     
     Set miRsAux = Nothing
-    CadenaDesdeOtroForm = txtFecha(5).Text & "|" & txtFecha(6).Text & "|" & IIf(Me.cboSeccion.ListIndex < 0, 1, 0) & "|"
-    Unload Me
+    
+    If Salir Then Unload Me
 End Sub
 
 
@@ -1267,6 +1278,12 @@ Dim HoraSabadoExtras As Date
         
     HorasmaximoNormalesDia = 9
     If vEmpresa.QueEmpresa = 4 Then HorasmaximoNormalesDia = 8
+    
+    'Hay empresas CASTELDUC, que hacen una compensacion en nomina a final de mes. Y ya esta. No van dia a dia
+    If vEmpresa.CompensaHorasNominaMES Then HorasmaximoNormalesDia = vEmpresa.CompensaMES_HorasDia   'HorasmaximoNormalesDia = 10
+        
+        
+    
     
     
     Insert = "INSERT INTO tmphorastipoalzira(codusu,idtrabajador,diasem,fecha,TipoHoras,horastrabajadas) "
@@ -1328,7 +1345,7 @@ Dim HoraSabadoExtras As Date
             HoraSabadoExtras = "14:30:00"
         End If
     End If
-    
+    If vEmpresa.HoraSabadoExtras <> "" Then HoraSabadoExtras = Format(CDate(vEmpresa.HoraSabadoExtras), "hh:nn:ss")
     
     
     For i = 1 To ColSabados.Count
@@ -1845,7 +1862,7 @@ Private Sub txtDecimal_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtDecimal_KeyPress(Index As Integer, KeyAscii As Integer)
-     KeyPress KeyAscii
+     Keypress KeyAscii
 End Sub
 
 Private Sub txtDecimal_LostFocus(Index As Integer)
@@ -1880,7 +1897,7 @@ Private Sub txtFecha_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtFecha_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub txtFecha_LostFocus(Index As Integer)
@@ -1957,7 +1974,7 @@ End Sub
 
 
 Private Sub txtNumero_KeyPress(Index As Integer, KeyAscii As Integer)
-    KeyPress KeyAscii
+    Keypress KeyAscii
 End Sub
 
 Private Sub txtNumero_LostFocus(Index As Integer)

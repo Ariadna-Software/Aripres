@@ -1,7 +1,7 @@
 Attribute VB_Name = "modHorasGesLab"
 Option Explicit
 
-Private Const HoraIntermediaMiercolesSabado = "14:00:00"
+Private Const HoraIntermediaMiercolesSabado = "14:00:00"   'Solo para picassent. De momento NO es valido
 
 
 'Para las PUTAS compensaciones de los miercoles / sabado
@@ -245,6 +245,8 @@ Dim Semana As Integer
 Dim BAJAS As String
 Dim RF As ADODB.Recordset
 
+Dim TipoCoopic As Boolean
+Dim TipoCata As Boolean
 
 Dim idCal As Integer
     
@@ -273,7 +275,17 @@ Dim idCal As Integer
    
      Set RS = New ADODB.Recordset
     
+    
+    TipoCata = False
     If vEmpresa.QueEmpresa = 4 Then
+        TipoCata = True
+    Else
+        If vEmpresa.CompensaHorasNominaMES Then TipoCata = True
+    End If
+    
+    'If vEmpresa.QueEmpresa = 4 Then
+    If TipoCata Then
+    
         'CATADAU. Van separadas
         SQL = "INSERT INTO tmpHoras(trabajador,HorasT,HorasC,HorasE) "
         SQL = SQL & " SELECT  jornadassemanalesalz.idtrabajador,sum(if(tipohoras=0,horastrabajadas,0)) normales ,sum(if(tipohoras=1,horastrabajadas,0)) estruc"
@@ -543,7 +555,7 @@ Dim varHorario As Integer
 
 Dim maxDias As Integer
 Dim maxHoras As Currency
-
+Dim Leer As Boolean
 
     'IMPORTANTE
     'Ahora hay un control nomina mas, k es el 2
@@ -579,9 +591,9 @@ Dim maxHoras As Currency
     
     'Creamos todos los trabajadores con las horas y dias k
     'Deberian haber trabajado en el mes completo( y no esten de baja)
-    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra)"
+    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra,codusu)"
     SQL = SQL & " SELECT " & Month(Fini) & ", Trabajadores.IdTrabajador, tmpHorasMesHorario.Horas, tmpHorasMesHorario.Dias"   ', Trabajadores.FecBaja"
-    SQL = SQL & " ,idcal FROM Trabajadores INNER JOIN tmpHorasMesHorario ON Trabajadores.idcal = tmpHorasMesHorario.idHorario"
+    SQL = SQL & " ,idcal , " & vUsu.Codigo & " FROM Trabajadores INNER JOIN tmpHorasMesHorario ON Trabajadores.idcal = tmpHorasMesHorario.idHorario"
     SQL = SQL & " WHERE (Trabajadores.FecBaja Is Null) "
     SQL = SQL & strControlNomina
     SQL = SQL & " AND (Trabajadores.FecAlta < '" & Format(Fini, FormatoFecha) & "')"
@@ -589,7 +601,7 @@ Dim maxHoras As Currency
 
 
     Set RS = New ADODB.Recordset
-    idCal = 1
+    idCal = -1
     
     
 
@@ -597,19 +609,35 @@ Dim maxHoras As Currency
     'Ahora vemo los k entraron a trabajar este periodo.
     '¡Descontaremos de las horas laborables los dias k no han trabajado
     'o dicho de otra forma. Le contamos solo las horas k debia haber trabajado en fechas de alta
-    SQL = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
+    SQL = "Select idTrabajador,idcal,fecalta,fecbaja from Trabajadores WHERE"
     SQL = SQL & " fecalta >='" & Format(Fini, FormatoFecha) & "'"
     SQL = SQL & " and fecalta <='" & Format(FFin, FormatoFecha) & "'"
     SQL = SQL & strControlNomina
+    SQL = SQL & " ORDER BY idcal,idtrabajador"
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
+    SQL = "INSERT INTO tmpDatosMes(codusu,Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & vUsu.Codigo & "," & Month(Fini) & ","
     varHorario = -1
     While Not RS.EOF
-    
         
         
-        If varHorario <> RS!idCal Then
-            varHorario = RS!idCal
+        If idCal <> RS!idCal Then
+            idCal = RS!idCal
+            varHorario = -1
+        End If
+        
+        
+        
+        If varHorario <> idCal Then
+            'Vamos a ver el horario para ese peridod
+            If vEmpresa.CompensaHorasNominaMES Then
+                'Tipo castelduc.  Suma las HN + estr   y son las del mes. El resto bolas. PEEEEERO, se pueden pagar distito
+                Aux = " fecha >='" & Format(Fini, FormatoFecha) & "'"
+                Aux = Aux & " and fecha<='" & Format(FFin, FormatoFecha) & "' AND idcal"
+                Aux = DevuelveDesdeBD("min(idhorario)", "calendariol", Aux, CStr(idCal))
+                If Val(Aux) > 0 Then varHorario = Aux
+            Else
+                varHorario = RS!idCal
+            End If
             'Veamos el maximo de dias a trabajar
             Aux = DevuelveDesdeBD("concat(dias,'|',horas,'|')", "tmphorasmeshorario", "idhorario", CStr(varHorario))
             If Aux = "" Then Aux = "60|500|"
@@ -623,8 +651,14 @@ Dim maxHoras As Currency
             FAux = RS!FecBaja
             If FAux > FFin Then FAux = FFin
         End If
-        Horas = CalculaHorasHorario(idCal, RS!idCal, d, RS!FecAlta, FAux)
         
+        If vEmpresa.CompensaHorasNominaMES Then
+            'No hace compensaciones por dia. Hace al final de mes, para cuadrar horas
+            Horas = CalculaHorasHorario(idCal, varHorario, d, RS!FecAlta, FAux)
+        Else
+            'COMO estaba. NO tocamos nada
+            Horas = CalculaHorasHorario(idCal, RS!idCal, d, RS!FecAlta, FAux)
+        End If
         
         If d > maxDias Then d = maxDias
         If Horas > maxHoras Then Horas = maxHoras
@@ -637,6 +671,7 @@ Dim maxHoras As Currency
     Wend
     RS.Close
     varHorario = -1
+    idCal = 1
     
     'AHora vemos los k se han dado de baja en este periodo
     SQL = "Select idTrabajador,idcal,fecalta,fecbaja,idcal from Trabajadores WHERE"
@@ -645,9 +680,10 @@ Dim maxHoras As Currency
     SQL = SQL & " AND fecbaja <='" & Format(FFin, FormatoFecha) & "'"
     SQL = SQL & strControlNomina
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    SQL = "INSERT INTO tmpDatosMes(Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & Month(Fini) & ","
+    SQL = "INSERT INTO tmpDatosMes(codusu,Mes,Trabajador,MesHoras,MesDias,idHorarioTra) VALUES (" & vUsu.Codigo & "," & Month(Fini) & ","
     While Not RS.EOF
         Horas = CalculaHorasHorario(idCal, RS!idCal, d, Fini, RS!FecBaja)
+        If Horas = 0 Then Err.Raise 513, , "Cero horas CalculaHorasHorario"
         Aux = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
         conn.Execute SQL & Aux
         RS.MoveNext
@@ -680,6 +716,11 @@ Dim maxHoras As Currency
         Wend
         RS.Close
     End If
+    
+    
+    
+    idCal = 1
+    
     'Ya tengo los trabajadores. Ahora ire uno a uno por si han tenido mas dias de baja y eso
     While Aux <> ""
         
@@ -922,6 +963,8 @@ Dim Aux As String
 Dim SQL As String
 Dim Rs2 As ADODB.Recordset
 Dim meshoras As Currency
+Dim Aux2 As String
+
 
     Set RS = New ADODB.Recordset
     SQL = "Select Trabajador,MEsDias,meshoras from tmpDatosMes "
@@ -932,17 +975,22 @@ Dim meshoras As Currency
     SQL = SQL & " FROM  tmpHoras left join trabajadoresbolsahoras ON trabajadoresbolsahoras.IdTrabajador = tmpHoras.trabajador and"
     SQL = SQL & " tipohora=1 " 'No deberia tener bolsa horas extra
     SQL = SQL & " WHERE tmpHoras.trabajador = "
-
+    
     Set RT = New ADODB.Recordset
     While Not RS.EOF
        
 
+        Aux2 = SQL & RS.Fields(0)
+        'If vEmpresa.CompensaHorasNominaMES Then Aux2 = Aux2 & " AND false "
+        RT.Open Aux2, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
-        RT.Open SQL & RS.Fields(0), conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        
+        
+        
         If Not RT.EOF Then
             Aux = "UPDATE tmpDatosMes Set HorasN=" & TransformaComasPuntos(CStr(RT!horast))
             Aux = Aux & " ,HorasC=" & TransformaComasPuntos(CStr(RT!HorasC))  'Las compensables SON las extras en COOPIC
-            Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!horase))
+            Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!Horase))
             'Tot = RT!horasc + RT!horast  extras mas normales
             Tot = RT!horast
             Aux = Aux & " ,HorasT=" & TransformaComasPuntos(CStr(Tot))
@@ -1017,9 +1065,12 @@ Dim Diferencia As Currency
     While Not RS.EOF
     
         
-
-          
-        Diferencia = RS!horast - RS!meshoras
+        If vEmpresa.CompensaHorasNominaMES Then
+            'Compensa DIAS al final de mes
+            Diferencia = RS!horast + RS!HorasC - RS!meshoras
+        Else
+            Diferencia = RS!horast - RS!meshoras
+        End If
         If Diferencia < 0 Then
             'Veremos si coge horas de la bolsa o no
             '
@@ -1044,6 +1095,18 @@ End Sub
 
 
 Public Sub HacerCompensaciones(FInicio As Date, FFin As Date, lbl As Label)
+
+
+    If vEmpresa.CompensaHorasNominaMES Then
+        HacerCompensacionesNominaFinMes FInicio, FFin, lbl
+    Else
+        HacerCompensacionesStd FInicio, FFin, lbl
+    End If
+End Sub
+
+
+
+Private Sub HacerCompensacionesStd(FInicio As Date, FFin As Date, lbl As Label)
 Dim HCompMes As Currency
 Dim HPaBolsa As Currency
 Dim DiasOF As Integer
@@ -1051,8 +1114,6 @@ Dim HorasOf As Currency
 Dim H As Currency
 Dim h2 As Currency
 Dim SQL As String
-Dim ModoCompensacion As String
-Dim HorasJornadaRecuperacion As Currency
 Dim Horario As Integer
 Dim vH As CHorarios
 Dim FESTIVOS As String
@@ -1066,9 +1127,8 @@ Dim LlevaPlus2 As Currency
                       'El brutoN sera la suma de las horasN * importe
                       'LlevaPlus2=Hest * PlusHoraTrabajador + HNormales*PlusHoraTrabajador + HExtr*PlusHoraTrabajador
                       'PlusNormal=extra * IMporteDehoraExtra
-                      
-                      
-
+Dim ModoCompensacion As String
+Dim HorasJornadaRecuperacion As Currency
 Dim BrutoN As Currency
 Dim ImportePlus As Currency
 Dim HazUpdate As Boolean
@@ -1076,8 +1136,15 @@ Dim HazUpdate As Boolean
 Dim HorasC As Currency  'Catadau, las estructuradas para los de importe fijo, pueden cambiar
 Dim ImporEstrcut As Currency
 
+
+Dim PagaHorasEnSuFranja As Boolean
+
 Dim H_D_mas As Currency
-    'ModoCompensacion
+    
+    
+Dim Donde As String
+    
+'ModoCompensacion
     'Vemos cual es el modo de compensacion
     '   0 .- NO compensa
     '   1 .- A partir de los dias trabajados del trabajador
@@ -1086,6 +1153,8 @@ Dim H_D_mas As Currency
     '   3 .- Picassen cotubre 2008.
     '           -Compensaran por semana /dia con cuidado a los miercoles sabados
     '           -si trabaja una hora un dia, el resto de horas NO las tiene que compensar para la nomina
+    On Error GoTo eHacerCompensacionesStd
+    Donde = "previo1"
     SQL = "HorasJornada"
     ModoCompensacion = DevuelveDesdeBD("RecuperacionDias", "Empresas", "idEmpresa", "1", "N", SQL)
     
@@ -1098,8 +1167,15 @@ Dim H_D_mas As Currency
     End If
     
     
+    
+    
+    
+    
+    
+    
 
     'De momento NO lo necesito
+    Donde = "previo2"
     If ModoCompensacion = "3" Then
     
         'Fijo cual es ñla primera semana del mes, y la utima
@@ -1125,7 +1201,7 @@ Dim H_D_mas As Currency
         lbl.Refresh
     End If
 
-  
+    Donde = "haciedo select"
     SQL = "Select tmpDatosMes.*,idHorarioTra idHorario,FecAlta,FecBaja,controlnomina,NomTrabajador,ImporteFijoNomina from tmpDatosMes,Trabajadores"
     SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
     SQL = SQL & " ORDER BY idHorario"
@@ -1138,7 +1214,7 @@ Dim H_D_mas As Currency
     RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     
     While Not RS.EOF
-        
+        Donde = "Trabajador " & RS!Trabajador
         If ModoCompensacion = "1" Or ModoCompensacion = "3" Then
             If Horario <> RS!IdHorario Then
                 Set vH = Nothing
@@ -1160,12 +1236,12 @@ Dim H_D_mas As Currency
         If vEmpresa.RecuperacionDias = 2 Then
             'Solo se crecuperan dias. Las horas trabjadas van como van
             HCompMes = 0
-            HorasOf = RS!horasn
+            HorasOf = RS!Horasn
             HPaBolsa = RS!bolsaantes
             DiasOF = RS!diasTrabajados
             H = RS!MesDias - RS!diasTrabajados
             If H < 0 Then
-                MsgBox RS!nomtrabajador & "    Dias " & RS!MesDias & "   Traba: " & RS!diasTrabajados, vbExclamation
+                MsgBox RS!NomTrabajador & "    Dias " & RS!MesDias & "   Traba: " & RS!diasTrabajados, vbExclamation
             Else
             
                 If H > 0 Then
@@ -1191,11 +1267,11 @@ Dim H_D_mas As Currency
                              'Abril 2018
                              'Si los nuevos dias, generaran NUEVAS horasmes. Habra que ver las que se pasen
                              h2 = 8 * DiasOF
-                             h2 = RS!horasn - h2
+                             h2 = RS!Horasn - h2
                              If h2 > 0 Then
                                  SQL = "Trabajador: " & RS!Trabajador & vbCrLf
                                  SQL = SQL & "Total dias/horas mes: " & DiasOF & "/" & 8 * DiasOF & vbCrLf
-                                 SQL = SQL & "Horas trabajadas: " & RS!horasn & "   a bolsa: " & h2 & vbCrLf
+                                 SQL = SQL & "Horas trabajadas: " & RS!Horasn & "   a bolsa: " & h2 & vbCrLf
                                  'SQL = SQL & "Utlizadas dias copensados: " & H
                                  'MsgBox SQL, vbExclamation
                                  Debug.Print "Comepnsa " & Replace(SQL, vbCrLf, "    ")
@@ -1210,7 +1286,7 @@ Dim H_D_mas As Currency
                     Else
                         'RESTO. COOPIC
                         H_D_mas = 8 * DiasOF
-                        H_D_mas = RS!horasn - H_D_mas
+                        H_D_mas = RS!Horasn - H_D_mas
                         If H_D_mas > 0 Then
                             Debug.Print "Comepnsa " & RS!Trabajador & "   " & H_D_mas & "  +  " & HPaBolsa
                             HPaBolsa = HPaBolsa + H_D_mas
@@ -1234,7 +1310,7 @@ Dim H_D_mas As Currency
                 Else
                     'Veremos si ha trabjado mas horas de las que deberia
                     
-                    H = RS!horasn - RS!meshoras
+                    H = RS!Horasn - RS!meshoras
                     If H > 0 Then
                         'Ha trabajado mas horas de las que debe
                         HorasOf = RS!meshoras
@@ -1260,11 +1336,11 @@ Dim H_D_mas As Currency
                 'Tengo k ver si en las horas que tiene tiene suficiente
                 'Para esos dias trabajados. Si no no le compenso los dias
          
-            
+                Donde = "Compensacion <>0"
                 
                 
                 H = RS!HorasC + RS!bolsaantes
-                If (RS!horasn + H) >= RS!meshoras Then
+                If (RS!Horasn + H) >= RS!meshoras Then
                 
                     
                 
@@ -1273,7 +1349,7 @@ Dim H_D_mas As Currency
                             DiasOF = RS!MesDias
                             HorasOf = RS!meshoras
                             
-                            HCompMes = RS!meshoras - RS!horasn
+                            HCompMes = RS!meshoras - RS!Horasn
                             If RS!HorasC >= HCompMes Then
                                 'Las coje todas de las compensadas de este mes
                                 H = RS!HorasC - HCompMes
@@ -1286,7 +1362,7 @@ Dim H_D_mas As Currency
                             End If
                     Else
                         'Picassent 2008
-                        
+                        Donde = "Modo pic.ss"
                         
                         HCompMes = H
                         DiasOF = CompensacionesDiaTrabajadoYSemana(RS!saldodias, RS, FESTIVOS, FInicio, FFin, vH, HorasJornadaRecuperacion, HCompMes, DiasReajusteXSTrabajados, BajaTodoElMes)
@@ -1308,7 +1384,7 @@ Dim H_D_mas As Currency
                         
                         
                         HPaBolsa = H - HCompMes
-                        HorasOf = RS!horasn
+                        HorasOf = RS!Horasn
                         DiasOF = RS!diasTrabajados + DiasOF
                         
                     End If
@@ -1331,7 +1407,7 @@ Dim H_D_mas As Currency
                        Select Case Val(ModoCompensacion)
                        Case 1, 2
                                          
-                            HorasOf = RS!horasn + H
+                            HorasOf = RS!Horasn + H
                         
                             'Vemos esas h -horas cuantos dias me puede compensar
                             If ModoCompensacion = 2 Then
@@ -1373,7 +1449,7 @@ Dim H_D_mas As Currency
                                 HPaBolsa = H - HCompMes
                                 'HorasOf = RS!horast - RS!horasc
                                 'Ahora
-                                HorasOf = RS!horasn
+                                HorasOf = RS!Horasn
                             Else
                                 'Todo el mes de baja
                                 DiasOF = 0
@@ -1394,6 +1470,7 @@ Dim H_D_mas As Currency
                     
                 End If
             Else
+                Donde = "Proceso 6"
                     HazUpdate = False
                         'Aqui creo que no entra
                         If vEmpresa.QueEmpresa <> 4 Then
@@ -1411,15 +1488,15 @@ Dim H_D_mas As Currency
                                 HPaBolsa = 0
                                 DiasOF = RS!MesDias
                                 
-                                HCompMes = RS!horase
-                                If RS!horasn + RS!HorasC >= RS!meshoras Then
+                                HCompMes = RS!Horase
+                                If RS!Horasn + RS!HorasC >= RS!meshoras Then
                                     
-                                    HorasC = RS!meshoras - RS!horasn
+                                    HorasC = RS!meshoras - RS!Horasn
                                     HorasC = RS!HorasC - HorasC
                                     HorasOf = RS!meshoras
                                 Else
                                     HorasC = 0
-                                    HorasOf = RS!horasn + RS!HorasC
+                                    HorasOf = RS!Horasn + RS!HorasC
                                 End If
                                 HazUpdate = True
                                 
@@ -1429,7 +1506,7 @@ Dim H_D_mas As Currency
                                 HPaBolsa = DBLet(RS!bolsadespues, "N")
                                 HorasOf = DBLet(RS!HorasPeriodo, "N")
                                 
-                                HCompMes = DBLet(RS!horase, "N")
+                                HCompMes = DBLet(RS!Horase, "N")
                                 DiasOF = RS!diasTrabajados
                                 HorasOf = RS!horast
                                 
@@ -1523,10 +1600,19 @@ Dim H_D_mas As Currency
         ImportePlus = 0
         ImporEstrcut = 0
         HorasOf = 0
+        
+        PagaHorasEnSuFranja = False
         If vEmpresa.QueEmpresa = 4 Then
+            PagaHorasEnSuFranja = True
+        Else
+            If vEmpresa.CompensaHorasNominaMES Then PagaHorasEnSuFranja = True  'Castelduc Compensan DIAS ne nomina. Y nada mas
+        End If
+        
+        'If vEmpresa.QueEmpresa = 4 Then
+        If PagaHorasEnSuFranja Then
             'CATADAU NO compensa horas, todas se pagan en su franja.
-            'ADemas CATADAU lleva plus
             
+            Donde = "Importes nimina"
             
             
             'NORMALES
@@ -1535,11 +1621,11 @@ Dim H_D_mas As Currency
             'If RS!Trabajador = 199 Then S top
             
             Canti = RS!Importe1
-            BrutoN = Round(RS!horasn * Canti, 2)
+            BrutoN = Round(RS!Horasn * Canti, 2)
             
             'El plus en normales ya va a la columna de plus
             If DBLet(RS!PlusHN, "N") > 0 Then
-                LlevaPlus2 = Round(RS!horasn * RS!PlusHN, 2)
+                LlevaPlus2 = Round(RS!Horasn * RS!PlusHN, 2)
             End If
             
             If Not IsNull(RS!ImporteFijoNomina) Then BrutoN = RS!ImporteFijoNomina
@@ -1577,17 +1663,24 @@ Dim H_D_mas As Currency
 
 
         Else
-            'Resto
-            H = RS!saldoh
-            If H < 0 Then H = 0
-            HorasOf = (RS!horasn * RS!Importe1) + (H * RS!Importe2) + (RS!HorasC * RS!Importe3)
-            
-            H = 0
-            If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
-            H = Round((HorasOf * H) / 100, 2)
-            HorasOf = HorasOf + H
+        
 
-            BrutoN = HorasOf
+        
+        
+            
+                'Resto
+                H = RS!saldoh
+                If H < 0 Then H = 0
+                HorasOf = (RS!Horasn * RS!Importe1) + (H * RS!Importe2) + (RS!HorasC * RS!Importe3)
+                
+                H = 0
+                If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
+                H = Round((HorasOf * H) / 100, 2)
+                HorasOf = HorasOf + H
+    
+                BrutoN = HorasOf
+        
+
         End If
         
         
@@ -1595,6 +1688,7 @@ Dim H_D_mas As Currency
 
         
         'Quitamos IRPF y SS
+        Donde = "Aplica IRPF y SS"
         H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
         H = Round((H / 100), 2)
         HorasOf = HorasOf - H
@@ -1627,10 +1721,319 @@ Dim H_D_mas As Currency
     
     
     Set RS = Nothing
+    Exit Sub
+    
+eHacerCompensacionesStd:
+    SQL = Donde & vbCrLf & SQL & vbCrLf & Err.Description
+    MsgBox SQL, vbExclamation
+Set RS = Nothing
+End Sub
+
+
+
+
+'Compensacion tipo 4
+'Hoars final de mes
+Private Sub HacerCompensacionesNominaFinMes(FInicio As Date, FFin As Date, lbl As Label)
+Dim HCompMes As Currency
+Dim HPaBolsa As Currency
+Dim DiasOF As Integer
+Dim HorasOf As Currency
+Dim H As Currency
+Dim h2 As Currency
+Dim SQL As String
+Dim Horario As Integer
+Dim vH As CHorarios
+
+
+Dim BajaTodoElMes As Boolean
+Dim Canti As Currency
+Dim ImporAux As Currency
+Dim LlevaPlus2 As Currency
+                      
+                               
+
+Dim BrutoN As Currency
+Dim ImportePlus As Currency
+Dim HazUpdate As Boolean
+    Dim RS As ADODB.Recordset
+Dim HorasC As Currency  'Catadau, las estructuradas para los de importe fijo, pueden cambiar
+Dim ImporEstrcut As Currency
+
+
+Dim H_D_mas As Currency
+Dim FESTIVOS As String
+    
+
+Dim HorasDisponibles As Currency
+        
+
+    lbl.Caption = "Procesar datos"
+    lbl.Refresh
+    If vEmpresa.HorasJornada = 0 Then
+        MsgBox "No se puede compensar. Falta configurar paremetros: HorasJornadaRecuperacion", vbExclamation
+        Exit Sub
+    End If
+  
+    SQL = "Select tmpDatosMes.*,idHorarioTra idHorario,FecAlta,FecBaja,controlnomina,NomTrabajador,ImporteFijoNomina from tmpDatosMes,Trabajadores"
+    SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
+    SQL = SQL & " ORDER BY idHorario,trabajador"
+    Horario = -1
+    FESTIVOS = ""
+    Set RS = New ADODB.Recordset
+    
+   
+    
+    RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
+    
+    While Not RS.EOF
+        
+        
+        If Horario <> RS!IdHorario Then
+            Set vH = Nothing
+            Set vH = New CHorarios
+            Horario = RS!IdHorario
+            lbl.Caption = "leyendo horario " & Horario
+            lbl.Refresh
+            FESTIVOS = vH.LeerDiasFestivos(Horario, FInicio, FFin)  'En hacercompensaciones trata estos dias
+        End If
+    
+        lbl.Caption = "Trab: " & DBLet(RS!NomTrabajador, "T")
+        lbl.Refresh
+        
+        HazUpdate = True
+        HorasC = 0
+        'NO se utilzia        HCompMes = 0
+        
+
+        'Solo se crecuperan dias. Las horas trabjadas van como van
+
+       ' If RS!Trabajador = 600 Then Stop
+        HorasOf = RS!Horasn + RS!HorasC
+        HPaBolsa = RS!bolsaantes
+        DiasOF = RS!diasTrabajados
+        H = RS!MesDias - RS!diasTrabajados
+        HorasDisponibles = RS!Horasn + RS!HorasC + HPaBolsa
+        If HorasDisponibles <= RS!meshoras Then
+            
+            'No puede NI compensar el mes entero
+            H_D_mas = HorasDisponibles \ 8  'Sabremos cuantos dias como mucho puede hacer
+            
+            'Como mucho puede llevar
+            If H_D_mas > DiasOF Then
+                'Puede compensar DIAS en nomina
+                  
+                  H = H_D_mas * 8
+                  HPaBolsa = HorasDisponibles - H
+                  DiasOF = H_D_mas
+                  If HPaBolsa < 0 Then
+                        MsgBox "Bolsa menor cero(I):    " & HPaBolsa, vbExclamation
+                        HPaBolsa = 0
+                  End If
+                  
+            Else
+                'no puede compensar. Gasta todas las horas aqui. No tiene bolsa
+                 HPaBolsa = 0
+            End If
+      
+        Else
+            'tiene horas para el mes, y si puede algun dia mas
+            H_D_mas = HorasDisponibles \ 8  'Sabremos cuantos dias como mucho puede hacer
+            
+            If H_D_mas >= RS!MesDias Then
+                HPaBolsa = HorasDisponibles - RS!meshoras
+                DiasOF = RS!MesDias
+                
+                If HPaBolsa < 0 Then MsgBox "Bolsa menor cero(II)": Stop
+                
+            Else
+                Stop
+            End If
+        
+        End If
+
+        
+        
+        'May18 ModoCompensacion_2 <> "0"
+        If HazUpdate Then
+             SQL = "UPDATE tmpDatosMes SET"
+            
+             
+             SQL = SQL & "  BolsaDespues =" & TransformaComasPuntos(CStr(HPaBolsa))
+             SQL = SQL & ", HorasPeriodo = " & TransformaComasPuntos(CStr(HorasOf))
+             
+             
+             SQL = SQL & ", DiasPeriodo  = " & TransformaComasPuntos(CStr(DiasOF))
+             
+             
+             'SQL = SQL & ", HorasN = " & TransformaComasPuntos(CStr(HorasOf))
+             
+             
+            SQL = SQL & ", extras =0"
+            SQL = SQL & ", ImportNormales =0"
+            SQL = SQL & ", ImportExtras = 0"
+             
+        Else
+            SQL = "UPDATE tmpDatosMes SET"
+            SQL = SQL & "  ImportNormales =0"
+            SQL = SQL & ", ImportExtras = 0"
+        End If
+        'Trabajador
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
+        conn.Execute SQL
+
+        
+        If BajaTodoElMes Then
+            AjustaDatosBajaMesEnteroTrabajador CLng(RS!Trabajador)
+        End If
+        
+        
+        
+        
+        'sgi
+        RS.MoveNext
+    Wend
+    RS.Close
+    espera 0.5
+    
+    
+    'FALTA###
+    If vUsu.Login = "root" Then
+        
+        'MsgBox "Proceso en funcinamiento. Falta ver si son todas las horas o solo las de nomina", vbExclamation
+    End If
+
+    
+    
+    'AHora obtenemos los anticpos en NOMINA
+    '-----------------------------------------
+    
+    If vEmpresa.CompensaHorasNominaMES Then
+        'Van separadas compensabels de normales
+        SQL = "tmpDatosMEs.Horast Horasn,  tmpDatosMEs.horase extras" 'le ponemos alias
+    Else
+        'Como estaba
+        SQL = "tmpDatosMEs.HorasN,  tmpDatosMEs.extras"
+    End If
+     
+    SQL = "SELECT Trabajador," & SQL & ", horasc, Categorias.Importe1, Categorias.Importe2,Importe3, Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,saldoH,tmpDatosMEs.HorasPlus"
+    SQL = SQL & ",PlusHN , PlusHE , ImporteFijoNomina"
+    SQL = SQL & " FROM tmpDatosMEs INNER JOIN (Categorias INNER JOIN Trabajadores ON Categorias.IdCategoria = Trabajadores.idCategoria) ON tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
+    SQL = SQL & " WHERE codusu =" & vUsu.Codigo & " ORDER BY trabajador"
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+    
+  
+    
+        'Se pagan TODAS las horas
+        ' Las que vayan a bolsa, se pagan tambien
+        ' En saldoH tenemos las que iran a bolsa. Siempre que sean positivas
+        LlevaPlus2 = 0
+        ImportePlus = 0
+        ImporEstrcut = 0
+        HorasOf = 0
+        
+           
+            
+            
+         'NORMALES
+            
+         'If RS!horasn > 0 Then St op
+         'If RS!Trabajador = 199 Then S top
+         
+         Canti = RS!Importe1
+         BrutoN = Round(RS!Horasn * Canti, 2)
+         
+         'El plus en normales ya va a la columna de plus
+         If DBLet(RS!PlusHN, "N") > 0 Then
+             LlevaPlus2 = Round(RS!Horasn * RS!PlusHN, 2)
+         End If
+         
+         If Not IsNull(RS!ImporteFijoNomina) Then BrutoN = RS!ImporteFijoNomina
+                    
+         
+         'Estrcuturales
+         Canti = RS!Importe2
+         If DBLet(RS!PlusHN, "N") > 0 Then
+             LlevaPlus2 = LlevaPlus2 + Round(RS!HorasC * RS!PlusHN, 2)
+         End If
+         ImporEstrcut = (RS!HorasC * Canti)
+         
+         H = 0
+         If vEmpresa.AplicaAntiguedadHC Then
+             If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
+         End If
+         H = Round((ImporEstrcut * H) / 100, 2)
+        
+         HorasOf = ImporEstrcut + BrutoN - H
+         
+         
+         'EXTRAS
+         
+         
+         
+         Canti = RS!Importe3
+         If DBLet(RS!PlusHe, "N") > 0 Then
+             LlevaPlus2 = LlevaPlus2 + Round(RS!extras * RS!PlusHe, 2)
+         End If
+         ImporAux = (RS!extras * Canti)
+         H = 0
+         If vEmpresa.AplicaAntiguedadHC Then
+             If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
+         End If
+         H = Round((ImporAux * H) / 100, 2)
+         ImportePlus = ImportePlus + ImporAux
+         HorasOf = ImporAux + HorasOf - H + LlevaPlus2
+
+        
+        'Quitamos IRPF y SS
+        H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
+        H = Round((H / 100), 2)
+        HorasOf = HorasOf - H
+        H = (ImportePlus * RS!PorcIRPF) + (ImportePlus * RS!PorcSS)
+        H = Round((H / 100), 2)
+        HorasOf = HorasOf - H + ImporEstrcut + ImportePlus
+        
+        SQL = "UPDATE tmpDatosMes SET"
+        SQL = SQL & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
+        
+        SQL = SQL & ", Bruto = " & TransformaComasPuntos(CStr(BrutoN))
+        SQL = SQL & ", Extras = " & TransformaComasPuntos(CStr(ImportePlus))
+        SQL = SQL & ", LlevaPlus = " & TransformaComasPuntos(CStr(LlevaPlus2))
+        SQL = SQL & ", ImporEstruc = " & TransformaComasPuntos(CStr(ImporEstrcut))
+        
+
+            SQL = SQL & ", ImportNormales = " & TransformaComasPuntos(CStr(BrutoN))
+            SQL = SQL & ", ImportExtras = " & TransformaComasPuntos(CStr(ImportePlus))
+   
+        If Not IsNull(RS!ImporteFijoNomina) Then SQL = SQL & ",  ImporteFijo =1 "
+        
+        'Trabajador
+        SQL = SQL & " WHERE Trabajador = " & RS!Trabajador
+    
+        conn.Execute SQL
+    
+        'Sig
+        RS.MoveNext
+    Wend
+    RS.Close
+    
+    
+    
+    
+    
+    
+    Set RS = Nothing
     
     
 
 End Sub
+
+
+
+
+
+
 
 
 Private Function MiercolesSabadoNoCuentaTrabajado(T As String, F As Date) As Boolean
@@ -1787,9 +2190,23 @@ End Function
 
 Public Sub AjustaDatosBajaMesEntero()
 Dim SQL As String
-    SQL = "UPDATE tmpDatosMes SET "
-    SQL = SQL & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0, BolsaDespues=0, DiasPeriodo=0"
-    SQL = SQL & " WHERE (((tmpDatosMEs.DiasTrabajados)=0) AND ((tmpDatosMEs.HorasN)=0) AND ((tmpDatosMEs.HorasC)=0) AND ((tmpDatosMEs.bolsaAntes)=0)) ;"
+
+    If vEmpresa.CompensaHorasNominaMES Then
+
+        'Si no ha venido a trabajar, no comensa dias, ni horas ni nada de nada...
+        SQL = "DELETE FROM tmpDatosMes  WHERE codusu = " & vUsu.Codigo & " AND "
+        SQL = SQL & " tmpDatosMEs.diasTrabajados = 0 And tmpDatosMEs.HorasN = 0 And tmpDatosMEs.HorasC = 0 And tmpDatosMEs.Horase = 0 And tmpDatosMEs.diasperiodo = 0 And tmpDatosMEs.bolsaAntes = 0"
+        SQL = SQL & " and not trabajador in (select idtrabajador from  trabajadores where importefijonomina>0)"
+        
+
+    Else
+        'Lo que hacia
+        SQL = "UPDATE tmpDatosMes SET "
+        SQL = SQL & " MesHoras=0, Mesdias = 0, SaldoH=0, SaldoDias=0,HorasPeriodo =0, BolsaDespues=0, DiasPeriodo=0"
+        SQL = SQL & " WHERE (((tmpDatosMEs.DiasTrabajados)=0) AND ((tmpDatosMEs.HorasN)=0) AND ((tmpDatosMEs.HorasC)=0) AND ((tmpDatosMEs.bolsaAntes)=0)) ;"
+        
+        
+    End If
     conn.Execute SQL
 End Sub
 
@@ -3273,7 +3690,7 @@ Dim RtAnticipos As ADODB.Recordset
         End If
     
                 
-        lbl.Caption = RS!nomtrabajador
+        lbl.Caption = RS!NomTrabajador
         lbl.Refresh
     
     
@@ -3287,7 +3704,7 @@ Dim RtAnticipos As ADODB.Recordset
         cT.HOficiales = RS!meshoras
         cT.HBolsa = DBLet(RS!bolsaantes, "N")
         cT.HEReales = DBLet(RS!HorasC, "N")   'Para saber si dispongo o NO
-        cT.HNReales = DBLet(RS!horasn, "N") - cT.HEReales
+        cT.HNReales = DBLet(RS!Horasn, "N") - cT.HEReales
         If cT.HNReales < 0 Then
             MsgBox "Horas menor que cero para : " & cT.Codigo & "?"
         End If
@@ -3383,7 +3800,7 @@ Dim RtAnticipos As ADODB.Recordset
             cDep2.Add cT.DatosLineaDep
             cDep2.Add vbCrLf
         
-            ImprimeFichero cT.Codigo & "   -   " & RS!nomtrabajador
+            ImprimeFichero cT.Codigo & "   -   " & RS!NomTrabajador
         End If
         'sgi
         RS.MoveNext
@@ -3410,7 +3827,7 @@ Dim RtAnticipos As ADODB.Recordset
 
         
         'Los anticipos llevan toooodos los importes
-        HorasOf = (RS!horasn * RS!Importe1) + (RS!extras * RS!Importe2)
+        HorasOf = (RS!Horasn * RS!Importe1) + (RS!extras * RS!Importe2)
         'Quitamos IRPF y SS
         H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
         H = Round((H / 100), 2)

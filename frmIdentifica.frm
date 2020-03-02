@@ -59,11 +59,10 @@ Begin VB.Form frmIdentifica
       Width           =   2655
    End
    Begin VB.Label Label1 
-      Alignment       =   1  'Right Justify
       BackStyle       =   0  'Transparent
       Caption         =   "Usuario"
       BeginProperty Font 
-         Name            =   "Verdana"
+         Name            =   "Tahoma"
          Size            =   11.25
          Charset         =   0
          Weight          =   700
@@ -71,12 +70,12 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
-      Height          =   375
+      ForeColor       =   &H00FFFFFF&
+      Height          =   372
       Index           =   4
-      Left            =   5880
+      Left            =   4200
       TabIndex        =   6
-      Top             =   5520
+      Top             =   2340
       Width           =   3015
    End
    Begin VB.Label Label1 
@@ -133,7 +132,7 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00765341&
       Height          =   375
       Index           =   1
       Left            =   6240
@@ -153,7 +152,7 @@ Begin VB.Form frmIdentifica
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      ForeColor       =   &H00C0C0C0&
+      ForeColor       =   &H00765341&
       Height          =   375
       Index           =   0
       Left            =   6240
@@ -212,7 +211,7 @@ Private Sub Form_Load()
     'Text1(0).Text = "root"
     'Text1(1).Text = "aritel"
     
-    Label1(4).Caption = "Ver. " & App.Major & "." & App.Minor & "." & App.Revision
+    Label1(4).Caption = "Versión " & App.Major & "." & App.Minor & "." & App.Revision
     
     Text1(0).Text = ""
     Text1(1).Text = ""

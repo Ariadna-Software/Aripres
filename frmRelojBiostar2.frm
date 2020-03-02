@@ -291,8 +291,8 @@ Dim B As Boolean
     For i = 1 To ColTablas.Count
         Label11.Caption = "Leyendo " & ColTablas.Item(i) & "  (" & i & "/" & ColTablas.Count & ")"
         Label11.Refresh
-                                                                    'huell pin
-        cad = "SELECT * FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4097)"
+                                                                    'huell cara pin
+        cad = "SELECT * FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097)"
         cad = cad & " AND srvdt >" & Label11.Tag
         cad = cad & " order by srvdt"
         miRsAux.Open cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText

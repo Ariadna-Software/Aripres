@@ -94,7 +94,7 @@ Dim PID As Long
     If PID <> 0 Then
         'Esperar a que finalice
         WaitForTerm PID
-    End If
+     End If
 
 End Sub
 

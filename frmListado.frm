@@ -17,9 +17,9 @@ Begin VB.Form frmListado
    StartUpPosition =   2  'CenterScreen
    Begin VB.Frame FrameDatosHco 
       Height          =   4095
-      Left            =   7920
+      Left            =   5400
       TabIndex        =   348
-      Top             =   2040
+      Top             =   1440
       Visible         =   0   'False
       Width           =   6015
       Begin VB.OptionButton optOrdenTraba 
@@ -4525,8 +4525,8 @@ Public Opcion As Byte
     '23  Marcajes a HCO
     '24  Impresion marcajes hco
     
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
 
@@ -4919,11 +4919,14 @@ End Function
 
 
 Private Sub cmdGenNominaA3_Click()
+
     If txtFec(20).Text = "" Then Exit Sub
     If chkA3(0).Value = 0 And chkA3(1).Value = 0 Then
         MsgBox "Seleccione alguna opcion de exportacion", vbExclamation
         Exit Sub
     End If
+    
+    
     
     
     If vEmpresa.QueEmpresa = 4 Then
@@ -4934,7 +4937,14 @@ Private Sub cmdGenNominaA3_Click()
             MsgBox "Falta configurar. " & vbCrLf & cad, vbExclamation
             Exit Sub
         End If
-        
+    ElseIf vEmpresa.CompensaHorasNominaMES Then
+        cad = ""
+        If Dir(App.Path & "\A3_Importes.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace importes A3"
+        If Dir(App.Path & "\A3_Generico.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace inactivos A3"
+        If cad <> "" Then
+            MsgBox "Falta configurar. " & vbCrLf & cad, vbExclamation
+            Exit Sub
+        End If
     End If
     
     If vEmpresa.TieneCentrosA3 Then
@@ -4952,18 +4962,21 @@ Private Sub cmdGenNominaA3_Click()
             
             GeneraNominaA3 CDate(Me.txtFec(20).Text)
             
+            'If vEmpresa.QueEmpresa = 4 Then
             If vEmpresa.QueEmpresa = 4 Then
                 vSql = App.Path & "\A3_Importes.exe"
                 Lanza_EXE_Y_Espera vSql
             
             Else
-                
-            
-                If vEmpresa.QueEmpresa = 5 Then
-                    'COOPIC lo copiamos en c:\Ariadna\enlaces
-                    CopiarFicheroAEnlaces
+                If vEmpresa.CompensaHorasNominaMES Then
+                    vSql = App.Path & "\A3_Importes.exe"
+                    Lanza_EXE_Y_Espera vSql
+                Else
+                    If vEmpresa.QueEmpresa = 5 Then
+                        'COOPIC lo copiamos en c:\Ariadna\enlaces
+                        CopiarFicheroAEnlaces
+                    End If
                 End If
-                
             End If
         End If
         If Me.chkA3(1).Value Then
@@ -4973,16 +4986,22 @@ Private Sub cmdGenNominaA3_Click()
             
             'Lanzamos el programa de EXCEL
             If vEmpresa.QueEmpresa = 4 Then
-                
                 vSql = App.Path & "\A3_inactivos.exe"
                 Lanza_EXE_Y_Espera vSql
                 
             Else
-                If Dir(App.Path & "\gestoriaCoopic.exe", vbArchive) = "" Then
-                    MsgBox "No existe programa enlace EXCEL", vbCritical
-                Else
-                    vSql = App.Path & "\gestoriaCoopic.exe"
+                If vEmpresa.CompensaHorasNominaMES Then
+                    vSql = App.Path & "\A3_Generico.exe"
                     Lanza_EXE_Y_Espera vSql
+                    
+                Else
+                    'COOPIC
+                    If Dir(App.Path & "\gestoriaCoopic.exe", vbArchive) = "" Then
+                        MsgBox "No existe programa enlace EXCEL", vbCritical
+                    Else
+                        vSql = App.Path & "\gestoriaCoopic.exe"
+                        Lanza_EXE_Y_Espera vSql
+                    End If
                 End If
             End If
             Screen.MousePointer = vbDefault
@@ -5005,7 +5024,7 @@ Private Sub cmdHorasCombinadas_Click()
     If Not Comprobarfechas(10, 11) Then Exit Sub
     
     Screen.MousePointer = vbHourglass
-    If Opcion = 14 Then
+    If Opcion = 13 Then   'enero 2020   Ponia =14
         HacerListadoCombinado
     Else
         HacerListadoPorTipoReloj
@@ -5016,6 +5035,10 @@ End Sub
 
 Private Sub cmdHorasProcesadas_Click()
 Dim F1 As Date
+Dim Informe As String
+Dim i As Integer
+Dim info As Integer
+
     NumPa = 0
     CadPa = ""
     vSql = ""
@@ -5100,13 +5123,14 @@ Dim F1 As Date
     NumPa = NumPa + 2
     
     
-    
+    info = -1
     If Me.optHorasPorecesadas(0).Value Then
         cad = "AlzHorasProcesadasFecha"
         If Me.chkDesglosaDias(1).Value = 1 Then cad = cad & "Emp"
         cad = cad & ".rpt"
     
     ElseIf Me.optHorasPorecesadas(2).Value Then
+        info = 2
         cad = "resHorasTrabajaNominaAse.rpt"
     
     Else
@@ -5115,8 +5139,9 @@ Dim F1 As Date
             cad = "resHorasTrabajaNomina.rpt"
         Else
             If chkResumeTrabajador(1).Value = 1 Then
-                        cad = "resHorasTrabaja.rpt"
+                cad = "resHorasTrabaja.rpt"
             Else
+                info = 1
                 If vEmpresa.QueEmpresa = 4 Or vEmpresa.QueEmpresa = 5 Then
                     cad = "picHorasTrabajador.rpt"
                 Else
@@ -5125,6 +5150,12 @@ Dim F1 As Date
                 
             End If
         End If
+    End If
+    
+    If info > 0 Then
+        'Informe personalizable
+        Informe = DevuelveDesdeBD("informe", "scryst", "codigo", CStr(info))
+        If Informe <> "" Then cad = Informe
     End If
     
     With frmImprimir
@@ -5436,10 +5467,20 @@ Dim Aux As String
     dH = "DH= """ & dH & """|"
     vSql = Trim(vSql)
     If UCase(Mid(vSql, 1, 3)) = "AND" Then vSql = Mid(vSql, 4)
+    
+    
+    i = 3
+    If vEmpresa.CompensaHorasNominaMES Then i = 4
+    cad = DevuelveDesdeBD("informe", "scryst", "codigo", CStr(i))
+    If cad = "" Then
+        MsgBox "Avisie soporte tecnico, Falta configurar datos en scryst"
+        cad = "rNomina.rpt"
+    End If
+    
     With frmImprimir
             .FormulaSeleccion = vSql
             
-            .NombreRPT100 = "rNomina.rpt"
+            .NombreRPT100 = cad
             .Titulo100 = "Listado nominas"
             .OtrosParametros = dH
             .Opcion = 100
@@ -5503,6 +5544,7 @@ Dim N As Long
 Dim m As Long
 Dim Inci As String
 Dim anyo As Integer
+Dim Hora As String
 
     On Error GoTo EHacerPresReal
     HacerPresReal = False
@@ -5512,6 +5554,7 @@ Dim anyo As Integer
     
     'HACemos el select
     cad = "select entradamarcajes.* , nomtrabajador,nominci "
+    cad = cad & " ,hour(horareal) lahora,minute(horareal) minutos,second(horareal) segundos "
     cad = cad & " From entradamarcajes, trabajadores, incidencias"
     cad = cad & " Where entradamarcajes.idTrabajador = trabajadores.idTrabajador"
     cad = cad & " and entradamarcajes.idinci =incidencias.idinci"
@@ -5562,8 +5605,17 @@ Dim anyo As Integer
         End If
         
         i = i + 1
-        If i <= 8 Then cad = cad & ",'" & Format(miRsAux!HoraReal, "hh:mm:ss") & "'"
+        If i <= 8 Then
         
+            If miRsAux!LaHora > 23 Then
+                Hora = miRsAux!LaHora - 24
+            Else
+                Hora = miRsAux!LaHora
+            End If
+            Hora = Format(Val(Hora), "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+        
+            cad = cad & ",'" & Hora & "'"
+        End If
         
         miRsAux.MoveNext
     Wend
@@ -6261,7 +6313,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
 
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     txtFec(CInt(imgFec(0).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -6292,7 +6344,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim Obj As Object
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -6308,16 +6360,16 @@ Private Sub imgFec_Click(Index As Integer)
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
     
     
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(0).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If txtFec(Index).Text <> "" Then frmC.NovaData = txtFec(Index).Text
+    If txtFec(Index).Text <> "" Then frmc.NovaData = txtFec(Index).Text
     ' ********************************************
 
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco txtFec(CByte(imgFec(0).Tag)) '<===
     ' ********************************************
@@ -8529,7 +8581,8 @@ Dim PosiblesErrores As String
             
                 
             'Noramles-> Bruto
-            Importe = miRsAux!Bruto
+            
+            Importe = DBLet(miRsAux!Bruto, "N")
             'PLUS  Plus"
             H = miRsAux!plus
             'Neto -> estrcuturales ,ImporEstruc 'Imp est',

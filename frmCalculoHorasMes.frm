@@ -681,9 +681,20 @@ Dim vSeccion As Integer
     
     idCal = 1
     While Not RS.EOF
-        idCal = RS!idCal
-        'Horas = CalculaHorasHorario(IdCal, RS.Fields(0), Dias, FI, FF, False )
-        Horas = CalculaHorasHorarioALZ(idCal, Dias, FI, FF)
+    
+        If vEmpresa.CompensaHorasNominaMES Then
+            
+            idCal = RS!IdHorario
+            Horas = CalculaHorasHorarioALZ(idCal, Dias, FI, FF)
+            idCal = RS!idCal
+        Else
+            'Esto lo hacia antes
+            idCal = RS!idCal
+            Horas = CalculaHorasHorarioALZ(idCal, Dias, FI, FF)
+        End If
+        
+        
+        
         
         
         If Horas > 0 Then
@@ -813,8 +824,8 @@ Dim vSeccion As Integer
                     'Todo vacio
                     'Eliminamos
                 
-                    SQL = "DELETE FROM sassda where idtrabajador =" & Me.ListView1.ListItems(idCal).Text
-                    
+                    SQL = "DELETE FROM tmpDatosMEs where trabajador =" & Me.ListView1.ListItems(idCal).Text
+                    conn.Execute SQL
                     ListView1.ListItems.Remove idCal
                     
                 End If
@@ -849,7 +860,7 @@ Dim FF As Date
     End If
         
     If ListView1.ListItems.Count > 0 Then
-        SQL = "Ya ha generado datos. ¿ Seguro que desea volverlos a generar ?"
+        SQL = "Ya ha calculado  datos para el mes. ¿ Seguro que desea volverlos a calcular ?"
         If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
     End If
         
@@ -1499,14 +1510,18 @@ Private Sub PonLinea(ByRef i As ListItem, ByRef RS As ADODB.Recordset)
 Dim J As Integer
 Dim Cantidad1 As Currency
 Dim Cantidad2 As Currency
-
-        
+Dim AuxIcono As String
+            
+            
+        AuxIcono = RS!nomtrabajador
+            
         If vEmpresa.NominaAutomatica Then
             'Normal. Pica y cata
             If RS!diasTrabajados = 0 Then
                 If RS!MesDias = 0 Then
                     'ESTA DE BAJA
                     J = 3
+                    AuxIcono = "BAJA"
                 Else
                     J = 3 '10
                 End If
@@ -1514,6 +1529,7 @@ Dim Cantidad2 As Currency
                 If RS!ControlNomina = 1 Then
                     'Normal
                     J = 1
+                    
                 Else
                     If RS!ControlNomina = 3 Then
                         'Jorandas semanas
@@ -1523,7 +1539,10 @@ Dim Cantidad2 As Currency
                         J = 6
                     End If
                 End If
-                If RS!saldodias <> 0 Then J = J + 1
+                If RS!saldodias <> 0 Then
+                    J = J + 1
+                    
+                End If
             End If
         
         Else
@@ -1547,14 +1566,15 @@ Dim Cantidad2 As Currency
         i.SmallIcon = J
         i.Text = RS!Trabajador
         i.SubItems(1) = RS!nomtrabajador
-        i.ToolTipText = RS!nomtrabajador
+        
+        i.ToolTipText = AuxIcono
         
         'Horas oficiles
         i.SubItems(2) = RS!MesDias & "/" & Format(RS!meshoras, "0.00")
         
         'Trabajados
         i.SubItems(3) = RS!diasTrabajados
-        i.SubItems(4) = Format(RS!horasn, "0.00")
+        i.SubItems(4) = Format(RS!Horasn, "0.00")
         i.SubItems(5) = Format(RS!HorasC, "0.00")
         
         
@@ -2013,7 +2033,7 @@ On Error GoTo EGenerarNominas
         Horas = RS!saldoh
         If Horas < 0 Then Horas = 0
         '                                                                         Plus. de momento cero. Eso es si quitarn bolsa, pero habria que verlo
-        cad = cad & TransformaComasPuntos(RS!horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
+        cad = cad & TransformaComasPuntos(RS!Horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
         
 
 

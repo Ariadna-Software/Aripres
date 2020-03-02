@@ -1266,3 +1266,29 @@ Dim Ver As Long, WinVer As Long
     GetWinVersion = Format((WinVer Mod 256) + ((WinVer \ 256) / 100), "Fixed")
 End Function
 
+
+
+
+
+Public Function Round2(Number As Variant, Optional NumDigitsAfterDecimals As Long) As Variant
+Dim Ent As Integer
+Dim cad As String
+  
+  ' Comprobaciones
+  If Not IsNumeric(Number) Then
+    Err.Raise 13, "Round2", "Error de tipo. Ha de ser un número."
+    Exit Function
+  End If
+  If NumDigitsAfterDecimals < 0 Then
+    Err.Raise 0, "Round2", "NumDigitsAfterDecimals no puede ser negativo."
+    Exit Function
+  End If
+  
+  ' Redondeo.
+  cad = "0"
+  If NumDigitsAfterDecimals <> 0 Then cad = cad & "." & String(NumDigitsAfterDecimals, "0")
+  Round2 = Format(Number, cad)
+  
+End Function
+
+

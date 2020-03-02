@@ -63,8 +63,11 @@ Private mvarDirProcesados As String
 Private mvarNomFich As String
 
 
-'Octubre 2013
-Private mvarQueEmpresa As Byte  '0. TEinsa     1.- Libre    2.- Alzira   4.- "Catadau "
+'
+'Solo tienen GET  '0. TEinsa     1.- Libre    2.- Alzira   4.- "Catadau "    5.- Coopic
+                  '6.- BELGIDA
+                
+Private mvarQueEmpresa As Byte
 Private mvarDirHuellas As String
 
 
@@ -105,19 +108,27 @@ Private mvarTieneCentrosA3 As Boolean
 
 
 
+Private mvarCompensaHorasNominaMES As Boolean
+Private mvarCompensaMES_HorasDia As Integer
+Private mvarHoraSabadoExtras As String
+
+
 ' Para poder añadir otro reloj mas a  la lectura. De momento un BIostar2 (y solo COOPIC)
 '       0: NO tiene     1: Tiene
 Private mvarReloj2 As Byte 'copia local
 Private mvarRelojConfig2 As String 'copia local
 
 
+Private mvarNominaConEstructurales As Boolean  '
+
+
+
+
+
 Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
 Private RS As ADODB.Recordset 'Para la base de datos
 Private RC As Byte
-
-
-
 '------------------------------------------------
 'Propiedades del modulo Cempresas
 '------------------------------------------------
@@ -829,6 +840,13 @@ Public Property Get TieneCentrosA3() As Boolean
      TieneCentrosA3 = mvarTieneCentrosA3
 End Property
 
+
+
+
+
+
+
+
 '0 NO     1 Tiene un biostar2
 Public Property Get Reloj2() As Integer
      Reloj2 = mvarReloj2
@@ -845,6 +863,28 @@ End Property
 Public Property Get AcabaJornadaDiaSiguiente() As Boolean
      AcabaJornadaDiaSiguiente = mvarAcabaJornadaDiaSiguiente
 End Property
+
+
+
+
+'La copmpensacion es al final de mes. Se suman HN, HEstr,  y frente a las que tiene que trabajar , si necesita coje, si no
+Public Property Get CompensaHorasNominaMES() As Boolean
+     CompensaHorasNominaMES = mvarCompensaHorasNominaMES
+End Property
+
+
+Public Property Get CompensaMES_HorasDia() As Integer
+     CompensaMES_HorasDia = mvarCompensaMES_HorasDia
+End Property
+
+Public Property Get HoraSabadoExtras() As String
+     HoraSabadoExtras = mvarHoraSabadoExtras
+End Property
+
+Public Property Get NominaConEstructurales() As Boolean
+     NominaConEstructurales = mvarNominaConEstructurales
+End Property
+
 
 
 
@@ -982,6 +1022,16 @@ Dim i As Integer
             
             
             
+            'Sept 19
+            mvarCompensaHorasNominaMES = DBLet(RS!CompensaHorasNominaMES, "N") = 1
+            mvarCompensaMES_HorasDia = DBLet(RS!CompensaMES_HorasDia, "N")
+              
+            mvarHoraSabadoExtras = DBLet(RS!HoraSabadoExtras, "T")
+            'OCt 1
+            
+            mvarNominaConEstructurales = False
+            mvarNominaConEstructurales = DBLet(RS!NominaConEstructurales, "N") = 1
+            
             
             Leer = 0
     End If
@@ -1019,6 +1069,10 @@ eF:
     Err.Clear
     conn.Errors.Clear
 End Sub
+
+
+
+
 
 
 '****   MODIFICAR  ***

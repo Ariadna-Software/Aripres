@@ -99,7 +99,7 @@ Dim FinProceso As Date
 Dim FechaInicioSemana As Date
 Dim Previsualizacion As Boolean
 Dim ProcesoDeNominasAlzira As Boolean  'Hay secciones que son conteos de horas
-
+Dim PrimeraVez As Boolean
 
 
 Private Sub cmdAceptar_Click()
@@ -123,10 +123,15 @@ Private Sub cmdAceptar_Click()
             cmdImprimir.Visible = True
         
         Else
+            
             HacerGeneracionPeriodo
             Me.cmdAceptar.Enabled = False
         End If
     Else
+        If Me.ListView1.ListItems.Count = 0 Then
+            MsgBox "Ningun dato para generar", vbExclamation
+            Exit Sub
+        End If
         HacerGeneracionPeriodo
 
         Me.cmdAceptar.Enabled = False
@@ -164,19 +169,26 @@ Private Sub cmdImprimir_Click()
     
 End Sub
 
+Private Sub Form_Activate()
+    If PrimeraVez Then
+        PrimeraVez = False
+        
+        CargaDatos  'Horas trabajadas para la coperativa
+        
+        Previsualizacion = True
+        
+        If vEmpresa.CompensaHorasNominaMES Then cmdAceptar_Click
+    End If
+End Sub
+
 Private Sub Form_Load()
 
     
     
     Me.Icon = frmMain.Icon
     
-    '
     
-    
-    CargaDatos  'Horas trabajadas para la coperativa
-    
-    Previsualizacion = True
-    
+    PrimeraVez = True
 End Sub
 
 
@@ -206,7 +218,7 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     'Ver si la seccion tiene proceso de nominas compensables estructurlaes...
     cad = DevuelveDesdeBD("Nominas", "secciones", "idseccion", cad)
     ProcesoDeNominasAlzira = cad = "1"
-    
+    If vEmpresa.CompensaHorasNominaMES Then ProcesoDeNominasAlzira = False
     
     
     
@@ -558,6 +570,8 @@ Dim HorasSem As Integer
         
         'Ajuste hora
         HorasSem = Dias * 8
+        If vEmpresa.CompensaHorasNominaMES Then HorasSem = 10000   'No hay limite de horas semanales
+        
         Ajustado = False
         If Sumas(0) > HorasSem Then
             'No
@@ -854,7 +868,7 @@ Dim HaSidoAjustada As Boolean
 End Sub
 
 Private Sub AjustarHoras()
-Dim difer As Currency
+Dim Difer As Currency
 Dim PrimerDiaTrabajador As Integer
 Dim PrimerDiaParaAjustar As Integer
 Dim i As Integer
@@ -925,15 +939,15 @@ Dim HemosAjustado As Boolean
                     Horas = ImporteFormateado(Trim(ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras)))
                     If Horas + Llevo > HorasSemama Then
                         'Ya las pasa. Son todas ESTRUCTURALES excepto si son del sabado
-                        difer = (Horas + Llevo) - HorasSemama
+                        Difer = (Horas + Llevo) - HorasSemama
                         
                         'HT tiene una DIFER menos
-                        ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras) = Format(Horas - difer, "0.00")
+                        ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras) = Format(Horas - Difer, "0.00")
                         
                         
                         'HEstructurales tiene una SI NO ES SABADO
                         Horas = ImporteFormateado(Trim(ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras + 1)))
-                        Horas = Horas + difer
+                        Horas = Horas + Difer
                         ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras + 1) = Format(Horas, "0.00")
                         ListView1.ListItems(i).ListSubItems(ColumnaDondeEmpiezanHoras + 1).ForeColor = vbBlue
                         ListView1.ListItems(i).ListSubItems(ColumnaDondeEmpiezanHoras - 1).ForeColor = vbBlue
@@ -962,8 +976,12 @@ Dim HemosAjustado As Boolean
         Dim FechaAux As Date
         
         cad = DevuelveDesdeBD("min(idtrabajador)", "tmphorastipoalzira", "codusu", CStr(vUsu.Codigo))
-        cad = DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", cad)
-        
+        If cad = "" Then
+            cad = "1"
+        Else
+            cad = DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", cad)
+            If cad = "" Then cad = "1"
+        End If
         J = Weekday(FinProceso, vbMonday)
         If J > 5 Then
             J = J - 5
@@ -1054,7 +1072,7 @@ Private Sub HacerAjustesSobreBD()
 Dim Aux As String
 Dim C As String
 Dim Byt As Byte
-Dim difer As Currency
+Dim Difer As Currency
 Dim IdTr As Long
 Dim RBolsa As ADODB.Recordset
 Dim HAnterior As Currency
@@ -1093,11 +1111,11 @@ Dim HAnterior As Currency
                 If Not RBolsa.EOF Then HAnterior = DBLet(RBolsa.Fields(CInt(Byt)), "N")
                 
                 
-                difer = ImporteFormateado(ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + Byt))
+                Difer = ImporteFormateado(ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + Byt))
                
                 '        IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa"
-                difer = difer + HAnterior
-                If difer <> 0 Then Aux = Aux & ", (" & IdTr & ",0," & Byt & "," & DBSet(difer, "N") & ")"
+                Difer = Difer + HAnterior
+                If Difer <> 0 Then Aux = Aux & ", (" & IdTr & ",0," & Byt & "," & DBSet(Difer, "N") & ")"
                 
             Next Byt
             If Aux <> "" Then
