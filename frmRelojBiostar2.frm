@@ -169,6 +169,17 @@ Begin VB.Form frmRelojBiostar2
       Top             =   6120
       Width           =   1170
    End
+   Begin VB.CommandButton cmdCambiar 
+      CausesValidation=   0   'False
+      Height          =   375
+      Left            =   4200
+      Picture         =   "frmRelojBiostar2.frx":0000
+      Style           =   1  'Graphical
+      TabIndex        =   10
+      ToolTipText     =   "Cambiar ultima fecha leida"
+      Top             =   1200
+      Width           =   375
+   End
    Begin VB.Label Label11 
       BackStyle       =   0  'Transparent
       BeginProperty Font 
@@ -208,7 +219,7 @@ Begin VB.Form frmRelojBiostar2
    Begin VB.Image Image1 
       Height          =   7500
       Left            =   -1560
-      Picture         =   "frmRelojBiostar2.frx":0000
+      Picture         =   "frmRelojBiostar2.frx":0A02
       Top             =   -360
       Width           =   7500
    End
@@ -224,6 +235,46 @@ Option Explicit
 Dim Cn As Connection
 Dim cad As String
 
+
+Private Sub cmdCambiar_Click()
+Dim C1 As String
+
+    cad = ""
+    
+    C1 = InputBox("Ultima fecha leida", "Biostar", Format(Text2.Text, "dd/mm/yyyy"))
+    If C1 = "" Then C1 = "N"
+    If Not IsDate(C1) Then Exit Sub
+    cad = Format(C1, "dd/mm/yyyy")
+    
+    C1 = InputBox("Ultima HORA leida", "Biostar", Format(Text2.Text, "hh:mm:ss"))
+    If C1 = "" Then C1 = "N"
+    If Not IsDate(C1) Then Exit Sub
+    If InStr(1, C1, ":") = 0 Then Exit Sub
+    
+    
+    cad = cad & " " & C1
+    If Not IsDate(cad) Then
+        MsgBox "Fecha incorrecta " & cad, vbExclamation
+        Exit Sub
+    End If
+    
+    C1 = DevuelveDesdeBD("max(fecha)", "marcajes", "1", "1")
+    If C1 = "" Then C1 = "01/01/2001"
+    
+    If CDate(C1) >= CDate(Format(cad, "dd/mm/yyyy")) Then
+        MsgBox "Fecha procesada", vbExclamation
+        Exit Sub
+    End If
+    
+    C1 = "Desea guardar como ultima fecha leida : " & cad
+    If MsgBox(C1, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+    
+    C1 = "UPDATE biostar2 SET ultimaFechaLeida = " & DBSet(cad, "FH")
+    If EjecutaSQL(C1) Then
+        Text2.Text = cad
+    End If
+    
+End Sub
 
 Private Sub cmdLeer_Click()
     Screen.MousePointer = vbHourglass
@@ -252,6 +303,7 @@ Dim i As Integer
 Dim Inicial  As Long
 Dim MaxFecha As Date
 Dim B As Boolean
+Dim NF As Integer
 
     Label11.Caption = "Buscando tablas"
     Label11.Refresh
@@ -292,9 +344,10 @@ Dim B As Boolean
         Label11.Caption = "Leyendo " & ColTablas.Item(i) & "  (" & i & "/" & ColTablas.Count & ")"
         Label11.Refresh
                                                                     'huell cara pin
-        cad = "SELECT * FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097)"
-        cad = cad & " AND srvdt >" & Label11.Tag
-        cad = cad & " order by srvdt"
+        cad = "SELECT * ,from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') horaRealUnix "
+        cad = cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097)"
+        cad = cad & " AND from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') >" & Label11.Tag
+        cad = cad & " order by devdt"
         miRsAux.Open cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText
         cad = ""
         If Not miRsAux.EOF Then
@@ -303,13 +356,15 @@ Dim B As Boolean
             While Not miRsAux.EOF
                 NumRegElim = NumRegElim + 1
                 '                       tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias)
-                cad = cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!srvdt, "F") & ",'" & Format(miRsAux!srvdt, "hh:nn:ss")
+                'cad = cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!srvdt, "F") & ",'" & Format(miRsAux!srvdt, "hh:nn:ss")
+                cad = cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!horaRealUnix, "F") & ",'" & Format(miRsAux!horaRealUnix, "hh:nn:ss")
+                'horaRealUnix
                 cad = cad & "'," & vUsu.Codigo & ",0)"
                 
                 miRsAux.MoveNext
             Wend
             miRsAux.MovePrevious
-            If miRsAux!srvdt > MaxFecha Then MaxFecha = miRsAux!srvdt
+            If miRsAux!horaRealUnix > MaxFecha Then MaxFecha = miRsAux!horaRealUnix
         End If
         miRsAux.Close
         
@@ -386,10 +441,74 @@ Dim B As Boolean
         conn.Execute cad
         
         Text2.Text = Format(MaxFecha, "dd/mm/yyyy hh:nn:ss")
+        
+        
+        
+        
+         If vEmpresa.QueEmpresa = vbBelgida Then
+            '1ª y BELGIç
+            Label11.Caption = "Generando fichero txt"
+            Label11.Refresh
+            
+            If AbrirFicheroExportar(NF) Then
+            
+                cad = "Select * from entradafichajes WHERE revisado =0 order by fecha,hora"
+                Set miRsAux = New ADODB.Recordset
+                miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                
+                If Not miRsAux.EOF Then
+                   
+                    
+                    While Not miRsAux.EOF
+                            cad = Format(miRsAux!idTrabajador, "00000")  'trab
+                            cad = cad & "," & Format(miRsAux!Fecha, "mm")  'mes
+                            cad = cad & "," & Format(miRsAux!Fecha, "dd")  'dia
+                            cad = cad & "," & Format(miRsAux!Hora, "hh")   'hora
+                            cad = cad & "," & Format(miRsAux!Hora, "nn")   'min
+                            ''lo mando aunque no es importante
+                            'Aux = Aux & "," & Format(rs!Fecha, "yyyy")   'año
+                            'Aux = Aux & ",0000,"
+                            ''mandare la secuencia
+                            'Aux = Aux & Format(rs!Secuencia, "00000")
+                            cad = cad & ",0000,0000,00000"
+                            
+                            
+                            Print #NF, cad
+                            
+                            
+                            miRsAux.MoveNext
+                    Wend
+                    
+                    cad = "UPDATE  entradafichajes SET revisado =1 where revisado=0"
+                    conn.Execute cad
+                    
+                    Label11.Caption = "Cerrando fichero"
+                    Label11.Refresh
+                    espera 1
+                    
+                    
+                End If 'de belgida
+                miRsAux.Close
+                Set miRsAux = Nothing
+                Close #NF
+            End If
+   
+        End If
+        
+        
+        
+        
+        
+        
+        
+        
         LeerDatos = True
         
-        
         Label11.Caption = "Lectura OK"
+        
+        
+        
+        
         
         
         cmdLeer.Enabled = False
@@ -460,7 +579,10 @@ Private Sub Form_Activate()
         Screen.MousePointer = vbHourglass
         If AbrirConexion Then
             'Vamos a veer cual fue la ultima fecha
-            If UltimaLecturaBD Then cmdLeer.Enabled = True
+            If UltimaLecturaBD Then
+                cmdLeer.Enabled = True
+                Me.cmdCambiar.Enabled = True
+            End If
         End If
         Screen.MousePointer = vbDefault
     End If
@@ -518,11 +640,14 @@ Private Function UltimaLecturaBD() As Boolean
     cad = "Select ultimaFechaLeida FROM biostar2"
     Set miRsAux = New ADODB.Recordset
     miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If miRsAux.EOF Then
-        Me.Text2.Text = "01/01/2000 00:00:00"
-    Else
-        Me.Text2.Text = Format(miRsAux.Fields(0), "dd/mm/yyyy hh:mm:ss")
+    cad = ""
+    If Not miRsAux.EOF Then
+        If Not IsNull(miRsAux.Fields(0)) Then cad = Format(miRsAux.Fields(0), "dd/mm/yyyy hh:mm:ss")
     End If
+    If cad = "" Then cad = "01/01/2020 00:00:00"
+    
+    Me.Text2.Text = cad
+    
     miRsAux.Close
     UltimaLecturaBD = True
 eUltimaLecturaBD:
@@ -535,3 +660,21 @@ End Function
 
 
 
+Private Function AbrirFicheroExportar(ByRef NF As Integer) As Boolean
+Dim Fichero As String
+    On Error GoTo eAbrirFicheroExportar
+    
+    AbrirFicheroExportar = False
+    
+    Fichero = vEmpresa.DirMarcajes & "\HU" & Format(Now, "yyyyMMddhhnnss") & "T" & Format(99, "00") & ".txt"
+    NF = FreeFile
+    Open Fichero For Output As NF
+    
+    AbrirFicheroExportar = True
+    
+    Exit Function
+eAbrirFicheroExportar:
+        MuestraError Err.Number, , Err.Description
+        
+        
+End Function

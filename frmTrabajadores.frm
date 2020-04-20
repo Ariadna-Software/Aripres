@@ -176,17 +176,17 @@ Begin VB.Form frmTrabajadores
       TabCaption(1)   =   "Horario"
       TabPicture(1)   =   "frmTrabajadores.frx":0028
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Text2"
-      Tab(1).Control(1)=   "Text1(26)"
-      Tab(1).Control(2)=   "ListView1"
-      Tab(1).Control(3)=   "ListView2"
-      Tab(1).Control(4)=   "imgVacas"
+      Tab(1).Control(0)=   "Label2(0)"
+      Tab(1).Control(1)=   "Label2(1)"
+      Tab(1).Control(2)=   "imgZoom(0)"
+      Tab(1).Control(3)=   "ImgModifHora"
+      Tab(1).Control(4)=   "Label2(2)"
       Tab(1).Control(5)=   "imgCalendariP(0)"
-      Tab(1).Control(6)=   "Label2(2)"
-      Tab(1).Control(7)=   "ImgModifHora"
-      Tab(1).Control(8)=   "imgZoom(0)"
-      Tab(1).Control(9)=   "Label2(1)"
-      Tab(1).Control(10)=   "Label2(0)"
+      Tab(1).Control(6)=   "imgVacas"
+      Tab(1).Control(7)=   "ListView2"
+      Tab(1).Control(8)=   "ListView1"
+      Tab(1).Control(9)=   "Text1(26)"
+      Tab(1).Control(10)=   "Text2"
       Tab(1).ControlCount=   11
       TabCaption(2)   =   "Laboral"
       TabPicture(2)   =   "frmTrabajadores.frx":0044
@@ -3194,6 +3194,9 @@ Private Sub BotonAnyadir()
     End If
         
     If vEmpresa.TieneCentrosA3 Then Combo1(4).ListIndex = 0
+    If Combo1(2).ListCount > 1 Then Combo1(2).ListIndex = Combo1(2).ListCount - 2
+        
+    
     
     ' ******* Canviar el nom de la taula, el nom de la clau primaria, i el
     ' nom del camp que te la clau primaria si no es Text1(0) *************

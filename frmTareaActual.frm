@@ -1,4 +1,5 @@
 VERSION 5.00
+Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmTareaActual 
    Caption         =   "Seleccionar posteriores"
@@ -11,17 +12,35 @@ Begin VB.Form frmTareaActual
    ScaleHeight     =   7590
    ScaleWidth      =   15870
    WindowState     =   2  'Maximized
+   Begin MSComDlg.CommonDialog cd1 
+      Left            =   1440
+      Top             =   4920
+      _ExtentX        =   847
+      _ExtentY        =   847
+      _Version        =   393216
+   End
    Begin VB.Frame Frame1 
       Height          =   915
       Left            =   240
       TabIndex        =   13
       Top             =   0
-      Width           =   14835
+      Width           =   15435
+      Begin VB.CommandButton cmdExcel 
+         Enabled         =   0   'False
+         Height          =   375
+         Left            =   9360
+         Picture         =   "frmTareaActual.frx":6852
+         Style           =   1  'Graphical
+         TabIndex        =   35
+         ToolTipText     =   "Importar fichajes dese EXCEL"
+         Top             =   360
+         Width           =   495
+      End
       Begin VB.CommandButton cmdSelecc 
          Height          =   375
          Index           =   0
-         Left            =   12000
-         Picture         =   "frmTareaActual.frx":6852
+         Left            =   12720
+         Picture         =   "frmTareaActual.frx":6DDC
          Style           =   1  'Graphical
          TabIndex        =   34
          ToolTipText     =   "Seleccionar anteriores al filtro"
@@ -31,8 +50,8 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdSelecc 
          Height          =   375
          Index           =   1
-         Left            =   12480
-         Picture         =   "frmTareaActual.frx":6DDC
+         Left            =   13200
+         Picture         =   "frmTareaActual.frx":7366
          Style           =   1  'Graphical
          TabIndex        =   33
          ToolTipText     =   "Seleccionar posteriores al filtro"
@@ -42,7 +61,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CheckBox Check1 
          Caption         =   "Multi-seleccion"
          Height          =   315
-         Left            =   9360
+         Left            =   10080
          TabIndex        =   32
          Top             =   390
          Value           =   1  'Checked
@@ -52,7 +71,7 @@ Begin VB.Form frmTareaActual
          ForeColor       =   &H00808080&
          Height          =   285
          Index           =   2
-         Left            =   10800
+         Left            =   11520
          TabIndex        =   31
          Text            =   "Filtro hora"
          Top             =   360
@@ -95,8 +114,8 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton Command3 
          Height          =   375
          Index           =   1
-         Left            =   14160
-         Picture         =   "frmTareaActual.frx":7366
+         Left            =   14880
+         Picture         =   "frmTareaActual.frx":78F0
          Style           =   1  'Graphical
          TabIndex        =   25
          ToolTipText     =   "Modificar marcaje MASIVO"
@@ -106,8 +125,8 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton Command3 
          Height          =   375
          Index           =   0
-         Left            =   13560
-         Picture         =   "frmTareaActual.frx":78F0
+         Left            =   14280
+         Picture         =   "frmTareaActual.frx":7E7A
          Style           =   1  'Graphical
          TabIndex        =   24
          ToolTipText     =   "Agregar marcaje MASIVO"
@@ -117,7 +136,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdImpimir 
          Height          =   375
          Left            =   6240
-         Picture         =   "frmTareaActual.frx":7E7A
+         Picture         =   "frmTareaActual.frx":8404
          Style           =   1  'Graphical
          TabIndex        =   23
          Top             =   360
@@ -127,7 +146,7 @@ Begin VB.Form frmTareaActual
          Height          =   435
          Index           =   0
          Left            =   7560
-         Picture         =   "frmTareaActual.frx":887C
+         Picture         =   "frmTareaActual.frx":8E06
          Style           =   1  'Graphical
          TabIndex        =   22
          ToolTipText     =   "Añadir"
@@ -157,7 +176,7 @@ Begin VB.Form frmTareaActual
          Height          =   435
          Index           =   1
          Left            =   8040
-         Picture         =   "frmTareaActual.frx":897E
+         Picture         =   "frmTareaActual.frx":8F08
          Style           =   1  'Graphical
          TabIndex        =   18
          ToolTipText     =   "Modificar"
@@ -168,7 +187,7 @@ Begin VB.Form frmTareaActual
          Height          =   435
          Index           =   2
          Left            =   8520
-         Picture         =   "frmTareaActual.frx":8BC7
+         Picture         =   "frmTareaActual.frx":9151
          Style           =   1  'Graphical
          TabIndex        =   17
          ToolTipText     =   "Borrar"
@@ -193,9 +212,15 @@ Begin VB.Form frmTareaActual
          Top             =   480
          Width           =   1455
       End
-      Begin VB.Line Line1 
+      Begin VB.Line Line2 
          X1              =   9240
          X2              =   9240
+         Y1              =   360
+         Y2              =   720
+      End
+      Begin VB.Line Line1 
+         X1              =   9960
+         X2              =   9960
          Y1              =   360
          Y2              =   720
       End
@@ -203,7 +228,7 @@ Begin VB.Form frmTareaActual
          Height          =   240
          Index           =   1
          Left            =   600
-         Picture         =   "frmTareaActual.frx":8D3E
+         Picture         =   "frmTareaActual.frx":92C8
          ToolTipText     =   "Buscar fecha"
          Top             =   240
          Width           =   240
@@ -350,23 +375,23 @@ Begin VB.Form frmTareaActual
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   5
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmTareaActual.frx":8DC9
+            Picture         =   "frmTareaActual.frx":9353
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmTareaActual.frx":90E3
+            Picture         =   "frmTareaActual.frx":966D
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmTareaActual.frx":93FD
+            Picture         =   "frmTareaActual.frx":9987
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmTareaActual.frx":9E0F
+            Picture         =   "frmTareaActual.frx":A399
             Key             =   ""
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "frmTareaActual.frx":FA31
+            Picture         =   "frmTareaActual.frx":FFBB
             Key             =   ""
          EndProperty
       EndProperty
@@ -441,7 +466,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdImpTarea 
          Height          =   375
          Left            =   3720
-         Picture         =   "frmTareaActual.frx":10443
+         Picture         =   "frmTareaActual.frx":109CD
          Style           =   1  'Graphical
          TabIndex        =   29
          Top             =   300
@@ -491,7 +516,7 @@ Begin VB.Form frmTareaActual
          Height          =   240
          Index           =   0
          Left            =   720
-         Picture         =   "frmTareaActual.frx":124B5
+         Picture         =   "frmTareaActual.frx":12A3F
          ToolTipText     =   "Buscar fecha"
          Top             =   120
          Width           =   240
@@ -583,8 +608,8 @@ Public Opcion As Byte
         '
 Public QueFecha As Date
         
-Private WithEvents frmC As frmCal
-Attribute frmC.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 Private WithEvents frmHoras As frmHorasMarcajes
 Attribute frmHoras.VB_VarHelpID = -1
 Private WithEvents frmB As frmBuscaGrid
@@ -612,6 +637,27 @@ Dim i As Integer
             Next i
             Set ListView2.SelectedItem = Nothing
         End If
+End Sub
+
+Private Sub cmdExcel_Click()
+     'cd1.InitDir = App.Path
+    cd1.Filter = "xls|*.xls|xlsx|*.xlsx"
+    cd1.FilterIndex = 2
+    cd1.FileName = ""
+    cd1.ShowOpen
+    If cd1.FileName <> "" Then
+        
+        cad = """" & App.Path & "\AripresImpor.exe" & """ ""/" & cd1.FileName & """"
+        
+        Me.Caption = "Leyendo EXCEL"
+        DoEvents
+    
+        Lanza_EXE_Y_Espera cad
+        
+        Me.Caption = "Marcaje actual"
+        DoEvents
+        Command2_Click 1
+    End If
 End Sub
 
 Private Sub cmdfecha_Click(Index As Integer)
@@ -889,7 +935,7 @@ Private Sub Command3_Click(Index As Integer)
     'Añadiremos en tmpCambioHor
     cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
     conn.Execute cad
-    If Index <> 0 Then
+    
         espera 0.2
         
         cad = "INSERT INTO tmpCambioHor values ("
@@ -899,11 +945,18 @@ Private Sub Command3_Click(Index As Integer)
                 Contador = Contador + 1
             End If
         Next Tamanyo
-    End If
-            
-               
-         'Segun index
+        
+        If Index = 0 Then
+            'Si estamos insertando, y solo hay un seleccionado. NO lo mandamos
+            If Contador = 1 Then
+                cad = "DELETE from tmpCambioHor where codusu = " & vUsu.Codigo
+                conn.Execute cad
+                espera 0.2
+            End If
+        End If
+        'Segun index
         Tamanyo = 0
+        CadenaDesdeOtroForm = ""
         If Text1(2).Visible Then
             If Text1(2).Text <> "Filtro hora" Then Tamanyo = 1
         End If
@@ -966,6 +1019,13 @@ Private Sub Form_Load()
     miRsAux.Close
     Set miRsAux = Nothing
     
+    
+    
+    If Opcion = 1 Then
+        cad = ""
+        If Dir(App.Path & "\AripresImpor.exe", vbArchive) <> "" Then cad = "N"
+        Me.cmdExcel.Enabled = cad <> ""
+    End If
     FrameTapa.Visible = vUsu.Nivel > 2
 End Sub
 
@@ -1037,7 +1097,7 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
     Me.Tag = RecuperaValor(CadenaDevuelta, 2)
 End Sub
 
-Private Sub frmC_Selec(vFecha As Date)
+Private Sub frmc_Selec(vFecha As Date)
     Text1(CInt(imgFec(1).Tag)).Text = Format(vFecha, "dd/mm/yyyy")
 End Sub
 
@@ -1053,7 +1113,7 @@ Private Sub imgFec_Click(Index As Integer)
     Dim menu As Long
     Dim Obj As Object
 
-    Set frmC = New frmCal
+    Set frmc = New frmCal
     esq = imgFec(Index).Left
     dalt = imgFec(Index).Top
     
@@ -1069,16 +1129,16 @@ Private Sub imgFec_Click(Index As Integer)
     menu = Me.Height - Me.ScaleHeight 'ací tinc el heigth del menú i de la toolbar
     
     
-    frmC.Left = esq + imgFec(Index).Parent.Left + 30
-    frmC.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
+    frmc.Left = esq + imgFec(Index).Parent.Left + 30
+    frmc.Top = dalt + imgFec(Index).Parent.Top + imgFec(Index).Height + menu - 40
 
     imgFec(1).Tag = Index '<===
     ' *** repasar si el camp es txtAux o Text1 ***
-    If Text1(Index).Text <> "" Then frmC.NovaData = Text1(Index).Text
+    If Text1(Index).Text <> "" Then frmc.NovaData = Text1(Index).Text
     ' ********************************************
 
-    frmC.Show vbModal
-    Set frmC = Nothing
+    frmc.Show vbModal
+    Set frmc = Nothing
     ' *** repasar si el camp es txtAux o Text1 ***
     PonerFoco Text1(CByte(imgFec(1).Tag)) '<===
     Command2_Click 0

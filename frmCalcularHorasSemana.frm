@@ -781,13 +781,15 @@ Dim HaSidoAjustada As Boolean
 
     'Si va por todas las secciones, las que no haya procesado, porque no tienen datos entre las fechas, la metemos en el proceso
     '    con valor - 1
-    espera 0.5
-    cad = "INSERT IGNORE INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) "
-    cad = cad & " SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",'-1'"
-    cad = cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", idseccion"
-    cad = cad & " from secciones where Nominas =1 and not idseccion in (select seccion from jornadassemanalesproceso where fechaini = " & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & ")"
-    conn.Execute cad
-
+    
+    If TodasSecciones Then
+        espera 0.5
+        cad = "INSERT IGNORE INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) "
+        cad = cad & " SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",'-1'"
+        cad = cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", idseccion"
+        cad = cad & " from secciones where Nominas =1 and not idseccion in (select seccion from jornadassemanalesproceso where fechaini = " & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & ")"
+        conn.Execute cad
+    End If
 
     If vEmpresa.QueEmpresa = 2 Then
         'COOPIC tiene proceso final bolsa horas
