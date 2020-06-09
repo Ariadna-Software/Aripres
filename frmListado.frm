@@ -8351,7 +8351,7 @@ Dim PosiblesErrores As String
         'No hacemos NADA, reemplazamoslas N de
         
         B = False
-        If vEmpresa.QueEmpresa <> 4 Then
+        If vEmpresa.QueEmpresa <> vbCatadau Then
             If diasTrabajados = Dias_Oficiales Then B = True
         End If
         If B Then
@@ -8418,7 +8418,7 @@ Dim PosiblesErrores As String
                 
             
             
-            If vEmpresa.QueEmpresa <> 4 Then
+            If vEmpresa.QueEmpresa <> vbCatadau Then
                 'Menos para catadau
                 
                 'Los leemos de marcajes
@@ -8431,8 +8431,6 @@ Dim PosiblesErrores As String
             Else
                 'Catadau. Dia que viene, dia que cotiza
                 'Los leemos de jopranadassemanakes
-                
-                
                 
                 
                 cad = " idtrabajador = " & miRsAux!idTrabajador
@@ -8476,7 +8474,7 @@ Dim PosiblesErrores As String
                         
             
             
-            If vEmpresa.QueEmpresa = 4 Then
+            If vEmpresa.QueEmpresa = vbCatadau Then
             
                 'Da lo mismo. En el proceso de arriba hemos marcado CADA dia como trabajado. Venga media hora o venga 24
                 k = 0

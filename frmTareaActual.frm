@@ -654,6 +654,15 @@ Private Sub cmdExcel_Click()
     
         Lanza_EXE_Y_Espera cad
         
+        
+        Screen.MousePointer = vbHourglass
+        
+        If vEmpresa.HorarioNocturno2 Then ProcesoHorasAcabalgadas
+        
+        
+        
+        
+        
         Me.Caption = "Marcaje actual"
         DoEvents
         Command2_Click 1
@@ -1621,6 +1630,262 @@ End Sub
 
 
 '-------------------------------------------------------------
+
+
+
+'***************************************
+'***************************************************************************************************************
+'***************************************************************************************************************
+'***************************************************************************************************************
+'
+'
+'   Proceso nocturno. Horas acabalagadas                           ***COPIADO DIRECTAMENTE,
+'
+'
+'***************************************************************************************************************
+'***************************************************************************************************************
+'***************************************************************************************************************
+'  Ira dia a dia, desde el ultimo dia procesado hasta el siguiente que pueda procesar
+'  Vera si en el dia N hay algun marcaje superior a las HoraParametros
+'  Si. Ese marcae puede ser el incial de los que ficharan al dia seguiente
+'   o puede ser el ultimo del dia actual
+'    ¿Como lo sabremos?  Pq no habra ningun fichaje entre [ HoraParametros -6   y  horaparametros]
+'    es decir, por ejemplo, Dia 1. si Horaparametros son las 22:30, si no tiene ningun marcaje entre
+'    las 16:30 y las 22:30 significara que ESE es el primero de los que vendran al dia siguiente
+'    Es decir, cuando procesemos el dia 2, los marcajes anteriores a HoraParametros -6  seran del mismo dia que el 1
+'    Si diaPrimeraFichada= dia trabajado
+'       -updaearemos los del dia siguiente a hh:mm + 24:00 y dia=dia -1
+'    Si no
+'       -updaearemos el primero a hh:mm  - 24:00    y dia=dia +1
+'
+Private Sub ProcesoHorasAcabalgadas()
+Dim primeraFechaProcesar As Date
+Dim cad As String
+Dim RegistrosTratar As Collection
+Dim FE As Date
+Dim Hora As Date
+Dim H1 As Date
+Dim i As Long
+
+Dim QueDia As Integer
+Dim DiaTraba As Collection
+
+Dim UltimaDiaHoraTraidoMaquina2 As String
+Dim UltimoDiaProcesado As Date
+Dim FechaParaActualizarEnParametros As Date
+Dim RS As ADODB.Recordset
+
+Dim DiasATratar As Collection
+Dim J As Integer
+
+    On Error GoTo eProcesoHorasAcabalgadas
+    
+    Me.Caption = "Horas acabalgadas....."
+    Me.Refresh
+    
+    
+    
+    'Ver si hay que entrar en el proceso
+    
+    
+    
+    
+    Set RS = New ADODB.Recordset
+    
+    cad = DevuelveDesdeBD("AcabalUltimoDiaProcesado", "empresas", "1", "1")
+    
+    If cad = "" Then
+        'No esta grababado todavia. voy a ver la primera fecha de entradafichajes
+        'select min(fecha) from entradafichajes
+        cad = DevuelveDesdeBD("min(fecha)", "entradafichajes", "1", "1")
+        If cad = "" Then cad = "02/01/1900"
+        cad = DateAdd("d", -1, CDate(cad))  'Para que el primer dia trabajado se el primero de entradafichakes
+    End If
+    
+    primeraFechaProcesar = CDate(cad)
+    UltimoDiaProcesado = primeraFechaProcesar
+    
+    'Voy a ver ultimo dia -hora que hemos traido desde la maquina
+    cad = "Select fecha , concat(horareal,'') h1 from entradafichajes ORDER BY 1 desc,2 desc"
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If RS.EOF Then
+        Err.Raise 513, , "Entrada fichejes vacia"
+    Else
+        cad = "23:59:59"
+        If HoraFueraInterval(RS!H1) = 0 Then cad = Format(RS!H1, "hh:nn:ss")
+        cad = Format(RS!Fecha, "dd/mm/yyyy") & " " & cad
+    End If
+    RS.Close
+    UltimaDiaHoraTraidoMaquina2 = cad
+    
+    
+    
+    'Vamos a ver los dias a tratar
+    Set DiasATratar = New Collection
+    
+    i = Round(vEmpresa.MaxRetraso * 60, 0)
+    cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+    If CDate(Format(UltimaDiaHoraTraidoMaquina2, "hh:nn:ss")) >= CDate(cad) Then
+        cad = ""
+    Else
+        cad = " AND fecha <" & DBSet(UltimaDiaHoraTraidoMaquina2, "F")
+    End If
+    
+    
+    
+    cad = "Select distinct fecha from entradafichajes where fecha> " & DBSet(primeraFechaProcesar, "F") & cad
+    cad = cad & "  order by 1"
+    
+ 
+    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        DiasATratar.Add CStr(Format(RS.Fields(0), "dd/mm/yyyy"))
+        RS.MoveNext
+    Wend
+    RS.Close
+    
+    
+    If DiasATratar.Count = 0 Then GoTo eProcesoHorasAcabalgadas
+    
+    
+    'Vamos a estudiar cada dia
+    For QueDia = 1 To DiasATratar.Count
+            'Voy a ver que dias tienen fichajes superiror a las 22:30 (parametros)
+            ' Y luego estudiare esos dias
+            i = Round(vEmpresa.MaxRetraso * 60, 0)
+            cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+            Hora = cad
+            cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
+            'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
+            cad = "Select distinct idtrabajador from entradafichajes where " & cad & " ORDER BY idtrabajador"
+            RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            Set RegistrosTratar = New Collection
+            i = -1
+            While Not RS.EOF
+                cad = RS!idTrabajador
+                RegistrosTratar.Add cad
+                RS.MoveNext
+            Wend
+            RS.Close
+            
+            'Para que haga los nothing
+            If RegistrosTratar.Count > 0 Then
+                    Me.Caption = "Acabalgadas.   Dia " & DiasATratar.Item(QueDia)
+                    Me.Refresh
+    
+
+                    'Procesar el dia
+                    ' Para ello vere fichajes mas alla de las 22:30 del dia D
+                    ' vere si el trabajador para ese dia NO tiene ninguna entrada entre las 22:30 y las 14:30, es decir,
+                    ' si realmente la 22:30 es la entrada del dia
+                    '
+                    ' SACARE UN FRM previo, donde podra decir si el trabajador ese dia es acabalglado  o no
+                    
+                    '
+                    conn.Execute "Delete from tmpnotrabajo"
+                    espera 0.5
+                    cad = ""
+                    For i = 1 To RegistrosTratar.Count
+                        cad = cad & ", (" & RegistrosTratar(i) & ")"
+                    Next
+                    cad = Mid(cad, 2)
+                    cad = "INSERT INTO tmpnotrabajo(idTra) VALUES " & cad
+                    conn.Execute cad
+                    espera 0.5
+                    
+                    CadenaDesdeOtroForm = ""
+                    frmAcabalgados.Fecha = CDate(DiasATratar.Item(QueDia))
+                    frmAcabalgados.Show vbModal
+                    
+                    'Ha pulsado aceptar
+                    If CadenaDesdeOtroForm = "" Then
+                        'Cancelado proceso
+                         GoTo eProcesoHorasAcabalgadas
+                    Else
+                        Me.Caption = "Leyendo registros"
+                        Me.Refresh
+
+                        DoEvents
+                        Screen.MousePointer = vbHourglass
+                    
+                        cad = "Select * from tmpnotrabajo ORDER by idtra"
+                        Set DiaTraba = New Collection
+                        
+                        RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                        While Not RS.EOF
+                            DiaTraba.Add CStr(RS!idTRa)
+                            RS.MoveNext
+                        Wend
+                        RS.Close
+                        
+                        
+                        'Para cada trabajador
+                        FE = CDate(DiasATratar.Item(QueDia))
+                        For J = 1 To DiaTraba.Count
+                        
+                         
+                            'Debug.Print DiaTraba(J)
+                        
+                            Me.Caption = "Trabajador: " & DiaTraba(J)
+                            Me.Refresh
+                            
+                            'Abrimos un frm para que nos diga si son acabalgados o normales y se l
+                            
+                            
+                        
+                            
+                            FE = CDate(DiasATratar.Item(QueDia))
+                            
+                            If vEmpresa.AcabalgadoDiaInicio Then
+                                'La primera fichada marca el dia de inicio
+                                '       -updaearemos los del dia siguiente a hh:mm + 24:00 y dia=dia -1
+                                cad = "fecha = " & DBSet(FE, "F")
+                                cad = cad & ",hora = ADDTIME(hora , '24:00:00' ) "
+                                cad = cad & ",horareal = ADDTIME(horareal , '24:00:00' ) "
+                                cad = cad & " WHERE fecha = " & DBSet(DateAdd("d", 1, FE), "F")
+                                cad = cad & " AND hora < " & DBSet(Hora, "H")
+                            Else
+                                'La fichada es la primera del dia siguiente
+                                '       -updaearemos el primero a hh:mm  - 24:00    y dia=dia +1
+                                cad = "fecha = " & DBSet(DateAdd("d", 1, FE), "F")
+                                cad = cad & ",hora = ADDTIME(hora , '-24:00:00' ) "
+                                cad = cad & ",horareal = ADDTIME(horareal , '-24:00:00' ) "
+                                cad = cad & " WHERE fecha = " & DBSet(FE, "F")
+                                cad = cad & " AND hora >= " & DBSet(Hora, "H")
+                                                  
+                            End If
+                            cad = cad & " AND idtrabajador = " & DiaTraba(J)
+                            cad = "UPDATE entradafichajes set " & cad
+                            conn.Execute cad
+                            espera 0.1
+                                
+                        Next J
+                                
+                        cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(FE, "F")
+                        conn.Execute cad
+                        Me.Caption = "Actualizando ......."
+                        Me.Refresh
+                        espera 1.5
+                        
+                    End If
+            Else
+                'Hemos pulsado tratar dia pero no hay trabajadores para mirar
+                cad = "UPDATE empresas set AcabalUltimoDiaProcesado = " & DBSet(DiasATratar.Item(QueDia), "F")
+                conn.Execute cad
+            End If
+            
+            Set RegistrosTratar = Nothing
+    Next QueDia
+eProcesoHorasAcabalgadas:
+    
+    If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
+    Set RS = Nothing
+    Set RegistrosTratar = Nothing
+    Set DiaTraba = Nothing
+    Set DiasATratar = Nothing
+    
+End Sub
+
 
 
 

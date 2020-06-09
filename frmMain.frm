@@ -155,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "9:12"
+            TextSave        =   "12:04"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -1278,13 +1278,20 @@ Private Sub mnLaboralHoras1_Click(Index As Integer)
 End Sub
 
 Private Sub mnLaboralNominas_Click(Index As Integer)
+Dim B As Boolean
+
     Select Case Index
     Case 0
         frmNominas.Show vbModal
     Case 1
-    
-        'If vEmpresa.QueEmpresa = 4 Then
+        B = False
         If vEmpresa.CompensaHorasNominaMES Then
+            B = True
+        Else
+            If vEmpresa.QueEmpresa = 4 Then B = True
+        End If
+        'If vEmpresa.CompensaHorasNominaMES Then
+        If B Then
             frmCalculoHorasMesConEstrc.Show vbModal
         Else
             frmCalculoHorasMes.Show vbModal
@@ -1404,7 +1411,7 @@ Dim Aux As String
     Aux = Me.StatusBar1.Panels(2).Text
     Me.StatusBar1.Panels(2).Text = "Leyendo datos"
     Me.StatusBar1.Refresh
-    ProcesoHorasAcabalgadas
+     
     
     
     

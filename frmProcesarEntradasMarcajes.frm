@@ -352,7 +352,7 @@ Dim F As Date
     conn.Execute "Delete from tmpcombinada WHERE codusu = " & vUsu.Codigo
     
     
-    If vEmpresa.QueEmpresa = 2 Then
+    If vEmpresa.QueEmpresa = vbAlzira Then
         CadenaDesdeOtroForm = ""
         frmPrevioProcesar.Fecha = CDate(Text1(0).Text)
         frmPrevioProcesar.Show vbModal
@@ -615,6 +615,8 @@ Dim B As Boolean
     End If
     
     SQL = "Select min(fecha) from entradafichajes"
+    
+    SQL = SQL & " WHERE fecha >= " & DBSet(vEmpresa.FechaInicio, "F")
     miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     B = False

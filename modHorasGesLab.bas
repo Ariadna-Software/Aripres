@@ -277,7 +277,7 @@ Dim idCal As Integer
     
     
     TipoCata = False
-    If vEmpresa.QueEmpresa = 4 Then
+    If vEmpresa.QueEmpresa = vbCatadau Then
         TipoCata = True
     Else
         If vEmpresa.CompensaHorasNominaMES Then TipoCata = True
@@ -449,7 +449,7 @@ Dim idCal As Integer
                     Aux = Format(Rs2!Fecha, "dd/mm/yyyy") & "|"
     
     
-                    If vEmpresa.QueEmpresa = 4 Then
+                    If vEmpresa.QueEmpresa = vbCatadau Then
                         'EN CATADAU, si es el dia lo ha trabajado (max(5)) semana
     
                         'Si esta de baja
@@ -967,7 +967,7 @@ Dim Aux2 As String
 
 
     Set RS = New ADODB.Recordset
-    SQL = "Select Trabajador,MEsDias,meshoras from tmpDatosMes "
+    SQL = "Select Trabajador,MEsDias,meshoras from tmpDatosMes ORDER BY 1"
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     
@@ -984,13 +984,15 @@ Dim Aux2 As String
         'If vEmpresa.CompensaHorasNominaMES Then Aux2 = Aux2 & " AND false "
         RT.Open Aux2, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
-        
+        If RS!Trabajador = 9006 Then
+            Debug.Print "9006"
+        End If
         
         
         If Not RT.EOF Then
             Aux = "UPDATE tmpDatosMes Set HorasN=" & TransformaComasPuntos(CStr(RT!horast))
             Aux = Aux & " ,HorasC=" & TransformaComasPuntos(CStr(RT!HorasC))  'Las compensables SON las extras en COOPIC
-            Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!Horase))
+            Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!horase))
             'Tot = RT!horasc + RT!horast  extras mas normales
             Tot = RT!horast
             Aux = Aux & " ,HorasT=" & TransformaComasPuntos(CStr(Tot))
@@ -1000,7 +1002,7 @@ Dim Aux2 As String
                 'EN CATADAU dejo pasar.
                 'NO compensan dias desde bolsa, con lo cual, cualquier dia que haya venido entra
                 
-                If vEmpresa.QueEmpresa = 4 Then
+                If vEmpresa.QueEmpresa = vbCatadau Then
                     i = RT!Dias
                 Else
                     i = RS!MesDias
@@ -1063,7 +1065,10 @@ Dim Diferencia As Currency
     Set RS = New ADODB.Recordset
     RS.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     While Not RS.EOF
-    
+        
+        If RS!Trabajador = 9006 Then
+            Debug.Print "9006"
+        End If
         
         If vEmpresa.CompensaHorasNominaMES Then
             'Compensa DIAS al final de mes
@@ -1144,6 +1149,7 @@ Dim H_D_mas As Currency
     
 Dim Donde As String
     
+    
 'ModoCompensacion
     'Vemos cual es el modo de compensacion
     '   0 .- NO compensa
@@ -1204,7 +1210,7 @@ Dim Donde As String
     Donde = "haciedo select"
     SQL = "Select tmpDatosMes.*,idHorarioTra idHorario,FecAlta,FecBaja,controlnomina,NomTrabajador,ImporteFijoNomina from tmpDatosMes,Trabajadores"
     SQL = SQL & " WHERE tmpDatosMes.trabajador = Trabajadores.idTrabajador"
-    SQL = SQL & " ORDER BY idHorario"
+    SQL = SQL & " ORDER BY idHorario,tmpDatosMes.trabajador"
     Horario = -1
     FESTIVOS = ""
     Set RS = New ADODB.Recordset
@@ -1215,6 +1221,10 @@ Dim Donde As String
     
     While Not RS.EOF
         Donde = "Trabajador " & RS!Trabajador
+        
+        Debug.Assert Not (RS!Trabajador = 9062)
+        
+        
         If ModoCompensacion = "1" Or ModoCompensacion = "3" Then
             If Horario <> RS!IdHorario Then
                 Set vH = Nothing
@@ -1229,8 +1239,7 @@ Dim Donde As String
         DiasReajusteXSTrabajados = 0
         HorasC = -1
         
-        'If RS!Trabajador = 20208 Then S top
-
+        Debug.Assert Not (RS!Trabajador = 2)
         
         
         If vEmpresa.RecuperacionDias = 2 Then
@@ -1241,7 +1250,7 @@ Dim Donde As String
             DiasOF = RS!diasTrabajados
             H = RS!MesDias - RS!diasTrabajados
             If H < 0 Then
-                MsgBox RS!NomTrabajador & "    Dias " & RS!MesDias & "   Traba: " & RS!diasTrabajados, vbExclamation
+                MsgBox RS!nomtrabajador & "    Dias " & RS!MesDias & "   Traba: " & RS!diasTrabajados, vbExclamation
             Else
             
                 If H > 0 Then
@@ -1473,7 +1482,7 @@ Dim Donde As String
                 Donde = "Proceso 6"
                     HazUpdate = False
                         'Aqui creo que no entra
-                        If vEmpresa.QueEmpresa <> 4 Then
+                        If vEmpresa.QueEmpresa <> vbCatadau Then
                             MsgBox "Error gen true 2!"
               
                             HCompMes = 0
@@ -1488,7 +1497,7 @@ Dim Donde As String
                                 HPaBolsa = 0
                                 DiasOF = RS!MesDias
                                 
-                                HCompMes = RS!Horase
+                                HCompMes = RS!horase
                                 If RS!Horasn + RS!HorasC >= RS!meshoras Then
                                     
                                     HorasC = RS!meshoras - RS!Horasn
@@ -1506,10 +1515,10 @@ Dim Donde As String
                                 HPaBolsa = DBLet(RS!bolsadespues, "N")
                                 HorasOf = DBLet(RS!HorasPeriodo, "N")
                                 
-                                HCompMes = DBLet(RS!Horase, "N")
+                                HCompMes = DBLet(RS!horase, "N")
                                 DiasOF = RS!diasTrabajados
                                 HorasOf = RS!horast
-                                
+                                HorasC = RS!HorasC  'Jun 2020
                                 HazUpdate = True
                             End If
                         End If
@@ -1600,9 +1609,12 @@ Dim Donde As String
         ImportePlus = 0
         ImporEstrcut = 0
         HorasOf = 0
+        ImporAux = 0
+        H = 0
+        
         
         PagaHorasEnSuFranja = False
-        If vEmpresa.QueEmpresa = 4 Then
+        If vEmpresa.QueEmpresa = vbCatadau Then
             PagaHorasEnSuFranja = True
         Else
             If vEmpresa.CompensaHorasNominaMES Then PagaHorasEnSuFranja = True  'Castelduc Compensan DIAS ne nomina. Y nada mas
@@ -1612,7 +1624,7 @@ Dim Donde As String
         If PagaHorasEnSuFranja Then
             'CATADAU NO compensa horas, todas se pagan en su franja.
             
-            Donde = "Importes nimina"
+            Donde = "Importes nomina"
             
             
             'NORMALES
@@ -1650,9 +1662,9 @@ Dim Donde As String
             'EXTRAS
             Canti = RS!Importe3
             If DBLet(RS!PlusHe, "N") > 0 Then
-                LlevaPlus2 = LlevaPlus2 + Round(RS!extras * RS!PlusHe, 2)
+                LlevaPlus2 = LlevaPlus2 + Round(RS!Extras * RS!PlusHe, 2)
             End If
-            ImporAux = (RS!extras * Canti)
+            ImporAux = (RS!Extras * Canti)
             H = 0
             If vEmpresa.AplicaAntiguedadHC Then
                 If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
@@ -1688,7 +1700,9 @@ Dim Donde As String
 
         
         'Quitamos IRPF y SS
-        Donde = "Aplica IRPF y SS"
+        Donde = "Aplica IRPF y SS trab: " & RS!Trabajador
+        SQL = RS!Trabajador
+      '  If RS!Trabajador = 199 Then St op
         H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
         H = Round((H / 100), 2)
         HorasOf = HorasOf - H
@@ -1698,10 +1712,18 @@ Dim Donde As String
         
         SQL = "UPDATE tmpDatosMes SET"
         SQL = SQL & " Anticipos = " & TransformaComasPuntos(CStr(HorasOf))
-        
+         SQL = SQL & ", Importnormales = " & TransformaComasPuntos(CStr(BrutoN))
+         
         SQL = SQL & ", Bruto = " & TransformaComasPuntos(CStr(BrutoN))
+        'Grabacion extras
         SQL = SQL & ", Extras = " & TransformaComasPuntos(CStr(ImportePlus))
-        SQL = SQL & ", LlevaPlus = " & TransformaComasPuntos(CStr(LlevaPlus2))
+        SQL = SQL & ", ImportExtras = " & TransformaComasPuntos(CStr(ImportePlus))
+        
+        If PagaHorasEnSuFranja Then
+            'SQL = SQL & ", LlevaPlus = " & TransformaComasPuntos(CStr(LlevaPlus2))
+        Else
+            SQL = SQL & ", LlevaPlus = " & TransformaComasPuntos(CStr(LlevaPlus2))
+        End If
         SQL = SQL & ", ImporEstruc = " & TransformaComasPuntos(CStr(ImporEstrcut))
         If Not IsNull(RS!ImporteFijoNomina) Then SQL = SQL & ",  ImporteFijo =1 "
         
@@ -1798,7 +1820,7 @@ Dim HorasDisponibles As Currency
             FESTIVOS = vH.LeerDiasFestivos(Horario, FInicio, FFin)  'En hacercompensaciones trata estos dias
         End If
     
-        lbl.Caption = "Trab: " & DBLet(RS!NomTrabajador, "T")
+        lbl.Caption = "Trab: " & DBLet(RS!nomtrabajador, "T")
         lbl.Refresh
         
         HazUpdate = True
@@ -1974,9 +1996,9 @@ Dim HorasDisponibles As Currency
          
          Canti = RS!Importe3
          If DBLet(RS!PlusHe, "N") > 0 Then
-             LlevaPlus2 = LlevaPlus2 + Round(RS!extras * RS!PlusHe, 2)
+             LlevaPlus2 = LlevaPlus2 + Round(RS!Extras * RS!PlusHe, 2)
          End If
-         ImporAux = (RS!extras * Canti)
+         ImporAux = (RS!Extras * Canti)
          H = 0
          If vEmpresa.AplicaAntiguedadHC Then
              If DBLet(RS!PorcAntiguedad, "N") > 0 Then H = RS!PorcAntiguedad
@@ -2191,8 +2213,14 @@ End Function
 Public Sub AjustaDatosBajaMesEntero()
 Dim SQL As String
 
-    If vEmpresa.CompensaHorasNominaMES Then
-
+    
+    SQL = "B" 'borra
+    If Not vEmpresa.CompensaHorasNominaMES Then
+        If vEmpresa.QueEmpresa <> vbCatadau Then SQL = "U" 'update
+    End If
+    
+    If SQL = "B" Then 'borra
+    
         'Si no ha venido a trabajar, no comensa dias, ni horas ni nada de nada...
         SQL = "DELETE FROM tmpDatosMes  WHERE codusu = " & vUsu.Codigo & " AND "
         SQL = SQL & " tmpDatosMEs.diasTrabajados = 0 And tmpDatosMEs.HorasN = 0 And tmpDatosMEs.HorasC = 0 And tmpDatosMEs.Horase = 0 And tmpDatosMEs.diasperiodo = 0 And tmpDatosMEs.bolsaAntes = 0"
@@ -3690,7 +3718,7 @@ Dim RtAnticipos As ADODB.Recordset
         End If
     
                 
-        lbl.Caption = RS!NomTrabajador
+        lbl.Caption = RS!nomtrabajador
         lbl.Refresh
     
     
@@ -3800,7 +3828,7 @@ Dim RtAnticipos As ADODB.Recordset
             cDep2.Add cT.DatosLineaDep
             cDep2.Add vbCrLf
         
-            ImprimeFichero cT.Codigo & "   -   " & RS!NomTrabajador
+            ImprimeFichero cT.Codigo & "   -   " & RS!nomtrabajador
         End If
         'sgi
         RS.MoveNext
@@ -3827,7 +3855,7 @@ Dim RtAnticipos As ADODB.Recordset
 
         
         'Los anticipos llevan toooodos los importes
-        HorasOf = (RS!Horasn * RS!Importe1) + (RS!extras * RS!Importe2)
+        HorasOf = (RS!Horasn * RS!Importe1) + (RS!Extras * RS!Importe2)
         'Quitamos IRPF y SS
         H = (HorasOf * RS!PorcIRPF) + (HorasOf * RS!PorcSS)
         H = Round((H / 100), 2)

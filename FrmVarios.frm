@@ -848,7 +848,7 @@ Private Sub cboSeccion_Click()
     Else
         'Solo ALzira
         'Es generar datos para FRUXERESA
-        'ESTOY AQUIIIIIII
+        'E
             cad = DevuelveDesdeBD("nominas", "secciones", "idseccion", Me.cboSeccion.ItemData(cboSeccion.ListIndex), "N")
             cboSeccion.Tag = Val(cad)
             FInicioSeccion = "01/01/2001"
@@ -1670,7 +1670,9 @@ Dim W As Integer
         
         If vEmpresa.QueEmpresa = 4 Then
                     
-            cad = "select seccion,max(fechaini) fi,max(fechafin) ff from jornadassemanalesproceso  group by 1"
+            cad = "select seccion,max(fechaini) fi,max(fechafin) ff from jornadassemanalesproceso  WHERE true "
+            cad = cad & " AND seccion in (select idseccion from secciones where nominas=1)"
+            cad = cad & " group by 1"
             miRsAux.Open cad, conn, adOpenKeyset, adLockPessimistic, adCmdText
             cad = ""
             
@@ -1678,7 +1680,7 @@ Dim W As Integer
                 If cad = "" Then
                     cad = Format(IIf(IsNull(miRsAux!FI), "01/01/1900", miRsAux!FI), "dd/mm/yyyy") & Format(IIf(IsNull(miRsAux!FF), "01/01/1900", miRsAux!FF), "dd/mm/yyyy")
                 Else
-                    CadenaDesdeOtroForm = Format(IIf(IsNull(miRsAux!FI), "01/01/19000", miRsAux!FI), "dd/mm/yyyy") & Format(IIf(IsNull(miRsAux!FF), "01/01/19000", miRsAux!FF), "dd/mm/yyyy")
+                    CadenaDesdeOtroForm = Format(IIf(IsNull(miRsAux!FI), "01/01/1900", miRsAux!FI), "dd/mm/yyyy") & Format(IIf(IsNull(miRsAux!FF), "01/01/1900", miRsAux!FF), "dd/mm/yyyy")
                     If cad <> CadenaDesdeOtroForm Then
                         cad = "MAL"
                         miRsAux.MoveLast

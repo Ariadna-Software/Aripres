@@ -1467,7 +1467,7 @@ Dim ToolTip As String
         If vEmpresa.NominaAutomatica Then
             'Normal. Pica y cata
             If RS!diasTrabajados = 0 Then
-                If RS!mesdias = 0 Then
+                If RS!MesDias = 0 Then
                     'ESTA DE BAJA
                     J = 3
                     ToolTip = "De baja"
@@ -1523,21 +1523,26 @@ Dim ToolTip As String
         
         If J = 7 Then ToolTip = "Revisar"
         
+        
+        Debug.Assert Not (RS!Trabajador = 170)
+        Debug.Assert Not (RS!Trabajador = 9081)
+        
+        
         i.SmallIcon = J
         i.Text = RS!Trabajador
         i.SubItems(1) = RS!nomtrabajador
         i.ToolTipText = ToolTip
         
         'Horas oficiles
-        i.SubItems(2) = RS!mesdias & "/" & Format(RS!meshoras, "0.00")
+        i.SubItems(2) = RS!MesDias & "/" & Format(RS!meshoras, "0.00")
         
         'Trabajados
         
         
         i.SubItems(3) = RS!diasTrabajados
-        i.SubItems(4) = Format(RS!Horast, "0.00")
+        i.SubItems(4) = Format(RS!horast, "0.00")
         i.SubItems(5) = Format(RS!HorasC, "0.00")
-        i.SubItems(6) = Format(RS!Horase, "0.00")
+        i.SubItems(6) = Format(RS!horase, "0.00")
         
         'Saldo
         i.SubItems(7) = RS!saldodias
@@ -1546,7 +1551,7 @@ Dim ToolTip As String
         If Cantidad1 < 0 Then
             Cantidad1 = 0
             'Veremos si ha utilizado bolsa de horas, si no, pintaremos cero igualmente
-            Cantidad2 = RS!bolsaAntes - RS!bolsadespues
+            Cantidad2 = RS!bolsaantes - RS!bolsadespues
             If Cantidad2 < 0 Then
                ' MsgBox "Debe horas y aunmenta bolsa. Comprobar trabajador " & RS!nomtrabajador, vbExclamation
             Else
@@ -1566,8 +1571,8 @@ Dim ToolTip As String
         'Bolsa
         i.SubItems(12) = " "
         i.SubItems(13) = " "
-        If DBLet(RS!bolsaAntes, "N") <> 0 Then
-            i.SubItems(12) = Format(RS!bolsaAntes, "0.00")
+        If DBLet(RS!bolsaantes, "N") <> 0 Then
+            i.SubItems(12) = Format(RS!bolsaantes, "0.00")
             i.SubItems(13) = Format(RS!bolsadespues, "0.00")  'aunque sea cero, la pinto, Para ver claro la diferencia
         
         Else
@@ -1586,7 +1591,7 @@ Dim ToolTip As String
         If RS!ImportExtras > 0 Then i.SubItems(16) = Format(RS!ImportExtras, "0.00")
         
         i.SubItems(17) = " "
-        If DBLet(RS!LlevaPlus, "N") <> 0 Then MsgBox "Con plus. ERROR. Soporte tecnico": Stop
+        If DBLet(RS!LlevaPlus, "N") <> 0 Then MsgBox "Con plus. ERROR. Soporte tecnico. Tr" & RS!Trabajador
         
         Importe1 = DBLet(RS!ImportNormales, "N") + DBLet(RS!ImporEstruc, "N") + DBLet(RS!ImportExtras, "N")
         i.SubItems(18) = Format(Importe1, "0.00")
@@ -2023,20 +2028,20 @@ On Error GoTo EGenerarNominas
         cad = RS!Trabajador & "," & RS!diasperiodo & ","
         
         Horas = 0 'sera el plus
-        cad = cad & TransformaComasPuntos(RS!HorasN) & "," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
-        cad = cad & TransformaComasPuntos(DBLet(RS!Horase, "N")) & "," & DBSet(Horas, "N") & ","
+        cad = cad & TransformaComasPuntos(RS!Horasn) & "," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
+        cad = cad & TransformaComasPuntos(DBLet(RS!horase, "N")) & "," & DBSet(Horas, "N") & ","
 
 
         
         'BolsaDespues,BolsaAntes,brutodespues,netodespues,importedelbote,brutoantes,netoan
-        cad = cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaAntes, "N") & ","
+        cad = cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
         
         
         Importe = 0   'NO anticipos
         cad = cad & TransformaComasPuntos(DBLet(Importe, "N"))
         
         'Antiguedad,IRPF,SSEmpr
-        cad = cad & "," & DBSet(RS!porcantiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
+        cad = cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
         'PrecioHN,PrecioHC,PrecioHE
         cad = cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
         

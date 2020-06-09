@@ -343,9 +343,9 @@ Dim NF As Integer
     For i = 1 To ColTablas.Count
         Label11.Caption = "Leyendo " & ColTablas.Item(i) & "  (" & i & "/" & ColTablas.Count & ")"
         Label11.Refresh
-                                                                    'huell cara pin
+                                                                    'huell cara pin   tarjeta (20/05/20(
         cad = "SELECT * ,from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') horaRealUnix "
-        cad = cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097)"
+        cad = cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097,4102)"
         cad = cad & " AND from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') >" & Label11.Tag
         cad = cad & " order by devdt"
         miRsAux.Open cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText
@@ -678,3 +678,4 @@ eAbrirFicheroExportar:
         
         
 End Function
+

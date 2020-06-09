@@ -592,7 +592,7 @@ Dim PrimeraVez As Boolean
 Private Nod As ListItem
 Private HorasxDia2 As Currency  'La leemos de parametros
 
-
+Dim ElMensa As String
 
 Dim CadParam As String
 
@@ -1511,10 +1511,12 @@ Dim J As Integer
 Dim Cantidad1 As Currency
 Dim Cantidad2 As Currency
 Dim AuxIcono As String
-            
+                
             
         AuxIcono = RS!nomtrabajador
-            
+        
+        Debug.Assert Not (RS!Trabajador = 10)
+        
         If vEmpresa.NominaAutomatica Then
             'Normal. Pica y cata
             If RS!diasTrabajados = 0 Then
@@ -1551,7 +1553,7 @@ Dim AuxIcono As String
                 'J = 3
                 J = 7
             Else
-                If RS!extras <> 0 Then
+                If RS!Extras <> 0 Then
                     J = 4
                 Else
                     If RS!saldodias > 0 Then
@@ -1579,11 +1581,17 @@ Dim AuxIcono As String
         
         
         'Saldo
-        i.SubItems(6) = RS!saldodias
+        If vEmpresa.QueEmpresa = vbCatadau Then
+            i.SubItems(6) = " "
+            Cantidad1 = 0
+        Else
+            i.SubItems(6) = RS!saldodias
+            Cantidad1 = RS!saldoh
+            
+        End If
         
         
         
-        Cantidad1 = RS!saldoh
         If Cantidad1 < 0 Then
             
               
@@ -1603,8 +1611,16 @@ Dim AuxIcono As String
         i.SubItems(8) = RS!diasperiodo
         i.SubItems(9) = " "  'Horas que lleva a nomina son las horasn
         i.SubItems(10) = " "  'EXTRAS
-        If RS!HorasC > 0 Then i.SubItems(10) = Format(RS!HorasC, "0.00")
         
+        If vEmpresa.QueEmpresa = vbCatadau Then
+            If RS!horase > 0 Then i.SubItems(10) = Format(RS!horase, "0.00")
+        Else
+            If ElMensa = "" Then
+                ElMensa = "N"
+                MsgBox "Avise soporte tecnico. Validadcion HORASC vs HORASE", vbCritical
+            End If
+            If RS!HorasC > 0 Then i.SubItems(10) = Format(RS!HorasC, "0.00")
+        End If
         
         '
         'Bolsa
@@ -2009,13 +2025,13 @@ On Error GoTo EGenerarNominas
     genNominas = False
 
     SQL = "INSERT INTO Nominas (Fecha,IdTrabajador,Dias,HN,HC,Plus,HP,BolsaDespues,BolsaAntes"
-    SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE ) VALUES ('"
+    SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE ,CentroA3) VALUES ('"
     i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
     SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
     
     'Primero generamos la tabla de  nominas con los importes marcados aqui
     cad = "SELECT tmpDatosMEs.*, "
-    cad = cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 "
+    cad = cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 ,trabajadores.idCentroA3 "
     cad = cad & " FROM tmpDatosMEs , Trabajadores ,categorias WHERE  tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
      cad = cad & " AND trabajadores.idcategoria=Categorias.idcategoria "
     cad = cad & " AND Mes = " & Combo2.ListIndex + 1
@@ -2030,9 +2046,17 @@ On Error GoTo EGenerarNominas
         cad = RS!Trabajador & "," & RS!diasperiodo & ","
         
         'HN,HC,HP   -> Las horas compensables seran aquellas que superen las horas de las horas mensuales, las que iran a bolsa, pero ahora se pagan
-        Horas = RS!saldoh
-        If Horas < 0 Then Horas = 0
+
         '                                                                         Plus. de momento cero. Eso es si quitarn bolsa, pero habria que verlo
+        
+        
+        If vEmpresa.QueEmpresa = vbCatadau Then
+            Horas = RS!horase
+        Else
+            Horas = RS!saldoh
+            If Horas < 0 Then Horas = 0
+        End If
+        
         cad = cad & TransformaComasPuntos(RS!Horasn) & "," & DBSet(Horas, "N") & ",0," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
         
 
@@ -2049,6 +2073,9 @@ On Error GoTo EGenerarNominas
         cad = cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
         'PrecioHN,PrecioHC,PrecioHE
         cad = cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
+        
+        
+        cad = cad & "," & DBSet(RS!idCentroA3, "N", "S")
         
         cad = cad & ")"
         cad = SQL & cad

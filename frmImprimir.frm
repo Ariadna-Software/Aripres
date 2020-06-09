@@ -250,7 +250,7 @@ Private Sub cmdImprimir_Click()
         MsgBox "No existe el fichero: " & MIPATH & Nombre, vbExclamation
     Else
         Imprime
-    End If
+     End If
 End Sub
 
 Private Sub cmdSalir_Click()

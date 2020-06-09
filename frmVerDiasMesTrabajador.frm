@@ -712,7 +712,7 @@ End Sub
 
 Private Sub Form_Load()
         Text4(2).Visible = False
-        If vEmpresa.QueEmpresa = 4 Then
+        If vEmpresa.QueEmpresa = vbCatadau Then
             Text4(2).Visible = True
             ListView1.ColumnHeaders(4).Text = "extra"
             
@@ -776,7 +776,7 @@ Dim ExcesoDefecto As Boolean
     
     Else
         'Semanas procesadas. Alzira y coopic
-        If vEmpresa.QueEmpresa = 4 Then
+        If vEmpresa.QueEmpresa = vbCatadau Then
             
             cad = "select fecha,sum(if (tipohoras=0,horastrabajadas,0)) norm"
             cad = cad & ",sum(if (tipohoras=1,horastrabajadas,0)) estr"
@@ -827,6 +827,9 @@ Dim ExcesoDefecto As Boolean
         cad = Format(RS!Fecha, "dd/mm/yyyy")
         i = Val(Format(RS!Fecha, "ww"))
         
+        If cad = "26/12/2019" Then
+            Debug.Print ""
+        End If
         
         If i <> Semana Then
             itmX.ForeColor = &H6A6C6A
@@ -895,20 +898,17 @@ Dim ExcesoDefecto As Boolean
                     Else
                         If vEmpresa.QueEmpresa = 4 Then
                             'CATADAU
+                            itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                            itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
                             If IdInci = 1 Then
                                 'Tiene horas extras
-                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
-                                itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
                                 itmX.SubItems(3) = Format(RS!extr, FormatoImporte)
                             Else
                             
                                 'Importe = RS!norm - vEmpresa.HorasJornada
                                 'itmX.SubItems(1) = Format(vEmpresa.HorasJornada, FormatoImporte)
                                 'itmX.SubItems(2) = Format(Importe, FormatoImporte)
-                                
                                 Importe = 0
-                                itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
-                                itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
                                 itmX.SubItems(3) = " "
                             End If
                             
@@ -940,28 +940,50 @@ Dim ExcesoDefecto As Boolean
                     If Me.Option1(0).Value Then
                         Importe = RS!HorasTrabajadas
                     Else
-                        Importe = RS!norm
-                    End If
-                    itmX.SubItems(1) = Format(Importe, FormatoImporte)
-                    If Me.HorasMinimoDia > 0 Then
-                                                
                         Icono = 8
-                                                
-                        'Esto era para picassent
-                        'k = Weekday(RS!Fecha, vbSunday)
-                        'If k <> 3 And k <> 6 Then
-                        '    'Miercoles SABADO
-                        '
-                        'Else
-                        '    If RS!HorasTrabajadas < Me.HorasMinimoDia Then
-                        '
-                        '        Icono = 8
-                        '        Text1(11).Tag = CCur(Text1(11).Tag) + Me.HorasMinimoDia - RS!HorasTrabajadas
-                        '    End If
-                        'End If
+                        If vEmpresa.QueEmpresa = 4 Then
+                            'CATADAU
+                            itmX.SubItems(1) = Format(RS!norm, FormatoImporte)
+                            itmX.SubItems(2) = Format(RS!estr, FormatoImporte)
+                            If IdInci = 1 Then
+                                'Tiene horas extras
+                                itmX.SubItems(3) = Format(RS!extr, FormatoImporte)
+                            Else
+                            
+                                'Importe = RS!norm - vEmpresa.HorasJornada
+                                'itmX.SubItems(1) = Format(vEmpresa.HorasJornada, FormatoImporte)
+                                'itmX.SubItems(2) = Format(Importe, FormatoImporte)
+                                Importe = 0
+                                itmX.SubItems(3) = " "
+                            End If
+
+                        Else
+                            'Lo que habia
                     
+                    
+                            Importe = RS!norm
+                    
+                            itmX.SubItems(1) = Format(Importe, FormatoImporte)
+                            If Me.HorasMinimoDia > 0 Then
+                                                    
+                            
+                                                        
+                                'Esto era para picassent
+                                'k = Weekday(RS!Fecha, vbSunday)
+                                'If k <> 3 And k <> 6 Then
+                                '    'Miercoles SABADO
+                                '
+                                'Else
+                                '    If RS!HorasTrabajadas < Me.HorasMinimoDia Then
+                                '
+                                '        Icono = 8
+                                '        Text1(11).Tag = CCur(Text1(11).Tag) + Me.HorasMinimoDia - RS!HorasTrabajadas
+                                '    End If
+                                'End If
+                            
+                            End If
+                        End If
                     End If
-                    
                 End If
                 
                 If InStr(1, FESTIVOS, cad) > 0 Then

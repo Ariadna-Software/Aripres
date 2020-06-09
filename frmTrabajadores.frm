@@ -2014,14 +2014,14 @@ Dim usu As UsuarioHuella
         End If
     
     
-        'usu.CapturaHuella Byt
+        usu.CapturaHuella CByte(Slider1.Value)
        
-        'If Dir(vEmpresa.DirHuellas & "\" & usu.CodUsuario & ".jpg") <> "" Then
-        '    imgHuella.Picture = LoadPicture(vEmpresa.DirHuellas & "\" & usu.CodUsuario & ".jpg")
-        '    imgHuella.Visible = True
-        'Else
-        '    imgHuella.Visible = False
-        'End If
+        If Dir(vEmpresa.DirHuellas & "\" & usu.CodUsuario & ".jpg") <> "" Then
+            imgHuella.Picture = LoadPicture(vEmpresa.DirHuellas & "\" & usu.CodUsuario & ".jpg")
+            imgHuella.Visible = True
+        Else
+            imgHuella.Visible = False
+        End If
         
         
         Check2.Value = 0
@@ -3302,7 +3302,7 @@ Private Sub PonerCampos()
     
     'Si tienen que cargar la carga, si no pues res
     
-    If vEmpresa.QueEmpresa = 2 Or vEmpresa.QueEmpresa = 4 Then
+    If vEmpresa.QueEmpresa = 2 Or vEmpresa.QueEmpresa = 4 Or vEmpresa.QueEmpresa = 6 Then
         lblInfCodigo.Visible = Me.Check2.Value = 1
         Me.lblInfCodigo.Visible = lblInfCodigo.Visible
         If Me.Check2.Value = 1 Then

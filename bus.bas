@@ -6,7 +6,7 @@ Option Explicit
 Private Declare Function GetVersion Lib "kernel32" () As Long
 
 
-
+Public Const vbCatadau = 4
 Public Const vbBelgida = 6
 
 

@@ -48,9 +48,6 @@ Dim HacerRedondeoDeAjustes As Boolean
         SQL = SQL & " and entradafichajes.fecha='" & Format(Fecha, FormatoFecha) & "'"
     End If
         
-    'Para el trabajador
-    'If IdTra > 0 Then SQL = SQL & " and entradafichajes.idtrabajador = " & IdTra
-        
     
     Set RsH = New ADODB.Recordset
     RsH.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
@@ -813,6 +810,8 @@ Dim ValorModificadoParadas As Currency
         vM.idTrabajador = RS!idTrabajador
         vM.IdHorario = vH.IdHorario
         vM.Correcto = False
+          Debug.Assert Not (vM.HorasDto <> 0)
+        vM.HorasDto = 0
         TotalParadas2 = 0
         
         
@@ -1900,7 +1899,9 @@ End If
         NumTikadas = NumTikadas + 1
         Rss.MoveNext
     Wend
-   
+     'Debug.Assert Not (NumTikadas = 2)
+  
+
 
 If (NumTikadas Mod 2) > 0 Then
         'Numero de marcajes impares. No podemos calcular horas
@@ -1948,7 +1949,7 @@ If (NumTikadas Mod 2) > 0 Then
             'Comprobamos si hay que quitar los minutos de la MER
             'Como esta ya en el ultimo
             If vH.DtoMer > 0 Then
-                If UltimoTicaje > vH.HoraDtoMer Then TotalParadas2 = TotalParadas2 + vH.DtoMer
+                If Format(UltimoTicaje, "hh:mm:ss") > vH.HoraDtoMer Then TotalParadas2 = TotalParadas2 + vH.DtoMer
             End If
             
             If TotalParadas2 > 0 Then
@@ -1972,12 +1973,12 @@ If (NumTikadas Mod 2) > 0 Then
              If vH.EsDiaFestivo Then
                 vMar.HorasIncid = TotalH
                 vMar.IncFinal = vEmpresa.IncHoraExtra
-                
+                vMar.Festivo = True
             Else
                 If InciManual > 0 Then GeneraIncidencia InciManual, vMar.Entrada, 0
                 vMar.HorasIncid = 0
                 vMar.IncFinal = InciManual
-                
+                vMar.Festivo = False
             End If
             vMar.Correcto = True
 End If 'De DIAFESTIVO
