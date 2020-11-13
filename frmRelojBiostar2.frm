@@ -233,18 +233,19 @@ Option Explicit
 
 
 Dim Cn As Connection
-Dim cad As String
+Dim Cad As String
 
 
 Private Sub cmdCambiar_Click()
 Dim C1 As String
-
-    cad = ""
+    
+    If Text2.Text = "ERROR" Then Exit Sub
+    Cad = ""
     
     C1 = InputBox("Ultima fecha leida", "Biostar", Format(Text2.Text, "dd/mm/yyyy"))
     If C1 = "" Then C1 = "N"
     If Not IsDate(C1) Then Exit Sub
-    cad = Format(C1, "dd/mm/yyyy")
+    Cad = Format(C1, "dd/mm/yyyy")
     
     C1 = InputBox("Ultima HORA leida", "Biostar", Format(Text2.Text, "hh:mm:ss"))
     If C1 = "" Then C1 = "N"
@@ -252,26 +253,26 @@ Dim C1 As String
     If InStr(1, C1, ":") = 0 Then Exit Sub
     
     
-    cad = cad & " " & C1
-    If Not IsDate(cad) Then
-        MsgBox "Fecha incorrecta " & cad, vbExclamation
+    Cad = Cad & " " & C1
+    If Not IsDate(Cad) Then
+        MsgBox "Fecha incorrecta " & Cad, vbExclamation
         Exit Sub
     End If
     
     C1 = DevuelveDesdeBD("max(fecha)", "marcajes", "1", "1")
     If C1 = "" Then C1 = "01/01/2001"
     
-    If CDate(C1) >= CDate(Format(cad, "dd/mm/yyyy")) Then
+    If CDate(C1) >= CDate(Format(Cad, "dd/mm/yyyy")) Then
         MsgBox "Fecha procesada", vbExclamation
-        Exit Sub
+        If vUsu.Codigo > 0 Then Exit Sub
     End If
     
-    C1 = "Desea guardar como ultima fecha leida : " & cad
+    C1 = "Desea guardar como ultima fecha leida : " & Cad
     If MsgBox(C1, vbQuestion + vbYesNo) = vbNo Then Exit Sub
     
-    C1 = "UPDATE biostar2 SET ultimaFechaLeida = " & DBSet(cad, "FH")
+    C1 = "UPDATE biostar2 SET ultimaFechaLeida = " & DBSet(Cad, "FH")
     If EjecutaSQL(C1) Then
-        Text2.Text = cad
+        Text2.Text = Cad
     End If
     
 End Sub
@@ -311,19 +312,19 @@ Dim NF As Integer
     'Borramos de la temporal en aripres
     conn.Execute "DELETE FROM tmppresencia where codusu =" & vUsu.Codigo
     
-    cad = Format(Text2.Text, "yyyymm")
-    Inicial = Val(cad)
+    Cad = Format(Text2.Text, "yyyymm")
+    Inicial = Val(Cad)
     Set ColTablas = New Collection
     Set miRsAux = New ADODB.Recordset
     miRsAux.Open "show tables", Cn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
-        cad = miRsAux.Fields(0)
+        Cad = miRsAux.Fields(0)
         
-        If LCase(Mid(cad, 1, 5)) = "t_lg2" Then   'Todas son del año 2000
+        If LCase(Mid(Cad, 1, 5)) = "t_lg2" Then   'Todas son del año 2000
             'TABLA de marcaje. Veamos si esta donde nos quedamos
            
-            cad = Mid(cad, 5)
-            If Val(cad) >= Inicial Then
+            Cad = Mid(Cad, 5)
+            If Val(Cad) >= Inicial Then
                 'ZIIIIIII
                 'Hay que tratarla
                 ColTablas.Add CStr(miRsAux.Fields(0))
@@ -340,16 +341,20 @@ Dim NF As Integer
     
     'Ya tenemos las tablas
     
+    'Octubre 2020
+    'Añadimos identificador termianal.  Hay una tabla
+    
+    
     For i = 1 To ColTablas.Count
         Label11.Caption = "Leyendo " & ColTablas.Item(i) & "  (" & i & "/" & ColTablas.Count & ")"
         Label11.Refresh
                                                                     'huell cara pin   tarjeta (20/05/20(
-        cad = "SELECT * ,from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') horaRealUnix "
-        cad = cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097,4102)"
-        cad = cad & " AND from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') >" & Label11.Tag
-        cad = cad & " order by devdt"
-        miRsAux.Open cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText
-        cad = ""
+        Cad = "SELECT * ,from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') horaRealUnix "
+        Cad = Cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097,4102)"
+        Cad = Cad & " AND from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') >" & Label11.Tag
+        Cad = Cad & " order by devdt"
+        miRsAux.Open Cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText
+        Cad = ""
         If Not miRsAux.EOF Then
             
             
@@ -357,10 +362,10 @@ Dim NF As Integer
                 NumRegElim = NumRegElim + 1
                 '                       tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias)
                 'cad = cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!srvdt, "F") & ",'" & Format(miRsAux!srvdt, "hh:nn:ss")
-                cad = cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!horaRealUnix, "F") & ",'" & Format(miRsAux!horaRealUnix, "hh:nn:ss")
-                'horaRealUnix
-                cad = cad & "'," & vUsu.Codigo & ",0)"
-                
+                Cad = Cad & ", (" & NumRegElim & "," & miRsAux!usrid & "," & DBSet(miRsAux!horaRealUnix, "F") & ",'" & Format(miRsAux!horaRealUnix, "hh:nn:ss")
+                Cad = Cad & "'," & vUsu.Codigo & ",0," & DBSet(miRsAux!DEVUID, "T")
+                Cad = Cad & ")"
+
                 miRsAux.MoveNext
             Wend
             miRsAux.MovePrevious
@@ -369,10 +374,11 @@ Dim NF As Integer
         miRsAux.Close
         
         'tmpcombinada(IdTrabajador,Fecha,H1,codusu,idinci)
-        If cad <> "" Then
-            cad = Mid(cad, 2)
-            cad = "INSERT INTO tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias) VALUES " & cad
-            conn.Execute cad
+        ' -->  NomTrabajador: devUI    semana: luego pondre que id es el devUI en aripres.terminales
+        If Cad <> "" Then
+            Cad = Mid(Cad, 2)
+            Cad = "INSERT INTO tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias,NomTrabajador) VALUES " & Cad
+            conn.Execute Cad
         End If
     Next i
     Set ColTablas = Nothing
@@ -386,26 +392,59 @@ Dim NF As Integer
     Label11.Caption = "Comprobando trabajadores"
     Label11.Refresh
     espera 0.5
-    cad = "Select distinct idtra from tmppresencia where codusu =" & vUsu.Codigo & " ORDER BY 1"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select distinct idtra from tmppresencia where codusu =" & vUsu.Codigo & " ORDER BY 1"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     NumRegElim = 0
     While Not miRsAux.EOF
         Label11.Caption = "Biostar ID" & miRsAux!idTRa
         Label11.Refresh
-        cad = DevuelveDesdeBD("idtrabajador", "trabajadores", "idTraReloj2", CStr(miRsAux!idTRa), "T")
-        If cad = "" Then
-            cad = DevuelveNombreBiostar(CStr(miRsAux!idTRa))
+        Cad = DevuelveDesdeBD("idtrabajador", "trabajadores", "idTraReloj2", CStr(miRsAux!idTRa), "T")
+        If Cad = "" Then
+            Cad = DevuelveNombreBiostar(CStr(miRsAux!idTRa))
             NumRegElim = NumRegElim + 1
             ListView1.ListItems.Add , , CStr(miRsAux!idTRa)
-            ListView1.ListItems(NumRegElim).SubItems(1) = cad
+            ListView1.ListItems(NumRegElim).SubItems(1) = Cad
         Else
             'Para no volver a leer , pondremos el trabajador de Aripres en el campo seccion
-            cad = "UPDATE tmppresencia set seccion=" & cad & " WHERE idtra=" & miRsAux!idTRa
-            conn.Execute cad
+            Cad = "UPDATE tmppresencia set seccion=" & Cad & " WHERE idtra=" & miRsAux!idTRa
+            conn.Execute Cad
         End If
         miRsAux.MoveNext
     Wend
     miRsAux.Close
+    
+    
+    
+    
+    Label11.Caption = "Comprobando terminales"
+    Label11.Refresh
+    espera 0.5
+    Cad = "Select distinct NomTrabajador from tmppresencia where codusu =" & vUsu.Codigo & " ORDER BY 1"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    
+    While Not miRsAux.EOF
+        Label11.Caption = "Biostar ID" & miRsAux!nomtrabajador
+        Label11.Refresh
+        Cad = "tipo='BIOSTAR' AND idterminal"
+        Cad = DevuelveDesdeBD("id", "terminales", Cad, miRsAux!nomtrabajador, "T")
+        If Cad = "" Then
+            Cad = "TERMINAL Sin dar de alta:   " & miRsAux!nomtrabajador
+            NumRegElim = NumRegElim + 1
+            ListView1.ListItems.Add , , CStr(miRsAux!nomtrabajador)
+            ListView1.ListItems(NumRegElim).SubItems(1) = Cad
+        Else
+            'Para no volver a leer , pondremos el trabajador de Aripres en el campo seccion
+            Cad = "UPDATE tmppresencia set semana=" & Cad & " WHERE NomTrabajador=" & DBSet(miRsAux!nomtrabajador, "T")
+            conn.Execute Cad
+        End If
+        miRsAux.MoveNext
+    Wend
+    miRsAux.Close
+    
+    
+    
+    
+    
     
     
     
@@ -415,18 +454,18 @@ Dim NF As Integer
         Label11.Refresh
             
         
-        cad = DevuelveDesdeBD("max(secuencia)", "entradafichajes", "1", "1")
-        cad = Val(cad) + 1
+        Cad = DevuelveDesdeBD("max(secuencia)", "entradafichajes", "1", "1")
+        Cad = Val(Cad) + 1
         
         'Estan todos los trabajadores en la BD
-        cad = " tmppresencia ,(SELECT @rownum:=" & cad & " ) r where codusu = " & vUsu.Codigo
+        Cad = " tmppresencia ,(SELECT @rownum:=" & Cad & " ) r where codusu = " & vUsu.Codigo
         
-        '                                                                            1:  REloj secundario
-        cad = "SELECT @rownum:=@rownum+1 AS rownum ,seccion,fecha ,h1,incidencias,h1,1 FROM " & cad & " ORDER BY fecha,h1"
+        '
+        Cad = "SELECT @rownum:=@rownum+1 AS rownum ,seccion,fecha ,h1,incidencias,h1,semana FROM " & Cad & " ORDER BY fecha,h1"
         
-        cad = "INSERT INTO entradafichajes(Secuencia,idTrabajador,Fecha,Hora,idInci,HoraReal,reloj) " & cad
+        Cad = "INSERT INTO entradafichajes(Secuencia,idTrabajador,Fecha,Hora,idInci,HoraReal,reloj) " & Cad
         
-        conn.Execute cad
+        conn.Execute Cad
     
     
         
@@ -437,8 +476,8 @@ Dim NF As Integer
         HorasNocturnas Me.Label11
         
         
-        cad = "UPDATE  biostar2 set ultimaFechaLeida =" & DBSet(MaxFecha, "FH")
-        conn.Execute cad
+        Cad = "UPDATE  biostar2 set ultimaFechaLeida =" & DBSet(MaxFecha, "FH")
+        conn.Execute Cad
         
         Text2.Text = Format(MaxFecha, "dd/mm/yyyy hh:nn:ss")
         
@@ -452,35 +491,35 @@ Dim NF As Integer
             
             If AbrirFicheroExportar(NF) Then
             
-                cad = "Select * from entradafichajes WHERE revisado =0 order by fecha,hora"
+                Cad = "Select * from entradafichajes WHERE revisado =0 order by fecha,hora"
                 Set miRsAux = New ADODB.Recordset
-                miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                 
                 If Not miRsAux.EOF Then
                    
                     
                     While Not miRsAux.EOF
-                            cad = Format(miRsAux!idTrabajador, "00000")  'trab
-                            cad = cad & "," & Format(miRsAux!Fecha, "mm")  'mes
-                            cad = cad & "," & Format(miRsAux!Fecha, "dd")  'dia
-                            cad = cad & "," & Format(miRsAux!Hora, "hh")   'hora
-                            cad = cad & "," & Format(miRsAux!Hora, "nn")   'min
+                            Cad = Format(miRsAux!idTrabajador, "00000")  'trab
+                            Cad = Cad & "," & Format(miRsAux!Fecha, "mm")  'mes
+                            Cad = Cad & "," & Format(miRsAux!Fecha, "dd")  'dia
+                            Cad = Cad & "," & Format(miRsAux!Hora, "hh")   'hora
+                            Cad = Cad & "," & Format(miRsAux!Hora, "nn")   'min
                             ''lo mando aunque no es importante
                             'Aux = Aux & "," & Format(rs!Fecha, "yyyy")   'año
                             'Aux = Aux & ",0000,"
                             ''mandare la secuencia
                             'Aux = Aux & Format(rs!Secuencia, "00000")
-                            cad = cad & ",0000,0000,00000"
+                            Cad = Cad & ",0000,0000,00000"
                             
                             
-                            Print #NF, cad
+                            Print #NF, Cad
                             
                             
                             miRsAux.MoveNext
                     Wend
                     
-                    cad = "UPDATE  entradafichajes SET revisado =1 where revisado=0"
-                    conn.Execute cad
+                    Cad = "UPDATE  entradafichajes SET revisado =1 where revisado=0"
+                    conn.Execute Cad
                     
                     Label11.Caption = "Cerrando fichero"
                     Label11.Refresh
@@ -563,11 +602,11 @@ End Sub
 Private Sub Command3_Click()
     On Error Resume Next
     
-    cad = ""
+    Cad = ""
     For NumRegElim = 1 To ListView1.ListItems.Count
-        cad = cad & ListView1.ListItems(NumRegElim).Text & Chr(9) & ListView1.ListItems(NumRegElim).SubItems(1) & vbCrLf
+        Cad = Cad & ListView1.ListItems(NumRegElim).Text & Chr(9) & ListView1.ListItems(NumRegElim).SubItems(1) & vbCrLf
     Next NumRegElim
-    Clipboard.SetText cad
+    Clipboard.SetText Cad
     If Err.Number <> 0 Then MuestraError Err.Number, Err.Description
         
 End Sub
@@ -601,11 +640,11 @@ End Sub
 
 Private Function AbrirConexion() As Boolean
     
-    On Error GoTo EAbrirConexion
+    On Error GoTo eAbrirConexion
     AbrirConexion = False
     
-    cad = DevuelveDesdeBD("configreloj2", "empresas", "1", "1")
-    If cad = "" Then
+    Cad = DevuelveDesdeBD("configreloj2", "empresas", "1", "1")
+    If Cad = "" Then
         MsgBox "Mal configurado BIOSTAR2", vbExclamation
         Exit Function
     End If
@@ -615,14 +654,14 @@ Private Function AbrirConexion() As Boolean
     
     
     'Este es el que hay que dejar
-    cad = "DSN=" & cad & ""   'Aripres4;DESC=MySQL ODBC 3.51 Driver DSN;;;;OPTION=3;STMT=;
+    Cad = "DSN=" & Cad & ""   'Aripres4;DESC=MySQL ODBC 3.51 Driver DSN;;;;OPTION=3;STMT=;
     '    Cad = Cad & ";Persist Security Info=true"
-    Cn.Open cad
+    Cn.Open Cad
     
     AbrirConexion = True
     Exit Function
-EAbrirConexion:
-    MuestraError Err.Number, Err.Description
+eAbrirConexion:
+    MuestraError Err.Number, Err.Description, Cad
     Text2.Text = "ERROR"
     Set Cn = Nothing
 End Function
@@ -637,16 +676,16 @@ Private Function UltimaLecturaBD() As Boolean
     
     UltimaLecturaBD = False
     
-    cad = "Select ultimaFechaLeida FROM biostar2"
+    Cad = "Select ultimaFechaLeida FROM biostar2"
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    cad = ""
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = ""
     If Not miRsAux.EOF Then
-        If Not IsNull(miRsAux.Fields(0)) Then cad = Format(miRsAux.Fields(0), "dd/mm/yyyy hh:mm:ss")
+        If Not IsNull(miRsAux.Fields(0)) Then Cad = Format(miRsAux.Fields(0), "dd/mm/yyyy hh:mm:ss")
     End If
-    If cad = "" Then cad = "01/01/2020 00:00:00"
+    If Cad = "" Then Cad = "01/01/2020 00:00:00"
     
-    Me.Text2.Text = cad
+    Me.Text2.Text = Cad
     
     miRsAux.Close
     UltimaLecturaBD = True

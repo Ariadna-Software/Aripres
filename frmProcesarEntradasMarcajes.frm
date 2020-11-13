@@ -354,6 +354,7 @@ Dim F As Date
     
     If vEmpresa.QueEmpresa = vbAlzira Then
         CadenaDesdeOtroForm = ""
+        frmPrevioProcesar.Modificar = True
         frmPrevioProcesar.Fecha = CDate(Text1(0).Text)
         frmPrevioProcesar.Show vbModal
         If CadenaDesdeOtroForm = "" Then Exit Sub

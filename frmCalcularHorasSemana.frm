@@ -194,7 +194,7 @@ End Sub
 
 'Dim ParaLaCooperativa As Byte    ** YA NO LA PASAMOS.
 Private Sub CargaDatos()
-Dim cad As String
+Dim Cad As String
 Dim idTrabajador As Long
 Dim Fecha As Date
 Dim IT As ListItem
@@ -207,26 +207,26 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     
     'Coje los festivos del CALENDARIO 1, pero para la seccion. Obtengo la seccion
     
-    cad = DevuelveDesdeBD("min(idtrabajador)", "tmphorastipoalzira", "codusu", CStr(vUsu.Codigo))
-    If cad <> "" Then
-        idTrabajador = Val(DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", cad))
-        cad = DevuelveDesdeBD("seccion", "trabajadores", "idtrabajador", cad)
+    Cad = DevuelveDesdeBD("min(idtrabajador)", "tmphorastipoalzira", "codusu", CStr(vUsu.Codigo))
+    If Cad <> "" Then
+        idTrabajador = Val(DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", Cad))
+        Cad = DevuelveDesdeBD("seccion", "trabajadores", "idtrabajador", Cad)
     Else
-        cad = "1"
+        Cad = "1"
     End If
-    IdSeccion = Val(cad)
+    IdSeccion = Val(Cad)
     'Ver si la seccion tiene proceso de nominas compensables estructurlaes...
-    cad = DevuelveDesdeBD("Nominas", "secciones", "idseccion", cad)
-    ProcesoDeNominasAlzira = cad = "1"
+    Cad = DevuelveDesdeBD("Nominas", "secciones", "idseccion", Cad)
+    ProcesoDeNominasAlzira = Cad = "1"
     If vEmpresa.CompensaHorasNominaMES Then ProcesoDeNominasAlzira = False
     
     
     
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 1)
-    InicioProceso = CDate(cad)
-    cad = RecuperaValor(CadenaDesdeOtroForm, 2)
-    FinProceso = CDate(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 1)
+    InicioProceso = CDate(Cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 2)
+    FinProceso = CDate(Cad)
     
     
     FechaInicioSemana = InicioProceso
@@ -243,12 +243,12 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
         'Aunque pida un periodo corto, siempre es una semana trabajada, 5 dias
         diasTrabajados = 5
         Fecha = DateAdd("d", 6, FechaInicioSemana)
-        cad = " fecha between " & DBSet(FechaInicioSemana, "F") & " AND " & DBSet(Fecha, "F")
-        cad = cad & " AND idcal=" & idTrabajador
-        cad = "Select * from calendariof WHERE " & cad
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic
+        Cad = " fecha between " & DBSet(FechaInicioSemana, "F") & " AND " & DBSet(Fecha, "F")
+        Cad = Cad & " AND idcal=" & idTrabajador
+        Cad = "Select * from calendariof WHERE " & Cad
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic
         
-        cad = ""
+        Cad = ""
         While Not miRsAux.EOF
             
             If Weekday(miRsAux!Fecha, vbMonday) <= 5 Then diasTrabajados = diasTrabajados - 1
@@ -260,12 +260,12 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     
     Else
         diasTrabajados = DateDiff("d", InicioProceso, FinProceso)
-        cad = " fecha between " & DBSet(InicioProceso, "F") & " AND " & DBSet(FinProceso, "F")
-        cad = cad & " AND idcal=" & idTrabajador
-        cad = "Select * from calendariof WHERE " & cad
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic
+        Cad = " fecha between " & DBSet(InicioProceso, "F") & " AND " & DBSet(FinProceso, "F")
+        Cad = Cad & " AND idcal=" & idTrabajador
+        Cad = "Select * from calendariof WHERE " & Cad
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic
         
-        cad = ""
+        Cad = ""
         While Not miRsAux.EOF
             If Weekday(miRsAux!Fecha, vbMonday) <= 5 Then diasTrabajados = diasTrabajados - 1
                         
@@ -279,19 +279,19 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     
     
 
-    cad = "Select * from tiposhora ORDER BY TipoHora"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic
+    Cad = "Select * from tiposhora ORDER BY TipoHora"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic
     CuantosTiposHoraTrabaja = 0
-    cad = ""
+    Cad = ""
     While Not miRsAux.EOF
-        cad = cad & Mid(miRsAux!Desctipohora, 1, 3) & "|"
+        Cad = Cad & Mid(miRsAux!Desctipohora, 1, 3) & "|"
         CuantosTiposHoraTrabaja = CuantosTiposHoraTrabaja + 1
         miRsAux.MoveNext
     Wend
     miRsAux.Close
     
     For J = 1 To CuantosTiposHoraTrabaja
-        Me.ListView1.ColumnHeaders.Add , , RecuperaValor(cad, J), 800, 1
+        Me.ListView1.ColumnHeaders.Add , , RecuperaValor(Cad, J), 800, 1
     Next
     
     
@@ -317,15 +317,15 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     Set miRs = New ADODB.Recordset
     
     
-    cad = "select  trabajadores.idtrabajador,nomtrabajador"
-    cad = cad & " ,tmphorastipoalzira.*,DescTipoHora"
-    cad = cad & " from trabajadores,tmphorastipoalzira,tiposhora Where trabajadores.idTrabajador"
-    cad = cad & " = tmphorastipoalzira.idTrabajador And tiposhora.TipoHora = tmphorastipoalzira.tipohoras"
+    Cad = "select  trabajadores.idtrabajador,nomtrabajador"
+    Cad = Cad & " ,tmphorastipoalzira.*,DescTipoHora"
+    Cad = Cad & " from trabajadores,tmphorastipoalzira,tiposhora Where trabajadores.idTrabajador"
+    Cad = Cad & " = tmphorastipoalzira.idTrabajador And tiposhora.TipoHora = tmphorastipoalzira.tipohoras"
     'No separamos por cooperativa o fruxeresa. El desdeoble lo hacen luego
     'Cad = Cad & " and tmphorastipoalzira.ParaEmpresa =" & ParaLaCooperativa
-    cad = cad & " and tmphorastipoalzira.codusu =" & vUsu.Codigo
-    cad = cad & " order by trabajadores.idtrabajador,fecha,tipohoras"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = Cad & " and tmphorastipoalzira.codusu =" & vUsu.Codigo
+    Cad = Cad & " order by trabajadores.idtrabajador,fecha,tipohoras"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     ReDim Sumas(CuantosTiposHoraTrabaja)
     
     idTrabajador = -1
@@ -380,18 +380,18 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
                     
                     'Cad = "Select * from jornadassemanalesalz where ParaEmpresa = " & ParaLaCooperativa
                     'Noviembre 2014
-                    cad = "Select idtrabajador,fecha,tipohoras,sum(horastrabajadas) horastrabajadas,sum(laborable) labor from jornadassemanalesalz WHERE "
+                    Cad = "Select idtrabajador,fecha,tipohoras,sum(horastrabajadas) horastrabajadas,sum(laborable) labor from jornadassemanalesalz WHERE "
                     
-                    cad = cad & " IdTrabajador =" & idTrabajador
+                    Cad = Cad & " IdTrabajador =" & idTrabajador
                     
       
-                    cad = cad & " AND fecha >=" & DBSet(FechaInicioSemana, "F") & " AND fecha <" & DBSet(InicioProceso, "F")
+                    Cad = Cad & " AND fecha >=" & DBSet(FechaInicioSemana, "F") & " AND fecha <" & DBSet(InicioProceso, "F")
                     
                     'nov2014
-                    cad = cad & " GROUP BY 1,2,3"
+                    Cad = Cad & " GROUP BY 1,2,3"
                     
-                    cad = cad & " ORDER BY fecha,tipohoras"
-                    miRs.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                    Cad = Cad & " ORDER BY fecha,tipohoras"
+                    miRs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                     'Vemos los datos semanas anteriors
                     F2 = "01/01/1900"
                     While Not miRs.EOF
@@ -457,32 +457,32 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
        
     Dim Aux As String
     Dim FechaAux As Date
-    Dim i As Integer
+    Dim I As Integer
     Dim DiasLaborablesInicioSemana As Integer
     'Febrero 2015
     'Dias nomina trabajador
     'Primero. Dias
     If idTrabajador >= 0 Then
-        cad = DevuelveDesdeBD("idcal", "trabajadores", "idTrabajador", CStr(idTrabajador))
-        idTrabajador = Val(cad) 'Celandario
+        Cad = DevuelveDesdeBD("idcal", "trabajadores", "idTrabajador", CStr(idTrabajador))
+        idTrabajador = Val(Cad) 'Celandario
                 
-        cad = "fecha>=" & DBSet(FechaInicioSemana, "F") & " AND fecha<="
+        Cad = "fecha>=" & DBSet(FechaInicioSemana, "F") & " AND fecha<="
         'Ultimo dia de proceso
-        i = Weekday(FinProceso, vbMonday)
-        If i > vbFriday Then
-            FechaAux = DateAdd("d", -(i - 1), CDate(FinProceso))
+        I = Weekday(FinProceso, vbMonday)
+        If I > vbFriday Then
+            FechaAux = DateAdd("d", -(I - 1), CDate(FinProceso))
         Else
             FechaAux = FinProceso
         End If
             
-        cad = cad & DBSet(FechaAux, "F") & " AND idcal"
-        cad = DevuelveDesdeBD("count(*)", "calendariof", cad, CStr(idTrabajador))
+        Cad = Cad & DBSet(FechaAux, "F") & " AND idcal"
+        Cad = DevuelveDesdeBD("count(*)", "calendariof", Cad, CStr(idTrabajador))
         'ya tengo los festivos que hay en esa periodo de facturacion
-        idTrabajador = Val(cad) 'numero festivos del periodo
+        idTrabajador = Val(Cad) 'numero festivos del periodo
         
-        i = DateDiff("d", FechaInicioSemana, FechaAux) + 1 'Dias del proceso
-        i = i - idTrabajador 'dias proceso
-        If i < 0 Then
+        I = DateDiff("d", FechaInicioSemana, FechaAux) + 1 'Dias del proceso
+        I = I - idTrabajador 'dias proceso
+        If I < 0 Then
             Stop 'que de error
         End If
         
@@ -491,15 +491,15 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
     'Desde inicio semana hasta el dia antes del dia a procesar
     'FechaInicioSemana
     FechaAux = DateAdd("d", -1, InicioProceso)
-    cad = "select idtrabajador,sum(laborable) from jornadassemanalesalz where "
-    cad = cad & " fecha>=" & DBSet(FechaInicioSemana, "F") & " AND fecha <=" & DBSet(FechaAux, "F")
-    cad = cad & " GROUP BY idtrabajador"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "select idtrabajador,sum(laborable) from jornadassemanalesalz where "
+    Cad = Cad & " fecha>=" & DBSet(FechaInicioSemana, "F") & " AND fecha <=" & DBSet(FechaAux, "F")
+    Cad = Cad & " GROUP BY idtrabajador"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not miRsAux.EOF
         If DBLet(miRsAux.Fields(1), "N") > 0 Then
-            For i = 1 To ListView1.ListItems.Count
-                If ListView1.ListItems(i).Tag = 0 Then
-                    If Val(ListView1.ListItems(i).Text) = miRsAux!idTrabajador Then
+            For I = 1 To ListView1.ListItems.Count
+                If ListView1.ListItems(I).Tag = 0 Then
+                    If Val(ListView1.ListItems(I).Text) = miRsAux!idTrabajador Then
                         'Este es
                         
                         ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + CuantosTiposHoraTrabaja + 1) = miRsAux.Fields(1)
@@ -507,7 +507,7 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
                     End If
                 End If
             Next
-            If i > ListView1.ListItems.Count Then
+            If I > ListView1.ListItems.Count Then
               '  MsgBox "No se ha encotrado al trabajador: " & miRsAux!idTrabajador
               '  Stop
             End If
@@ -735,48 +735,75 @@ End Sub
 
 
 Private Sub HacerGeneracionPeriodo()
-Dim cad As String
+Dim Cad As String
 Dim C As String
 Dim idTrabajador As Long
 Dim Columnas As Byte
-Dim i As Byte
+Dim I As Byte
 Dim Horas As Currency
 Dim Laborable As Byte
 Dim HaSidoAjustada As Boolean
+
+Dim TieneZonas As Boolean
+Dim CuadraHorasZonas As Boolean
+Dim AuxH As String
+Dim CadenaZonasAreas As String
+Dim codArea As Integer
+Dim HZ1 As Currency
+Dim HZ2 As Currency
+Dim HorasArea As Currency
+Dim KK As Integer
+Dim Kuantos As Integer
+Dim FinB As Boolean
+
+
+Dim vecHorasZona() As Currency
+Dim vecZona() As Integer
+Dim PunteroZona As Integer
     'Encadena desde otro form llevare las fechas del intervalor
-    cad = "select paraempresa,count(*) as cuantos from tmphorastipoalzira where codusu =" & vUsu.Codigo & " group by 1"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    cad = ""
+    Cad = "select paraempresa,count(*) as cuantos from tmphorastipoalzira where codusu =" & vUsu.Codigo & " group by 1"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = ""
     If miRsAux.EOF Then
-        cad = cad & "0·0|"
+        Cad = Cad & "0·0|"
     Else
     
         While Not miRsAux.EOF
-            cad = cad & miRsAux!paraempresa & "·" & miRsAux!Cuantos & "|"
+            Cad = Cad & miRsAux!paraempresa & "·" & miRsAux!Cuantos & "|"
             miRsAux.MoveNext
         Wend
     End If
     miRsAux.Close
     
+    'Si tiene ZONAS
+    TieneZonas = False
+    Cad = "(select distinct area from terminales) as mister "
+    Cad = DevuelveDesdeBD("count(*)", Cad, "1", "1")
+    If Val(Cad) > 1 Then TieneZonas = True
+        
+    
+    
     
     'jornadassemanalesproceso fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre
     If Me.TodasSecciones Then
-        cad = "SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",count(*)"
-        cad = cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", seccion"
-        cad = cad & " from trabajadores,tmphorastipoalzira,tiposhora Where"
-        cad = cad & " trabajadores.idTrabajador = tmphorastipoalzira.idTrabajador And"
-        cad = cad & " tiposhora.TipoHora = tmphorastipoalzira.tipohoras And tmphorastipoalzira.codusu = " & vUsu.Codigo
-        cad = cad & " group by seccion"
+        Cad = "SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",count(*)"
+        Cad = Cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", seccion"
+        Cad = Cad & " from trabajadores,tmphorastipoalzira,tiposhora Where"
+        Cad = Cad & " trabajadores.idTrabajador = tmphorastipoalzira.idTrabajador And"
+        Cad = Cad & " tiposhora.TipoHora = tmphorastipoalzira.tipohoras And tmphorastipoalzira.codusu = " & vUsu.Codigo
+        Cad = Cad & " group by seccion"
         
         
     
     Else
-        cad = "now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & "," & DBSet(cad, "T")
-        cad = cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & "," & IdSeccion
-        cad = " VALUES (" & cad & ")"
+        Cad = "now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & "," & DBSet(Cad, "T")
+        Cad = Cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & "," & IdSeccion
+        Cad = " VALUES (" & Cad & ")"
     End If
-    cad = "INSERT INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) " & cad
-    conn.Execute cad
+    
+    Stop
+    Cad = "INSERT INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) " & Cad
+    conn.Execute Cad
     
 
     'Si va por todas las secciones, las que no haya procesado, porque no tienen datos entre las fechas, la metemos en el proceso
@@ -784,80 +811,192 @@ Dim HaSidoAjustada As Boolean
     
     If TodasSecciones Then
         espera 0.5
-        cad = "INSERT IGNORE INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) "
-        cad = cad & " SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",'-1'"
-        cad = cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", idseccion"
-        cad = cad & " from secciones where Nominas =1 and not idseccion in (select seccion from jornadassemanalesproceso where fechaini = " & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & ")"
-        conn.Execute cad
+        Cad = "INSERT IGNORE INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) "
+        Cad = Cad & " SELECT now()," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & "," & DBSet(RecuperaValor(CadenaDesdeOtroForm, 2), "F") & ",'-1'"
+        Cad = Cad & "," & vUsu.Codigo & "," & DBSet(vUsu.Nombre, "T") & ", idseccion"
+        Cad = Cad & " from secciones where Nominas =1 and not idseccion in (select seccion from jornadassemanalesproceso where fechaini = " & DBSet(RecuperaValor(CadenaDesdeOtroForm, 1), "F") & ")"
+        conn.Execute Cad
     End If
 
-    If vEmpresa.QueEmpresa = 2 Then
+    
+    If vEmpresa.QueEmpresa = vbAlzira Then
         'COOPIC tiene proceso final bolsa horas
-        cad = "select now(), IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa "
-        cad = cad & " from trabajadoresbolsahoras"
-        cad = "insert into jornadassemanalesHcoBolsa(fecha,IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) " & cad
-        conn.Execute cad
+        Cad = "select now(), IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa "
+        Cad = Cad & " from trabajadoresbolsahoras"
+        Cad = "insert into jornadassemanalesHcoBolsa(fecha,IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) " & Cad
+        conn.Execute Cad
     End If
     
     'Insertamos en la que tendra que dia , que horas
     'Recorremos el LISTVIEW y haremos un insert con cada hora, bien sea nor estuct...
     
-    C = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable) VALUES"
-    'Cad = Cad & " SELECT idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa ,0 "
-    'Cad = Cad & " FROM tmphorastipoalzira where codusu = " & vUsu.Codigo
+    C = "INSERT INTO jornadassemanalesalz(idtrabajador,fecha,TipoHoras,horastrabajadas,ParaEmpresa,Ajuste,laborable,codarea) VALUES"
+    
     idTrabajador = 0
-    cad = ""
+    Cad = ""
     If ListView1.ListItems.Count > 0 Then Columnas = Me.ListView1.ListItems(1).ListSubItems.Count
+    Set miRsAux = New ADODB.Recordset
     For J = 1 To Me.ListView1.ListItems.Count
         If ListView1.ListItems(J).Tag = 0 Then
             idTrabajador = CLng(ListView1.ListItems(J).Text)
+            If TieneZonas Then
+                If J > 1 Then miRsAux.Close  '1 es el primer trasbajador
+                AuxH = "select * from tmphorasArea where codusu =" & vUsu.Codigo & " AND   idtra=" & idTrabajador & " order by fecha,masdenArea"
+                miRsAux.Open AuxH, conn, adOpenKeyset, adCmdText
+                If Not miRsAux.EOF Then CuadraHorasZonas = True
+                    
+            End If
+            
+            
         Else
             If ListView1.ListItems(J).Tag = 1 Then
+                            
+                
                 'Id trabajador
                 Laborable = Val((ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + CuantosTiposHoraTrabaja + 1)))
-                For i = ColumnaDondeEmpiezanHoras To Columnas
-                    If Trim(ListView1.ListItems(J).SubItems(i)) <> "" Then
-                        cad = cad & ", (" & idTrabajador & "," & DBSet(Me.ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras - 1), "F") & "," & i - ColumnaDondeEmpiezanHoras & ","
-                        cad = cad & TransformaComasPuntos(Me.ListView1.ListItems(J).SubItems(i)) & ",0,"
-                        'Ha sido ajustada
-                        HaSidoAjustada = False
-                        If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras - 1).ForeColor = vbBlue Then
-                            HaSidoAjustada = True
+                
+                Kuantos = IIf(vEmpresa.QueEmpresa = vbAlzira, 1, 0)
+                CadenaZonasAreas = Format(Kuantos, "0000") & "-" & TransformaComasPuntos(CStr(HZ1)) & "|"
+                Kuantos = 1
+                If TieneZonas Then
+                            
+                    AuxH = "fecha =" & DBSet(Me.ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras - 1), "F")
+                    miRsAux.Find AuxH, , adSearchForward, 1
+                    If miRsAux.EOF Then
+                        'Ya esta arraiba
+                        
+                        ' CadenaZonasAreas      Kuantos
+                        CuadraHorasZonas = False
+                    Else
+                        If DBLet(miRsAux!masdenarea, "N") < 1 Then
+                            'una unica area de trabajo
+                            codArea = DBLet(miRsAux!Area)
+                            CuadraHorasZonas = False
                         Else
-                            If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras).ForeColor = vbBlue Then
-                                HaSidoAjustada = True
+                            'Empieza la fiesta
+                            
+                            AuxH = ""
+                            Kuantos = 0
+                            FinB = False
+                            While Not FinB
+                                If miRsAux!Fecha = Me.ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras - 1) Then
+                                
+                                    AuxH = AuxH & Format(miRsAux!Area, "0000") & "-" & miRsAux!Horas & "|"
+                                    Kuantos = Kuantos + 1
+                                    miRsAux.MoveNext
+                                Else
+                                    FinB = True
+                                End If
+                                
+                            Wend
+                            If Kuantos = 1 Then
+                                Stop
+                                'NO DEBERIA HABER LLGADO
                             Else
-                                If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras + 1).ForeColor = vbBlue Then HaSidoAjustada = True
+                                ReDim vecZona(Kuantos - 1)
+                                ReDim vecHorasZona(Kuantos - 1)
+                                For I = 0 To Kuantos - 1
+                                    CadenaZonasAreas = RecuperaValor(AuxH, I + 1)
+                                    vecZona(I) = Mid(CadenaZonasAreas, 1, 4)
+                                    vecHorasZona(I) = Mid(CadenaZonasAreas, 6)
+                                Next
+                                PunteroZona = 0
                             End If
                         End If
+                    End If
+                
+                End If
+                
+                For I = ColumnaDondeEmpiezanHoras To Columnas
                         
-                        cad = cad & Abs(HaSidoAjustada)
-                        'Dias nomina
-                        If Laborable > 0 Then
-                            cad = cad & ",1"
-                            Laborable = 0
-                        Else
-                            cad = cad & ",0"
-                        End If
-                        'Fin
-                        cad = cad & ")"
+                    
+                    If Trim(ListView1.ListItems(J).SubItems(I)) <> "" Then
+                            'Ha sido ajustada
+                            HaSidoAjustada = False
+                            If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras - 1).ForeColor = vbBlue Then
+                                HaSidoAjustada = True
+                            Else
+                                If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras).ForeColor = vbBlue Then
+                                    HaSidoAjustada = True
+                                Else
+                                    If ListView1.ListItems(J).ListSubItems(ColumnaDondeEmpiezanHoras + 1).ForeColor = vbBlue Then HaSidoAjustada = True
+                                End If
+                            End If
+                            HZ1 = ImporteFormateado(Me.ListView1.ListItems(J).SubItems(I))  'Horas
+                            
+                            Do
+                                
+                                If CuadraHorasZonas Then
+                                    If PunteroZona <= UBound(vecZona) Then
+                                        
+                                        If HZ1 >= vecHorasZona(PunteroZona) Then
+                                            'Son mas horas de las que tiene en esa zona.
+                                            ' Por lo tanto, gasta las que necesite en esa zona y repetira para la siguiente
+                                            codArea = vecZona(PunteroZona)
+                                            HZ2 = vecHorasZona(PunteroZona)
+                                            HZ1 = HZ1 - HZ2
+                                            PunteroZona = PunteroZona + 1
+                                            
+                                        Else
+                                            codArea = vecZona(PunteroZona)
+                                            HZ2 = HZ1
+                                            HZ1 = 0
+                                            vecHorasZona(PunteroZona) = vecHorasZona(PunteroZona) - HZ2
+                                            If vecHorasZona(PunteroZona) < 0 Then Stop
+                                        End If
+                                    
+                                    Else
+                                        'Ya no hay mas zonas. Se queda en la que este
+                                        Stop
+                                    End If
+                                Else
+                                    HZ2 = HZ1
+                                    HZ1 = 0
+                                End If
+                                
+                                
+                                
+                            If HZ2 = 0 Then
+                                
+                                Debug.Print idTrabajador & " - " & DBSet(Me.ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras - 1), "F")
+                                'No hacemos insert
+                            Else
+                                Cad = Cad & ", (" & idTrabajador & "," & DBSet(Me.ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras - 1), "F") & "," & I - ColumnaDondeEmpiezanHoras & ","
+                                Cad = Cad & DBSet(HZ2, "N") & ",0,"  'antes ponia: TransformaComasPuntos(Me.ListView1.ListItems(J).SubItems(I))
+                            
+                                Cad = Cad & Abs(HaSidoAjustada)
+                                'Dias nomina
+                                If Laborable > 0 Then
+                                    Cad = Cad & ",1"
+                                    Laborable = 0
+                                Else
+                                    Cad = Cad & ",0"
+                                End If
+                        
+                                'Nov 2020   Area
+                                Cad = Cad & "," & codArea
+                                'Fin
+                                Cad = Cad & ")"
+                            End If
+                            Loop Until HZ1 = 0
                     End If
                 Next
                 'Febr 2016. Dias nomina
-                If Len(cad) > 20000 Then
-                    cad = Mid(cad, 2)
-                    cad = C & cad
-                    conn.Execute cad
-                    cad = ""
+                If Len(Cad) > 20000 Then
+                    Cad = Mid(Cad, 2)
+                    Cad = C & Cad
+                    conn.Execute Cad
+                    Cad = ""
                 End If
+                
             End If
         End If
     Next J
-    
-    If cad <> "" Then
-        cad = Mid(cad, 2)
-        cad = C & cad
-        conn.Execute cad
+    Set miRsAux = Nothing
+    If Cad <> "" Then
+        Cad = Mid(Cad, 2)
+        Cad = C & Cad
+        conn.Execute Cad
     End If
     
     
@@ -869,11 +1008,15 @@ Dim HaSidoAjustada As Boolean
 
 End Sub
 
+
+
+
+
 Private Sub AjustarHoras()
 Dim Difer As Currency
 Dim PrimerDiaTrabajador As Integer
 Dim PrimerDiaParaAjustar As Integer
-Dim i As Integer
+Dim I As Integer
 Dim Llevo As Currency
 Dim Horas As Currency
 Dim HorasSemama As Integer
@@ -901,18 +1044,18 @@ Dim HemosAjustado As Boolean
                 'Buscare el oprimer dia a procesar.
                 PrimerDiaTrabajador = 0
                 PrimerDiaParaAjustar = 0
-                i = J - 1
+                I = J - 1
                 While PrimerDiaTrabajador = 0
-                    If Me.ListView1.ListItems(i).Tag = 0 Then   'columna nombre
+                    If Me.ListView1.ListItems(I).Tag = 0 Then   'columna nombre
                         'Primer dia a trabajar
-                        PrimerDiaTrabajador = i + 1
+                        PrimerDiaTrabajador = I + 1
                         If PrimerDiaParaAjustar = 0 Then PrimerDiaParaAjustar = PrimerDiaTrabajador
                     Else
                         'Si ya esta ajustado no podre tocarlo
-                        If Me.ListView1.ListItems(i).Tag = 4 Then
-                            If PrimerDiaParaAjustar = 0 Then PrimerDiaParaAjustar = i + 1
+                        If Me.ListView1.ListItems(I).Tag = 4 Then
+                            If PrimerDiaParaAjustar = 0 Then PrimerDiaParaAjustar = I + 1
                         End If
-                        i = i - 1
+                        I = I - 1
                         
                     End If
                 Wend
@@ -920,8 +1063,8 @@ Dim HemosAjustado As Boolean
                 If PrimerDiaTrabajador <> PrimerDiaParaAjustar Then
                     'Porceso ya parte de semana
                     Llevo = 0
-                    For i = PrimerDiaTrabajador To PrimerDiaParaAjustar - 1 'horas YA Procesadas
-                        Horas = ImporteFormateado(Trim(ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras)))
+                    For I = PrimerDiaTrabajador To PrimerDiaParaAjustar - 1 'horas YA Procesadas
+                        Horas = ImporteFormateado(Trim(ListView1.ListItems(I).SubItems(ColumnaDondeEmpiezanHoras)))
                         Llevo = Llevo + Horas
                     Next
                     If Llevo > HorasSemama Then
@@ -936,29 +1079,29 @@ Dim HemosAjustado As Boolean
                 End If
                 
                
-                For i = PrimerDiaTrabajador To J - 2 'Los dias
+                For I = PrimerDiaTrabajador To J - 2 'Los dias
                 
-                    Horas = ImporteFormateado(Trim(ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras)))
+                    Horas = ImporteFormateado(Trim(ListView1.ListItems(I).SubItems(ColumnaDondeEmpiezanHoras)))
                     If Horas + Llevo > HorasSemama Then
                         'Ya las pasa. Son todas ESTRUCTURALES excepto si son del sabado
                         Difer = (Horas + Llevo) - HorasSemama
                         
                         'HT tiene una DIFER menos
-                        ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras) = Format(Horas - Difer, "0.00")
+                        ListView1.ListItems(I).SubItems(ColumnaDondeEmpiezanHoras) = Format(Horas - Difer, "0.00")
                         
                         
                         'HEstructurales tiene una SI NO ES SABADO
-                        Horas = ImporteFormateado(Trim(ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras + 1)))
+                        Horas = ImporteFormateado(Trim(ListView1.ListItems(I).SubItems(ColumnaDondeEmpiezanHoras + 1)))
                         Horas = Horas + Difer
-                        ListView1.ListItems(i).SubItems(ColumnaDondeEmpiezanHoras + 1) = Format(Horas, "0.00")
-                        ListView1.ListItems(i).ListSubItems(ColumnaDondeEmpiezanHoras + 1).ForeColor = vbBlue
-                        ListView1.ListItems(i).ListSubItems(ColumnaDondeEmpiezanHoras - 1).ForeColor = vbBlue
+                        ListView1.ListItems(I).SubItems(ColumnaDondeEmpiezanHoras + 1) = Format(Horas, "0.00")
+                        ListView1.ListItems(I).ListSubItems(ColumnaDondeEmpiezanHoras + 1).ForeColor = vbBlue
+                        ListView1.ListItems(I).ListSubItems(ColumnaDondeEmpiezanHoras - 1).ForeColor = vbBlue
                         
                         Llevo = HorasSemama 'Ya tiene las semanales cumplidas
                     Else
                         Llevo = Llevo + Horas
                     End If
-                Next i
+                Next I
                 
                 
                 
@@ -972,17 +1115,17 @@ Dim HemosAjustado As Boolean
         End If
         
         Dim Fin As Boolean
-        Dim cad As String
+        Dim Cad As String
         Dim DiasSemana As Integer
         Dim DiasTr As Integer
         Dim FechaAux As Date
         
-        cad = DevuelveDesdeBD("min(idtrabajador)", "tmphorastipoalzira", "codusu", CStr(vUsu.Codigo))
-        If cad = "" Then
-            cad = "1"
+        Cad = DevuelveDesdeBD("min(idtrabajador)", "tmphorastipoalzira", "codusu", CStr(vUsu.Codigo))
+        If Cad = "" Then
+            Cad = "1"
         Else
-            cad = DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", cad)
-            If cad = "" Then cad = "1"
+            Cad = DevuelveDesdeBD("idcal", "trabajadores", "idtrabajador", Cad)
+            If Cad = "" Then Cad = "1"
         End If
         J = Weekday(FinProceso, vbMonday)
         If J > 5 Then
@@ -994,11 +1137,11 @@ Dim HemosAjustado As Boolean
             DiasSemana = DateDiff("d", FechaInicioSemana, FinProceso) + 1
         End If
         
-        cad = " idcal =" & cad
-        cad = cad & " AND fecha between " & DBSet(FechaInicioSemana, "F") & " AND " & DBSet(FinProceso, "F") & " AND 1"
-        cad = DevuelveDesdeBD("count(*)", "calendariof", cad, "1")
+        Cad = " idcal =" & Cad
+        Cad = Cad & " AND fecha between " & DBSet(FechaInicioSemana, "F") & " AND " & DBSet(FinProceso, "F") & " AND 1"
+        Cad = DevuelveDesdeBD("count(*)", "calendariof", Cad, "1")
         
-        DiasSemana = DiasSemana - Val(cad)
+        DiasSemana = DiasSemana - Val(Cad)
         
         
         
@@ -1142,17 +1285,18 @@ End Sub
 Private Function CargarDatosImpresion() As Boolean
 Dim Aux As String
 Dim IdTr As Long
-Dim cad As String
+Dim Cad As String
 Dim TieneAjustes As Boolean
 Dim Byt As Byte
 Dim Impor As Currency
 Dim DiasLaborables As Integer
+
     'tmpcombinada(IdTrabajador,Fecha,idinci,HT,HE,HR)
     NumRegElim = 1
     conn.Execute "DELETE FROM  tmpcombinada WHERE codusu = " & vUsu.Codigo
     
     IdTr = 0
-    cad = ""
+    Cad = ""
     
     For J = 1 To Me.ListView1.ListItems.Count
         
@@ -1206,7 +1350,7 @@ Dim DiasLaborables As Integer
                         'Dias para la laborable 'Marzo 2016
                         
                         Aux = Aux & "," & DiasLaborables
-                        cad = cad & ", (" & vUsu.Codigo & "," & IdTr & ",'1972-04-12'," & NumRegElim & Aux & ")"
+                        Cad = Cad & ", (" & vUsu.Codigo & "," & IdTr & ",'1972-04-12'," & NumRegElim & Aux & ")"
                     End If
                 End If
                 
@@ -1214,20 +1358,20 @@ Dim DiasLaborables As Integer
         End If
     Next
     CargarDatosImpresion = True
-    cad = Mid(cad, 2)
-    cad = "INSERT INTO tmpcombinada(codusu,IdTrabajador,Fecha,idinci,HT,HE,HR,H1) VALUES " & cad
-    conn.Execute cad
+    Cad = Mid(Cad, 2)
+    Cad = "INSERT INTO tmpcombinada(codusu,IdTrabajador,Fecha,idinci,HT,HE,HR,H1) VALUES " & Cad
+    conn.Execute Cad
     
 
 End Function
 
 Private Sub ListView1_DblClick()
 Dim QueTrabajador  As Integer
-Dim cad As String
+Dim Cad As String
 
 
     If ListView1.SelectedItem Is Nothing Then Exit Sub
-    cad = ""
+    Cad = ""
     J = ListView1.SelectedItem.Index
     While J > 0
         If Me.ListView1.ListItems(J).Tag <> 0 Then   'columna nombre
@@ -1236,13 +1380,17 @@ Dim cad As String
            
         Else
             'Este es el trabajador
-             cad = ListView1.ListItems(J).Text & "|" & ListView1.ListItems(J).SubItems(1) & "|" & InicioProceso & "|" & FinProceso & "|"
+             Cad = ListView1.ListItems(J).Text & "|" & ListView1.ListItems(J).SubItems(1) & "|" & InicioProceso & "|" & FinProceso & "|"
              J = 0
         End If
        
     Wend
-    If cad <> "" Then
-        frmMarcajesPantalla.QuieroVerDatos = cad
+    If Cad <> "" Then
+        frmMarcajesPantalla.QuieroVerDatos = Cad
         frmMarcajesPantalla.Show vbModal
     End If
 End Sub
+
+
+
+

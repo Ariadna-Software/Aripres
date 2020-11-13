@@ -198,7 +198,7 @@ Private PrimeraVez As Boolean
 
 
 Private Sub cboReloj_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Command1_Click(Index As Integer)
@@ -239,7 +239,7 @@ Dim LaHora As String
             Else
                 Acabalg = 0
             End If
-            If vEmpresa.Reloj2 > 0 Then Reloj = Me.cboReloj.ListIndex
+            If vEmpresa.Reloj2 > 0 Then Reloj = cboReloj.ItemData(cboReloj.ListIndex)
             
             
             
@@ -262,6 +262,11 @@ End Sub
 Private Sub Form_Load()
 Dim TipoAca As Byte
 Dim H As Integer
+
+
+    CargaComboTerminales Me.cboReloj
+
+
     Text1(0).Text = Hora
     Text1(1).Text = Inci
     Text1(2).Text = CadInci
@@ -279,20 +284,22 @@ Dim H As Integer
     
     H = 3135
     If vEmpresa.Reloj2 > 0 Then
-        H = 3750
-        Me.cboReloj.List(1) = "Biostar2"
-        
         If Hora = "" Then
-            cboReloj.ListIndex = 0
+            H = 0
         Else
-            cboReloj.ListIndex = vReloj
+            H = vReloj
         End If
+        PosicionarCombo cboReloj, CInt(vReloj)
+        
+        H = 3750
+        
+        
     End If
        
     Me.Command1(0).Top = H - 900
     Me.Command1(1).Top = H - 900
-    Label1(2).Visible = vEmpresa.Reloj2 > 0
-    cboReloj.Visible = vEmpresa.Reloj2 > 0
+    Label1(2).Visible = True   'vEmpresa.Reloj2 > 0
+    cboReloj.Visible = True 'vEmpresa.Reloj2 > 0
     
     
     
@@ -447,19 +454,19 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
 End Sub
 
 Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
-Dim i As Integer
+Dim I As Integer
 Dim C As String
 
 Select Case Index
 Case 0
     Do
-        i = InStr(1, Text1(0).Text, ".")
-        If i > 0 Then
-            C = Mid(Text1(0).Text, i + 1)
+        I = InStr(1, Text1(0).Text, ".")
+        If I > 0 Then
+            C = Mid(Text1(0).Text, I + 1)
             If Len(C) = 1 Then
                 If Val(C) > 5 Then
                     C = "0" & C
@@ -467,9 +474,9 @@ Case 0
                     C = C & "0"
                 End If
             End If
-            Text1(0).Text = Mid(Text1(0).Text, 1, i - 1) & ":" & C
+            Text1(0).Text = Mid(Text1(0).Text, 1, I - 1) & ":" & C
         End If
-    Loop While i <> 0
+    Loop While I <> 0
     
     If Text1(0).Text <> "" Then
         If Not IsDate(Text1(0).Text) Then
@@ -504,7 +511,7 @@ End Select
 
 End Sub
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

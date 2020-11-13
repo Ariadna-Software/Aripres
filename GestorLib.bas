@@ -53,7 +53,7 @@ End Function
 
 'CATADAU TENDRA EL SUYO PROPIO
 
-Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Boolean)
+Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Boolean, idReloj As Byte)
     Dim SQL As String
     '-- Graba en la tabla EntradaFichajes
     Dim Secuencia As Long
@@ -112,18 +112,18 @@ Public Function GrabaFichajeGesLabALZIRA(registro As String, RelojAuxiliar As Bo
      '       If MiEmpresa.QueEmpresa = 4 Then
      '           'Todas las tareas son e menos las salidas que grabara la incidencia 2
      '           If CualEsIncidencia = "02" Then idInci = 2   'SALIDA
-     '       End If
+     '        End If
             
             
             Secuencia = ObtenerSecuencia(RelojAuxiliar)
             SQL = "insert into " & IIf(RelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
-            SQL = SQL & "(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal)  values("
+            SQL = SQL & "(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal,reloj)  values("
             SQL = SQL & Secuencia & ","
             SQL = SQL & idTrabajador & ","
             SQL = SQL & DBSet(Fecha, "F") & ","
             SQL = SQL & DBSet(Hora, "H") & ","
             SQL = SQL & IdInci & ","
-            SQL = SQL & DBSet(HoraReal, "H") & ")"
+            SQL = SQL & DBSet(HoraReal, "H") & "," & idReloj & ")"
             'db.ejecutar SQL
             conn.Execute SQL
             
@@ -199,14 +199,14 @@ Public Function GrabaFichajeGesLabCATADAU(registro As String, Nodo_ As Byte, Rel
             
             
             Secuencia = ObtenerSecuencia(RelojAuxiliar)  'ObtenerSecuencia(db)
-            SQL = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal) " & _
+            SQL = "insert into EntradaFichajes(Secuencia, idTrabajador, Fecha, Hora, idInci, HoraReal,reloj ) " & _
                         " values("
             SQL = SQL & Secuencia & ","
             SQL = SQL & idTrabajador & ","
             SQL = SQL & DBSet(Fecha, "F") & ","
             SQL = SQL & DBSet(Hora, "H") & ","
             SQL = SQL & IdInci & ","
-            SQL = SQL & DBSet(HoraReal, "H") & ")"
+            SQL = SQL & DBSet(HoraReal, "H") & "," & Nodo_ & ")"
             Debug.Print SQL
             conn.Execute SQL
         End If
@@ -217,18 +217,18 @@ End Function
 'Public Function ObtenerSecuencia(db As BaseDatos) As Long
 Public Function ObtenerSecuencia(EsTablaRelojAuxiliar As Boolean) As Long
     Dim SQL As String
-    Dim Rs As ADODB.Recordset
+    Dim RS As ADODB.Recordset
     SQL = "select Max(Secuencia) from " & IIf(EsTablaRelojAuxiliar, "entradafichajAuxliares", "EntradaFichajes")
     'Set Rs = db.cursor(SQL)
-    Set Rs = New ADODB.Recordset
-    Rs.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Not IsNull(Rs.Fields(0)) Then
-        ObtenerSecuencia = Rs.Fields(0) + 1
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If Not IsNull(RS.Fields(0)) Then
+        ObtenerSecuencia = RS.Fields(0) + 1
     Else
         ObtenerSecuencia = 1
     End If
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
 End Function
 
 

@@ -47,7 +47,7 @@ End Function
 
 
 Public Sub BloquearFrameAux(ByRef formulario As Form, nom_frame As String, Modo As Byte, Optional NumTabMto As Integer)
-Dim i As Byte
+Dim I As Byte
 Dim B As Boolean
 Dim Control As Object
 
@@ -139,7 +139,7 @@ Public Sub BloquearText1(ByRef formulario As Form, Modo As Byte)
 'Bloquea controles q se llamen TEXT1 si no estamos en Modo: 3.-Insertar, 4.-Modificar
 'IN ->  formulario: formulario en el que se van a poner los controles textbox en modo visualización
 '       Modo: modo del mantenimiento (Insertar, Modificar,Buscar...)
-Dim i As Byte
+Dim I As Byte
 Dim B As Boolean
 Dim vtag As CTag
 On Error Resume Next
@@ -148,21 +148,21 @@ On Error Resume Next
         'b = (Modo = 3 Or Modo = 4 Or Modo = 1 Or Modo = 5) 'And ModoLineas = 1))
         B = (Modo = 3 Or Modo = 4 Or Modo = 1) '06/09/2005, lleve el modo 5 per a que no es puga modificar la capçalera mentre treballe en les llínies
         
-        For i = 0 To .Text1.Count - 1 'En principio todos los TExt1 tiene TAG
+        For I = 0 To .Text1.Count - 1 'En principio todos los TExt1 tiene TAG
             Set vtag = New CTag
-            vtag.Cargar .Text1(i)
+            vtag.Cargar .Text1(I)
             If vtag.Cargado Then
                 If vtag.EsClave And (Modo = 4 Or Modo = 5) Then
-                    .Text1(i).Locked = True
-                    .Text1(i).BackColor = &H80000018 'groc
+                    .Text1(I).Locked = True
+                    .Text1(I).BackColor = &H80000018 'groc
                 Else
-                     .Text1(i).Locked = Not B  '((Not b) And (Modo <> 1))
+                     .Text1(I).Locked = Not B  '((Not b) And (Modo <> 1))
                     If B Then
-                        .Text1(i).BackColor = vbWhite
+                        .Text1(I).BackColor = vbWhite
                     Else
-                        .Text1(i).BackColor = &H80000018 'groc
+                        .Text1(I).BackColor = &H80000018 'groc
                     End If
-                    If Modo = 3 Then .Text1(i).Text = "" 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
+                    If Modo = 3 Then .Text1(I).Text = "" 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
                 End If
 '            Else
 '                .text1(i).Locked = Not b  '((Not b) And (Modo <> 1))
@@ -174,7 +174,7 @@ On Error Resume Next
 '                If Modo = 3 Then .text1(i).Text = "" 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
             End If
             Set vtag = Nothing
-        Next i
+        Next I
     End With
     
     If Err.Number <> 0 Then Err.Clear
@@ -237,10 +237,10 @@ Public Sub BloquearCheck1(ByRef formulario As Form, Modo As Byte)
 
     B = (Modo = 3 Or Modo = 4 Or Modo = 1)
     With formulario
-        For i = 0 To .Check1.Count - 1
-            .Check1(i).Enabled = B
-            If Modo = 3 Then .Check1(i).Value = 0 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
-        Next i
+        For I = 0 To .Check1.Count - 1
+            .Check1(I).Enabled = B
+            If Modo = 3 Then .Check1(I).Value = 0 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
+        Next I
     End With
     
     If Err.Number <> 0 Then Err.Clear
@@ -299,24 +299,24 @@ Dim B As Boolean
     B = (Modo = 3 Or Modo = 4 Or Modo = 1) '06/09/2005, lleve el modo 5 per a que no es puga modificar la capçalera mentre treballe en les llínies
     
     With formulario
-        For i = 0 To .Combo1.Count - 1
+        For I = 0 To .Combo1.Count - 1
             Set vtag = New CTag
-            vtag.Cargar .Combo1(i)
+            vtag.Cargar .Combo1(I)
             If vtag.Cargado Then
                 If vtag.EsClave And (Modo = 4 Or Modo = 5) Then
-                    .Combo1(i).Enabled = False
-                    .Combo1(i).BackColor = &H80000018 'groc
+                    .Combo1(I).Enabled = False
+                    .Combo1(I).BackColor = &H80000018 'groc
                 Else
-                    .Combo1(i).Enabled = B
+                    .Combo1(I).Enabled = B
                     If B Then
-                        .Combo1(i).BackColor = vbWhite
+                        .Combo1(I).BackColor = vbWhite
                     Else
-                        .Combo1(i).BackColor = &H80000018 'Amarillo Claro
+                        .Combo1(I).BackColor = &H80000018 'Amarillo Claro
                     End If
-                    If Modo = 3 Then .Combo1(i).ListIndex = -1 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
+                    If Modo = 3 Then .Combo1(I).ListIndex = -1 'Modo 3: Insertar (si vamos a Insertar ade+ Limpiamos el campo)
                 End If
             End If
-        Next i
+        Next I
     End With
     
     If Err.Number <> 0 Then Err.Clear
@@ -355,10 +355,10 @@ On Error Resume Next
     B = (Modo = 3 Or Modo = 4 Or Modo = 1)
     
     With formulario
-        For i = 0 To .imgBuscar.Count - 1
-            .imgBuscar(i).Enabled = B
-            .imgBuscar(i).Visible = B
-        Next i
+        For I = 0 To .imgBuscar.Count - 1
+            .imgBuscar(I).Enabled = B
+            .imgBuscar(I).Visible = B
+        Next I
     End With
     If Err.Number <> 0 Then Err.Clear
 End Sub
@@ -379,15 +379,15 @@ Dim B As Boolean
 '    bAux = (Modo = 5 And (ModoLineas = 1 Or ModoLineas = 2))
     
     With formulario
-        For i = 0 To .imgBuscar.Count - 1
-            If .imgBuscar(i).Tag = 1 Then 'esta en la cabecera
-                .imgBuscar(i).Enabled = B
-                .imgBuscar(i).Visible = B
+        For I = 0 To .imgBuscar.Count - 1
+            If .imgBuscar(I).Tag = 1 Then 'esta en la cabecera
+                .imgBuscar(I).Enabled = B
+                .imgBuscar(I).Visible = B
             Else 'esta en las lineas
-                .imgBuscar(i).Enabled = False
-                .imgBuscar(i).Visible = False
+                .imgBuscar(I).Enabled = False
+                .imgBuscar(I).Visible = False
             End If
-        Next i
+        Next I
     End With
     If Err.Number <> 0 Then Err.Clear
 End Sub
@@ -408,10 +408,10 @@ Public Sub BloquearImgZoom(ByRef formulario As Form, Modo As Byte, Optional Modo
 
     B = (Modo = 3 Or Modo = 4 Or Modo = 2 Or (Modo = 5 And (ModoLineas = 1 Or ModoLineas = 2)))
     With formulario
-        For i = 0 To .imgZoom.Count - 1
-            .imgZoom(i).Enabled = B
-            .imgZoom(i).Visible = B
-        Next i
+        For I = 0 To .imgZoom.Count - 1
+            .imgZoom(I).Enabled = B
+            .imgZoom(I).Visible = B
+        Next I
     End With
     
     If Err.Number <> 0 Then Err.Clear
@@ -481,7 +481,7 @@ Public Sub PonerLongCamposGnral(ByRef formulario As Form, Modo As Byte, Opcion A
 '(IN) formulario y Modo en que se encuentra el formulario
 '(IN) Opcion : 1 para los TEXT1, 3 para los txtAux
 
-    Dim i As Integer
+    Dim I As Integer
     
     On Error Resume Next
 
@@ -489,46 +489,46 @@ Public Sub PonerLongCamposGnral(ByRef formulario As Form, Modo As Byte, Opcion A
         If Modo = 1 Then 'BUSQUEDA
             Select Case Opcion
                 Case 1 'Para los TEXT1
-                    For i = 0 To .Text1.Count - 1
-                        With .Text1(i)
+                    For I = 0 To .Text1.Count - 1
+                        With .Text1(I)
                             If .MaxLength <> 0 Then
                                .HelpContextID = .MaxLength 'guardamos es maxlenth para reestablecerlo despues
                                 .MaxLength = 0 'tamaño infinito
                             End If
                         End With
-                    Next i
+                    Next I
                 
                 Case 3 'para los TXTAUX
-                    For i = 0 To .txtAux.Count - 1
-                        With .txtAux(i)
+                    For I = 0 To .txtAux.Count - 1
+                        With .txtAux(I)
                             If .MaxLength <> 0 Then
                                .HelpContextID = .MaxLength 'guardamos es maxlenth para reestablecerlo despues
                                 .MaxLength = 0 'tamaño infinito
                             End If
                         End With
-                    Next i
+                    Next I
             End Select
             
         Else 'resto de modos
             Select Case Opcion
                 Case 1 'par los Text1
-                    For i = 0 To .Text1.Count - 1
-                        With .Text1(i)
+                    For I = 0 To .Text1.Count - 1
+                        With .Text1(I)
                             If .HelpContextID <> 0 Then
                                 .MaxLength = .HelpContextID 'volvemos a poner el valor real del maxlenth
                                 .HelpContextID = 0
                             End If
                         End With
-                    Next i
+                    Next I
                 Case 3 'para los txtAux
-                    For i = 0 To .txtAux.Count - 1
-                        With .txtAux(i)
+                    For I = 0 To .txtAux.Count - 1
+                        With .txtAux(I)
                             If .HelpContextID <> 0 Then
                                 .MaxLength = .HelpContextID 'volvemos a poner el valor real del maxlenth
                                 .HelpContextID = 0
                             End If
                         End With
-                    Next i
+                    Next I
             End Select
         End If
     End With
@@ -1014,24 +1014,24 @@ End Function
 
 Public Sub DesplazamientoVisible(ByRef toolb As Toolbar, iniBoton As Byte, bol As Boolean, nreg As Byte)
 'Oculta o Muestra las botones de desplazamiento de la toolbar
-Dim i As Byte
+Dim I As Byte
 
     Select Case nreg
         Case 0, 1 '0 o 1 registro no mostrar los botones despl.
-            For i = iniBoton To iniBoton + 3
-                toolb.Buttons(i).Visible = False
-            Next i
+            For I = iniBoton To iniBoton + 3
+                toolb.Buttons(I).Visible = False
+            Next I
         Case Else '>1 reg, mostrar si bol
-            For i = iniBoton To iniBoton + 3
-                toolb.Buttons(i).Visible = bol
-            Next i
+            For I = iniBoton To iniBoton + 3
+                toolb.Buttons(I).Visible = bol
+            Next I
     End Select
 End Sub
 
 
 
 Public Function EsNumerico(Texto As String) As Boolean
-Dim i As Integer
+Dim I As Integer
 Dim C As Integer
 Dim L As Integer
 Dim Cad As String
@@ -1045,8 +1045,8 @@ Dim B As Boolean
         B = False
         '======= Añade Laura
         'formato: (.25)
-        i = InStr(1, Texto, ".")
-        If i = 1 Then
+        I = InStr(1, Texto, ".")
+        If I = 1 Then
             If IsNumeric(Mid(Texto, 2, Len(Texto))) Then B = True
         End If
         '======================
@@ -1055,12 +1055,12 @@ Dim B As Boolean
         C = 0
         L = 1
         Do
-            i = InStr(L, Texto, ",")
-            If i > 0 Then
-                L = i + 1
+            I = InStr(L, Texto, ",")
+            If I > 0 Then
+                L = I + 1
                 C = C + 1
             End If
-        Loop Until i = 0
+        Loop Until I = 0
         If C > 1 Then
             Cad = "Numero de comas incorrecto"
             B = False
@@ -1070,12 +1070,12 @@ Dim B As Boolean
         If C = 0 Then
             L = 1
             Do
-                i = InStr(L, Texto, ".")
-                If i > 0 Then
-                    L = i + 1
+                I = InStr(L, Texto, ".")
+                If I > 0 Then
+                    L = I + 1
                     C = C + 1
                 End If
-            Loop Until i = 0
+            Loop Until I = 0
             If C > 1 Then
                 Cad = "Numero incorrecto"
                 B = False
@@ -1171,7 +1171,7 @@ Public Function PonerFormatoDecimal(ByRef T As TextBox, tipoF As Single) As Bool
 Dim valor As Currency
 Dim PEntera As Currency
 Dim NoOK As Boolean
-Dim i As Byte
+Dim I As Byte
 Dim cadEnt As String
 'Dim mTas As CTag
 
@@ -1192,8 +1192,8 @@ Dim cadEnt As String
             valor = ImporteFormateado(.Text)
         Else
             cadEnt = .Text
-            i = InStr(1, cadEnt, ".")
-            If i > 0 Then cadEnt = Mid(cadEnt, 1, i - 1)
+            I = InStr(1, cadEnt, ".")
+            If I > 0 Then cadEnt = Mid(cadEnt, 1, I - 1)
             If tipoF = 1 And Len(cadEnt) > 10 Then
                 MsgBox "El valor no puede ser mayor de 9999999999,99", vbExclamation
                 NoOK = True
@@ -1529,8 +1529,9 @@ Public Sub CargaGridGnral(ByRef vDataGrid As DataGrid, ByRef vData As Adodc, SQL
     
     Set vDataGrid.DataSource = vData
     vDataGrid.AllowRowSizing = False
+  
     vDataGrid.RowHeight = 290
-    
+   
     If PrimeraVez Then
         vDataGrid.ClearFields
         vDataGrid.ReBind

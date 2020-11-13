@@ -140,21 +140,21 @@ Option Explicit
 Public Fecha As Date
 
 Dim PrimVez As Boolean
-Dim cad As String
+Dim Cad As String
 
 Private Sub Command1_Click(Index As Integer)
     Screen.MousePointer = vbHourglass
     If Index = 0 Then
-        cad = ""
+        Cad = ""
         For NumRegElim = 1 To ListView1.ListItems.Count
             If Not ListView1.ListItems(NumRegElim).Checked Then
-                cad = cad & ", " & ListView1.ListItems(NumRegElim).Text
+                Cad = Cad & ", " & ListView1.ListItems(NumRegElim).Text
             End If
             
         Next
-        If cad <> "" Then
-            cad = " WHERE  idtra IN (" & Mid(cad, 2) & ")"
-            conn.Execute "DELETE from tmpnotrabajo " & cad
+        If Cad <> "" Then
+            Cad = " WHERE  idtra IN (" & Mid(Cad, 2) & ")"
+            conn.Execute "DELETE from tmpnotrabajo " & Cad
                         
             espera 1
             
@@ -180,11 +180,11 @@ Dim B As Boolean
         
         H1 = DateAdd("h", -8, vEmpresa.AcabalgadoHora)
         
-        cad = "select idtra,nomtrabajador,concat(hora,'')HoraText,if(hora>'23:59:59','23:59:59',hora) laHora"
-        cad = cad & " ,if(hora<'0:00:00',1,0) HoraNegativa,hora from tmpnotrabajo,trabajadores ,entradafichajes where "
-        cad = cad & " tmpnotrabajo.idtra=trabajadores.idtrabajador and trabajadores.idtrabajador ="
-        cad = cad & " entradafichajes.idtrabajador AND fecha = " & DBSet(Fecha, "F") & " ORDER BY idtra,hora asc"
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = "select idtra,nomtrabajador,concat(hora,'')HoraText,if(hora>'23:59:59','23:59:59',hora) laHora"
+        Cad = Cad & " ,if(hora<'0:00:00',1,0) HoraNegativa,hora from tmpnotrabajo,trabajadores ,entradafichajes where "
+        Cad = Cad & " tmpnotrabajo.idtra=trabajadores.idtrabajador and trabajadores.idtrabajador ="
+        Cad = Cad & " entradafichajes.idtrabajador AND fecha = " & DBSet(Fecha, "F") & " ORDER BY idtra,hora asc"
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         Tr = -1
         While Not miRsAux.EOF
             If miRsAux!idTRa <> Tr Then
@@ -209,8 +209,8 @@ Dim B As Boolean
             
             If miRsAux!HoraNegativa Then
                 
-                cad = Horas_Quitar24(miRsAux!Hora, True)
-                IT.SubItems(i) = cad
+                Cad = Horas_Quitar24(miRsAux!Hora, True)
+                IT.SubItems(i) = Cad
                 UnoDelDiaDeAntes = True
             Else
                 If vEmpresa.AcabalgadoDiaInicio Then
@@ -258,3 +258,4 @@ Private Sub Form_Load()
     Label1.Caption = Format(Fecha, "dddd dd k mmmm k yyyy")
     Label1.Caption = "Dia proceso: " & Replace(Label1.Caption, "k", "de")
 End Sub
+

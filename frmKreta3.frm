@@ -37,26 +37,26 @@ Begin VB.Form frmKreta3
       TabCaption(1)   =   "Configurar terminales"
       TabPicture(1)   =   "frmKreta3.frx":001C
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "cmdGrabar"
-      Tab(1).Control(1)=   "chkConfig(3)"
-      Tab(1).Control(2)=   "chkConfig(2)"
-      Tab(1).Control(3)=   "chkConfig(1)"
-      Tab(1).Control(4)=   "chkConfig(0)"
-      Tab(1).Control(5)=   "Label1"
+      Tab(1).Control(0)=   "Label1"
+      Tab(1).Control(1)=   "chkConfig(0)"
+      Tab(1).Control(2)=   "chkConfig(1)"
+      Tab(1).Control(3)=   "chkConfig(2)"
+      Tab(1).Control(4)=   "chkConfig(3)"
+      Tab(1).Control(5)=   "cmdGrabar"
       Tab(1).ControlCount=   6
       TabCaption(2)   =   "Grabar trabajador"
       TabPicture(2)   =   "frmKreta3.frx":0038
       Tab(2).ControlEnabled=   0   'False
-      Tab(2).Control(0)=   "cmdSeccion"
-      Tab(2).Control(1)=   "chkSeccionBorrar"
-      Tab(2).Control(2)=   "cboSeccion"
-      Tab(2).Control(3)=   "Command1"
-      Tab(2).Control(4)=   "Text5(1)"
-      Tab(2).Control(5)=   "Text5(0)"
-      Tab(2).Control(6)=   "Label2(1)"
-      Tab(2).Control(7)=   "Line1"
-      Tab(2).Control(8)=   "Image2(0)"
-      Tab(2).Control(9)=   "Label2(0)"
+      Tab(2).Control(0)=   "Label2(0)"
+      Tab(2).Control(1)=   "Image2(0)"
+      Tab(2).Control(2)=   "Line1"
+      Tab(2).Control(3)=   "Label2(1)"
+      Tab(2).Control(4)=   "Text5(0)"
+      Tab(2).Control(5)=   "Text5(1)"
+      Tab(2).Control(6)=   "Command1"
+      Tab(2).Control(7)=   "cboSeccion"
+      Tab(2).Control(8)=   "chkSeccionBorrar"
+      Tab(2).Control(9)=   "cmdSeccion"
       Tab(2).ControlCount=   10
       Begin VB.CommandButton cmdSeccion 
          Caption         =   "grabar seccion"
@@ -410,7 +410,7 @@ Attribute frmB.VB_VarHelpID = -1
 Private Conectado As Boolean
 Private SeVe As Boolean
 
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 
 
 Private Sub cmdGuardarMarcajes_Click()
@@ -622,7 +622,7 @@ End Sub
 
 Private Sub TransformarFicheroLeidoAProcesado()
 Dim Cad As String
-Dim Aux As String
+Dim AUX As String
     Cad = InputBox("Path")
     If Cad = "" Then Exit Sub
     
@@ -633,11 +633,11 @@ Dim Aux As String
     While Not EOF(1)
         '00000018161801081454103351
         Line Input #1, Cad
-        Aux = Mid(Cad, 22, 10)
-        Aux = Aux & Format(CDate(Mid(Cad, 2, 8)), "yymmdd") & Replace(Mid(Cad, 12, 8), ":", "")
-        Aux = Aux & Mid(Cad, 34, 2)
-        Aux = Aux & Mid(Cad, 38, 2)
-        Print #2, Aux
+        AUX = Mid(Cad, 22, 10)
+        AUX = AUX & Format(CDate(Mid(Cad, 2, 8)), "yymmdd") & Replace(Mid(Cad, 12, 8), ":", "")
+        AUX = AUX & Mid(Cad, 34, 2)
+        AUX = AUX & Mid(Cad, 38, 2)
+        Print #2, AUX
     Wend
     Close #1
     Close #2
@@ -688,7 +688,7 @@ Dim i As Integer
 Dim B As Boolean
 
 Dim SQL As String
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
 
 
     
@@ -700,8 +700,8 @@ Dim Rs As ADODB.Recordset
     '-- Ahora los usuarios
     
     SQL = "select * from usuarios WHERE GesLabID = " & Text5(0).Text
-    Set Rs = GesHuellaDB.cursor(SQL)
-    If Rs.EOF Then
+    Set RS = GesHuellaDB.cursor(SQL)
+    If RS.EOF Then
       MsgBox "No tiene ID huella asociado", vbExclamation
       
     Else
@@ -710,8 +710,8 @@ Dim Rs As ADODB.Recordset
         SQL = ""
         
             Set usu = New UsuarioHuella
-            If usu.Leer(Rs!CodUsuario) Then
-                lblInf.Caption = "Grabar usuario " & Rs!CodUsuario
+            If usu.Leer(RS!CodUsuario) Then
+                lblInf.Caption = "Grabar usuario " & RS!CodUsuario
                 lblInf.Refresh
                 '-- Ahora hay que cargarlo en todos los terminales
                 For i = 1 To ColK2.Count
@@ -745,8 +745,8 @@ Dim Rs As ADODB.Recordset
         
         
     End If
-    Rs.Close
-    Set Rs = Nothing
+    RS.Close
+    Set RS = Nothing
     
 End Sub
 
@@ -813,7 +813,7 @@ End Sub
 Public Sub CargarConfiguracion()
     '-- Cargamos lo que toca
     Dim SQL As String
-    Dim Rs As ADODB.Recordset
+    Dim RS As ADODB.Recordset
     Dim i As Integer
     If ColK2 Is Nothing Then CargarTerminales
     For i = 1 To ColK2.Count
@@ -845,11 +845,11 @@ Dim Donde As String
     SQL = SQL & " WHERE deshabilitado=0"
     Donde = "Leyendo BD"
         
-    Set Rs = GesHuellaDB.cursor(SQL)
-    If Not Rs.EOF Then
-        Rs.MoveFirst
-        While Not Rs.EOF
-            NumTerm = Rs!codterm
+    Set RS = GesHuellaDB.cursor(SQL)
+    If Not RS.EOF Then
+        RS.MoveFirst
+        While Not RS.EOF
+            NumTerm = RS!codterm
             
             lblInf.Caption = "Cargando terminal " & CStr(NumTerm)
             lblInf.Refresh
@@ -859,27 +859,27 @@ Dim Donde As String
            ' Debug.Print tcpCliente(0).Index
                 tcpCliente(NumTerm).Close
                 tcpCliente(NumTerm).Protocol = sckTCPProtocol
-                tcpCliente(NumTerm).RemoteHost = Rs!IP
+                tcpCliente(NumTerm).RemoteHost = RS!IP
                 tcpCliente(NumTerm).RemotePort = 1001
           '  End If
             Set k2 = New Kreta2
             Set k2.Socket = tcpCliente(NumTerm)
             k2.Numero = NumTerm
-            k2.Deshabilitado = Val(Rs!Deshabilitado) = 1
-            k2.RelojAuxiliar = Val(Rs!RelojAuxiliar) = 1
+            k2.Deshabilitado = Val(RS!Deshabilitado) = 1
+            k2.RelojAuxiliar = Val(RS!RelojAuxiliar) = 1
             If Not k2.ComprobarConexion() Then
                 MsgBox "No hay conexión con el terminal: " & k2.Numero & _
                         " IP:" & k2.Socket.RemoteHost, vbExclamation
             End If
             ColK2.Add k2.Socket, NumTerm, CStr(NumTerm), k2.RelojAuxiliar
-            Rs.MoveNext
+            RS.MoveNext
         Wend
     End If
     
 eCargateer:
     If Err.Number <> 0 Then MuestraError Err.Number, Donde, Err.Description
     Set k2 = Nothing
-    Set Rs = Nothing
+    Set RS = Nothing
 End Sub
 
 Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos As Boolean) As Boolean
@@ -895,30 +895,30 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
     If ColK2 Is Nothing Then CargarTerminales
     '-- Ahora los usuarios
     Dim SQL As String
-    Dim Rs As ADODB.Recordset
+    Dim RS As ADODB.Recordset
     SQL = "select * from usuarios"
     TraSeccion = ""
     If Seccion >= 0 Then
         'Veremos que trabadores son de esa seccion
-        Set Rs = New ADODB.Recordset
+        Set RS = New ADODB.Recordset
         TraSeccion = "Select IdTrabajador from trabajadores WHERE seccion = " & CStr(Seccion)
-        Rs.Open TraSeccion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        RS.Open TraSeccion, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         TraSeccion = ""
-        While Not Rs.EOF
-            TraSeccion = TraSeccion & ", " & Rs!idTrabajador
-            Rs.MoveNext
+        While Not RS.EOF
+            TraSeccion = TraSeccion & ", " & RS!idTrabajador
+            RS.MoveNext
         Wend
-        Rs.Close
-        Set Rs = Nothing
+        RS.Close
+        Set RS = Nothing
         If TraSeccion <> "" Then
             TraSeccion = Mid(TraSeccion, 2)
             TraSeccion = " WHERE GeslabID IN (" & TraSeccion & ")"
         End If
     End If
     If TraSeccion <> "" Then SQL = SQL & TraSeccion
-    Set Rs = GesHuellaDB.cursor(SQL)
+    Set RS = GesHuellaDB.cursor(SQL)
     
-    If Not Rs.EOF Then
+    If Not RS.EOF Then
         '-- Primero borramos los usuarios de los diferentes terminales
         
         If BorrarTodos Then
@@ -938,20 +938,20 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
         lblInf.Caption = "Leer registros"
         lblInf.Refresh
         Cuantos = 0
-        Rs.MoveFirst
-        While Not Rs.EOF
+        RS.MoveFirst
+        While Not RS.EOF
             Cuantos = Cuantos + 1
-            Rs.MoveNext
+            RS.MoveNext
         Wend
-        Rs.MoveFirst
+        RS.MoveFirst
         
         
         Set Col2 = New Collection
-        While Not Rs.EOF
+        While Not RS.EOF
             Set usu = New UsuarioHuella
             J = J + 1
-            If usu.Leer(Rs!CodUsuario) Then
-                lblInf.Caption = "Grabar usuario " & Rs!CodUsuario & "  (" & J & " / " & Cuantos & ")"
+            If usu.Leer(RS!CodUsuario) Then
+                lblInf.Caption = "Grabar usuario " & RS!CodUsuario & "  (" & J & " / " & Cuantos & ")"
                 lblInf.Refresh
                 
 
@@ -968,7 +968,7 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
                     End If
                     
                     
-                    lblInf.Caption = "Grabar usuario " & Rs!CodUsuario & "  (" & J & " / " & Cuantos & ")"
+                    lblInf.Caption = "Grabar usuario " & RS!CodUsuario & "  (" & J & " / " & Cuantos & ")"
                     lblInf.Refresh
                     
                     If usu.FIR = "" Then
@@ -985,7 +985,7 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
                     espera 0.05
                 Next
             End If
-            Rs.MoveNext
+            RS.MoveNext
         Wend
         
         
@@ -1008,7 +1008,7 @@ Public Function CargarUsuariosTodosTerminales2(Seccion As Integer, BorrarTodos A
         End If
         
     End If
-    Rs.Close
+    RS.Close
 End Function
 
 
@@ -1152,16 +1152,30 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
             
             'Copiamos al SERVIDOR EL FICHERO
             FileCopy vEmpresa.DirMarcajes & "\" & Fichero, vEmpresa.pathCostesServer & "\" & Fichero
-            llev = InStr(1, Fichero, ".")
-            
-            If llev = 0 Then
-                Nodo = 10
-            Else
-                Leido = Mid(Fichero, llev - 2, 2) 'los dos ultimos antes del punto
-                Nodo = CByte(Val(Leido))
-            End If
             
         End If
+        
+        llev = InStr(1, Fichero, ".")
+        If llev = 0 Then
+            Nodo = 10
+        Else
+            Leido = Mid(Fichero, llev - 2, 2) 'los dos ultimos antes del punto
+            Nodo = CByte(Val(Leido))
+        End If
+        
+        If vEmpresa.QueEmpresa <> vbCatadau Then
+            'Alzira de momento
+            'Tengo el NODO. El nodo tengo que sacar el ID terminal de aripres.
+            ' para ello  buscare en la tabla de aripres.terminales para saber que terminal es
+            Leido = "ucase(tipo)='KRETA' AND idterminal"
+            Leido = DevuelveDesdeBD("id", "terminales", Leido, CStr(Nodo))
+            If Leido = "" Then
+                Leido = "No existe terminal KRETA en BD(.terminales) : " & Nodo
+                Err.Raise 513, , Leido
+            End If
+            Nodo = CByte(Leido)
+        End If
+        Leido = ""
         llev = 0
         NF = FreeFile
         Open vEmpresa.DirMarcajes & "\" & Fichero For Input As #NF
@@ -1173,10 +1187,10 @@ Private Function CargarFichajesGeslab3(RelojAuxiliar As Boolean) As Boolean
             lblInf.Caption = Fichero & "  " & llev & " de " & tam
             lblInf.Refresh
             
-            If vEmpresa.QueEmpresa = 2 Then
+            If vEmpresa.QueEmpresa <> vbCatadau Then
             
                 'ALZIRA
-                GrabaFichajeGesLabALZIRA Leido, RelojAuxiliar
+                GrabaFichajeGesLabALZIRA Leido, RelojAuxiliar, Nodo
             Else
                 'CATADU
                 GrabaFichajeGesLabCATADAU Leido, Nodo, RelojAuxiliar
@@ -1334,7 +1348,7 @@ Dim SQL As String
         PonerEmpleadoVacio
     Else
         'Ponemos los datos del empleado
-        If IsNull(RT!Numtarjeta) Then
+        If IsNull(RT!numtarjeta) Then
             MsgBox "No tiene codigo HUELLA asociado", vbExclamation
             PonerEmpleadoVacio
         Else
@@ -1449,7 +1463,7 @@ Dim J As Integer
     
     
     
-    Set Rs = New ADODB.Recordset
+    Set RS = New ADODB.Recordset
     
     Cad = DevuelveDesdeBD("AcabalUltimoDiaProcesado", "empresas", "1", "1")
     If Cad = "" Then
@@ -1464,15 +1478,15 @@ Dim J As Integer
     
     'Voy a ver ultimo dia -hora que hemos traido desde la maquina
     Cad = "Select fecha , concat(horareal,'') h1 from entradafichajes ORDER BY 1 desc,2 desc"
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    If Rs.EOF Then
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    If RS.EOF Then
         Err.Raise 513, , "Entrada fichejes vacia"
     Else
         Cad = "23:59:59"
-        If HoraFueraInterval(Rs!H1) = 0 Then Cad = Format(Rs!H1, "hh:nn:ss")
-        Cad = Format(Rs!Fecha, "dd/mm/yyyy") & " " & Cad
+        If HoraFueraInterval(RS!H1) = 0 Then Cad = Format(RS!H1, "hh:nn:ss")
+        Cad = Format(RS!Fecha, "dd/mm/yyyy") & " " & Cad
     End If
-    Rs.Close
+    RS.Close
     UltimaDiaHoraTraidoMaquina2 = Cad
     
     
@@ -1494,12 +1508,12 @@ Dim J As Integer
     Cad = Cad & "  order by 1"
     
  
-    Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    While Not Rs.EOF
-        DiasATratar.Add CStr(Format(Rs.Fields(0), "dd/mm/yyyy"))
-        Rs.MoveNext
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        DiasATratar.Add CStr(Format(RS.Fields(0), "dd/mm/yyyy"))
+        RS.MoveNext
     Wend
-    Rs.Close
+    RS.Close
     
     
     If DiasATratar.Count = 0 Then GoTo eProcesoHorasAcabalgadas
@@ -1515,15 +1529,15 @@ Dim J As Integer
             Cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
             'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
             Cad = "Select distinct idtrabajador from entradafichajes where " & Cad & " ORDER BY idtrabajador"
-            Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             Set RegistrosTratar = New Collection
             i = -1
-            While Not Rs.EOF
-                Cad = Rs!idTrabajador
+            While Not RS.EOF
+                Cad = RS!idTrabajador
                 RegistrosTratar.Add Cad
-                Rs.MoveNext
+                RS.MoveNext
             Wend
-            Rs.Close
+            RS.Close
             
             'Para que haga los nothing
             If RegistrosTratar.Count > 0 Then
@@ -1566,12 +1580,12 @@ Dim J As Integer
                         Cad = "Select * from tmpnotrabajo ORDER by idtra"
                         Set DiaTraba = New Collection
                         
-                        Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-                        While Not Rs.EOF
-                            DiaTraba.Add CStr(Rs!idTRa)
-                            Rs.MoveNext
+                        RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+                        While Not RS.EOF
+                            DiaTraba.Add CStr(RS!idTRa)
+                            RS.MoveNext
                         Wend
-                        Rs.Close
+                        RS.Close
                         
                         
                         'Para cada trabajador
@@ -1581,7 +1595,7 @@ Dim J As Integer
                             Debug.Print DiaTraba(J)
                         
                             
-                            lblInf.Caption = "Trabajador: " & DiaTraba(J)
+                            lblInf.Caption = "Trabajador:  " & DiaTraba(J)
                             lblInf.Refresh
                         
                             
@@ -1635,7 +1649,7 @@ Dim J As Integer
 eProcesoHorasAcabalgadas:
     lblInf.Caption = "Proceso acab. finalizado"
     If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
-    Set Rs = Nothing
+    Set RS = Nothing
     Set RegistrosTratar = Nothing
     Set DiaTraba = Nothing
     Set DiasATratar = Nothing
@@ -1651,16 +1665,16 @@ End Sub
 Private Sub LeyendoAritcik(Directorio As String)
 Dim Cad As String
 Dim Nf2 As Integer
-Dim Rs As ADODB.Recordset
+Dim RS As ADODB.Recordset
         On Error GoTo eLeyendoAritcik
         '1ª y BELGIç
         lblInf.Caption = "Leyendo aritick"
         lblInf.Refresh
         Cad = "Select * from entradafichajes WHERE revisado =0 order by Secuencia desc"
-        Set Rs = New ADODB.Recordset
-        Rs.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Set RS = New ADODB.Recordset
+        RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         
-        If Not Rs.EOF Then
+        If Not RS.EOF Then
         
             
 
@@ -1670,19 +1684,19 @@ Dim Rs As ADODB.Recordset
             Open Cad For Output As #Nf2
         
             
-            While Not Rs.EOF
-                    Cad = Format(Rs!idTrabajador, "00000")  'trab
-                    Cad = Cad & "," & Format(Rs!Fecha, "mm")  'mes
-                    Cad = Cad & "," & Format(Rs!Fecha, "dd")  'dia
-                    Cad = Cad & "," & Format(Rs!Hora, "hh")   'hora
-                    Cad = Cad & "," & Format(Rs!Hora, "nn")   'min
+            While Not RS.EOF
+                    Cad = Format(RS!idTrabajador, "00000")  'trab
+                    Cad = Cad & "," & Format(RS!Fecha, "mm")  'mes
+                    Cad = Cad & "," & Format(RS!Fecha, "dd")  'dia
+                    Cad = Cad & "," & Format(RS!Hora, "hh")   'hora
+                    Cad = Cad & "," & Format(RS!Hora, "nn")   'min
                     Cad = Cad & ",0000,0000,00000"
                     
                     
                     Print #Nf2, Cad
                     
                     
-                    Rs.MoveNext
+                    RS.MoveNext
             Wend
             
             Cad = "UPDATE  entradafichajes SET revisado =1 where revisado=0"
@@ -1690,12 +1704,12 @@ Dim Rs As ADODB.Recordset
             
             Close #Nf2
         End If 'de belgida
-        Rs.Close
+        RS.Close
     
     
         
 eLeyendoAritcik:
     If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
-    Set Rs = Nothing
+    Set RS = Nothing
 
 End Sub

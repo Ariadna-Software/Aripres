@@ -15,107 +15,223 @@ Begin VB.Form frmListado
    ScaleHeight     =   7170
    ScaleWidth      =   14880
    StartUpPosition =   2  'CenterScreen
-   Begin VB.Frame FrameDatosHco 
-      Height          =   4095
-      Left            =   5400
-      TabIndex        =   348
-      Top             =   1440
+   Begin VB.Frame FrameCostesTrabajador 
+      Height          =   6975
+      Left            =   120
+      TabIndex        =   248
+      Top             =   0
       Visible         =   0   'False
-      Width           =   6015
-      Begin VB.OptionButton optOrdenTraba 
-         Caption         =   "Fecha"
-         Height          =   255
-         Index           =   3
-         Left            =   3240
-         TabIndex        =   365
-         Top             =   3000
-         Value           =   -1  'True
-         Width           =   1095
-      End
-      Begin VB.OptionButton optOrdenTraba 
-         Caption         =   "Trabajador"
+      Width           =   6615
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Asesoria"
          Height          =   255
          Index           =   2
-         Left            =   1440
-         TabIndex        =   364
-         Top             =   3000
-         Width           =   1095
+         Left            =   4800
+         TabIndex        =   338
+         Top             =   5160
+         Width           =   1575
       End
-      Begin VB.CommandButton cmdLisHcoMarcajes 
-         Caption         =   "&Aceptar"
-         Height          =   375
-         Left            =   2760
-         TabIndex        =   353
-         Top             =   3600
-         Width           =   1215
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Resumen horas x traba(€)"
+         Height          =   195
+         Index           =   2
+         Left            =   600
+         TabIndex        =   337
+         Top             =   6120
+         Width           =   2655
       End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   25
-         Left            =   4200
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   352
-         Text            =   "Text1"
-         Top             =   2280
-         Width           =   1215
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Por trabajador"
+         Height          =   195
+         Index           =   1
+         Left            =   3960
+         TabIndex        =   311
+         Top             =   5760
+         Visible         =   0   'False
+         Width           =   1695
       End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   24
-         Left            =   1320
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   351
-         Text            =   "Text1"
-         Top             =   2280
-         Width           =   1215
+      Begin VB.CheckBox chkResumeTrabajador 
+         Caption         =   "Resumen entrega "
+         Height          =   195
+         Index           =   0
+         Left            =   600
+         TabIndex        =   310
+         Top             =   5760
+         Visible         =   0   'False
+         Width           =   3135
       End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   25
-         Left            =   1320
-         TabIndex        =   350
-         Top             =   1560
-         Width           =   855
-      End
-      Begin VB.TextBox txtDT 
+      Begin VB.TextBox txtDSecc 
          BackColor       =   &H80000018&
          Enabled         =   0   'False
          Height          =   285
-         Index           =   25
-         Left            =   2160
-         TabIndex        =   359
-         Top             =   1560
+         Index           =   9
+         Left            =   2760
+         TabIndex        =   275
+         Top             =   3120
          Width           =   3375
       End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   9
+         Left            =   1800
+         TabIndex        =   254
+         Top             =   3120
+         Width           =   855
+      End
+      Begin VB.TextBox txtDSecc 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   8
+         Left            =   2760
+         TabIndex        =   272
+         Top             =   2760
+         Width           =   3375
+      End
+      Begin VB.TextBox txtSecc 
+         Height          =   285
+         Index           =   8
+         Left            =   1800
+         TabIndex        =   253
+         Top             =   2760
+         Width           =   855
+      End
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Trabajador - Horas"
+         Height          =   255
+         Index           =   1
+         Left            =   2400
+         TabIndex        =   271
+         Top             =   5160
+         Width           =   2055
+      End
+      Begin VB.OptionButton optHorasPorecesadas 
+         Caption         =   "Empresa"
+         Height          =   255
+         Index           =   0
+         Left            =   840
+         TabIndex        =   270
+         Top             =   5160
+         Value           =   -1  'True
+         Width           =   1455
+      End
+      Begin VB.CheckBox chkDesglosaDias 
+         Caption         =   "Agrupa por empresa"
+         Height          =   255
+         Index           =   1
+         Left            =   840
+         TabIndex        =   255
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.ListBox List1 
+         Height          =   735
+         Left            =   1080
+         Style           =   1  'Checkbox
+         TabIndex        =   268
+         Top             =   4080
+         Width           =   5055
+      End
       Begin VB.TextBox txtTrab 
          Height          =   285
-         Index           =   24
-         Left            =   1320
-         TabIndex        =   349
-         Top             =   1200
+         Index           =   19
+         Left            =   1800
+         TabIndex        =   252
+         Top             =   2160
          Width           =   855
       End
       Begin VB.TextBox txtDT 
          BackColor       =   &H80000018&
          Enabled         =   0   'False
          Height          =   285
-         Index           =   24
-         Left            =   2160
-         TabIndex        =   356
-         Top             =   1200
+         Index           =   19
+         Left            =   2760
+         TabIndex        =   266
+         Top             =   2160
+         Width           =   3375
+      End
+      Begin VB.CheckBox chkDesglosaDias 
+         Caption         =   "Desglosa trabajador"
+         Height          =   255
+         Index           =   0
+         Left            =   3960
+         TabIndex        =   256
+         Top             =   5760
+         Width           =   2055
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   18
+         Left            =   1800
+         TabIndex        =   251
+         Top             =   1800
+         Width           =   855
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   18
+         Left            =   2760
+         TabIndex        =   263
+         Top             =   1800
          Width           =   3375
       End
       Begin VB.CommandButton cmdCancelar 
-         Caption         =   "C&ancelar"
+         Caption         =   "&Cancelar"
          Height          =   375
-         Index           =   24
-         Left            =   4320
-         TabIndex        =   354
-         Top             =   3600
+         Index           =   17
+         Left            =   4920
+         TabIndex        =   258
+         Top             =   6480
          Width           =   1215
       End
+      Begin VB.CommandButton cmdHorasProcesadas 
+         Caption         =   "Aceptar"
+         Height          =   375
+         Left            =   3480
+         TabIndex        =   257
+         Top             =   6480
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   17
+         Left            =   4920
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   250
+         Text            =   "Text1"
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   16
+         Left            =   1800
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   249
+         Text            =   "Text1"
+         Top             =   960
+         Width           =   1215
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   54
+         Left            =   840
+         TabIndex        =   276
+         Top             =   3120
+         Width           =   465
+      End
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   9
+         Left            =   1440
+         Top             =   3120
+         Width           =   255
+      End
       Begin VB.Label Label1 
-         Caption         =   "Fecha"
+         Caption         =   "Sección"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -127,62 +243,61 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00000080&
          Height          =   255
-         Index           =   39
+         Index           =   26
          Left            =   120
-         TabIndex        =   363
-         Top             =   2040
+         TabIndex        =   274
+         Top             =   2520
          Width           =   1335
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   25
-         Left            =   3840
-         Picture         =   "frmListado.frx":6852
-         ToolTipText     =   "Buscar fecha"
-         Top             =   2280
-         Width           =   240
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   71
-         Left            =   3360
-         TabIndex        =   362
-         Top             =   2280
-         Width           =   465
       End
       Begin VB.Label lblFecha 
          Caption         =   "Desde"
          Height          =   195
-         Index           =   70
-         Left            =   600
-         TabIndex        =   361
-         Top             =   2280
+         Index           =   53
+         Left            =   840
+         TabIndex        =   273
+         Top             =   2760
          Width           =   465
       End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   24
-         Left            =   1080
-         Picture         =   "frmListado.frx":68DD
-         ToolTipText     =   "Buscar fecha"
-         Top             =   2280
-         Width           =   240
+      Begin VB.Image imgSecc 
+         Height          =   255
+         Index           =   8
+         Left            =   1440
+         Top             =   2760
+         Width           =   255
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Empresa"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   25
+         Left            =   120
+         TabIndex        =   269
+         Top             =   3720
+         Width           =   1335
       End
       Begin VB.Label lblFecha 
          Caption         =   "Hasta"
          Height          =   195
-         Index           =   69
-         Left            =   600
-         TabIndex        =   360
-         Top             =   1560
-         Width           =   420
+         Index           =   52
+         Left            =   840
+         TabIndex        =   267
+         Top             =   2160
+         Width           =   465
       End
       Begin VB.Image imgTra 
          Height          =   255
-         Index           =   25
-         Left            =   1080
-         Top             =   1560
+         Index           =   19
+         Left            =   1440
+         Top             =   2160
          Width           =   255
       End
       Begin VB.Label Label1 
@@ -198,31 +313,49 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00000080&
          Height          =   255
-         Index           =   38
+         Index           =   24
          Left            =   120
-         TabIndex        =   358
-         Top             =   840
+         TabIndex        =   265
+         Top             =   1440
          Width           =   1335
       End
       Begin VB.Label lblFecha 
          Caption         =   "Desde"
          Height          =   195
-         Index           =   68
-         Left            =   600
-         TabIndex        =   357
-         Top             =   1200
-         Width           =   465
+         Index           =   51
+         Left            =   840
+         TabIndex        =   264
+         Top             =   1800
+         Width           =   540
       End
       Begin VB.Image imgTra 
          Height          =   255
-         Index           =   24
-         Left            =   1080
-         Top             =   1200
+         Index           =   18
+         Left            =   1440
+         Top             =   1800
          Width           =   255
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   17
+         Left            =   4560
+         Picture         =   "frmListado.frx":6852
+         ToolTipText     =   "Buscar fecha"
+         Top             =   960
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   50
+         Left            =   4080
+         TabIndex        =   262
+         Top             =   960
+         Width           =   465
       End
       Begin VB.Label lblTitulo 
          Alignment       =   2  'Center
-         Caption         =   "Listado trabajadores"
+         Caption         =   "Horas procesadas"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   18
@@ -234,68 +367,23 @@ Begin VB.Form frmListado
          EndProperty
          ForeColor       =   &H00800000&
          Height          =   495
-         Index           =   16
-         Left            =   360
-         TabIndex        =   355
-         Top             =   360
+         Index           =   11
+         Left            =   480
+         TabIndex        =   261
+         Top             =   120
          Width           =   5415
       End
-   End
-   Begin VB.Frame FrameTraspasoHCO 
-      Height          =   3135
-      Left            =   6600
-      TabIndex        =   341
-      Top             =   1800
-      Visible         =   0   'False
-      Width           =   5535
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "C&ancelar"
-         Height          =   375
-         Index           =   23
-         Left            =   3840
-         TabIndex        =   347
-         Top             =   2400
-         Width           =   1215
-      End
-      Begin VB.CommandButton cmdTraspasar 
-         Caption         =   "&Aceptar"
-         Height          =   375
-         Left            =   2400
-         TabIndex        =   346
-         Top             =   2400
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   23
-         Left            =   2280
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   343
-         Text            =   "Text1"
-         Top             =   1200
-         Width           =   1215
-      End
       Begin VB.Label lblFecha 
-         AutoSize        =   -1  'True
-         Caption         =   "Igual o anterior a la fecha introducida"
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   -1  'True
-            Strikethrough   =   0   'False
-         EndProperty
+         Caption         =   "Desde"
          Height          =   195
-         Index           =   67
-         Left            =   240
-         TabIndex        =   345
-         Top             =   1680
-         Width           =   3240
+         Index           =   49
+         Left            =   840
+         TabIndex        =   260
+         Top             =   960
+         Width           =   465
       End
       Begin VB.Label Label1 
-         Caption         =   "FECHA"
+         Caption         =   "Fecha"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
             Size            =   8.25
@@ -305,42 +393,22 @@ Begin VB.Form frmListado
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         ForeColor       =   &H00404040&
-         Height          =   195
-         Index           =   37
-         Left            =   1080
-         TabIndex        =   344
-         Top             =   1200
-         Width           =   615
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   23
+         Left            =   120
+         TabIndex        =   259
+         Top             =   720
+         Width           =   735
       End
       Begin VB.Image imgFec 
          Height          =   240
-         Index           =   23
-         Left            =   1800
-         Picture         =   "frmListado.frx":6968
+         Index           =   16
+         Left            =   1440
+         Picture         =   "frmListado.frx":68DD
          ToolTipText     =   "Buscar fecha"
-         Top             =   1200
+         Top             =   960
          Width           =   240
-      End
-      Begin VB.Label lblTitulo 
-         Alignment       =   2  'Center
-         Caption         =   "Traspasar datos a histórico"
-         BeginProperty Font 
-            Name            =   "Verdana"
-            Size            =   15.75
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   375
-         Index           =   15
-         Left            =   240
-         TabIndex        =   342
-         Top             =   240
-         Width           =   4875
       End
    End
    Begin VB.Frame FrameTrabajadores 
@@ -350,13 +418,22 @@ Begin VB.Form frmListado
       Top             =   0
       Visible         =   0   'False
       Width           =   6615
+      Begin VB.OptionButton optListTrab 
+         Caption         =   "Seguridad social"
+         Height          =   255
+         Index           =   2
+         Left            =   4800
+         TabIndex        =   56
+         Top             =   3960
+         Width           =   1575
+      End
       Begin VB.ComboBox cboBaja 
          Height          =   315
-         ItemData        =   "frmListado.frx":69F3
-         Left            =   1560
-         List            =   "frmListado.frx":6A00
+         ItemData        =   "frmListado.frx":6968
+         Left            =   1440
+         List            =   "frmListado.frx":6975
          Style           =   2  'Dropdown List
-         TabIndex        =   339
+         TabIndex        =   340
          Top             =   3360
          Width           =   2895
       End
@@ -364,24 +441,24 @@ Begin VB.Form frmListado
          Caption         =   "Tarjeta"
          Height          =   255
          Left            =   1440
-         TabIndex        =   298
-         Top             =   4680
+         TabIndex        =   60
+         Top             =   4920
          Width           =   975
       End
-      Begin VB.Frame Frame1 
+      Begin VB.Frame FrameOrdenListTra 
          BorderStyle     =   0  'None
          Caption         =   "Frame1"
          Height          =   615
          Left            =   240
-         TabIndex        =   97
-         Top             =   4080
-         Width           =   2535
+         TabIndex        =   101
+         Top             =   4200
+         Width           =   3495
          Begin VB.OptionButton optOrdenTraba 
             Caption         =   "Codigo"
             Height          =   255
             Index           =   0
-            Left            =   120
-            TabIndex        =   99
+            Left            =   1200
+            TabIndex        =   57
             Top             =   240
             Value           =   -1  'True
             Width           =   1095
@@ -390,10 +467,29 @@ Begin VB.Form frmListado
             Caption         =   "Nombre"
             Height          =   255
             Index           =   1
-            Left            =   1440
-            TabIndex        =   98
+            Left            =   2280
+            TabIndex        =   58
             Top             =   240
             Width           =   1095
+         End
+         Begin VB.Label Label1 
+            Caption         =   "Ordenacion"
+            BeginProperty Font 
+               Name            =   "MS Sans Serif"
+               Size            =   8.25
+               Charset         =   0
+               Weight          =   700
+               Underline       =   0   'False
+               Italic          =   0   'False
+               Strikethrough   =   0   'False
+            EndProperty
+            ForeColor       =   &H00000080&
+            Height          =   255
+            Index           =   40
+            Left            =   0
+            TabIndex        =   367
+            Top             =   240
+            Width           =   1335
          End
       End
       Begin VB.Frame FrameTapaSecc 
@@ -401,7 +497,7 @@ Begin VB.Form frmListado
          Caption         =   "Frame1"
          Height          =   999
          Left            =   240
-         TabIndex        =   96
+         TabIndex        =   100
          Top             =   2160
          Width           =   6135
       End
@@ -427,7 +523,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   0
          Left            =   3000
-         TabIndex        =   95
+         TabIndex        =   99
          Top             =   2520
          Width           =   3375
       End
@@ -437,7 +533,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   1
          Left            =   3000
-         TabIndex        =   94
+         TabIndex        =   98
          Top             =   2880
          Width           =   3375
       End
@@ -445,34 +541,34 @@ Begin VB.Form frmListado
          Caption         =   "Foto"
          Height          =   255
          Left            =   360
-         TabIndex        =   90
-         Top             =   4680
+         TabIndex        =   59
+         Top             =   4920
          Width           =   975
       End
       Begin VB.CheckBox chkSeccion 
          Caption         =   "Sección"
          Height          =   255
-         Left            =   360
-         TabIndex        =   89
-         Top             =   3840
+         Left            =   4920
+         TabIndex        =   94
+         Top             =   3360
          Width           =   975
       End
       Begin VB.OptionButton optListTrab 
-         Caption         =   "Datos extendidos"
+         Caption         =   "Extendidos"
          Height          =   255
          Index           =   1
-         Left            =   4560
+         Left            =   2880
          TabIndex        =   55
-         Top             =   3840
+         Top             =   3960
          Width           =   1575
       End
       Begin VB.OptionButton optListTrab 
-         Caption         =   "Datos básicos"
+         Caption         =   "Básicos"
          Height          =   255
          Index           =   0
-         Left            =   2760
+         Left            =   1440
          TabIndex        =   54
-         Top             =   3840
+         Top             =   3960
          Value           =   -1  'True
          Width           =   1335
       End
@@ -481,7 +577,7 @@ Begin VB.Form frmListado
          Height          =   375
          Left            =   3600
          TabIndex        =   46
-         Top             =   4800
+         Top             =   4920
          Width           =   1215
       End
       Begin VB.CommandButton cmdCancelar 
@@ -490,7 +586,7 @@ Begin VB.Form frmListado
          Index           =   8
          Left            =   5040
          TabIndex        =   49
-         Top             =   4800
+         Top             =   4920
          Width           =   1215
       End
       Begin VB.TextBox txtDT 
@@ -530,6 +626,25 @@ Begin VB.Form frmListado
          Width           =   855
       End
       Begin VB.Label Label1 
+         Caption         =   "Tipo listado"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   41
+         Left            =   240
+         TabIndex        =   368
+         Top             =   3960
+         Width           =   1335
+      End
+      Begin VB.Label Label1 
          Caption         =   "Situacion"
          BeginProperty Font 
             Name            =   "MS Sans Serif"
@@ -544,7 +659,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   36
          Left            =   240
-         TabIndex        =   340
+         TabIndex        =   341
          Top             =   3360
          Width           =   1335
       End
@@ -567,7 +682,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   20
          Left            =   1320
-         TabIndex        =   93
+         TabIndex        =   97
          Top             =   2880
          Width           =   420
       End
@@ -576,7 +691,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   19
          Left            =   1320
-         TabIndex        =   92
+         TabIndex        =   96
          Top             =   2520
          Width           =   465
       End
@@ -595,7 +710,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   8
          Left            =   240
-         TabIndex        =   91
+         TabIndex        =   95
          Top             =   2280
          Width           =   1335
       End
@@ -671,10 +786,338 @@ Begin VB.Form frmListado
          Width           =   5415
       End
    End
+   Begin VB.Frame FrameDatosHco 
+      Height          =   4095
+      Left            =   5400
+      TabIndex        =   349
+      Top             =   1440
+      Visible         =   0   'False
+      Width           =   6015
+      Begin VB.OptionButton optOrdenTraba 
+         Caption         =   "Fecha"
+         Height          =   255
+         Index           =   3
+         Left            =   3240
+         TabIndex        =   366
+         Top             =   3000
+         Value           =   -1  'True
+         Width           =   1095
+      End
+      Begin VB.OptionButton optOrdenTraba 
+         Caption         =   "Trabajador"
+         Height          =   255
+         Index           =   2
+         Left            =   1440
+         TabIndex        =   365
+         Top             =   3000
+         Width           =   1095
+      End
+      Begin VB.CommandButton cmdLisHcoMarcajes 
+         Caption         =   "&Aceptar"
+         Height          =   375
+         Left            =   2760
+         TabIndex        =   354
+         Top             =   3600
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   25
+         Left            =   4200
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   353
+         Text            =   "Text1"
+         Top             =   2280
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   24
+         Left            =   1320
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   352
+         Text            =   "Text1"
+         Top             =   2280
+         Width           =   1215
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   25
+         Left            =   1320
+         TabIndex        =   351
+         Top             =   1560
+         Width           =   855
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   25
+         Left            =   2160
+         TabIndex        =   360
+         Top             =   1560
+         Width           =   3375
+      End
+      Begin VB.TextBox txtTrab 
+         Height          =   285
+         Index           =   24
+         Left            =   1320
+         TabIndex        =   350
+         Top             =   1200
+         Width           =   855
+      End
+      Begin VB.TextBox txtDT 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   24
+         Left            =   2160
+         TabIndex        =   357
+         Top             =   1200
+         Width           =   3375
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "C&ancelar"
+         Height          =   375
+         Index           =   24
+         Left            =   4320
+         TabIndex        =   355
+         Top             =   3600
+         Width           =   1215
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Fecha"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   39
+         Left            =   120
+         TabIndex        =   364
+         Top             =   2040
+         Width           =   1335
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   25
+         Left            =   3840
+         Picture         =   "frmListado.frx":698A
+         ToolTipText     =   "Buscar fecha"
+         Top             =   2280
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   71
+         Left            =   3360
+         TabIndex        =   363
+         Top             =   2280
+         Width           =   465
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   70
+         Left            =   600
+         TabIndex        =   362
+         Top             =   2280
+         Width           =   465
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   24
+         Left            =   1080
+         Picture         =   "frmListado.frx":6A15
+         ToolTipText     =   "Buscar fecha"
+         Top             =   2280
+         Width           =   240
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Hasta"
+         Height          =   195
+         Index           =   69
+         Left            =   600
+         TabIndex        =   361
+         Top             =   1560
+         Width           =   420
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   25
+         Left            =   1080
+         Top             =   1560
+         Width           =   255
+      End
+      Begin VB.Label Label1 
+         Caption         =   "Trabajador"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   255
+         Index           =   38
+         Left            =   120
+         TabIndex        =   359
+         Top             =   840
+         Width           =   1335
+      End
+      Begin VB.Label lblFecha 
+         Caption         =   "Desde"
+         Height          =   195
+         Index           =   68
+         Left            =   600
+         TabIndex        =   358
+         Top             =   1200
+         Width           =   465
+      End
+      Begin VB.Image imgTra 
+         Height          =   255
+         Index           =   24
+         Left            =   1080
+         Top             =   1200
+         Width           =   255
+      End
+      Begin VB.Label lblTitulo 
+         Alignment       =   2  'Center
+         Caption         =   "Listado trabajadores"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00800000&
+         Height          =   495
+         Index           =   16
+         Left            =   360
+         TabIndex        =   356
+         Top             =   360
+         Width           =   5415
+      End
+   End
+   Begin VB.Frame FrameTraspasoHCO 
+      Height          =   3135
+      Left            =   6600
+      TabIndex        =   342
+      Top             =   1800
+      Visible         =   0   'False
+      Width           =   5535
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "C&ancelar"
+         Height          =   375
+         Index           =   23
+         Left            =   3840
+         TabIndex        =   348
+         Top             =   2400
+         Width           =   1215
+      End
+      Begin VB.CommandButton cmdTraspasar 
+         Caption         =   "&Aceptar"
+         Height          =   375
+         Left            =   2400
+         TabIndex        =   347
+         Top             =   2400
+         Width           =   1215
+      End
+      Begin VB.TextBox txtFec 
+         Height          =   285
+         Index           =   23
+         Left            =   2280
+         ScrollBars      =   1  'Horizontal
+         TabIndex        =   344
+         Text            =   "Text1"
+         Top             =   1200
+         Width           =   1215
+      End
+      Begin VB.Label lblFecha 
+         AutoSize        =   -1  'True
+         Caption         =   "Igual o anterior a la fecha introducida"
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   -1  'True
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   195
+         Index           =   67
+         Left            =   240
+         TabIndex        =   346
+         Top             =   1680
+         Width           =   3240
+      End
+      Begin VB.Label Label1 
+         Caption         =   "FECHA"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00404040&
+         Height          =   195
+         Index           =   37
+         Left            =   1080
+         TabIndex        =   345
+         Top             =   1200
+         Width           =   615
+      End
+      Begin VB.Image imgFec 
+         Height          =   240
+         Index           =   23
+         Left            =   1800
+         Picture         =   "frmListado.frx":6AA0
+         ToolTipText     =   "Buscar fecha"
+         Top             =   1200
+         Width           =   240
+      End
+      Begin VB.Label lblTitulo 
+         Alignment       =   2  'Center
+         Caption         =   "Traspasar datos a histórico"
+         BeginProperty Font 
+            Name            =   "Verdana"
+            Size            =   15.75
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00000080&
+         Height          =   375
+         Index           =   15
+         Left            =   240
+         TabIndex        =   343
+         Top             =   240
+         Width           =   4875
+      End
+   End
    Begin VB.Frame FrameActual 
       Height          =   5895
       Left            =   120
-      TabIndex        =   137
+      TabIndex        =   139
       Top             =   0
       Width           =   6495
       Begin VB.CheckBox chkSinProcesar 
@@ -682,7 +1125,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   3
          Left            =   1440
-         TabIndex        =   338
+         TabIndex        =   339
          Top             =   4920
          Width           =   2175
       End
@@ -691,7 +1134,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   2
          Left            =   3960
-         TabIndex        =   308
+         TabIndex        =   309
          Top             =   4560
          Width           =   2175
       End
@@ -699,7 +1142,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   11
          Left            =   1920
-         TabIndex        =   147
+         TabIndex        =   149
          Top             =   3480
          Width           =   855
       End
@@ -709,7 +1152,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   11
          Left            =   2880
-         TabIndex        =   278
+         TabIndex        =   280
          Top             =   3480
          Width           =   3375
       End
@@ -717,7 +1160,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   10
          Left            =   1920
-         TabIndex        =   146
+         TabIndex        =   148
          Top             =   3120
          Width           =   855
       End
@@ -727,7 +1170,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   10
          Left            =   2880
-         TabIndex        =   275
+         TabIndex        =   277
          Top             =   3120
          Width           =   3375
       End
@@ -736,7 +1179,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   0
          Left            =   1440
-         TabIndex        =   150
+         TabIndex        =   152
          Top             =   4560
          Width           =   2175
       End
@@ -745,7 +1188,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   1
          Left            =   3120
-         TabIndex        =   149
+         TabIndex        =   151
          Top             =   4080
          Width           =   855
       End
@@ -754,7 +1197,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   0
          Left            =   1440
-         TabIndex        =   148
+         TabIndex        =   150
          Top             =   4080
          Value           =   -1  'True
          Width           =   855
@@ -764,7 +1207,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   12
          Left            =   5040
-         TabIndex        =   152
+         TabIndex        =   154
          Top             =   5280
          Width           =   1215
       End
@@ -772,7 +1215,7 @@ Begin VB.Form frmListado
          Caption         =   "&Aceptar"
          Height          =   375
          Left            =   3720
-         TabIndex        =   151
+         TabIndex        =   153
          Top             =   5280
          Width           =   1215
       End
@@ -782,7 +1225,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   11
          Left            =   2880
-         TabIndex        =   154
+         TabIndex        =   156
          Top             =   2400
          Width           =   3375
       End
@@ -792,7 +1235,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   10
          Left            =   2880
-         TabIndex        =   153
+         TabIndex        =   155
          Top             =   2040
          Width           =   3375
       End
@@ -800,7 +1243,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   11
          Left            =   1920
-         TabIndex        =   145
+         TabIndex        =   147
          Top             =   2400
          Width           =   855
       End
@@ -808,7 +1251,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   10
          Left            =   1920
-         TabIndex        =   144
+         TabIndex        =   146
          Top             =   2040
          Width           =   855
       End
@@ -817,7 +1260,7 @@ Begin VB.Form frmListado
          Index           =   9
          Left            =   4320
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   141
+         TabIndex        =   143
          Text            =   "Text1"
          Top             =   1035
          Width           =   1215
@@ -827,7 +1270,7 @@ Begin VB.Form frmListado
          Index           =   8
          Left            =   1920
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   138
+         TabIndex        =   140
          Text            =   "Text1"
          Top             =   1035
          Width           =   1215
@@ -847,7 +1290,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   28
          Left            =   240
-         TabIndex        =   280
+         TabIndex        =   282
          Top             =   3960
          Width           =   1335
       End
@@ -863,7 +1306,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   56
          Left            =   960
-         TabIndex        =   279
+         TabIndex        =   281
          Top             =   3480
          Width           =   465
       End
@@ -879,7 +1322,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   55
          Left            =   960
-         TabIndex        =   277
+         TabIndex        =   279
          Top             =   3120
          Width           =   465
       End
@@ -898,7 +1341,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   27
          Left            =   240
-         TabIndex        =   276
+         TabIndex        =   278
          Top             =   2880
          Width           =   1335
       End
@@ -921,7 +1364,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   30
          Left            =   960
-         TabIndex        =   157
+         TabIndex        =   159
          Top             =   2400
          Width           =   465
       End
@@ -930,7 +1373,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   29
          Left            =   960
-         TabIndex        =   156
+         TabIndex        =   158
          Top             =   2040
          Width           =   540
       End
@@ -949,7 +1392,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   13
          Left            =   240
-         TabIndex        =   155
+         TabIndex        =   157
          Top             =   1680
          Width           =   1335
       End
@@ -969,7 +1412,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   7
          Left            =   360
-         TabIndex        =   143
+         TabIndex        =   145
          Top             =   240
          Width           =   5415
       End
@@ -977,7 +1420,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   9
          Left            =   3960
-         Picture         =   "frmListado.frx":6A15
+         Picture         =   "frmListado.frx":6B2B
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -987,7 +1430,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   28
          Left            =   3360
-         TabIndex        =   142
+         TabIndex        =   144
          Top             =   1080
          Width           =   465
       End
@@ -1006,7 +1449,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   12
          Left            =   240
-         TabIndex        =   140
+         TabIndex        =   142
          Top             =   840
          Width           =   735
       End
@@ -1014,7 +1457,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   8
          Left            =   1560
-         Picture         =   "frmListado.frx":6AA0
+         Picture         =   "frmListado.frx":6BB6
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -1024,7 +1467,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   27
          Left            =   960
-         TabIndex        =   139
+         TabIndex        =   141
          Top             =   1080
          Width           =   465
       End
@@ -1032,16 +1475,16 @@ Begin VB.Form frmListado
    Begin VB.Frame frHorascombinado 
       Height          =   6135
       Left            =   120
-      TabIndex        =   158
+      TabIndex        =   160
       Top             =   0
       Width           =   6495
       Begin VB.ComboBox cboReloj 
          Height          =   315
-         ItemData        =   "frmListado.frx":6B2B
+         ItemData        =   "frmListado.frx":6C41
          Left            =   1560
-         List            =   "frmListado.frx":6B38
+         List            =   "frmListado.frx":6C4E
          Style           =   2  'Dropdown List
-         TabIndex        =   175
+         TabIndex        =   177
          Top             =   4080
          Width           =   1815
       End
@@ -1050,7 +1493,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   2
          Left            =   3480
-         TabIndex        =   212
+         TabIndex        =   214
          Top             =   4680
          Width           =   1815
       End
@@ -1059,7 +1502,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   1
          Left            =   1560
-         TabIndex        =   211
+         TabIndex        =   213
          Top             =   4680
          Width           =   1575
       End
@@ -1068,7 +1511,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   0
          Left            =   1560
-         TabIndex        =   210
+         TabIndex        =   212
          Top             =   5040
          Width           =   1815
       End
@@ -1078,7 +1521,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   3
          Left            =   2880
-         TabIndex        =   180
+         TabIndex        =   182
          Top             =   3600
          Width           =   3375
       End
@@ -1088,7 +1531,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   2
          Left            =   2880
-         TabIndex        =   179
+         TabIndex        =   181
          Top             =   3120
          Width           =   3375
       End
@@ -1096,7 +1539,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   3
          Left            =   1920
-         TabIndex        =   174
+         TabIndex        =   176
          Top             =   3600
          Width           =   855
       End
@@ -1104,7 +1547,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   2
          Left            =   1920
-         TabIndex        =   173
+         TabIndex        =   175
          Top             =   3120
          Width           =   855
       End
@@ -1112,7 +1555,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3600
-         TabIndex        =   178
+         TabIndex        =   180
          Top             =   5520
          Width           =   1215
       End
@@ -1121,7 +1564,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   1
          Left            =   4920
-         TabIndex        =   177
+         TabIndex        =   179
          Top             =   5040
          Width           =   975
       End
@@ -1130,7 +1573,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   0
          Left            =   3480
-         TabIndex        =   176
+         TabIndex        =   178
          Top             =   5040
          Value           =   -1  'True
          Width           =   975
@@ -1139,7 +1582,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   13
          Left            =   1920
-         TabIndex        =   168
+         TabIndex        =   170
          Top             =   2400
          Width           =   855
       End
@@ -1147,7 +1590,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   12
          Left            =   1920
-         TabIndex        =   167
+         TabIndex        =   169
          Top             =   2040
          Width           =   855
       End
@@ -1157,7 +1600,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   13
          Left            =   2880
-         TabIndex        =   166
+         TabIndex        =   168
          Top             =   2400
          Width           =   3375
       End
@@ -1167,7 +1610,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   12
          Left            =   2880
-         TabIndex        =   165
+         TabIndex        =   167
          Top             =   2040
          Width           =   3375
       End
@@ -1176,7 +1619,7 @@ Begin VB.Form frmListado
          Index           =   11
          Left            =   4320
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   161
+         TabIndex        =   163
          Text            =   "Text1"
          Top             =   1080
          Width           =   1215
@@ -1186,7 +1629,7 @@ Begin VB.Form frmListado
          Index           =   10
          Left            =   1920
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   160
+         TabIndex        =   162
          Text            =   "Text1"
          Top             =   1080
          Width           =   1215
@@ -1196,7 +1639,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   13
          Left            =   4920
-         TabIndex        =   159
+         TabIndex        =   161
          Top             =   5520
          Width           =   1215
       End
@@ -1215,14 +1658,14 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   35
          Left            =   240
-         TabIndex        =   335
+         TabIndex        =   336
          Top             =   4080
          Width           =   735
       End
       Begin VB.Label lblCombinado 
          Height          =   255
          Left            =   240
-         TabIndex        =   213
+         TabIndex        =   215
          Top             =   5400
          Width           =   3135
       End
@@ -1241,7 +1684,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   16
          Left            =   240
-         TabIndex        =   183
+         TabIndex        =   185
          Top             =   2880
          Width           =   1335
       End
@@ -1250,7 +1693,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   36
          Left            =   960
-         TabIndex        =   182
+         TabIndex        =   184
          Top             =   3120
          Width           =   465
       End
@@ -1259,7 +1702,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   35
          Left            =   960
-         TabIndex        =   181
+         TabIndex        =   183
          Top             =   3600
          Width           =   420
       End
@@ -1292,7 +1735,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   8
          Left            =   480
-         TabIndex        =   172
+         TabIndex        =   174
          Top             =   240
          Width           =   5415
       End
@@ -1311,7 +1754,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   15
          Left            =   240
-         TabIndex        =   171
+         TabIndex        =   173
          Top             =   1680
          Width           =   1335
       End
@@ -1320,7 +1763,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   34
          Left            =   960
-         TabIndex        =   170
+         TabIndex        =   172
          Top             =   2040
          Width           =   540
       End
@@ -1329,7 +1772,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   33
          Left            =   960
-         TabIndex        =   169
+         TabIndex        =   171
          Top             =   2400
          Width           =   465
       End
@@ -1352,7 +1795,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   32
          Left            =   960
-         TabIndex        =   164
+         TabIndex        =   166
          Top             =   1080
          Width           =   465
       End
@@ -1360,7 +1803,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   11
          Left            =   3960
-         Picture         =   "frmListado.frx":6B58
+         Picture         =   "frmListado.frx":6C6E
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1380,7 +1823,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   14
          Left            =   240
-         TabIndex        =   163
+         TabIndex        =   165
          Top             =   840
          Width           =   735
       End
@@ -1389,7 +1832,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   31
          Left            =   3480
-         TabIndex        =   162
+         TabIndex        =   164
          Top             =   1080
          Width           =   465
       End
@@ -1397,7 +1840,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   10
          Left            =   1560
-         Picture         =   "frmListado.frx":6BE3
+         Picture         =   "frmListado.frx":6CF9
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1406,16 +1849,16 @@ Begin VB.Form frmListado
    Begin VB.Frame FrameA3 
       Height          =   3375
       Left            =   120
-      TabIndex        =   299
+      TabIndex        =   300
       Top             =   0
       Visible         =   0   'False
       Width           =   6015
       Begin VB.ComboBox cboCentroTrabajo 
          Height          =   315
-         ItemData        =   "frmListado.frx":6C6E
+         ItemData        =   "frmListado.frx":6D84
          Left            =   1920
-         List            =   "frmListado.frx":6C70
-         TabIndex        =   303
+         List            =   "frmListado.frx":6D86
+         TabIndex        =   304
          Tag             =   "Centro trabajo trabajo|N|S|||trabajadores|idCentroA3|||"
          Text            =   "Combo1"
          Top             =   2160
@@ -1426,7 +1869,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   1
          Left            =   3000
-         TabIndex        =   302
+         TabIndex        =   303
          Top             =   1680
          Value           =   1  'Checked
          Width           =   2415
@@ -1436,7 +1879,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   0
          Left            =   600
-         TabIndex        =   301
+         TabIndex        =   302
          Top             =   1680
          Value           =   1  'Checked
          Width           =   2175
@@ -1445,7 +1888,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3000
-         TabIndex        =   304
+         TabIndex        =   305
          Top             =   2760
          Width           =   1215
       End
@@ -1454,7 +1897,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   20
          Left            =   4440
-         TabIndex        =   305
+         TabIndex        =   306
          Top             =   2760
          Width           =   1215
       End
@@ -1463,7 +1906,7 @@ Begin VB.Form frmListado
          Index           =   20
          Left            =   2760
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   300
+         TabIndex        =   301
          Text            =   "Text1"
          Top             =   1080
          Width           =   1215
@@ -1472,7 +1915,7 @@ Begin VB.Form frmListado
          Caption         =   "Centro trabajo"
          Height          =   255
          Left            =   600
-         TabIndex        =   334
+         TabIndex        =   335
          Top             =   2160
          Width           =   1575
       End
@@ -1480,7 +1923,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   20
          Left            =   2400
-         Picture         =   "frmListado.frx":6C72
+         Picture         =   "frmListado.frx":6D88
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1501,7 +1944,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   13
          Left            =   840
-         TabIndex        =   307
+         TabIndex        =   308
          Top             =   360
          Width           =   4335
       End
@@ -1520,7 +1963,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   31
          Left            =   1680
-         TabIndex        =   306
+         TabIndex        =   307
          Top             =   1080
          Width           =   735
       End
@@ -1528,14 +1971,14 @@ Begin VB.Form frmListado
    Begin VB.Frame FrameListadoNominas 
       Height          =   5055
       Left            =   5640
-      TabIndex        =   319
+      TabIndex        =   320
       Top             =   0
       Width           =   6735
       Begin VB.CommandButton cmdNominas 
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3600
-         TabIndex        =   317
+         TabIndex        =   318
          Top             =   4440
          Width           =   1215
       End
@@ -1544,7 +1987,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   21
          Left            =   5040
-         TabIndex        =   318
+         TabIndex        =   319
          Top             =   4440
          Width           =   1215
       End
@@ -1552,7 +1995,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   13
          Left            =   1920
-         TabIndex        =   316
+         TabIndex        =   317
          Top             =   3480
          Width           =   855
       End
@@ -1562,7 +2005,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   13
          Left            =   2880
-         TabIndex        =   332
+         TabIndex        =   333
          Top             =   3480
          Width           =   3375
       End
@@ -1570,7 +2013,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   12
          Left            =   1920
-         TabIndex        =   315
+         TabIndex        =   316
          Top             =   3120
          Width           =   855
       End
@@ -1580,7 +2023,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   12
          Left            =   2880
-         TabIndex        =   329
+         TabIndex        =   330
          Top             =   3120
          Width           =   3375
       End
@@ -1590,7 +2033,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   23
          Left            =   2880
-         TabIndex        =   327
+         TabIndex        =   328
          Top             =   2400
          Width           =   3375
       End
@@ -1598,7 +2041,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   23
          Left            =   1920
-         TabIndex        =   314
+         TabIndex        =   315
          Top             =   2400
          Width           =   855
       End
@@ -1608,7 +2051,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   22
          Left            =   2880
-         TabIndex        =   324
+         TabIndex        =   325
          Top             =   1920
          Width           =   3375
       End
@@ -1616,7 +2059,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   22
          Left            =   1920
-         TabIndex        =   313
+         TabIndex        =   314
          Top             =   1920
          Width           =   855
       End
@@ -1625,7 +2068,7 @@ Begin VB.Form frmListado
          Index           =   22
          Left            =   5040
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   312
+         TabIndex        =   313
          Text            =   "Text1"
          Top             =   1080
          Width           =   1215
@@ -1635,7 +2078,7 @@ Begin VB.Form frmListado
          Index           =   21
          Left            =   1920
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   311
+         TabIndex        =   312
          Text            =   "Text1"
          Top             =   1080
          Width           =   1215
@@ -1652,7 +2095,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   66
          Left            =   960
-         TabIndex        =   333
+         TabIndex        =   334
          Top             =   3480
          Width           =   465
       End
@@ -1668,7 +2111,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   65
          Left            =   960
-         TabIndex        =   331
+         TabIndex        =   332
          Top             =   3120
          Width           =   465
       End
@@ -1687,7 +2130,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   34
          Left            =   240
-         TabIndex        =   330
+         TabIndex        =   331
          Top             =   2880
          Width           =   1335
       End
@@ -1703,7 +2146,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   64
          Left            =   960
-         TabIndex        =   328
+         TabIndex        =   329
          Top             =   2400
          Width           =   465
       End
@@ -1719,7 +2162,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   63
          Left            =   960
-         TabIndex        =   326
+         TabIndex        =   327
          Top             =   1920
          Width           =   540
       End
@@ -1738,7 +2181,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   33
          Left            =   240
-         TabIndex        =   325
+         TabIndex        =   326
          Top             =   1680
          Width           =   1335
       End
@@ -1747,7 +2190,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   62
          Left            =   4200
-         TabIndex        =   323
+         TabIndex        =   324
          Top             =   1080
          Width           =   465
       End
@@ -1755,7 +2198,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   22
          Left            =   4680
-         Picture         =   "frmListado.frx":6CFD
+         Picture         =   "frmListado.frx":6E13
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1764,7 +2207,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   21
          Left            =   1560
-         Picture         =   "frmListado.frx":6D88
+         Picture         =   "frmListado.frx":6E9E
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1784,7 +2227,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   32
          Left            =   240
-         TabIndex        =   322
+         TabIndex        =   323
          Top             =   840
          Width           =   735
       End
@@ -1793,7 +2236,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   61
          Left            =   960
-         TabIndex        =   321
+         TabIndex        =   322
          Top             =   1080
          Width           =   465
       End
@@ -1813,7 +2256,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   14
          Left            =   1080
-         TabIndex        =   320
+         TabIndex        =   321
          Top             =   240
          Width           =   5415
       End
@@ -1828,7 +2271,7 @@ Begin VB.Form frmListado
    Begin VB.Frame FrameCostes 
       Height          =   5175
       Left            =   120
-      TabIndex        =   217
+      TabIndex        =   219
       Top             =   0
       Visible         =   0   'False
       Width           =   6495
@@ -1837,7 +2280,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   0
          Left            =   360
-         TabIndex        =   245
+         TabIndex        =   247
          Top             =   4560
          Width           =   975
       End
@@ -1845,7 +2288,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   7
          Left            =   1920
-         TabIndex        =   224
+         TabIndex        =   226
          Top             =   3360
          Width           =   855
       End
@@ -1855,7 +2298,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   7
          Left            =   2880
-         TabIndex        =   243
+         TabIndex        =   245
          Top             =   3360
          Width           =   3375
       End
@@ -1863,7 +2306,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   6
          Left            =   1920
-         TabIndex        =   223
+         TabIndex        =   225
          Top             =   3000
          Width           =   855
       End
@@ -1873,7 +2316,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   6
          Left            =   2880
-         TabIndex        =   240
+         TabIndex        =   242
          Top             =   3000
          Width           =   3375
       End
@@ -1881,7 +2324,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3480
-         TabIndex        =   229
+         TabIndex        =   231
          Top             =   4560
          Width           =   1215
       End
@@ -1890,7 +2333,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   5
          Left            =   1920
-         TabIndex        =   226
+         TabIndex        =   228
          Top             =   3960
          Value           =   -1  'True
          Width           =   975
@@ -1900,7 +2343,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   4
          Left            =   360
-         TabIndex        =   225
+         TabIndex        =   227
          Top             =   3960
          Width           =   1095
       End
@@ -1910,7 +2353,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   17
          Left            =   2880
-         TabIndex        =   238
+         TabIndex        =   240
          Top             =   2280
          Width           =   3375
       End
@@ -1918,7 +2361,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   17
          Left            =   1920
-         TabIndex        =   222
+         TabIndex        =   224
          Top             =   2280
          Width           =   855
       End
@@ -1928,7 +2371,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   16
          Left            =   2880
-         TabIndex        =   235
+         TabIndex        =   237
          Top             =   1920
          Width           =   3375
       End
@@ -1936,14 +2379,14 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   16
          Left            =   1920
-         TabIndex        =   221
+         TabIndex        =   223
          Top             =   1920
          Width           =   855
       End
       Begin VB.Frame Frame2 
          Height          =   495
          Left            =   3240
-         TabIndex        =   234
+         TabIndex        =   236
          Top             =   3840
          Width           =   3015
          Begin VB.OptionButton optTrab 
@@ -1951,7 +2394,7 @@ Begin VB.Form frmListado
             Height          =   255
             Index           =   3
             Left            =   360
-            TabIndex        =   227
+            TabIndex        =   229
             Top             =   120
             Value           =   -1  'True
             Width           =   975
@@ -1961,7 +2404,7 @@ Begin VB.Form frmListado
             Height          =   255
             Index           =   2
             Left            =   1680
-            TabIndex        =   228
+            TabIndex        =   230
             Top             =   120
             Width           =   975
          End
@@ -1971,7 +2414,7 @@ Begin VB.Form frmListado
          Index           =   14
          Left            =   2160
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   219
+         TabIndex        =   221
          Text            =   "Text1"
          Top             =   960
          Width           =   1215
@@ -1981,7 +2424,7 @@ Begin VB.Form frmListado
          Index           =   15
          Left            =   4560
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   220
+         TabIndex        =   222
          Text            =   "Text1"
          Top             =   960
          Width           =   1215
@@ -1991,7 +2434,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   16
          Left            =   5040
-         TabIndex        =   230
+         TabIndex        =   232
          Top             =   4560
          Width           =   1215
       End
@@ -2007,7 +2450,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   48
          Left            =   960
-         TabIndex        =   244
+         TabIndex        =   246
          Top             =   3360
          Width           =   420
       End
@@ -2023,7 +2466,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   47
          Left            =   960
-         TabIndex        =   242
+         TabIndex        =   244
          Top             =   3000
          Width           =   465
       End
@@ -2042,7 +2485,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   22
          Left            =   240
-         TabIndex        =   241
+         TabIndex        =   243
          Top             =   2760
          Width           =   1335
       End
@@ -2058,7 +2501,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   46
          Left            =   960
-         TabIndex        =   239
+         TabIndex        =   241
          Top             =   2280
          Width           =   465
       End
@@ -2074,7 +2517,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   45
          Left            =   960
-         TabIndex        =   237
+         TabIndex        =   239
          Top             =   1920
          Width           =   540
       End
@@ -2093,7 +2536,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   21
          Left            =   240
-         TabIndex        =   236
+         TabIndex        =   238
          Top             =   1560
          Width           =   1335
       End
@@ -2101,7 +2544,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   14
          Left            =   1800
-         Picture         =   "frmListado.frx":6E13
+         Picture         =   "frmListado.frx":6F29
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -2111,7 +2554,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   44
          Left            =   3720
-         TabIndex        =   233
+         TabIndex        =   235
          Top             =   960
          Width           =   465
       End
@@ -2130,7 +2573,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   20
          Left            =   240
-         TabIndex        =   232
+         TabIndex        =   234
          Top             =   720
          Width           =   735
       End
@@ -2138,7 +2581,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   15
          Left            =   4200
-         Picture         =   "frmListado.frx":6E9E
+         Picture         =   "frmListado.frx":6FB4
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -2148,7 +2591,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   43
          Left            =   1200
-         TabIndex        =   231
+         TabIndex        =   233
          Top             =   960
          Width           =   465
       End
@@ -2168,7 +2611,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   10
          Left            =   480
-         TabIndex        =   218
+         TabIndex        =   220
          Top             =   240
          Width           =   5415
       End
@@ -2176,7 +2619,7 @@ Begin VB.Form frmListado
    Begin VB.Frame frPresenciareal 
       Height          =   4695
       Left            =   120
-      TabIndex        =   59
+      TabIndex        =   64
       Top             =   0
       Visible         =   0   'False
       Width           =   6375
@@ -2184,7 +2627,7 @@ Begin VB.Form frmListado
          Caption         =   "Fecha"
          Height          =   255
          Left            =   1920
-         TabIndex        =   209
+         TabIndex        =   211
          Top             =   3360
          Width           =   975
       End
@@ -2192,7 +2635,7 @@ Begin VB.Form frmListado
          Caption         =   "&Aceptar"
          Height          =   375
          Left            =   3720
-         TabIndex        =   66
+         TabIndex        =   71
          Top             =   4080
          Width           =   1215
       End
@@ -2201,7 +2644,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   2
          Left            =   5040
-         TabIndex        =   67
+         TabIndex        =   72
          Top             =   4080
          Width           =   1215
       End
@@ -2210,7 +2653,7 @@ Begin VB.Form frmListado
          Index           =   5
          Left            =   4680
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   63
+         TabIndex        =   68
          Text            =   "Text1"
          Top             =   1275
          Width           =   1215
@@ -2219,7 +2662,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   4
          Left            =   2040
-         TabIndex        =   62
+         TabIndex        =   67
          Text            =   "Text1"
          Top             =   1275
          Width           =   1215
@@ -2230,7 +2673,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   7
          Left            =   2880
-         TabIndex        =   69
+         TabIndex        =   74
          Top             =   2760
          Width           =   3375
       End
@@ -2240,7 +2683,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   6
          Left            =   2880
-         TabIndex        =   68
+         TabIndex        =   73
          Top             =   2280
          Width           =   3375
       End
@@ -2248,7 +2691,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   7
          Left            =   1920
-         TabIndex        =   65
+         TabIndex        =   70
          Top             =   2760
          Width           =   855
       End
@@ -2256,7 +2699,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   6
          Left            =   1920
-         TabIndex        =   64
+         TabIndex        =   69
          Top             =   2280
          Width           =   855
       End
@@ -2265,7 +2708,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   3
          Left            =   3480
-         TabIndex        =   61
+         TabIndex        =   66
          Top             =   3390
          Value           =   -1  'True
          Width           =   975
@@ -2275,7 +2718,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   2
          Left            =   4680
-         TabIndex        =   60
+         TabIndex        =   65
          Top             =   3390
          Width           =   975
       End
@@ -2283,7 +2726,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   0
          Left            =   240
-         TabIndex        =   77
+         TabIndex        =   82
          Top             =   4080
          Width           =   3135
       End
@@ -2302,7 +2745,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   7
          Left            =   240
-         TabIndex        =   76
+         TabIndex        =   81
          Top             =   1080
          Width           =   735
       End
@@ -2311,7 +2754,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   15
          Left            =   3840
-         TabIndex        =   75
+         TabIndex        =   80
          Top             =   1320
          Width           =   420
       End
@@ -2319,7 +2762,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   5
          Left            =   4320
-         Picture         =   "frmListado.frx":6F29
+         Picture         =   "frmListado.frx":703F
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2329,7 +2772,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   14
          Left            =   1080
-         TabIndex        =   74
+         TabIndex        =   79
          Top             =   1320
          Width           =   465
       End
@@ -2337,7 +2780,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   4
          Left            =   1680
-         Picture         =   "frmListado.frx":6FB4
+         Picture         =   "frmListado.frx":70CA
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2361,7 +2804,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   13
          Left            =   960
-         TabIndex        =   73
+         TabIndex        =   78
          Top             =   2280
          Width           =   465
       End
@@ -2370,7 +2813,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   12
          Left            =   960
-         TabIndex        =   72
+         TabIndex        =   77
          Top             =   2760
          Width           =   420
       End
@@ -2389,7 +2832,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   6
          Left            =   240
-         TabIndex        =   71
+         TabIndex        =   76
          Top             =   1920
          Width           =   1335
       End
@@ -2409,7 +2852,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   3
          Left            =   600
-         TabIndex        =   70
+         TabIndex        =   75
          Top             =   240
          Width           =   5415
       End
@@ -2426,7 +2869,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   1
          Left            =   4680
-         TabIndex        =   58
+         TabIndex        =   63
          Top             =   3390
          Width           =   975
       End
@@ -2435,7 +2878,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   0
          Left            =   3480
-         TabIndex        =   57
+         TabIndex        =   62
          Top             =   3390
          Value           =   -1  'True
          Width           =   975
@@ -2444,7 +2887,7 @@ Begin VB.Form frmListado
          Caption         =   "Por fecha"
          Height          =   255
          Left            =   1920
-         TabIndex        =   56
+         TabIndex        =   61
          Top             =   3360
          Value           =   1  'Checked
          Width           =   1095
@@ -2596,7 +3039,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   3
          Left            =   1680
-         Picture         =   "frmListado.frx":703F
+         Picture         =   "frmListado.frx":7155
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2614,7 +3057,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   2
          Left            =   4320
-         Picture         =   "frmListado.frx":70CA
+         Picture         =   "frmListado.frx":71E0
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2651,7 +3094,7 @@ Begin VB.Form frmListado
    Begin VB.Frame Frameincres 
       Height          =   5655
       Left            =   120
-      TabIndex        =   112
+      TabIndex        =   114
       Top             =   0
       Visible         =   0   'False
       Width           =   6495
@@ -2660,7 +3103,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   2
          Left            =   1920
-         TabIndex        =   216
+         TabIndex        =   218
          Top             =   4050
          Width           =   1095
       End
@@ -2669,7 +3112,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   1
          Left            =   3600
-         TabIndex        =   215
+         TabIndex        =   217
          Top             =   4440
          Width           =   1575
       End
@@ -2678,7 +3121,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   0
          Left            =   1920
-         TabIndex        =   214
+         TabIndex        =   216
          Top             =   4440
          Width           =   1095
       End
@@ -2687,7 +3130,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   1
          Left            =   5040
-         TabIndex        =   136
+         TabIndex        =   138
          Top             =   4080
          Width           =   1215
       End
@@ -2696,7 +3139,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   0
          Left            =   3600
-         TabIndex        =   135
+         TabIndex        =   137
          Top             =   4080
          Value           =   -1  'True
          Width           =   1335
@@ -2705,7 +3148,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3600
-         TabIndex        =   134
+         TabIndex        =   136
          Top             =   5160
          Width           =   1215
       End
@@ -2715,7 +3158,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   4
          Left            =   2880
-         TabIndex        =   132
+         TabIndex        =   134
          Top             =   3600
          Width           =   3375
       End
@@ -2723,7 +3166,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   4
          Left            =   1920
-         TabIndex        =   131
+         TabIndex        =   133
          Top             =   3600
          Width           =   855
       End
@@ -2733,7 +3176,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   3
          Left            =   2880
-         TabIndex        =   128
+         TabIndex        =   130
          Top             =   3240
          Width           =   3375
       End
@@ -2741,7 +3184,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   3
          Left            =   1920
-         TabIndex        =   127
+         TabIndex        =   129
          Top             =   3240
          Width           =   855
       End
@@ -2749,7 +3192,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   9
          Left            =   1920
-         TabIndex        =   119
+         TabIndex        =   121
          Top             =   2520
          Width           =   855
       End
@@ -2757,7 +3200,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   8
          Left            =   1920
-         TabIndex        =   118
+         TabIndex        =   120
          Top             =   2160
          Width           =   855
       End
@@ -2767,7 +3210,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   9
          Left            =   2880
-         TabIndex        =   117
+         TabIndex        =   119
          Top             =   2520
          Width           =   3375
       End
@@ -2777,7 +3220,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   8
          Left            =   2880
-         TabIndex        =   116
+         TabIndex        =   118
          Top             =   2160
          Width           =   3375
       End
@@ -2785,7 +3228,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   7
          Left            =   5040
-         TabIndex        =   115
+         TabIndex        =   117
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -2795,7 +3238,7 @@ Begin VB.Form frmListado
          Index           =   6
          Left            =   1920
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   114
+         TabIndex        =   116
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -2805,7 +3248,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   11
          Left            =   5040
-         TabIndex        =   113
+         TabIndex        =   115
          Top             =   5160
          Width           =   1215
       End
@@ -2821,7 +3264,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   26
          Left            =   960
-         TabIndex        =   133
+         TabIndex        =   135
          Top             =   3285
          Width           =   465
       End
@@ -2840,7 +3283,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   11
          Left            =   240
-         TabIndex        =   130
+         TabIndex        =   132
          Top             =   3000
          Width           =   1335
       End
@@ -2856,7 +3299,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   25
          Left            =   960
-         TabIndex        =   129
+         TabIndex        =   131
          Top             =   3645
          Width           =   465
       End
@@ -2876,7 +3319,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   6
          Left            =   240
-         TabIndex        =   126
+         TabIndex        =   128
          Top             =   240
          Width           =   6015
       End
@@ -2895,7 +3338,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   10
          Left            =   240
-         TabIndex        =   125
+         TabIndex        =   127
          Top             =   1800
          Width           =   1335
       End
@@ -2904,7 +3347,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   24
          Left            =   960
-         TabIndex        =   124
+         TabIndex        =   126
          Top             =   2160
          Width           =   540
       End
@@ -2913,7 +3356,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   23
          Left            =   960
-         TabIndex        =   123
+         TabIndex        =   125
          Top             =   2520
          Width           =   465
       End
@@ -2935,7 +3378,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   7
          Left            =   4680
-         Picture         =   "frmListado.frx":7155
+         Picture         =   "frmListado.frx":726B
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -2945,7 +3388,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   22
          Left            =   960
-         TabIndex        =   122
+         TabIndex        =   124
          Top             =   1200
          Width           =   465
       End
@@ -2953,7 +3396,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   6
          Left            =   1560
-         Picture         =   "frmListado.frx":71E0
+         Picture         =   "frmListado.frx":72F6
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -2963,7 +3406,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   21
          Left            =   4200
-         TabIndex        =   121
+         TabIndex        =   123
          Top             =   1200
          Width           =   420
       End
@@ -2982,7 +3425,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   9
          Left            =   240
-         TabIndex        =   120
+         TabIndex        =   122
          Top             =   960
          Width           =   735
       End
@@ -2990,7 +3433,7 @@ Begin VB.Form frmListado
    Begin VB.Frame frDiasTrabajados 
       Height          =   4815
       Left            =   120
-      TabIndex        =   184
+      TabIndex        =   186
       Top             =   0
       Width           =   6615
       Begin VB.TextBox txtFec 
@@ -2998,7 +3441,7 @@ Begin VB.Form frmListado
          Index           =   13
          Left            =   5160
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   187
+         TabIndex        =   189
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -3007,7 +3450,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   12
          Left            =   2040
-         TabIndex        =   186
+         TabIndex        =   188
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -3016,7 +3459,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3840
-         TabIndex        =   193
+         TabIndex        =   195
          Top             =   4200
          Width           =   1215
       End
@@ -3024,7 +3467,7 @@ Begin VB.Form frmListado
          Caption         =   "Agrupar por seccion"
          Height          =   255
          Left            =   1320
-         TabIndex        =   192
+         TabIndex        =   194
          Top             =   3960
          Width           =   1935
       End
@@ -3033,7 +3476,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   14
          Left            =   5160
-         TabIndex        =   194
+         TabIndex        =   196
          Top             =   4200
          Width           =   1215
       End
@@ -3043,7 +3486,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   5
          Left            =   3000
-         TabIndex        =   201
+         TabIndex        =   203
          Top             =   3480
          Width           =   3375
       End
@@ -3053,7 +3496,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   4
          Left            =   3000
-         TabIndex        =   200
+         TabIndex        =   202
          Top             =   3000
          Width           =   3375
       End
@@ -3061,7 +3504,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   5
          Left            =   2160
-         TabIndex        =   191
+         TabIndex        =   193
          Top             =   3480
          Width           =   855
       End
@@ -3069,7 +3512,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   4
          Left            =   2160
-         TabIndex        =   190
+         TabIndex        =   192
          Top             =   3000
          Width           =   855
       End
@@ -3077,7 +3520,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   15
          Left            =   2160
-         TabIndex        =   189
+         TabIndex        =   191
          Top             =   2400
          Width           =   855
       End
@@ -3087,7 +3530,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   15
          Left            =   3000
-         TabIndex        =   198
+         TabIndex        =   200
          Top             =   2400
          Width           =   3375
       End
@@ -3095,7 +3538,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   14
          Left            =   2160
-         TabIndex        =   188
+         TabIndex        =   190
          Top             =   2040
          Width           =   855
       End
@@ -3105,7 +3548,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   14
          Left            =   3000
-         TabIndex        =   185
+         TabIndex        =   187
          Top             =   2040
          Width           =   3375
       End
@@ -3113,7 +3556,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   13
          Left            =   4800
-         Picture         =   "frmListado.frx":726B
+         Picture         =   "frmListado.frx":7381
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -3123,7 +3566,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   42
          Left            =   4320
-         TabIndex        =   208
+         TabIndex        =   210
          Top             =   1200
          Width           =   420
       End
@@ -3131,7 +3574,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   12
          Left            =   1680
-         Picture         =   "frmListado.frx":72F6
+         Picture         =   "frmListado.frx":740C
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -3141,7 +3584,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   41
          Left            =   1080
-         TabIndex        =   207
+         TabIndex        =   209
          Top             =   1200
          Width           =   465
       End
@@ -3160,14 +3603,14 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   19
          Left            =   240
-         TabIndex        =   206
+         TabIndex        =   208
          Top             =   960
          Width           =   735
       End
       Begin VB.Label lblDiasTrabajados 
          Height          =   255
          Left            =   240
-         TabIndex        =   205
+         TabIndex        =   207
          Top             =   4320
          Width           =   3375
       End
@@ -3186,7 +3629,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   18
          Left            =   240
-         TabIndex        =   204
+         TabIndex        =   206
          Top             =   2760
          Width           =   1335
       End
@@ -3195,7 +3638,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   40
          Left            =   1320
-         TabIndex        =   203
+         TabIndex        =   205
          Top             =   3000
          Width           =   465
       End
@@ -3204,7 +3647,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   39
          Left            =   1320
-         TabIndex        =   202
+         TabIndex        =   204
          Top             =   3480
          Width           =   420
       End
@@ -3227,7 +3670,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   38
          Left            =   1320
-         TabIndex        =   199
+         TabIndex        =   201
          Top             =   2400
          Width           =   420
       End
@@ -3254,7 +3697,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   9
          Left            =   600
-         TabIndex        =   197
+         TabIndex        =   199
          Top             =   240
          Width           =   5415
       End
@@ -3273,7 +3716,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   17
          Left            =   240
-         TabIndex        =   196
+         TabIndex        =   198
          Top             =   1680
          Width           =   1335
       End
@@ -3282,7 +3725,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   37
          Left            =   1320
-         TabIndex        =   195
+         TabIndex        =   197
          Top             =   2040
          Width           =   465
       End
@@ -3297,7 +3740,7 @@ Begin VB.Form frmListado
    Begin VB.Frame FrameIncidenciaGenerada 
       Height          =   2175
       Left            =   120
-      TabIndex        =   78
+      TabIndex        =   83
       Top             =   0
       Visible         =   0   'False
       Width           =   5655
@@ -3305,7 +3748,7 @@ Begin VB.Form frmListado
          Caption         =   "&Aceptar"
          Height          =   375
          Left            =   3360
-         TabIndex        =   84
+         TabIndex        =   89
          Top             =   1560
          Width           =   975
       End
@@ -3314,7 +3757,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   3
          Left            =   4440
-         TabIndex        =   87
+         TabIndex        =   92
          Top             =   1560
          Width           =   975
       End
@@ -3322,7 +3765,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   0
          Left            =   1800
-         TabIndex        =   83
+         TabIndex        =   88
          Top             =   1680
          Width           =   1095
       End
@@ -3330,7 +3773,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   0
          Left            =   360
-         TabIndex        =   82
+         TabIndex        =   87
          Top             =   1680
          Width           =   1095
       End
@@ -3338,7 +3781,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   2
          Left            =   360
-         TabIndex        =   80
+         TabIndex        =   85
          Top             =   960
          Width           =   855
       End
@@ -3348,7 +3791,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   2
          Left            =   1320
-         TabIndex        =   79
+         TabIndex        =   84
          Top             =   960
          Width           =   4095
       End
@@ -3368,7 +3811,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   4
          Left            =   360
-         TabIndex        =   88
+         TabIndex        =   93
          Top             =   240
          Width           =   4815
       End
@@ -3377,7 +3820,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   18
          Left            =   1800
-         TabIndex        =   86
+         TabIndex        =   91
          Top             =   1440
          Width           =   735
       End
@@ -3386,7 +3829,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   17
          Left            =   360
-         TabIndex        =   85
+         TabIndex        =   90
          Top             =   1440
          Width           =   465
       End
@@ -3395,7 +3838,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   16
          Left            =   360
-         TabIndex        =   81
+         TabIndex        =   86
          Top             =   720
          Width           =   465
       End
@@ -3690,7 +4133,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   1
          Left            =   4200
-         Picture         =   "frmListado.frx":7381
+         Picture         =   "frmListado.frx":7497
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -3708,7 +4151,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   0
          Left            =   1560
-         Picture         =   "frmListado.frx":740C
+         Picture         =   "frmListado.frx":7522
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -3717,14 +4160,14 @@ Begin VB.Form frmListado
    Begin VB.Frame FrCopiaHorario 
       Height          =   5295
       Left            =   120
-      TabIndex        =   100
+      TabIndex        =   102
       Top             =   0
       Width           =   8175
       Begin VB.CommandButton cmdCopiaHorario 
          Caption         =   "Copiar"
          Height          =   375
          Left            =   5400
-         TabIndex        =   111
+         TabIndex        =   113
          Top             =   4680
          Width           =   1215
       End
@@ -3732,7 +4175,7 @@ Begin VB.Form frmListado
          Caption         =   "Temporada actual"
          Height          =   255
          Left            =   4800
-         TabIndex        =   110
+         TabIndex        =   112
          Top             =   1560
          Value           =   1  'Checked
          Width           =   3015
@@ -3742,7 +4185,7 @@ Begin VB.Form frmListado
          Enabled         =   0   'False
          Height          =   285
          Left            =   4800
-         TabIndex        =   108
+         TabIndex        =   110
          Text            =   "Text1"
          Top             =   1080
          Width           =   3135
@@ -3751,14 +4194,14 @@ Begin VB.Form frmListado
          Caption         =   "Incrementa 1 año"
          Height          =   255
          Left            =   4800
-         TabIndex        =   107
+         TabIndex        =   109
          Top             =   1920
          Width           =   2535
       End
       Begin MSComctlLib.ListView ListView1 
          Height          =   3375
          Left            =   240
-         TabIndex        =   105
+         TabIndex        =   107
          Top             =   1440
          Width           =   4215
          _ExtentX        =   7435
@@ -3790,7 +4233,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   0
          Left            =   960
-         TabIndex        =   104
+         TabIndex        =   106
          Text            =   "Text1"
          Top             =   1080
          Width           =   3495
@@ -3799,7 +4242,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   0
          Left            =   240
-         TabIndex        =   103
+         TabIndex        =   105
          Text            =   "Text1"
          Top             =   1080
          Width           =   735
@@ -3809,7 +4252,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   10
          Left            =   6720
-         TabIndex        =   102
+         TabIndex        =   104
          Top             =   4680
          Width           =   1215
       End
@@ -3825,7 +4268,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   0
          Left            =   4800
-         TabIndex        =   109
+         TabIndex        =   111
          Top             =   840
          Width           =   1695
       End
@@ -3833,7 +4276,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   0
          Left            =   240
-         Picture         =   "frmListado.frx":7497
+         Picture         =   "frmListado.frx":75AD
          ToolTipText     =   "Seleccionar todos"
          Top             =   4900
          Width           =   240
@@ -3842,7 +4285,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   1
          Left            =   600
-         Picture         =   "frmListado.frx":75E1
+         Picture         =   "frmListado.frx":76F7
          ToolTipText     =   "Quitar seleccion"
          Top             =   4900
          Width           =   240
@@ -3851,7 +4294,7 @@ Begin VB.Form frmListado
          Caption         =   "Calendario"
          Height          =   255
          Left            =   240
-         TabIndex        =   106
+         TabIndex        =   108
          Top             =   840
          Width           =   855
       End
@@ -3871,7 +4314,7 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   5
          Left            =   1200
-         TabIndex        =   101
+         TabIndex        =   103
          Top             =   240
          Width           =   5415
       End
@@ -3879,7 +4322,7 @@ Begin VB.Form frmListado
    Begin VB.Frame FrameRelojesAuxiliares 
       Height          =   4575
       Left            =   120
-      TabIndex        =   281
+      TabIndex        =   283
       Top             =   0
       Width           =   6495
       Begin VB.CheckBox chkSinProcesar 
@@ -3887,7 +4330,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   1
          Left            =   360
-         TabIndex        =   287
+         TabIndex        =   289
          Top             =   3000
          Width           =   2175
       End
@@ -3895,7 +4338,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   21
          Left            =   1920
-         TabIndex        =   286
+         TabIndex        =   288
          Top             =   2400
          Width           =   855
       End
@@ -3905,7 +4348,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   21
          Left            =   2880
-         TabIndex        =   296
+         TabIndex        =   298
          Top             =   2400
          Width           =   3375
       End
@@ -3913,7 +4356,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   20
          Left            =   1920
-         TabIndex        =   285
+         TabIndex        =   287
          Top             =   2040
          Width           =   855
       End
@@ -3923,7 +4366,7 @@ Begin VB.Form frmListado
          Height          =   285
          Index           =   20
          Left            =   2880
-         TabIndex        =   293
+         TabIndex        =   295
          Top             =   2040
          Width           =   3375
       End
@@ -3931,7 +4374,7 @@ Begin VB.Form frmListado
          Caption         =   "Aceptar"
          Height          =   375
          Left            =   3360
-         TabIndex        =   288
+         TabIndex        =   290
          Top             =   3960
          Width           =   1215
       End
@@ -3940,7 +4383,7 @@ Begin VB.Form frmListado
          Index           =   19
          Left            =   4680
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   284
+         TabIndex        =   286
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -3950,7 +4393,7 @@ Begin VB.Form frmListado
          Index           =   18
          Left            =   1920
          ScrollBars      =   1  'Horizontal
-         TabIndex        =   283
+         TabIndex        =   285
          Text            =   "Text1"
          Top             =   1155
          Width           =   1215
@@ -3960,7 +4403,7 @@ Begin VB.Form frmListado
          Height          =   375
          Index           =   18
          Left            =   4920
-         TabIndex        =   289
+         TabIndex        =   291
          Top             =   3960
          Width           =   1215
       End
@@ -3969,7 +4412,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   60
          Left            =   960
-         TabIndex        =   297
+         TabIndex        =   299
          Top             =   2400
          Width           =   465
       End
@@ -3995,7 +4438,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   30
          Left            =   240
-         TabIndex        =   295
+         TabIndex        =   297
          Top             =   1680
          Width           =   1335
       End
@@ -4004,7 +4447,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   59
          Left            =   960
-         TabIndex        =   294
+         TabIndex        =   296
          Top             =   2040
          Width           =   540
       End
@@ -4020,7 +4463,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   58
          Left            =   3720
-         TabIndex        =   292
+         TabIndex        =   294
          Top             =   1200
          Width           =   465
       End
@@ -4028,7 +4471,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   19
          Left            =   4320
-         Picture         =   "frmListado.frx":772B
+         Picture         =   "frmListado.frx":7841
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -4038,7 +4481,7 @@ Begin VB.Form frmListado
          Height          =   195
          Index           =   57
          Left            =   960
-         TabIndex        =   291
+         TabIndex        =   293
          Top             =   1200
          Width           =   465
       End
@@ -4046,7 +4489,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   18
          Left            =   1560
-         Picture         =   "frmListado.frx":77B6
+         Picture         =   "frmListado.frx":78CC
          ToolTipText     =   "Buscar fecha"
          Top             =   1200
          Width           =   240
@@ -4066,7 +4509,7 @@ Begin VB.Form frmListado
          Height          =   255
          Index           =   29
          Left            =   240
-         TabIndex        =   290
+         TabIndex        =   292
          Top             =   960
          Width           =   735
       End
@@ -4085,405 +4528,9 @@ Begin VB.Form frmListado
          Height          =   495
          Index           =   12
          Left            =   720
-         TabIndex        =   282
+         TabIndex        =   284
          Top             =   360
          Width           =   5415
-      End
-   End
-   Begin VB.Frame FrameCostesTrabajador 
-      Height          =   6975
-      Left            =   120
-      TabIndex        =   246
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   6615
-      Begin VB.OptionButton optHorasPorecesadas 
-         Caption         =   "Asesoria"
-         Height          =   255
-         Index           =   2
-         Left            =   4800
-         TabIndex        =   337
-         Top             =   5160
-         Width           =   1575
-      End
-      Begin VB.CheckBox chkResumeTrabajador 
-         Caption         =   "Resumen horas x traba(€)"
-         Height          =   195
-         Index           =   2
-         Left            =   600
-         TabIndex        =   336
-         Top             =   6120
-         Width           =   2655
-      End
-      Begin VB.CheckBox chkResumeTrabajador 
-         Caption         =   "Por trabajador"
-         Height          =   195
-         Index           =   1
-         Left            =   3960
-         TabIndex        =   310
-         Top             =   5760
-         Visible         =   0   'False
-         Width           =   1695
-      End
-      Begin VB.CheckBox chkResumeTrabajador 
-         Caption         =   "Resumen entrega "
-         Height          =   195
-         Index           =   0
-         Left            =   600
-         TabIndex        =   309
-         Top             =   5760
-         Visible         =   0   'False
-         Width           =   3135
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   9
-         Left            =   2760
-         TabIndex        =   273
-         Top             =   3120
-         Width           =   3375
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   9
-         Left            =   1800
-         TabIndex        =   252
-         Top             =   3120
-         Width           =   855
-      End
-      Begin VB.TextBox txtDSecc 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   8
-         Left            =   2760
-         TabIndex        =   270
-         Top             =   2760
-         Width           =   3375
-      End
-      Begin VB.TextBox txtSecc 
-         Height          =   285
-         Index           =   8
-         Left            =   1800
-         TabIndex        =   251
-         Top             =   2760
-         Width           =   855
-      End
-      Begin VB.OptionButton optHorasPorecesadas 
-         Caption         =   "Trabajador - Horas"
-         Height          =   255
-         Index           =   1
-         Left            =   2400
-         TabIndex        =   269
-         Top             =   5160
-         Width           =   2055
-      End
-      Begin VB.OptionButton optHorasPorecesadas 
-         Caption         =   "Empresa"
-         Height          =   255
-         Index           =   0
-         Left            =   840
-         TabIndex        =   268
-         Top             =   5160
-         Value           =   -1  'True
-         Width           =   1455
-      End
-      Begin VB.CheckBox chkDesglosaDias 
-         Caption         =   "Agrupa por empresa"
-         Height          =   255
-         Index           =   1
-         Left            =   840
-         TabIndex        =   253
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.ListBox List1 
-         Height          =   735
-         Left            =   1080
-         Style           =   1  'Checkbox
-         TabIndex        =   266
-         Top             =   4080
-         Width           =   5055
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   19
-         Left            =   1800
-         TabIndex        =   250
-         Top             =   2160
-         Width           =   855
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   19
-         Left            =   2760
-         TabIndex        =   264
-         Top             =   2160
-         Width           =   3375
-      End
-      Begin VB.CheckBox chkDesglosaDias 
-         Caption         =   "Desglosa trabajador"
-         Height          =   255
-         Index           =   0
-         Left            =   3960
-         TabIndex        =   254
-         Top             =   5760
-         Width           =   2055
-      End
-      Begin VB.TextBox txtTrab 
-         Height          =   285
-         Index           =   18
-         Left            =   1800
-         TabIndex        =   249
-         Top             =   1800
-         Width           =   855
-      End
-      Begin VB.TextBox txtDT 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   18
-         Left            =   2760
-         TabIndex        =   261
-         Top             =   1800
-         Width           =   3375
-      End
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "&Cancelar"
-         Height          =   375
-         Index           =   17
-         Left            =   4920
-         TabIndex        =   256
-         Top             =   6480
-         Width           =   1215
-      End
-      Begin VB.CommandButton cmdHorasProcesadas 
-         Caption         =   "Aceptar"
-         Height          =   375
-         Left            =   3480
-         TabIndex        =   255
-         Top             =   6480
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   17
-         Left            =   4920
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   248
-         Text            =   "Text1"
-         Top             =   960
-         Width           =   1215
-      End
-      Begin VB.TextBox txtFec 
-         Height          =   285
-         Index           =   16
-         Left            =   1800
-         ScrollBars      =   1  'Horizontal
-         TabIndex        =   247
-         Text            =   "Text1"
-         Top             =   960
-         Width           =   1215
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   54
-         Left            =   840
-         TabIndex        =   274
-         Top             =   3120
-         Width           =   465
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   9
-         Left            =   1440
-         Top             =   3120
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Sección"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   26
-         Left            =   120
-         TabIndex        =   272
-         Top             =   2520
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   53
-         Left            =   840
-         TabIndex        =   271
-         Top             =   2760
-         Width           =   465
-      End
-      Begin VB.Image imgSecc 
-         Height          =   255
-         Index           =   8
-         Left            =   1440
-         Top             =   2760
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Empresa"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   25
-         Left            =   120
-         TabIndex        =   267
-         Top             =   3720
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   52
-         Left            =   840
-         TabIndex        =   265
-         Top             =   2160
-         Width           =   465
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   19
-         Left            =   1440
-         Top             =   2160
-         Width           =   255
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Trabajador"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   24
-         Left            =   120
-         TabIndex        =   263
-         Top             =   1440
-         Width           =   1335
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   51
-         Left            =   840
-         TabIndex        =   262
-         Top             =   1800
-         Width           =   540
-      End
-      Begin VB.Image imgTra 
-         Height          =   255
-         Index           =   18
-         Left            =   1440
-         Top             =   1800
-         Width           =   255
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   17
-         Left            =   4560
-         Picture         =   "frmListado.frx":7841
-         ToolTipText     =   "Buscar fecha"
-         Top             =   960
-         Width           =   240
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Hasta"
-         Height          =   195
-         Index           =   50
-         Left            =   4080
-         TabIndex        =   260
-         Top             =   960
-         Width           =   465
-      End
-      Begin VB.Label lblTitulo 
-         Alignment       =   2  'Center
-         Caption         =   "Horas procesadas"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   18
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00800000&
-         Height          =   495
-         Index           =   11
-         Left            =   480
-         TabIndex        =   259
-         Top             =   120
-         Width           =   5415
-      End
-      Begin VB.Label lblFecha 
-         Caption         =   "Desde"
-         Height          =   195
-         Index           =   49
-         Left            =   840
-         TabIndex        =   258
-         Top             =   960
-         Width           =   465
-      End
-      Begin VB.Label Label1 
-         Caption         =   "Fecha"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   8.25
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00000080&
-         Height          =   255
-         Index           =   23
-         Left            =   120
-         TabIndex        =   257
-         Top             =   720
-         Width           =   735
-      End
-      Begin VB.Image imgFec 
-         Height          =   240
-         Index           =   16
-         Left            =   1440
-         Picture         =   "frmListado.frx":78CC
-         ToolTipText     =   "Buscar fecha"
-         Top             =   960
-         Width           =   240
       End
    End
 End
@@ -4531,7 +4578,7 @@ Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
 
 
-Dim cad As String
+Dim Cad As String
 Dim i  As Integer
 Dim NumPa As Integer
 Dim CadPa As String
@@ -4676,37 +4723,37 @@ Dim B As Boolean
         
     Screen.MousePointer = vbDefault
     If B Then
-        cad = ""
+        Cad = ""
         
-        If txtSecc(10).Text <> "" Then cad = cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
-        If txtSecc(11).Text <> "" Then cad = cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
-        If cad <> "" Then cad = "Sección: " & Trim(cad)
+        If txtSecc(10).Text <> "" Then Cad = Cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
+        If txtSecc(11).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
+        If Cad <> "" Then Cad = "Sección: " & Trim(Cad)
         CadPa = ""
         If txtFec(8).Text <> "" Then CadPa = "Desde " & txtFec(8).Text
         If txtFec(9).Text <> "" Then CadPa = CadPa & "  Hasta " & txtFec(9).Text
-        CadPa = Trim(CadPa & "   " & cad)
+        CadPa = Trim(CadPa & "   " & Cad)
         
-        cad = ""
-        If txtTrab(10).Text <> "" Then cad = "Desde " & txtTrab(10).Text & " - " & txtDT(10).Text
-        If txtTrab(11).Text <> "" Then cad = cad & "    hasta " & txtTrab(11).Text & " - " & txtDT(11).Text
-        cad = Trim(cad)
-        If cad <> "" Then
-            If CadPa <> "" Then cad = """ + chr(13) + """ & cad
+        Cad = ""
+        If txtTrab(10).Text <> "" Then Cad = "Desde " & txtTrab(10).Text & " - " & txtDT(10).Text
+        If txtTrab(11).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(11).Text & " - " & txtDT(11).Text
+        Cad = Trim(Cad)
+        If Cad <> "" Then
+            If CadPa <> "" Then Cad = """ + chr(13) + """ & Cad
         End If
-        CadPa = CadPa & cad
+        CadPa = CadPa & Cad
         
         
         If optActual(0).Value Then
-            cad = "pOrden= {tmpcombinada.idtrabajador}|"
+            Cad = "pOrden= {tmpcombinada.idtrabajador}|"
         Else
-            cad = "pOrden= {trabajadores.nomtrabajador}|"
+            Cad = "pOrden= {trabajadores.nomtrabajador}|"
         End If
         
-        cad = cad & "DesdeHasta= """ & CadPa & """|"
+        Cad = Cad & "DesdeHasta= """ & CadPa & """|"
         
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
-        cad = cad & "EsTeinsa= " & CadPa & "|"
+        Cad = Cad & "EsTeinsa= " & CadPa & "|"
         
         
         If chkSinProcesar(2).Value = 0 Then
@@ -4717,7 +4764,7 @@ Dim B As Boolean
                 If Me.chkSinProcesar(0).Value = 1 Then
                     frmImprimir.Opcion = 74
                     'por trabajador
-                    If optActual(0).Value Then cad = cad & "AgrupadoPor= {tmpcombinada.idtrabajador}|"
+                    If optActual(0).Value Then Cad = Cad & "AgrupadoPor= {tmpcombinada.idtrabajador}|"
                     
                 Else
                     frmImprimir.Opcion = 67
@@ -4733,7 +4780,7 @@ Dim B As Boolean
             End If
         End If
         frmImprimir.FormulaSeleccion = "{tmpcombinada.codusu} = " & vUsu.Codigo
-        frmImprimir.OtrosParametros = cad
+        frmImprimir.OtrosParametros = Cad
         frmImprimir.NumeroParametros = 3
 
         frmImprimir.Show vbModal
@@ -4758,17 +4805,17 @@ Dim F As Date
     End If
     
     
-    cad = ""
+    Cad = ""
     For i = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(i).Checked Then cad = cad & "1"
+        If ListView1.ListItems(i).Checked Then Cad = Cad & "1"
     Next i
     
-    If cad = "" Then
+    If Cad = "" Then
         MsgBox "No tiene festivos para copiar", vbExclamation
         Exit Sub
     Else
-        cad = "Desea copiar " & Len(cad) & " dia(s) sobre el calendario: " & Me.txtCalendarioDestino & "?"
-        If MsgBox(cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
+        Cad = "Desea copiar " & Len(Cad) & " dia(s) sobre el calendario: " & Me.txtCalendarioDestino & "?"
+        If MsgBox(Cad, vbQuestion + vbYesNo) = vbNo Then Exit Sub
     End If
     
     
@@ -4780,10 +4827,10 @@ Dim F As Date
         If ListView1.ListItems(i).Checked Then
               F = CDate(ListView1.ListItems(i))
               If Me.chkMas1año.Value = 1 Then F = DateAdd("yyyy", 1, F)
-              cad = ListView1.ListItems(i).SubItems(1)
-              NombreSQL cad
-              cad = CadPa & "'" & Format(F, FormatoFecha) & "','" & cad & "')"
-              If Not ExisteElFestivo(F) Then EjecutaSQL cad
+              Cad = ListView1.ListItems(i).SubItems(1)
+              NombreSQL Cad
+              Cad = CadPa & "'" & Format(F, FormatoFecha) & "','" & Cad & "')"
+              If Not ExisteElFestivo(F) Then EjecutaSQL Cad
         End If
     Next i
     Set miRsAux = Nothing
@@ -4821,18 +4868,18 @@ Private Sub cmdDiasTrabajados_Click()
     'Generamos los datos
     If GenerarDiasTrabajados Then
         
-        cad = ""
-        If txtFec(12).Text <> "" Then cad = "DESDE " & txtFec(12).Text
-        If txtFec(13).Text <> "" Then cad = cad & "     HASTA " & txtFec(13).Text
-        cad = "LasFEchas= ""      " & Trim(cad) & """|"
-        CadPa = cad
-        cad = ""
-        If txtTrab(14).Text <> "" Then cad = "Desde " & txtTrab(14).Text & " - " & txtDT(14).Text
-        If txtTrab(15).Text <> "" Then cad = cad & "    hasta " & txtTrab(15).Text & " - " & txtDT(15).Text
-        If txtSecc(4).Text <> "" Then cad = cad & "    desde " & txtSecc(4).Text & " - " & txtDSecc(4).Text
-        If txtSecc(5).Text <> "" Then cad = cad & "    hasta " & txtSecc(5).Text & " - " & txtDSecc(5).Text
-        cad = "FechaIni= """ & Trim(cad) & """|"
-        CadPa = CadPa & cad
+        Cad = ""
+        If txtFec(12).Text <> "" Then Cad = "DESDE " & txtFec(12).Text
+        If txtFec(13).Text <> "" Then Cad = Cad & "     HASTA " & txtFec(13).Text
+        Cad = "LasFEchas= ""      " & Trim(Cad) & """|"
+        CadPa = Cad
+        Cad = ""
+        If txtTrab(14).Text <> "" Then Cad = "Desde " & txtTrab(14).Text & " - " & txtDT(14).Text
+        If txtTrab(15).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(15).Text & " - " & txtDT(15).Text
+        If txtSecc(4).Text <> "" Then Cad = Cad & "    desde " & txtSecc(4).Text & " - " & txtDSecc(4).Text
+        If txtSecc(5).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(5).Text & " - " & txtDSecc(5).Text
+        Cad = "FechaIni= """ & Trim(Cad) & """|"
+        CadPa = CadPa & Cad
         NumPa = 2
         With frmImprimir
             .FormulaSeleccion = "{tmpdatosmes.codusu}=" & vUsu.Codigo
@@ -4872,17 +4919,17 @@ Private Sub cmdGeneraInci_Click()
     
     If Me.FrameIncidenciaGenerada.Tag = "" Then
         'Insertar incidencia manual
-        cad = CStr(DameIncidenciaGenerada())
-        cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES (" & cad
-        cad = cad & "," & NumRegElim & "," & txtInci(2).Text
-        cad = cad & "," & TransformaComasPuntos(txtHoraD(0).Text) & ")"
+        Cad = CStr(DameIncidenciaGenerada())
+        Cad = "INSERT INTO incidenciasgeneradas (Id, EntradaMarcaje, Incidencia, horas) VALUES (" & Cad
+        Cad = Cad & "," & NumRegElim & "," & txtInci(2).Text
+        Cad = Cad & "," & TransformaComasPuntos(txtHoraD(0).Text) & ")"
     Else
-        cad = "UPDATE incidenciasgeneradas SET horas =" & TransformaComasPuntos(txtHoraD(0).Text)
-        cad = cad & " ,incidencia = " & txtInci(2).Text
-        cad = cad & " WHERE Id = " & FrameIncidenciaGenerada.Tag
+        Cad = "UPDATE incidenciasgeneradas SET horas =" & TransformaComasPuntos(txtHoraD(0).Text)
+        Cad = Cad & " ,incidencia = " & txtInci(2).Text
+        Cad = Cad & " WHERE Id = " & FrameIncidenciaGenerada.Tag
         
     End If
-    If EjecutaSQL(cad) Then
+    If EjecutaSQL(Cad) Then
         CadenaDesdeOtroForm = "OK"
         Unload Me
     End If
@@ -4893,10 +4940,10 @@ Private Function DameIncidenciaGenerada() As Long
 Dim L As Long
 Dim Fin As Boolean
 
-    cad = "Select id from incidenciasgeneradas order by id"
+    Cad = "Select id from incidenciasgeneradas order by id"
     L = 1
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not Fin
         If Val(miRsAux.Fields(0)) - L > 0 Then
             DameIncidenciaGenerada = L
@@ -4930,19 +4977,19 @@ Private Sub cmdGenNominaA3_Click()
     
     
     If vEmpresa.QueEmpresa = 4 Then
-        cad = ""
-        If Dir(App.Path & "\A3_Importes.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace importes A3"
-        If Dir(App.Path & "\A3_inactivos.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace inactivos A3"
-        If cad <> "" Then
-            MsgBox "Falta configurar. " & vbCrLf & cad, vbExclamation
+        Cad = ""
+        If Dir(App.Path & "\A3_Importes.exe", vbArchive) = "" Then Cad = Cad & vbCrLf & "-Fichero enlace importes A3"
+        If Dir(App.Path & "\A3_inactivos.exe", vbArchive) = "" Then Cad = Cad & vbCrLf & "-Fichero enlace inactivos A3"
+        If Cad <> "" Then
+            MsgBox "Falta configurar. " & vbCrLf & Cad, vbExclamation
             Exit Sub
         End If
     ElseIf vEmpresa.CompensaHorasNominaMES Then
-        cad = ""
-        If Dir(App.Path & "\A3_Importes.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace importes A3"
-        If Dir(App.Path & "\A3_Generico.exe", vbArchive) = "" Then cad = cad & vbCrLf & "-Fichero enlace inactivos A3"
-        If cad <> "" Then
-            MsgBox "Falta configurar. " & vbCrLf & cad, vbExclamation
+        Cad = ""
+        If Dir(App.Path & "\A3_Importes.exe", vbArchive) = "" Then Cad = Cad & vbCrLf & "-Fichero enlace importes A3"
+        If Dir(App.Path & "\A3_Generico.exe", vbArchive) = "" Then Cad = Cad & vbCrLf & "-Fichero enlace inactivos A3"
+        If Cad <> "" Then
+            MsgBox "Falta configurar. " & vbCrLf & Cad, vbExclamation
             Exit Sub
         End If
     End If
@@ -5042,7 +5089,7 @@ Dim info As Integer
     NumPa = 0
     CadPa = ""
     vSql = ""
-    cad = ""
+    Cad = ""
     
     'Opcion asesoria. LAs fechas obligadas
     If Me.optHorasPorecesadas(2).Value Then
@@ -5060,37 +5107,37 @@ Dim info As Integer
     NumPa = NumPa + 1
     CadPa = CadPa & "FechaIni= """ & Format(F1, "dd/mm/yyyy") & """|"
     vSql = "({jornadassemanalesalz.fecha} >= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & ")"
-    cad = "Desde " & F1
+    Cad = "Desde " & F1
     
     F1 = Now
     If txtFec(17).Text <> "" Then F1 = CDate(txtFec(17).Text)
     NumPa = NumPa + 1
     CadPa = CadPa & "FechaFin= """ & Format(F1, "dd/mm/yyyy") & """|"
     vSql = vSql & " AND {jornadassemanalesalz.fecha} <= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & "))"
-    cad = cad & " hasta " & F1
+    Cad = Cad & " hasta " & F1
   
         
     
     'Trabajador
     If txtTrab(18).Text <> "" Then
-        cad = cad & "   Desde " & txtTrab(18).Text & " " & txtDT(18).Text
+        Cad = Cad & "   Desde " & txtTrab(18).Text & " " & txtDT(18).Text
     End If
     vSql = vSql & DesdeHastaSelect(1, 18, "{jornadassemanalesalz.idtrabajador} >=", " AND ")
     
     If txtTrab(19).Text <> "" Then
-        cad = cad & "hasta " & txtTrab(19).Text & " " & txtDT(19).Text
+        Cad = Cad & "hasta " & txtTrab(19).Text & " " & txtDT(19).Text
     End If
     vSql = vSql & DesdeHastaSelect(1, 19, "{jornadassemanalesalz.idtrabajador} <=", " AND ")
     
     'Seccion
     If txtSecc(8).Text <> "" Then
-        cad = cad & "   Desde " & txtSecc(8).Text & " " & txtDSecc(8).Text
+        Cad = Cad & "   Desde " & txtSecc(8).Text & " " & txtDSecc(8).Text
     End If
     vSql = vSql & DesdeHastaSelect(2, 8, "{trabajadores.Seccion} >=", " AND ")
     
     
     If txtSecc(9).Text <> "" Then
-        cad = cad & "hasta " & txtSecc(9).Text & " " & txtDSecc(9).Text
+        Cad = Cad & "hasta " & txtSecc(9).Text & " " & txtDSecc(9).Text
     End If
     vSql = vSql & DesdeHastaSelect(2, 9, "{trabajadores.Seccion} <=", " AND ")
     
@@ -5099,7 +5146,7 @@ Dim info As Integer
     
     'Para el resumen Hoja trabajador , para los desde hasta solo PINTO en el rpt la coopertaiva o no
     If Me.optHorasPorecesadas(1).Value Then
-        If chkResumeTrabajador(0).Value = 1 Then cad = ""
+        If chkResumeTrabajador(0).Value = 1 Then Cad = ""
     End If
     
     'Desde /hasta empresa
@@ -5107,10 +5154,10 @@ Dim info As Integer
     If vEmpresa.QueEmpresa = 2 Then
         If List1.Selected(0) Xor List1.Selected(1) Then
             If List1.Selected(0) Then
-                cad = Trim(cad & "      " & List1.List(0))
+                Cad = Trim(Cad & "      " & List1.List(0))
                 vSql = vSql & " AND {jornadassemanalesalz.ParaEmpresa}=0 "
             Else
-                cad = Trim(cad & "      " & List1.List(1))
+                Cad = Trim(Cad & "      " & List1.List(1))
                 vSql = vSql & " AND {jornadassemanalesalz.ParaEmpresa}=1 "
             End If
         End If
@@ -5118,34 +5165,34 @@ Dim info As Integer
     
     
     
-    CadPa = CadPa & "Intervalo= """ & cad & """|"
+    CadPa = CadPa & "Intervalo= """ & Cad & """|"
     CadPa = CadPa & "DetallaTr= " & Abs(chkDesglosaDias(0).Value) & "|"
     NumPa = NumPa + 2
     
     
     info = -1
     If Me.optHorasPorecesadas(0).Value Then
-        cad = "AlzHorasProcesadasFecha"
-        If Me.chkDesglosaDias(1).Value = 1 Then cad = cad & "Emp"
-        cad = cad & ".rpt"
+        Cad = "AlzHorasProcesadasFecha"
+        If Me.chkDesglosaDias(1).Value = 1 Then Cad = Cad & "Emp"
+        Cad = Cad & ".rpt"
     
     ElseIf Me.optHorasPorecesadas(2).Value Then
         info = 2
-        cad = "resHorasTrabajaNominaAse.rpt"
+        Cad = "resHorasTrabajaNominaAse.rpt"
     
     Else
         'Desglose trabajador
         If chkResumeTrabajador(2).Value = 1 Then
-            cad = "resHorasTrabajaNomina.rpt"
+            Cad = "resHorasTrabajaNomina.rpt"
         Else
             If chkResumeTrabajador(1).Value = 1 Then
-                cad = "resHorasTrabaja.rpt"
+                Cad = "resHorasTrabaja.rpt"
             Else
                 info = 1
                 If vEmpresa.QueEmpresa = 4 Or vEmpresa.QueEmpresa = 5 Then
-                    cad = "picHorasTrabajador.rpt"
+                    Cad = "picHorasTrabajador.rpt"
                 Else
-                    cad = "AlzHorasTrabajador.rpt"
+                    Cad = "AlzHorasTrabajador.rpt"
                 End If
                 
             End If
@@ -5155,14 +5202,14 @@ Dim info As Integer
     If info > 0 Then
         'Informe personalizable
         Informe = DevuelveDesdeBD("informe", "scryst", "codigo", CStr(info))
-        If Informe <> "" Then cad = Informe
+        If Informe <> "" Then Cad = Informe
     End If
     
     With frmImprimir
         .FormulaSeleccion = vSql
         .OtrosParametros = CadPa
         .NumeroParametros = NumPa
-        .NombreRPT100 = cad
+        .NombreRPT100 = Cad
         .Opcion = 65
         .Show vbModal
     End With
@@ -5224,8 +5271,8 @@ Dim L2 As String
         End If
         vSql = vSql & DesdeHastaSelect(3, 4, "incfinal<=", " AND ")
         
-        cad = "SELECT count(*) from marcajes"
-        If vSql <> "" Then cad = cad & " WHERE " & Mid(vSql, 6)
+        Cad = "SELECT count(*) from marcajes"
+        If vSql <> "" Then Cad = Cad & " WHERE " & Mid(vSql, 6)
     Else
         
         'Incidencia generada
@@ -5243,13 +5290,13 @@ Dim L2 As String
         End If
         vSql = vSql & DesdeHastaSelect(3, 4, "incidencia<=", " AND ")
         
-        cad = "SELECT count(*) from marcajes,incidenciasgeneradas where incidenciasgeneradas.entradamarcaje=marcajes.entrada"
-        If vSql <> "" Then cad = cad & " AND " & Mid(vSql, 6)
+        Cad = "SELECT count(*) from marcajes,incidenciasgeneradas where incidenciasgeneradas.entradamarcaje=marcajes.entrada"
+        If vSql <> "" Then Cad = Cad & " AND " & Mid(vSql, 6)
         
         
     End If
     
-    If Not TieneDatos(cad) Then
+    If Not TieneDatos(Cad) Then
         MsgBox "Ningún registro con esos valores", vbExclamation
         Exit Sub
     End If
@@ -5321,7 +5368,7 @@ Private Sub cmdLisHcoMarcajes_Click()
         
     Screen.MousePointer = vbDefault
     If B Then
-        cad = ""
+        Cad = ""
         
    '     If txtSecc(10).Text <> "" Then Cad = Cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
    '     If txtSecc(11).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
@@ -5329,27 +5376,27 @@ Private Sub cmdLisHcoMarcajes_Click()
         CadPa = ""
         If txtFec(24).Text <> "" Then CadPa = "Desde " & txtFec(24).Text
         If txtFec(25).Text <> "" Then CadPa = CadPa & "  Hasta " & txtFec(25).Text
-        CadPa = Trim(CadPa & "   " & cad)
+        CadPa = Trim(CadPa & "   " & Cad)
         
-        cad = ""
-        If txtTrab(24).Text <> "" Then cad = "Desde " & txtTrab(24).Text & " - " & txtDT(24).Text
-        If txtTrab(25).Text <> "" Then cad = cad & "    hasta " & txtTrab(25).Text & " - " & txtDT(25).Text
-        cad = Trim(cad)
-        If cad <> "" Then
-            If CadPa <> "" Then cad = """ + chr(13) + """ & cad
+        Cad = ""
+        If txtTrab(24).Text <> "" Then Cad = "Desde " & txtTrab(24).Text & " - " & txtDT(24).Text
+        If txtTrab(25).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(25).Text & " - " & txtDT(25).Text
+        Cad = Trim(Cad)
+        If Cad <> "" Then
+            If CadPa <> "" Then Cad = """ + chr(13) + """ & Cad
         End If
-        CadPa = CadPa & cad
+        CadPa = CadPa & Cad
         
         
         
-        cad = "pOrden= {tmppresencia.idtra}|"
+        Cad = "pOrden= {tmppresencia.idtra}|"
         
         
-        cad = cad & "DesdeHasta= """ & CadPa & """|"
+        Cad = Cad & "DesdeHasta= """ & CadPa & """|"
         
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
-        cad = cad & "EsTeinsa= " & CadPa & "|"
+        Cad = Cad & "EsTeinsa= " & CadPa & "|"
         
         
       With frmImprimir
@@ -5361,7 +5408,7 @@ Private Sub cmdLisHcoMarcajes_Click()
                 .NombreRPT100 = "marcajeHCOT.rpt"
             End If
             .Titulo100 = "Historico marcajes"
-            .OtrosParametros = cad
+            .OtrosParametros = Cad
             .Opcion = 100
             .NumeroParametros = 3
             .Show vbModal
@@ -5401,9 +5448,9 @@ Private Sub cmdMarcajeTrabajador_Click()
     vSql = vSql & DesdeHastaSelect(0, 2, "Marcajes.Fecha<=", " AND ")
     
     
-    cad = "SELECT count(*) from marcajes "
-    If vSql <> "" Then cad = cad & " WHERE " & Mid(vSql, 6)  'le quito el primer AND
-    If Not TieneDatos(cad) Then
+    Cad = "SELECT count(*) from marcajes "
+    If vSql <> "" Then Cad = Cad & " WHERE " & Mid(vSql, 6)  'le quito el primer AND
+    If Not TieneDatos(Cad) Then
         MsgBox "Ningún registro con esos valores", vbExclamation
         Exit Sub
     End If
@@ -5426,43 +5473,43 @@ End Sub
 
 Private Sub cmdNominas_Click()
 Dim dH As String
-Dim Aux As String
+Dim AUX As String
 
     If Not Comprobarfechas(21, 22) Then Exit Sub
     dH = ""
     vSql = ""
-    Aux = ""
+    AUX = ""
     If txtFec(21).Text <> "" Then
-        Aux = Aux & "desde " & txtFec(21).Text
+        AUX = AUX & "desde " & txtFec(21).Text
         vSql = vSql & " AND {nominas.fecha}>=date(" & Format(txtFec(21).Text, "yyyy,mm,dd)")
     End If
     If txtFec(22).Text <> "" Then
-        Aux = Aux & " hasta " & txtFec(22).Text
+        AUX = AUX & " hasta " & txtFec(22).Text
         vSql = vSql & " AND {nominas.fecha}<=date(" & Format(txtFec(22).Text, "yyyy,mm,dd)")
     End If
-    If Aux <> "" Then dH = "Fecha: " & Trim(Aux)
+    If AUX <> "" Then dH = "Fecha: " & Trim(AUX)
     
-    Aux = ""
+    AUX = ""
     If txtTrab(22).Text <> "" Then
-        Aux = Aux & "desde " & txtTrab(22).Text & " " & Me.txtDT(22).Text
+        AUX = AUX & "desde " & txtTrab(22).Text & " " & Me.txtDT(22).Text
         vSql = vSql & " AND {nominas.idtrabajador}>=" & txtTrab(22).Text
     End If
     If txtTrab(23).Text <> "" Then
-        Aux = Aux & " hasta " & txtTrab(23).Text & " " & Me.txtDT(23).Text
+        AUX = AUX & " hasta " & txtTrab(23).Text & " " & Me.txtDT(23).Text
         vSql = vSql & " AND {nominas.idtrabajador}<=" & txtTrab(23).Text
     End If
-    If Aux <> "" Then dH = Trim(dH & "      Trabajador: " & Trim(Aux))
+    If AUX <> "" Then dH = Trim(dH & "      Trabajador: " & Trim(AUX))
     
-    Aux = ""
+    AUX = ""
     If txtSecc(12).Text <> "" Then
-        Aux = Aux & "desde " & txtSecc(12).Text & " " & Me.txtDSecc(12).Text
+        AUX = AUX & "desde " & txtSecc(12).Text & " " & Me.txtDSecc(12).Text
         vSql = vSql & " AND {trabajadores.seccion}>=" & txtSecc(12).Text
     End If
     If txtSecc(13).Text <> "" Then
-        Aux = Aux & " hasta " & txtSecc(13).Text & " " & Me.txtDSecc(13).Text
+        AUX = AUX & " hasta " & txtSecc(13).Text & " " & Me.txtDSecc(13).Text
         vSql = vSql & " AND {trabajadores.seccion}<=" & txtSecc(13).Text
     End If
-    If Aux <> "" Then dH = Trim(dH & "    Seccion: " & Trim(Aux))
+    If AUX <> "" Then dH = Trim(dH & "    Seccion: " & Trim(AUX))
     
     dH = "DH= """ & dH & """|"
     vSql = Trim(vSql)
@@ -5471,16 +5518,16 @@ Dim Aux As String
     
     i = 3
     If vEmpresa.CompensaHorasNominaMES Then i = 4
-    cad = DevuelveDesdeBD("informe", "scryst", "codigo", CStr(i))
-    If cad = "" Then
+    Cad = DevuelveDesdeBD("informe", "scryst", "codigo", CStr(i))
+    If Cad = "" Then
         MsgBox "Avisie soporte tecnico, Falta configurar datos en scryst"
-        cad = "rNomina.rpt"
+        Cad = "rNomina.rpt"
     End If
     
     With frmImprimir
             .FormulaSeleccion = vSql
             
-            .NombreRPT100 = cad
+            .NombreRPT100 = Cad
             .Titulo100 = "Listado nominas"
             .OtrosParametros = dH
             .Opcion = 100
@@ -5505,16 +5552,16 @@ Private Sub cmdPResenciaReal_Click()
                 If CadPa <> "" Then CadPa = CadPa & "  "
                 CadPa = CadPa & " hasta " & txtFec(5).Text
             End If
-            cad = ""
+            Cad = ""
             If txtTrab(6).Text <> "" Then
-                cad = txtTrab(6).Text & " (" & txtDT(6).Text & ")"
+                Cad = txtTrab(6).Text & " (" & txtDT(6).Text & ")"
             End If
             If txtTrab(7).Text <> "" Then
                 If CadPa <> "" Then CadPa = CadPa & "  "
-                cad = cad & " hasta " & txtTrab(7).Text & " (" & txtDT(7).Text & ")"
+                Cad = Cad & " hasta " & txtTrab(7).Text & " (" & txtDT(7).Text & ")"
             End If
-            cad = Trim(CadPa & " " & cad)
-            CadPa = "FechaFin= """ & cad & """|"
+            Cad = Trim(CadPa & " " & Cad)
+            CadPa = "FechaFin= """ & Cad & """|"
             NumPa = 1
             'Agrupado por
             If Me.chkPresReal.Value = 1 Then
@@ -5543,37 +5590,37 @@ Private Function HacerPresReal() As Boolean
 Dim N As Long
 Dim m As Long
 Dim Inci As String
-Dim anyo As Integer
+Dim Anyo As Integer
 Dim Hora As String
 
     On Error GoTo EHacerPresReal
     HacerPresReal = False
 
-    cad = "Delete from tmppresencia where codusu =" & vUsu.Codigo
-    conn.Execute cad
+    Cad = "Delete from tmppresencia where codusu =" & vUsu.Codigo
+    conn.Execute Cad
     
     'HACemos el select
-    cad = "select entradamarcajes.* , nomtrabajador,nominci "
-    cad = cad & " ,hour(horareal) lahora,minute(horareal) minutos,second(horareal) segundos "
-    cad = cad & " From entradamarcajes, trabajadores, incidencias"
-    cad = cad & " Where entradamarcajes.idTrabajador = trabajadores.idTrabajador"
-    cad = cad & " and entradamarcajes.idinci =incidencias.idinci"
-    If txtFec(4).Text <> "" Then cad = cad & " and fecha >= '" & Format(txtFec(4).Text, FormatoFecha) & "'"
-    If txtFec(5).Text <> "" Then cad = cad & " and fecha <= '" & Format(txtFec(5).Text, FormatoFecha) & "'"
+    Cad = "select entradamarcajes.* , nomtrabajador,nominci "
+    Cad = Cad & " ,hour(horareal) lahora,minute(horareal) minutos,second(horareal) segundos "
+    Cad = Cad & " From entradamarcajes, trabajadores, incidencias"
+    Cad = Cad & " Where entradamarcajes.idTrabajador = trabajadores.idTrabajador"
+    Cad = Cad & " and entradamarcajes.idinci =incidencias.idinci"
+    If txtFec(4).Text <> "" Then Cad = Cad & " and fecha >= '" & Format(txtFec(4).Text, FormatoFecha) & "'"
+    If txtFec(5).Text <> "" Then Cad = Cad & " and fecha <= '" & Format(txtFec(5).Text, FormatoFecha) & "'"
     
-    If txtTrab(6).Text <> "" Then cad = cad & " and entradamarcajes.idtrabajador >= " & txtTrab(6).Text
-    If txtTrab(7).Text <> "" Then cad = cad & " and entradamarcajes.idtrabajador <= " & txtTrab(7).Text
-    cad = cad & " order by idmarcaje,horareal"
+    If txtTrab(6).Text <> "" Then Cad = Cad & " and entradamarcajes.idtrabajador >= " & txtTrab(6).Text
+    If txtTrab(7).Text <> "" Then Cad = Cad & " and entradamarcajes.idtrabajador <= " & txtTrab(7).Text
+    Cad = Cad & " order by idmarcaje,horareal"
     
     
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     N = 0
     m = 0
     Inci = ""
     CadPa = "INSERT INTO tmppresencia (codusu,Id,idtra, NomTrabajador"
     CadPa = CadPa & ",Fecha ,semana, H1, h2, H3, H4, H5, H6, H7, H8, Incidencias) VALUES (" & vUsu.Codigo & ","
-    If Not miRsAux.EOF Then anyo = Year(miRsAux!Fecha)
+    If Not miRsAux.EOF Then Anyo = Year(miRsAux!Fecha)
     While Not miRsAux.EOF
         If miRsAux!idmarcaje <> m Then
             If m <> 0 Then
@@ -5584,12 +5631,12 @@ Dim Hora As String
            ' Label2.Refresh
             Inci = ""
             N = N + 1
-            cad = miRsAux!nomtrabajador
-            NombreSQL cad
-            cad = N & "," & miRsAux!idTrabajador & ",'" & cad & "','" & Format(miRsAux!Fecha, FormatoFecha) & "'"
+            Cad = miRsAux!nomtrabajador
+            NombreSQL Cad
+            Cad = N & "," & miRsAux!idTrabajador & ",'" & Cad & "','" & Format(miRsAux!Fecha, FormatoFecha) & "'"
             'Semana
-            i = (Year(miRsAux!Fecha) - anyo) * 100 + Format(miRsAux!Fecha, "ww", vbMonday)
-            cad = cad & "," & i
+            i = (Year(miRsAux!Fecha) - Anyo) * 100 + Format(miRsAux!Fecha, "ww", vbMonday)
+            Cad = Cad & "," & i
             i = 0
             m = miRsAux!idmarcaje
         End If
@@ -5614,7 +5661,7 @@ Dim Hora As String
             End If
             Hora = Format(Val(Hora), "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
         
-            cad = cad & ",'" & Hora & "'"
+            Cad = Cad & ",'" & Hora & "'"
         End If
         
         miRsAux.MoveNext
@@ -5642,7 +5689,7 @@ Private Sub InsertaHoraReal(NumHoras As Integer, ByRef Incidencia As String)
     'CadPara    ---> Tiene el INSERT INTO ......
     NumHoras = NumHoras + 1
     While NumHoras <= 8
-        cad = cad & ",NULL"
+        Cad = Cad & ",NULL"
         NumHoras = NumHoras + 1
     Wend
     If Incidencia <> "" Then
@@ -5652,8 +5699,8 @@ Private Sub InsertaHoraReal(NumHoras As Integer, ByRef Incidencia As String)
         Incidencia = "NULL"
     End If
     
-    cad = CadPa & cad & "," & Incidencia & ")"
-    conn.Execute cad
+    Cad = CadPa & Cad & "," & Incidencia & ")"
+    conn.Execute Cad
     
     
     
@@ -5669,7 +5716,7 @@ Private Sub cmdRelojesAuxiliares_Click()
         
     Screen.MousePointer = vbDefault
     If B Then
-        cad = ""
+        Cad = ""
         
    '     If txtSecc(10).Text <> "" Then Cad = Cad & "    desde " & txtSecc(10).Text & " - " & txtDSecc(10).Text
    '     If txtSecc(11).Text <> "" Then Cad = Cad & "    hasta " & txtSecc(11).Text & " - " & txtDSecc(11).Text
@@ -5677,29 +5724,29 @@ Private Sub cmdRelojesAuxiliares_Click()
         CadPa = ""
         If txtFec(18).Text <> "" Then CadPa = "Desde " & txtFec(18).Text
         If txtFec(19).Text <> "" Then CadPa = CadPa & "  Hasta " & txtFec(19).Text
-        CadPa = Trim(CadPa & "   " & cad)
+        CadPa = Trim(CadPa & "   " & Cad)
         
-        cad = ""
-        If txtTrab(20).Text <> "" Then cad = "Desde " & txtTrab(20).Text & " - " & txtDT(20).Text
-        If txtTrab(21).Text <> "" Then cad = cad & "    hasta " & txtTrab(21).Text & " - " & txtDT(21).Text
-        cad = Trim(cad)
-        If cad <> "" Then
-            If CadPa <> "" Then cad = """ + chr(13) + """ & cad
+        Cad = ""
+        If txtTrab(20).Text <> "" Then Cad = "Desde " & txtTrab(20).Text & " - " & txtDT(20).Text
+        If txtTrab(21).Text <> "" Then Cad = Cad & "    hasta " & txtTrab(21).Text & " - " & txtDT(21).Text
+        Cad = Trim(Cad)
+        If Cad <> "" Then
+            If CadPa <> "" Then Cad = """ + chr(13) + """ & Cad
         End If
-        CadPa = CadPa & cad
+        CadPa = CadPa & Cad
         
         
         If optActual(0).Value Then
-            cad = "pOrden= {tmpcombinada.idtrabajador}|"
+            Cad = "pOrden= {tmpcombinada.idtrabajador}|"
         Else
-            cad = "pOrden= {trabajadores.nomtrabajador}|"
+            Cad = "pOrden= {trabajadores.nomtrabajador}|"
         End If
         
-        cad = cad & "DesdeHasta= """ & CadPa & """|"
+        Cad = Cad & "DesdeHasta= """ & CadPa & """|"
         
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
-        cad = cad & "EsTeinsa= " & CadPa & "|"
+        Cad = Cad & "EsTeinsa= " & CadPa & "|"
         
         
       With frmImprimir
@@ -5710,7 +5757,7 @@ Private Sub cmdRelojesAuxiliares_Click()
                 .NombreRPT100 = IIf(chkSinProcesar(1).Value = 0, "marcactualAuxResum.rpt", "marcactualAuxTResum.rpt")
             End If
             .Titulo100 = "Relojes auxiliares"
-            .OtrosParametros = cad
+            .OtrosParametros = Cad
             .Opcion = 100
             .NumeroParametros = 3
             .Show vbModal
@@ -5790,7 +5837,16 @@ Dim formu As String
         MsgBox "Seleccione una o ninguna de las opciones ( FOTO - TARJETA )", vbExclamation
         Exit Sub
     End If
-
+    
+    
+    If Me.optListTrab(2).Value Then
+        'Listado extendido o SS no llevan foto ni tarjeta
+        If chkFoto.Value = 1 Or Me.chkTarjeta.Value = 1 Then
+            MsgBox "Listado datos Seguridad Social no llevan  FOTO - TARJETA ", vbExclamation
+            Exit Sub
+        End If
+    End If
+    
   'lanzaremos el informe
     NumPa = 0
     CadPa = ""
@@ -5827,7 +5883,7 @@ Dim formu As String
     
     If chkSeccion.Value = 1 Then
         If txtSecc(0).Text <> "" Then
-            
+            If formu <> "" Then formu = formu & " AND "
             d = d & "   Desde " & txtSecc(0).Text & " " & txtDSecc(0).Text
             formu = formu & "{secciones.idseccion}>=" & txtSecc(0).Text
         End If
@@ -5857,7 +5913,7 @@ Dim formu As String
     If optListTrab(1).Value Then i = i + 2
     If optOrdenTraba(1).Value Then i = i + 1
     
-    
+  
     
     d = "SELECT count(*) from trabajadores"
     If vSql <> "" Then d = d & " WHERE " & Mid(vSql, 6)
@@ -5868,6 +5924,18 @@ Dim formu As String
     
     i = i + 10 'Pq empiezan los listado en el 10
     
+    If optListTrab(2).Value Then
+        'Datos Seguridad SOCIAL
+        If Me.chkSeccion.Value = 1 Then
+            d = "trabsecsipsin"
+        Else
+            d = "trabsipsin"
+        End If
+        
+        d = d & IIf(optOrdenTraba(1).Value, "nom", "cod") & ".rpt"
+        
+    End If
+    
     
     With frmImprimir
         If Me.chkTarjeta.Value = 1 Then
@@ -5875,6 +5943,15 @@ Dim formu As String
             .NombreRPT100 = "trabtarjeta.rpt"
             .Titulo100 = "Tarjetas"
             .ConSubreport100 = False
+            
+            
+        Else
+            If optListTrab(2).Value Then
+                i = 100
+                .NombreRPT100 = d
+                .Titulo100 = "Datos seguridad social"
+                .ConSubreport100 = False
+            End If
         End If
         
         
@@ -5909,20 +5986,20 @@ Dim F As Date
     
     
     
-    cad = DevuelveDesdeBD("min(fecha)", "entradamarcajes", "1", "1")
-    If cad = "" Then
+    Cad = DevuelveDesdeBD("min(fecha)", "entradamarcajes", "1", "1")
+    If Cad = "" Then
         MsgBox "Ningun dato a traspasar", vbExclamation
         Exit Sub
     End If
-    F = CDate(cad)
+    F = CDate(Cad)
     
     
     
-    cad = DevuelveDesdeBD("MAX(fecha)", "entradamarcajeshco", "1", "1")
-    If cad <> "" Then
-        If CDate(cad) > F Then
-            cad = vbCrLf & vbCrLf & "max fecha: " & cad & "   Min traspaso: " & F
-            MsgBox "Ya hay datos entre esas fechas. Consulte soporte tecnico" & cad, vbExclamation
+    Cad = DevuelveDesdeBD("MAX(fecha)", "entradamarcajeshco", "1", "1")
+    If Cad <> "" Then
+        If CDate(Cad) > F Then
+            Cad = vbCrLf & vbCrLf & "max fecha: " & Cad & "   Min traspaso: " & F
+            MsgBox "Ya hay datos entre esas fechas. Consulte soporte tecnico" & Cad, vbExclamation
             Exit Sub
         End If
     End If
@@ -5934,12 +6011,12 @@ Dim F As Date
     
     
     
-    cad = "Traspasar a histórico fecha menor o igual a " & txtFec(23).Text
-    cad = InputBox(cad, "Contraseña")
-    cad = Trim(cad)
-    If cad = "" Then Exit Sub
+    Cad = "Traspasar a histórico fecha menor o igual a " & txtFec(23).Text
+    Cad = InputBox(Cad, "Contraseña")
+    Cad = Trim(Cad)
+    If Cad = "" Then Exit Sub
     
-    If UCase(cad) <> "ARIADNA" Then
+    If UCase(Cad) <> "ARIADNA" Then
         MsgBox "Password incorrecto", vbExclamation
         Exit Sub
     End If
@@ -5995,15 +6072,15 @@ Dim IndiceCancelar As Integer
         Caption = "Revisión marcajes"
         
         If CadenaDesdeOtroForm <> "" Then
-            cad = DevuelveDesdeBD("max(fecha)", "marcajeshco", "1", "1")
+            Cad = DevuelveDesdeBD("max(fecha)", "marcajeshco", "1", "1")
             i = 1
             
         Else
-            cad = ""
+            Cad = ""
             i = 0
         End If
-        If cad = "" Then cad = DateAdd("d", -1, Now)
-        txtFec(1).Text = Format(cad, "dd/mm/yyyy")
+        If Cad = "" Then Cad = DateAdd("d", -1, Now)
+        txtFec(1).Text = Format(Cad, "dd/mm/yyyy")
         If i = 1 Then txtFec(0).Text = txtFec(1).Text
         CadenaDesdeOtroForm = ""
         
@@ -6194,16 +6271,19 @@ Dim IndiceCancelar As Integer
         Caption = "Listado"
         
         
-        'Igual deberia venir de una BDs
-        If vEmpresa.QueEmpresa = 2 Then
-            List1.AddItem "Fruxeresa"
-            List1.Selected(0) = True
-            List1.AddItem "Cooperativa"
-            List1.Selected(1) = True
-        Else
-            List1.AddItem "Cooperativa"
-            List1.Selected(0) = True
-        End If
+        MsgBox "FALTA###"
+        
+'
+'        'Igual deberia venir de una BDs
+'        If vEmpresa.QueEmpresa = 2 Then
+'            List1.AddItem vEmpresa.SegundaEmpresa  ' "Fruxeresa" -motilla
+'            List1.Selected(0) = True
+'            List1.AddItem "Cooperativa"
+'            List1.Selected(1) = True
+'        Else
+'            List1.AddItem "Cooperativa"
+'            List1.Selected(0) = True
+'        End If
         optHorasPorecesadas_Click 0
     
     Case 18, 19
@@ -6320,11 +6400,11 @@ End Sub
 Private Sub imgCalen_Click(Index As Integer)
     imgTra(0).Tag = 2 'Para que el devuelve grid sepa que es CALENDARIOS
     imgInci(0).Tag = Index 'Dentro de calendarios, que INDEX
-    cad = "Codigo|idcal|N||15·"
-    cad = cad & "Descripción|Descripcion|T||85·"
+    Cad = "Codigo|idcal|N||15·"
+    Cad = Cad & "Descripción|Descripcion|T||85·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Calendario"
-    frmB.vCampos = cad
+    frmB.vCampos = Cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "CALENDARIO"
@@ -6379,11 +6459,11 @@ End Sub
 Private Sub imgInci_Click(Index As Integer)
     imgTra(0).Tag = 1 'Para que el devuelve grid sepa que es INCIDENCIAS
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    cad = "Codigo|idInci|N||15·"
-    cad = cad & "Nombre|nominci|T||60·"
+    Cad = "Codigo|idInci|N||15·"
+    Cad = Cad & "Nombre|nominci|T||60·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Incidencias"
-    frmB.vCampos = cad
+    frmB.vCampos = Cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "INCIDENCIAS"
@@ -6394,11 +6474,11 @@ End Sub
 Private Sub imgSecc_Click(Index As Integer)
     imgTra(0).Tag = 3 'Para que el devuelve grid sepa que es SECCION
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    cad = "Codigo|idseccion|N||15·"
-    cad = cad & "Descripcion|nombre|T||75·"
+    Cad = "Codigo|idseccion|N||15·"
+    Cad = Cad & "Descripcion|nombre|T||75·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Secciones"
-    frmB.vCampos = cad
+    frmB.vCampos = Cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "Secciones"
@@ -6409,12 +6489,12 @@ End Sub
 Private Sub imgTra_Click(Index As Integer)
     imgTra(0).Tag = 0 'Para que el devuelve grid sepa que es TRABAJADORES
     imgInci(0).Tag = Index 'Dentro de trabajadores, que INDEX
-    cad = "Codigo|idTrabajador|N||15·"
-    cad = cad & "Nombre|nomtrabajador|T||60·"
-    cad = cad & "Tarjeta|numtarjeta|T||20·"
+    Cad = "Codigo|idTrabajador|N||15·"
+    Cad = Cad & "Nombre|nomtrabajador|T||60·"
+    Cad = Cad & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = cad
+    frmB.vCampos = Cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
@@ -6465,9 +6545,9 @@ Private Sub txtCalen_LostFocus(Index As Integer)
             txtCalendD(Index).Text = ""
             PonerFoco txtCalen(Index)
         Else
-            cad = DevuelveDesdeBD("descripcion", "calendario", "idcal", txtCalen(Index).Text, "N")
+            Cad = DevuelveDesdeBD("descripcion", "calendario", "idcal", txtCalen(Index).Text, "N")
             
-            txtCalendD(Index).Text = cad
+            txtCalendD(Index).Text = Cad
         End If
     End If
             
@@ -6542,20 +6622,20 @@ End Sub
 Private Sub txtHora_LostFocus(Index As Integer)
         txtHora(Index).Text = Trim(txtHora(Index).Text)
         If txtHora(Index).Text = "" Then
-            cad = ""
+            Cad = ""
         Else
             txtHora(Index).Text = TransformaPunto2Puntos(txtHora(Index).Text)
             txtHora(Index).Text = Format(txtHora(Index).Text, "hh:mm:ss")
             If IsDate(txtHora(Index).Text) Then
                 'Cambiamos las horas del campo decimal
-                cad = Format(DevuelveValorHora(CDate(txtHora(Index).Text)), "0.00")
+                Cad = Format(DevuelveValorHora(CDate(txtHora(Index).Text)), "0.00")
             Else
-                cad = ""
+                Cad = ""
                 txtHora(Index).Text = ""
             End If
             
         End If
-        txtHoraD(Index).Text = cad
+        txtHoraD(Index).Text = Cad
 End Sub
 
 
@@ -6571,17 +6651,17 @@ End Sub
 Private Sub txtHoraD_LostFocus(Index As Integer)
     txtHoraD(Index).Text = Trim(txtHoraD(Index).Text)
     If txtHoraD(Index).Text = "" Then
-        cad = ""
+        Cad = ""
     Else
         txtHoraD(Index).Text = TransformaPuntosComas(txtHoraD(Index).Text)
         If Not IsNumeric(txtHoraD(Index).Text) Then
             MsgBox "Campo numérico", vbExclamation
-            cad = ""
+            Cad = ""
         Else
-            cad = DevuelveHora(CSng(txtHoraD(Index).Text))
+            Cad = DevuelveHora(CSng(txtHoraD(Index).Text))
         End If
     End If
-    txtHora(Index).Text = cad
+    txtHora(Index).Text = Cad
         
 End Sub
 
@@ -6615,9 +6695,9 @@ Private Sub txtInci_LostFocus(Index As Integer)
         txtDInci(Index).Text = ""
         PonerFoco txtInci(Index)
     Else
-        cad = DevuelveDesdeBD("nominci", "incidencias", "idinci", txtInci(Index).Text, "N")
-        If cad = "" Then cad = "NO EXISTE"
-        txtDInci(Index).Text = cad
+        Cad = DevuelveDesdeBD("nominci", "incidencias", "idinci", txtInci(Index).Text, "N")
+        If Cad = "" Then Cad = "NO EXISTE"
+        txtDInci(Index).Text = Cad
     End If
 End Sub
 
@@ -6645,9 +6725,9 @@ Private Sub txtSecc_LostFocus(Index As Integer)
         txtDSecc(Index).Text = ""
         PonerFoco txtSecc(Index)
     Else
-        cad = DevuelveDesdeBD("nombre", "secciones", "idseccion", txtSecc(Index).Text, "N")
-        If cad = "" Then cad = "NO EXISTE"
-        txtDSecc(Index).Text = cad
+        Cad = DevuelveDesdeBD("nombre", "secciones", "idseccion", txtSecc(Index).Text, "N")
+        If Cad = "" Then Cad = "NO EXISTE"
+        txtDSecc(Index).Text = Cad
     End If
 End Sub
 
@@ -6681,9 +6761,9 @@ Private Sub txtTrab_LostFocus(Index As Integer)
         txtDT(Index).Text = ""
         PonerFoco txtTrab(Index)
     Else
-        cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
-        If cad = "" Then cad = "NO EXISTE"
-        txtDT(Index).Text = cad
+        Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
+        If Cad = "" Then Cad = "NO EXISTE"
+        txtDT(Index).Text = Cad
     End If
 End Sub
 
@@ -6708,13 +6788,13 @@ Dim IT As ListItem
     ListView1.ListItems.Clear
     If txtCalen(0).Text <> "" Then
         Set miRsAux = New ADODB.Recordset
-        cad = "Select * from calendariof where idcal =" & txtCalen(0).Text
+        Cad = "Select * from calendariof where idcal =" & txtCalen(0).Text
         If Me.chkTempoActual.Value = 1 Then
-            cad = cad & " and fecha >= '" & Format(vEmpresa.FechaInicio, FormatoFecha)
-            cad = cad & "' and fecha <= '" & Format(vEmpresa.FechaFin, FormatoFecha) & "'"
+            Cad = Cad & " and fecha >= '" & Format(vEmpresa.FechaInicio, FormatoFecha)
+            Cad = Cad & "' and fecha <= '" & Format(vEmpresa.FechaFin, FormatoFecha) & "'"
         End If
-        cad = cad & " ORDER BY fecha"
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = Cad & " ORDER BY fecha"
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
             Set IT = ListView1.ListItems.Add()
             IT.Text = Format(miRsAux!Fecha, "dd/mm/yyyy")
@@ -6778,23 +6858,23 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
         SQL = SQL & "if(hora<0,1,0) "
     End If
     SQL = SQL & " HorasNegativas from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
-    cad = ""
-    If Me.txtFec(8).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
-    If Me.txtFec(9).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
-    If Me.txtTrab(10).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
-    If Me.txtTrab(11).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
+    Cad = ""
+    If Me.txtFec(8).Text <> "" Then Cad = Cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
+    If Me.txtFec(9).Text <> "" Then Cad = Cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
+    If Me.txtTrab(10).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
+    If Me.txtTrab(11).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
     
     'Abril 2014
-    If Me.txtSecc(10).Text <> "" Then cad = cad & " AND t.seccion >= " & txtSecc(10).Text
-    If Me.txtSecc(11).Text <> "" Then cad = cad & " AND t.seccion <= " & txtSecc(11).Text
+    If Me.txtSecc(10).Text <> "" Then Cad = Cad & " AND t.seccion >= " & txtSecc(10).Text
+    If Me.txtSecc(11).Text <> "" Then Cad = Cad & " AND t.seccion <= " & txtSecc(11).Text
     
     
     
-    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
-    cad = cad & " ORDER BY fecha,idtrabajador,hora"
+    If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
+    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
-    SQL = SQL & cad
+    SQL = SQL & Cad
     miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
@@ -6826,13 +6906,13 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
             
             If PuedeQuitarParadas Then
                 'Veamos el horario para el trabajador, dia
-                cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
+                Cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
                 CadPa = "trabajadores.idcal"
-                cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(T), "N", CadPa)
-                If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
+                Cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", Cad, CStr(T), "N", CadPa)
+                If Val(Cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
                 
-                If Val(cad) <> vH.IdHorario Then
-                    If vH.Leer(CInt(cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
+                If Val(Cad) <> vH.IdHorario Then
+                    If vH.Leer(CInt(Cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & Cad
                 End If
                 
                 'Si puede quitar paradas, y el horario lo tiene:
@@ -6852,7 +6932,7 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
             End If
             vSql = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
             vSql = vSql & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
-            cad = ""
+            Cad = ""
         End If
         
         
@@ -6876,7 +6956,7 @@ Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    
                 End If
             End If
             CadPa = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-            cad = cad & ",'" & CadPa & "'"
+            Cad = Cad & ",'" & CadPa & "'"
             
             
             
@@ -7010,17 +7090,17 @@ Dim J As Integer
         End If
         J = NTicajes
         While J < 16
-            cad = cad & ",NULL"
+            Cad = Cad & ",NULL"
             J = J + 1
         Wend
         
-        cad = DBSet(Paradas, "N") & "," & Abs(Correcto) & cad
+        Cad = DBSet(Paradas, "N") & "," & Abs(Correcto) & Cad
         
-        cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & cad
+        Cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & Cad
         
     
         
-        vSql = vSql & cad & ")"
+        vSql = vSql & Cad & ")"
         EjecutaSQL vSql
     
     
@@ -7045,17 +7125,17 @@ Dim J As Integer
         End If
         J = NTicajes
         While J < 16
-            cad = cad & ",NULL"
+            Cad = Cad & ",NULL"
             J = J + 1
         Wend
         
-        cad = DBSet(0, "N") & "," & Abs(Correcto) & cad
+        Cad = DBSet(0, "N") & "," & Abs(Correcto) & Cad
         
-        cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & cad
+        Cad = DBSet(HSinajustar, "N") & "," & DBSet(HAjustadas, "N") & "," & Cad
         
     
         
-        vSql = vSql & cad & ")"
+        vSql = vSql & Cad & ")"
         EjecutaSQL vSql
     
     
@@ -7131,7 +7211,7 @@ Dim RS As ADODB.Recordset
 Dim RT As ADODB.Recordset
 Dim C As Integer
 Dim CadenaSQL As String
-Dim cad As String
+Dim Cad As String
 Dim Fecha As Date
 Dim NH As Currency
 Dim vH As CHorarios
@@ -7158,24 +7238,24 @@ CadenaSQL = CadenaSQL & DesdeHastaSelect(2, 3, "Trabajadores.Seccion <= ", "AND"
 
 'Devolvemos la cadena
 'Ahora recorremos los textos para hallar la subconsulta
-cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,Marcajes.idhorario,incfinal,Trabajadores.idcal"
-cad = cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
-cad = cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
-cad = cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
-cad = cad & " AND Incidencias.idInci = Marcajes.IncFinal"
-cad = cad & " AND Marcajes.correcto = 1"
+Cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,Marcajes.idhorario,incfinal,Trabajadores.idcal"
+Cad = Cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
+Cad = Cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
+Cad = Cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
+Cad = Cad & " AND Incidencias.idInci = Marcajes.IncFinal"
+Cad = Cad & " AND Marcajes.correcto = 1"
 
 'unimos la cadena sql
-cad = cad & CadenaSQL
+Cad = Cad & CadenaSQL
 
-cad = cad & " ORDER BY idhorario,fecha,idcal"
+Cad = Cad & " ORDER BY idhorario,fecha,idcal"
 Set vH = New CHorarios
 vH.IdHorario = -1
 
 Set RsBase = New ADODB.Recordset
 lblCombinado.Caption = "Obteniendo conjunto registros"
 lblCombinado.Refresh
-RsBase.Open cad, conn, , , adCmdText
+RsBase.Open Cad, conn, , , adCmdText
 If RsBase.EOF Then
     MsgBox "Ningun registro con esos valores", vbExclamation
     Set RsBase = Nothing
@@ -7223,9 +7303,9 @@ While Not RsBase.EOF
 '    If RsBase!idTrabajador = 50049 Then S top
 
     RT.AddNew
-    cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos, if(hora<'0:00:00',1,0) esNegativo,Hora from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
-    cad = cad & " ORDER BY Hora"
-    RS.Open cad, conn, , , adCmdText
+    Cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos, if(hora<'0:00:00',1,0) esNegativo,Hora from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
+    Cad = Cad & " ORDER BY Hora"
+    RS.Open Cad, conn, , , adCmdText
     RT!idTrabajador = RsBase!idTrabajador
     RT!Fecha = RsBase!Fecha
     RT!codusu = vUsu.Codigo
@@ -7277,8 +7357,8 @@ While Not RsBase.EOF
     While Not RS.EOF
         If RS!esnegativo = 1 Then
             
-            cad = Horas_Quitar24(RS!Hora, True)
-            Fecha = CDate(cad)
+            Cad = Horas_Quitar24(RS!Hora, True)
+            Fecha = CDate(Cad)
         Else
             If RS!LaHora > 23 Then
                 Hora = RS!LaHora - 24
@@ -7383,18 +7463,18 @@ On Error GoTo EGenerarDiasTrabajados
 
     Set miRsAux = New ADODB.Recordset
     
-    cad = "Select count(*) from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador"
-    cad = cad & " and marcajes.incfinal =incidencias.idinci "
-    cad = cad & vSql
-    cad = cad & " AND correcto = 0"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select count(*) from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador"
+    Cad = Cad & " and marcajes.incfinal =incidencias.idinci "
+    Cad = Cad & vSql
+    Cad = Cad & " AND correcto = 0"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not miRsAux.EOF Then
-        If DBLet(miRsAux.Fields(0), "N") > 0 Then cad = ""
+        If DBLet(miRsAux.Fields(0), "N") > 0 Then Cad = ""
     End If
     miRsAux.Close
     
     'Muestro el mensaje de que hay marcajes incorrectos
-    If cad = "" Then
+    If Cad = "" Then
         MsgBox "Hay marcajes INCORRECTOS con esos parametros", vbExclamation
     End If
     
@@ -7408,11 +7488,11 @@ On Error GoTo EGenerarDiasTrabajados
     miSQL = "INSERT INTO tmpdatosmes (Mes, codusu,Trabajador, DiasTrabajados,  HorasT, HorasE,HorasN)"
     miSQL = miSQL & " VALUES (0," & vUsu.Codigo & ","
     
-    cad = "Select marcajes.idtrabajador,incfinal,excesodefecto,count(*) as dias,sum(horastrabajadas) as ht,sum(horasincid) as hi"
-    cad = cad & " from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador and marcajes.incfinal =incidencias.idinci"
-    cad = cad & vSql
-    cad = cad & " group by marcajes.idtrabajador,incfinal,excesodefecto order by marcajes.idtrabajador"
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select marcajes.idtrabajador,incfinal,excesodefecto,count(*) as dias,sum(horastrabajadas) as ht,sum(horasincid) as hi"
+    Cad = Cad & " from marcajes,trabajadores,incidencias where marcajes.idtrabajador = trabajadores.idtrabajador and marcajes.incfinal =incidencias.idinci"
+    Cad = Cad & vSql
+    Cad = Cad & " group by marcajes.idtrabajador,incfinal,excesodefecto order by marcajes.idtrabajador"
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Trab = -1
     
     While Not miRsAux.EOF
@@ -7420,9 +7500,9 @@ On Error GoTo EGenerarDiasTrabajados
         If Trab <> miRsAux!idTrabajador Then
             If Trab > 0 Then
                 'INSERTAMOS EN BD   DiasTrabajados,  HorasT, HorasE,HorasN
-                cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
-                cad = cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
-                conn.Execute cad
+                Cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
+                Cad = Cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
+                conn.Execute Cad
             End If
             Trab = miRsAux!idTrabajador
             lblDiasTrabajados.Caption = Trab
@@ -7454,9 +7534,9 @@ On Error GoTo EGenerarDiasTrabajados
     'El ultimo
     If Trab > 0 Then
         'INSERTAMOS EN BD   DiasTrabajados,  HorasT, HorasE,HorasN
-        cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
-        cad = cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
-        conn.Execute cad
+        Cad = miSQL & Trab & "," & Dias & "," & TransformaComasPuntos(CStr(HT))
+        Cad = Cad & "," & TransformaComasPuntos(CStr(HExc)) & "," & TransformaComasPuntos(CStr(HRet)) & ")"
+        conn.Execute Cad
     Else
         MsgBox "Ningun dato con esos parametros", vbExclamation
         Set miRsAux = Nothing
@@ -7467,16 +7547,16 @@ On Error GoTo EGenerarDiasTrabajados
     lblDiasTrabajados.Caption = "Incidencias generadas"
     lblDiasTrabajados.Refresh
                 'NO TOCAR vsql
-    cad = "INSERT INTO tmpdiastrabajinci (idtrabajador, incidencia, horas,dias, codusu) "
-    cad = cad & " select marcajes.idtrabajador,incidencia,sum(horas),count(*)," & vUsu.Codigo
-    cad = cad & " from marcajes,trabajadores,incidencias,incidenciasgeneradas where"
-    cad = cad & " marcajes.idtrabajador = trabajadores.idtrabajador and "
-    cad = cad & " incidenciasgeneradas.entradamarcaje=marcajes.entrada  and"
-    cad = cad & " incidencias.idinci = incidenciasgeneradas.Incidencia"
+    Cad = "INSERT INTO tmpdiastrabajinci (idtrabajador, incidencia, horas,dias, codusu) "
+    Cad = Cad & " select marcajes.idtrabajador,incidencia,sum(horas),count(*)," & vUsu.Codigo
+    Cad = Cad & " from marcajes,trabajadores,incidencias,incidenciasgeneradas where"
+    Cad = Cad & " marcajes.idtrabajador = trabajadores.idtrabajador and "
+    Cad = Cad & " incidenciasgeneradas.entradamarcaje=marcajes.entrada  and"
+    Cad = Cad & " incidencias.idinci = incidenciasgeneradas.Incidencia"
     
-    cad = cad & vSql
-    cad = cad & " group by 1,2"
-    conn.Execute cad
+    Cad = Cad & vSql
+    Cad = Cad & " group by 1,2"
+    conn.Execute Cad
 
     '---------------------------------------
     lblDiasTrabajados.Caption = "Vacaciones"
@@ -7485,26 +7565,26 @@ On Error GoTo EGenerarDiasTrabajados
     If vEmpresa.TodosLosDias Then
         'Llevo control de vacaciones
         '
-        cad = "select idtrabajador,count(*) from calendariot where tipodia=2"
+        Cad = "select idtrabajador,count(*) from calendariot where tipodia=2"
         vSql = DesdeHastaSelect(0, 12, "Fecha>=", " AND ")
         vSql = vSql & DesdeHastaSelect(0, 13, "Fecha<=", " AND ")
-        cad = cad & vSql
+        Cad = Cad & vSql
 '        cad = cad & " and idtrabajador in (select idtrabajador from tmpdatosmes where codusu=" & vUsu.Codigo & ")"
-        cad = cad & " group by idtrabajador"
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = Cad & " group by idtrabajador"
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
-            cad = "UPDATE tmpDatosMes SET Anticipos=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
-            conn.Execute cad
+            Cad = "UPDATE tmpDatosMes SET Anticipos=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
+            conn.Execute Cad
             miRsAux.MoveNext
         Wend
         miRsAux.Close
         
-        cad = "Select idtrabajador,count(*) From marcajes where  incfinal= " & vEmpresa.IncVacaciones
-        cad = cad & vSql & " group by idtrabajador"
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = "Select idtrabajador,count(*) From marcajes where  incfinal= " & vEmpresa.IncVacaciones
+        Cad = Cad & vSql & " group by idtrabajador"
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
-            cad = "UPDATE tmpDatosMes SET Extras=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
-            conn.Execute cad
+            Cad = "UPDATE tmpDatosMes SET Extras=" & miRsAux.Fields(1) & " where codusu =" & vUsu.Codigo & " AND Trabajador =" & miRsAux.Fields(0)
+            conn.Execute Cad
             miRsAux.MoveNext
         Wend
         miRsAux.Close
@@ -7926,8 +8006,8 @@ Dim Anti As Currency
     On Error GoTo eGeneraExcel
     GeneraExcel = False
     i = -1
-    cad = App.Path & "\tmpxls.csv"
-    If Dir(cad, vbArchive) <> "" Then Kill cad
+    Cad = App.Path & "\tmpxls.csv"
+    If Dir(Cad, vbArchive) <> "" Then Kill Cad
     
    
     
@@ -7952,7 +8032,7 @@ Dim Anti As Currency
     miRsAux.Open CadPa, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
      i = FreeFile
-    Open cad For Output As #i
+    Open Cad For Output As #i
     
     
     'Primera linea, encabezados
@@ -8053,7 +8133,7 @@ Dim Anti As Currency
                 If MsgBox("El fichero: " & cd1.FileName & " YA existe, ¿Sobreescribir?", vbQuestion + vbYesNoCancel) <> vbYes Then CadPa = "NO"
             End If
             If CadPa = "" Then
-                FileCopy cad, cd1.FileName
+                FileCopy Cad, cd1.FileName
                 MsgBox "Se ha generado correctamente el fichero: " & cd1.FileName, vbInformation
             End If
         End If
@@ -8108,19 +8188,19 @@ Dim Seg As Integer
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
     SQL = "select entradafichajauxliares.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
     SQL = SQL & ",Control from entradafichajauxliares inner join trabajadores t on t.idtrabajador=entradafichajauxliares.idtrabajador"
-    cad = ""
-    If Me.txtFec(18).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(18).Text, FormatoFecha) & "'"
-    If Me.txtFec(19).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(19).Text, FormatoFecha) & "'"
-    If Me.txtTrab(20).Text <> "" Then cad = cad & " AND entradafichajauxliares.idtrabajador >= " & txtTrab(20).Text
-    If Me.txtTrab(21).Text <> "" Then cad = cad & " AND entradafichajauxliares.idtrabajador <= " & txtTrab(21).Text
+    Cad = ""
+    If Me.txtFec(18).Text <> "" Then Cad = Cad & " AND fecha >='" & Format(txtFec(18).Text, FormatoFecha) & "'"
+    If Me.txtFec(19).Text <> "" Then Cad = Cad & " AND fecha <='" & Format(txtFec(19).Text, FormatoFecha) & "'"
+    If Me.txtTrab(20).Text <> "" Then Cad = Cad & " AND entradafichajauxliares.idtrabajador >= " & txtTrab(20).Text
+    If Me.txtTrab(21).Text <> "" Then Cad = Cad & " AND entradafichajauxliares.idtrabajador <= " & txtTrab(21).Text
    
     
     
-    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
-    cad = cad & " ORDER BY fecha,idtrabajador,hora"
+    If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
+    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
-    SQL = SQL & cad
+    SQL = SQL & Cad
     miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
@@ -8147,7 +8227,7 @@ Dim Seg As Integer
            
             vSql = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
             vSql = vSql & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
-            cad = ""
+            Cad = ""
         End If
         
         
@@ -8165,7 +8245,7 @@ Dim Seg As Integer
             End If
             
             CadPa = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-            cad = cad & ",'" & CadPa & "'"
+            Cad = Cad & ",'" & CadPa & "'"
             
             
             
@@ -8280,16 +8360,16 @@ Dim PosiblesErrores As String
     Set miRsAux = New ADODB.Recordset
     Set RS = New ADODB.Recordset
     'tmppagosmes   idTrabajador,Nombre,IRPF,SS,importe1,importe2
-    cad = "DELETE FROM tmppagosmes"
-    conn.Execute cad
+    Cad = "DELETE FROM tmppagosmes"
+    conn.Execute Cad
     
-    cad = "DELETE FROM tmpmarcajes"
-    conn.Execute cad
+    Cad = "DELETE FROM tmpmarcajes"
+    conn.Execute Cad
     
     FF = CDate(txtFec(20).Text)
     
-    cad = "INSERT INTO tmpmarcajes(Entrada,fecha) VALUES (-1," & DBSet(FF, "F") & ")"
-    conn.Execute cad
+    Cad = "INSERT INTO tmpmarcajes(Entrada,fecha) VALUES (-1," & DBSet(FF, "F") & ")"
+    conn.Execute Cad
     
     
     'De momento cojo el IDCAL1
@@ -8310,27 +8390,27 @@ Dim PosiblesErrores As String
     Next
     'Lo transformo en un array de enteros
     vSql = DiasFestivos
-    cad = ""
+    Cad = ""
     VectorDiasFestivos = ""
     While vSql <> ""
         i = InStr(1, vSql, "|")
-        cad = Mid(vSql, 1, i - 1)
+        Cad = Mid(vSql, 1, i - 1)
         vSql = Mid(vSql, i + 1)
-        VectorDiasFestivos = VectorDiasFestivos & ", " & Day(CDate(cad))
+        VectorDiasFestivos = VectorDiasFestivos & ", " & Day(CDate(Cad))
         
     Wend
     VectorDiasFestivos = Mid(VectorDiasFestivos, 2)
     
     Set vH = Nothing
     
-    cad = "select nominas.* from nominas"
-    cad = cad & " where month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF)
-    If Me.cboCentroTrabajo.ListIndex >= 0 Then cad = cad & " and CentroA3 = " & Me.cboCentroTrabajo.ItemData(Me.cboCentroTrabajo.ListIndex)
+    Cad = "select nominas.* from nominas"
+    Cad = Cad & " where month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF)
+    If Me.cboCentroTrabajo.ListIndex >= 0 Then Cad = Cad & " and CentroA3 = " & Me.cboCentroTrabajo.ItemData(Me.cboCentroTrabajo.ListIndex)
       
       
     PosiblesErrores = ""
     
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     i = 0
     vSql = ""
     While Not miRsAux.EOF
@@ -8362,8 +8442,8 @@ Dim PosiblesErrores As String
         Else
             'Empieza la fiesta. Ha trabajado menos dias
             
-            cad = "select  FecBaja,FecAlta  from trabajadores where idtrabajador=" & miRsAux!idTrabajador
-            RS.Open cad, conn, adOpenKeyset, adCmdText
+            Cad = "select  FecBaja,FecAlta  from trabajadores where idtrabajador=" & miRsAux!idTrabajador
+            RS.Open Cad, conn, adOpenKeyset, adCmdText
             If Not RS.EOF Then
                 If Not IsNull(RS!FecAlta) Then
                     F = RS!FecAlta
@@ -8393,9 +8473,9 @@ Dim PosiblesErrores As String
             'Dias que esta de baja. NO deberia haber fichaje
             FI = "01/" & Format(FF, "mm/yyyy")
             EstaDeBaja = "|"
-            cad = "select * from bajas where idtrab=" & miRsAux!idTrabajador & " and fechabaja<=" & DBSet(FF, "F")
-            cad = cad & " and (fechaalta is null or fechaalta>" & DBSet(FI, "F") & ")"
-            RS.Open cad, conn, adOpenKeyset, adCmdText
+            Cad = "select * from bajas where idtrab=" & miRsAux!idTrabajador & " and fechabaja<=" & DBSet(FF, "F")
+            Cad = Cad & " and (fechaalta is null or fechaalta>" & DBSet(FI, "F") & ")"
+            RS.Open Cad, conn, adOpenKeyset, adCmdText
             While Not RS.EOF
                 If RS!FechaBaja < FI Then
                     L = 1
@@ -8423,23 +8503,23 @@ Dim PosiblesErrores As String
                 
                 'Los leemos de marcajes
                 'Veremos cuales ha trabajado, SEGURO entre sin finde ni festivos
-                cad = " festivo=0 AND weekday(fecha)<5 and"
-                cad = cad & " idtrabajador = " & miRsAux!idTrabajador
-                cad = "select fecha , 1 laborable from marcajes  WHERE " & cad
-                cad = cad & " AND month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF)
+                Cad = " festivo=0 AND weekday(fecha)<5 and"
+                Cad = Cad & " idtrabajador = " & miRsAux!idTrabajador
+                Cad = "select fecha , 1 laborable from marcajes  WHERE " & Cad
+                Cad = Cad & " AND month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF)
                 
             Else
                 'Catadau. Dia que viene, dia que cotiza
                 'Los leemos de jopranadassemanakes
                 
                 
-                cad = " idtrabajador = " & miRsAux!idTrabajador
-                cad = "select fecha,sum(laborable) laborable from jornadassemanalesalz  WHERE " & cad
-                cad = cad & " AND month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF) & " GROUP BY fecha"
+                Cad = " idtrabajador = " & miRsAux!idTrabajador
+                Cad = "select fecha,sum(laborable) laborable from jornadassemanalesalz  WHERE " & Cad
+                Cad = Cad & " AND month(fecha)=" & Month(FF) & " and year(fecha)=" & Year(FF) & " GROUP BY fecha"
             End If
 
             
-            RS.Open cad, conn, adOpenKeyset, adCmdText
+            RS.Open Cad, conn, adOpenKeyset, adCmdText
             k = miRsAux!Dias
             AlgunLaborableACero = False
             While Not RS.EOF
@@ -8483,7 +8563,7 @@ Dim PosiblesErrores As String
                 'En KATADAU, los que falten dias a cotizar(k>0) entonces si tiene algun sabado marcaado como "no laborable", se lo vuelvo a marcar
                 If k > 0 And AlgunLaborableACero Then
                     
-                    RS.Open cad, conn, adOpenKeyset, adCmdText
+                    RS.Open Cad, conn, adOpenKeyset, adCmdText
                     While Not RS.EOF
                         If k > 0 Then
                             If InStr(1, DiasFestivos, Format(RS!Fecha, "dd/mm/yyyy")) = 0 Then
@@ -8507,14 +8587,14 @@ Dim PosiblesErrores As String
                 If k > 0 Then
                     
                     'Vamos a ver si hay alguno incorrecto
-                    cad = ""
+                    Cad = ""
                     For J = 1 To Len(VectorDiasTrab)
-                        If Mid(VectorDiasTrab, J, 1) = "S" Then cad = cad & "X"
+                        If Mid(VectorDiasTrab, J, 1) = "S" Then Cad = Cad & "X"
                     Next J
-                    If Len(cad) <> miRsAux!Dias Then
-                        PosiblesErrores = PosiblesErrores & Mid(miRsAux!Dias & "    ", 1, 8) & Mid(Len(cad) & "    ", 1, 8)
-                        cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", miRsAux!idTrabajador)
-                        PosiblesErrores = PosiblesErrores & cad & "  (" & miRsAux!idTrabajador & ")" & vbCrLf
+                    If Len(Cad) <> miRsAux!Dias Then
+                        PosiblesErrores = PosiblesErrores & Mid(miRsAux!Dias & "    ", 1, 8) & Mid(Len(Cad) & "    ", 1, 8)
+                        Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", miRsAux!idTrabajador)
+                        PosiblesErrores = PosiblesErrores & Cad & "  (" & miRsAux!idTrabajador & ")" & vbCrLf
                     End If
                 End If
             End If
@@ -8534,10 +8614,10 @@ Dim PosiblesErrores As String
             End If
             
             If k > 0 Then
-                cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", miRsAux!idTrabajador)
-                cad = miRsAux!idTrabajador & " " & cad & vbCrLf
-                cad = "NO ha compensado todos los dias: " & vbCrLf & cad
-                If vEmpresa.QueEmpresa <> 4 Then MsgBox cad, vbExclamation
+                Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", miRsAux!idTrabajador)
+                Cad = miRsAux!idTrabajador & " " & Cad & vbCrLf
+                Cad = "NO ha compensado todos los dias: " & vbCrLf & Cad
+                If vEmpresa.QueEmpresa <> 4 Then MsgBox Cad, vbExclamation
                 
             End If
         End If
@@ -8553,11 +8633,11 @@ Dim PosiblesErrores As String
                 If L2 = 0 Then
                     EstaDeBaja = ""
                 Else
-                    cad = Mid(EstaDeBaja, 1, L2 - 1)
+                    Cad = Mid(EstaDeBaja, 1, L2 - 1)
                     EstaDeBaja = Mid(EstaDeBaja, L2 + 1)
-                    L = Val(cad)
-                    cad = Mid(VectorDiasTrab, L, 1)
-                    If cad = "S" Then MsgBox "Trabaja dia de baja: " & L & vbCrLf & "  Trabajador: " & miRsAux!idTrabajador, vbExclamation
+                    L = Val(Cad)
+                    Cad = Mid(VectorDiasTrab, L, 1)
+                    If Cad = "S" Then MsgBox "Trabaja dia de baja: " & L & vbCrLf & "  Trabajador: " & miRsAux!idTrabajador, vbExclamation
                     
                     VectorDiasTrab = Mid(VectorDiasTrab, 1, L - 1) & "B" & Mid(VectorDiasTrab, L + 1)
                 
@@ -8600,9 +8680,9 @@ Dim PosiblesErrores As String
         End If
         
         
-        cad = ", (" & miRsAux!idTrabajador & ",'" & VectorDiasTrab & "'," & miRsAux!Dias & "," & DiasDelMes & ","
-        cad = cad & DBSet(Importe, "N") & "," & DBSet(H, "N") & "," & DBSet(Impor3, "N") & "," & DBSet(Impor4, "N") & ")"
-        vSql = vSql & cad
+        Cad = ", (" & miRsAux!idTrabajador & ",'" & VectorDiasTrab & "'," & miRsAux!Dias & "," & DiasDelMes & ","
+        Cad = Cad & DBSet(Importe, "N") & "," & DBSet(H, "N") & "," & DBSet(Impor3, "N") & "," & DBSet(Impor4, "N") & ")"
+        vSql = vSql & Cad
         If (i Mod 10) = 0 Then
             vSql = Mid(vSql, 2)
             vSql = "INSERT INTO tmppagosmes(idTrabajador,Nombre,IRPF,SS,importe1,importe2,Neto,Bruto) VALUES " & vSql
@@ -8643,10 +8723,10 @@ Private Sub CargaCentroTrabajo()
     If Not vEmpresa.TieneCentrosA3 Then Exit Sub
     
     
-    cad = "SELECT * FROM CentrosA3  ORDER BY idCentro"
+    Cad = "SELECT * FROM CentrosA3  ORDER BY idCentro"
 
     Set miRsAux = New ADODB.Recordset
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
 
     While Not miRsAux.EOF
         cboCentroTrabajo.AddItem miRsAux!nomcentro
@@ -8726,10 +8806,10 @@ Private Sub HacerListadoPorTipoReloj()
         If txtTrab(13).Text <> "" Then vSql = vSql & "hasta " & txtTrab(13).Text & "-" & Me.txtDT(13).Text & "  "
         vSql = Trim(vSql)
         
-        cad = "Todos los relojes"
-        If Me.cboReloj.ListIndex = 1 Then cad = "Solo principal"
-        If Me.cboReloj.ListIndex = 2 Then cad = "Biostar"
-        vSql = Trim(cad & "    " & vSql)
+        Cad = "Todos los relojes"
+        If Me.cboReloj.ListIndex = 1 Then Cad = "Solo principal"
+        If Me.cboReloj.ListIndex = 2 Then Cad = "Biostar"
+        vSql = Trim(Cad & "    " & vSql)
         CadPa = CadPa & "FechaIni= """ & vSql & """|"
         
         
@@ -8764,7 +8844,7 @@ Dim RsBase As ADODB.Recordset
 Dim RS As ADODB.Recordset
 Dim CadenaInsert As String
 Dim CadenaSQL As String
-Dim cad As String
+Dim Cad As String
 Dim Hora As Integer
 Dim HoraF As String
 Dim idReloj As Integer
@@ -8782,7 +8862,7 @@ Dim HoraAnt As Date
 Dim HorasParada As Currency
 Dim AnteriorA_Las_9 As Boolean
 Dim YaDescontado As Boolean
-Dim Aux As String
+Dim AUX As String
 
 Dim AlmuerzoEnReloj As Byte
 On Error GoTo ErrSQL
@@ -8805,24 +8885,24 @@ On Error GoTo ErrSQL
     
     'Devolvemos la cadena
     'Ahora recorremos los textos para hallar la subconsulta
-    cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,"
-    cad = cad & "Marcajes.idhorario,incfinal,Trabajadores.idcal,secciones.Nombre,Trabajadores.NomTrabajador,HorasDto"
-    cad = cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
-    cad = cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
-    cad = cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
-    cad = cad & " AND Incidencias.idInci = Marcajes.IncFinal"
-    cad = cad & " AND Marcajes.correcto = 1"
+    Cad = "SELECT Marcajes.entrada,Marcajes.idTrabajador,Marcajes.Fecha,Marcajes.HorasTrabajadas,Marcajes.HorasIncid,ExcesoDefecto,"
+    Cad = Cad & "Marcajes.idhorario,incfinal,Trabajadores.idcal,secciones.Nombre,Trabajadores.NomTrabajador,HorasDto"
+    Cad = Cad & " FROM Trabajadores,Marcajes,Incidencias,Secciones"
+    Cad = Cad & " WHERE  Trabajadores.IdTrabajador = Marcajes.idTrabajador"
+    Cad = Cad & " AND Trabajadores.Seccion = Secciones.Idseccion"
+    Cad = Cad & " AND Incidencias.idInci = Marcajes.IncFinal"
+    Cad = Cad & " AND Marcajes.correcto = 1"
     
     'unimos la cadena sql
-    cad = cad & CadenaSQL
+    Cad = Cad & CadenaSQL
     
-    cad = cad & " ORDER BY idhorario,fecha,idcal"
-    cad = cad & " , " & IIf(optTrab(0).Value, "Trabajadores.IdTrabajador", "Trabajadores.NomTrabajador")
+    Cad = Cad & " ORDER BY idhorario,fecha,idcal"
+    Cad = Cad & " , " & IIf(optTrab(0).Value, "Trabajadores.IdTrabajador", "Trabajadores.NomTrabajador")
     
     Set RsBase = New ADODB.Recordset
     lblCombinado.Caption = "Obteniendo conjunto registros"
     lblCombinado.Refresh
-    RsBase.Open cad, conn, , , adCmdText
+    RsBase.Open Cad, conn, , , adCmdText
     If RsBase.EOF Then
         MsgBox "Ningun registro con esos valores", vbExclamation
         Set RsBase = Nothing
@@ -8844,9 +8924,9 @@ On Error GoTo ErrSQL
         lblCombinado.Caption = RsBase!Fecha & " " & RsBase!idTrabajador
         lblCombinado.Refresh
         
-        cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos, if(hora<'0:00:00',1,0) esNegativo,Hora,reloj from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
-        cad = cad & " ORDER BY Horareal,reloj"
-        RS.Open cad, conn, adOpenKeyset, adLockOptimistic, adCmdText
+        Cad = "Select IdInci,hour(hora) LaHora,minute(hora) minutos,second(hora) segundos, if(hora<'0:00:00',1,0) esNegativo,Hora,reloj from EntradaMarcajes WHERE IdMarcaje=" & RsBase!Entrada
+        Cad = Cad & " ORDER BY Horareal,reloj"
+        RS.Open Cad, conn, adOpenKeyset, adLockOptimistic, adCmdText
        
        
         
@@ -8868,8 +8948,8 @@ On Error GoTo ErrSQL
         While Not RS.EOF
             'Como pintaremos la hora
             If RS!esnegativo = 1 Then
-                cad = Horas_Quitar24(RS!Hora, True)
-                HoraF = CDate(cad)
+                Cad = Horas_Quitar24(RS!Hora, True)
+                HoraF = CDate(Cad)
             Else
                 If RS!LaHora > 23 Then
                     Hora = RS!LaHora - 24
@@ -8936,8 +9016,8 @@ On Error GoTo ErrSQL
         'Insertamos en la tabla temporal
         'tmppresencia(Id,NomTrabajador,Fecha,Incidencias,Seccion,idtra,codusu,semana,NomEmpresa,H1,H2,H3,H4,H5,H6,H7,H8)
         '   noempre: horas   semana:reloj  icidncias : txt si pasa alog   semana:numero reloj
-        cad = "," & DBSet(RsBase!nomtrabajador, "T") & "," & DBSet(RsBase!Fecha, "F") & "," & DBSet(CadenaSQL, "T", "S") & ","
-        cad = cad & DBSet(RsBase!Nombre, "T") & "," & RsBase!idTrabajador & "," & vUsu.Codigo & ","
+        Cad = "," & DBSet(RsBase!nomtrabajador, "T") & "," & DBSet(RsBase!Fecha, "F") & "," & DBSet(CadenaSQL, "T", "S") & ","
+        Cad = Cad & DBSet(RsBase!Nombre, "T") & "," & RsBase!idTrabajador & "," & vUsu.Codigo & ","
         
         
         'Insertamos reloj 1
@@ -8961,9 +9041,9 @@ On Error GoTo ErrSQL
                 For i = Num1 + 1 To 4
                     CadenaInsertReloj1 = CadenaInsertReloj1 & ",NULL,NULL"
                 Next i
-                Aux = Right(Space(10) & CStr(H1), 10) & Right(Space(10) & CStr(HorasParada), 10)
+                AUX = Right(Space(10) & CStr(H1), 10) & Right(Space(10) & CStr(HorasParada), 10)
                 
-                CadenaSQL = cad & "1,'" & Aux & "'" & CadenaInsertReloj1
+                CadenaSQL = Cad & "1,'" & AUX & "'" & CadenaInsertReloj1
                 NumRegElim = NumRegElim + 1
                 CadenaInsert = CadenaInsert & ", (" & NumRegElim & CadenaSQL & ")"
             End If
@@ -8989,9 +9069,9 @@ On Error GoTo ErrSQL
                     CadenaInsertReloj2 = CadenaInsertReloj2 & ",NULL,NULL"
                 Next i
                 
-                Aux = Right(Space(10) & CStr(h2), 10) & Right(Space(10) & CStr(HorasParada), 10)
+                AUX = Right(Space(10) & CStr(h2), 10) & Right(Space(10) & CStr(HorasParada), 10)
                 
-                CadenaSQL = cad & "2,'" & Aux & "'" & CadenaInsertReloj2
+                CadenaSQL = Cad & "2,'" & AUX & "'" & CadenaInsertReloj2
                 NumRegElim = NumRegElim + 1
                 CadenaInsert = CadenaInsert & ", (" & NumRegElim & CadenaSQL & ")"
             End If
@@ -9003,17 +9083,17 @@ On Error GoTo ErrSQL
         RsBase.MoveNext
         
         If Len(CadenaInsert) > 10000 Then
-            cad = "INSERT INTO tmppresencia(Id,NomTrabajador,Fecha,Incidencias,Seccion,idtra,codusu,semana,NomEmpresa,H1,H2,H3,H4,H5,H6,H7,H8) VALUES "
+            Cad = "INSERT INTO tmppresencia(Id,NomTrabajador,Fecha,Incidencias,Seccion,idtra,codusu,semana,NomEmpresa,H1,H2,H3,H4,H5,H6,H7,H8) VALUES "
             CadenaInsert = Mid(CadenaInsert, 2)
-            conn.Execute cad & CadenaInsert
+            conn.Execute Cad & CadenaInsert
             CadenaInsert = ""
         End If
         
     Wend
     If CadenaInsert <> "" Then
-        cad = "INSERT INTO tmppresencia(Id,NomTrabajador,Fecha,Incidencias,Seccion,idtra,codusu,semana,NomEmpresa,H1,H2,H3,H4,H5,H6,H7,H8) VALUES "
+        Cad = "INSERT INTO tmppresencia(Id,NomTrabajador,Fecha,Incidencias,Seccion,idtra,codusu,semana,NomEmpresa,H1,H2,H3,H4,H5,H6,H7,H8) VALUES "
         CadenaInsert = Mid(CadenaInsert, 2)
-        conn.Execute cad & CadenaInsert
+        conn.Execute Cad & CadenaInsert
     End If
     RsBase.Close
     Set RS = Nothing
@@ -9084,23 +9164,23 @@ Dim DiaSem As Integer
         SQL = SQL & "if(hora<0,1,0) "
     End If
     SQL = SQL & " HorasNegativas from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
-    cad = ""
-    If Me.txtFec(8).Text <> "" Then cad = cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
-    If Me.txtFec(9).Text <> "" Then cad = cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
-    If Me.txtTrab(10).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
-    If Me.txtTrab(11).Text <> "" Then cad = cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
+    Cad = ""
+    If Me.txtFec(8).Text <> "" Then Cad = Cad & " AND fecha >='" & Format(txtFec(8).Text, FormatoFecha) & "'"
+    If Me.txtFec(9).Text <> "" Then Cad = Cad & " AND fecha <='" & Format(txtFec(9).Text, FormatoFecha) & "'"
+    If Me.txtTrab(10).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador >= " & txtTrab(10).Text
+    If Me.txtTrab(11).Text <> "" Then Cad = Cad & " AND entradafichajes.idtrabajador <= " & txtTrab(11).Text
     
     'Abril 2014
-    If Me.txtSecc(10).Text <> "" Then cad = cad & " AND t.seccion >= " & txtSecc(10).Text
-    If Me.txtSecc(11).Text <> "" Then cad = cad & " AND t.seccion <= " & txtSecc(11).Text
+    If Me.txtSecc(10).Text <> "" Then Cad = Cad & " AND t.seccion >= " & txtSecc(10).Text
+    If Me.txtSecc(11).Text <> "" Then Cad = Cad & " AND t.seccion <= " & txtSecc(11).Text
     
     
     
-    If cad <> "" Then cad = " WHERE " & Mid(cad, 5)
-    cad = cad & " ORDER BY fecha,idtrabajador,hora"
+    If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
+    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
-    SQL = SQL & cad
+    SQL = SQL & Cad
     miRsAux.Open SQL, conn, adOpenKeyset, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
@@ -9129,13 +9209,13 @@ Dim DiaSem As Integer
     
             
                 'Veamos el horario para el trabajador, dia
-                cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
+                Cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
                 CadPa = "trabajadores.idcal"
-                cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(T), "N", CadPa)
-                If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
+                Cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", Cad, CStr(T), "N", CadPa)
+                If Val(Cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
                 
-                If Val(cad) <> vH.IdHorario Then
-                    If vH.Leer(CInt(cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
+                If Val(Cad) <> vH.IdHorario Then
+                    If vH.Leer(CInt(Cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & Cad
                 End If
                 
                 'Si puede quitar paradas, y el horario lo tiene:
@@ -9155,7 +9235,7 @@ Dim DiaSem As Integer
             
             vSql = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
             vSql = vSql & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
-            cad = ""
+            Cad = ""
         End If
         
         
@@ -9340,11 +9420,11 @@ Dim DiaSem As Integer
                 End If
                 CadPa = Format(HF, "hh:nn:ss")
                 Horas = Horas + Difer
-                cad = cad & ",'" & CadPa & "'"
+                Cad = Cad & ",'" & CadPa & "'"
             
             
             Else
-                cad = cad & ",'" & CadPa & "'"
+                Cad = Cad & ",'" & CadPa & "'"
                 HI = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
                 'If Minutos > 0 Then
                 '    HIAustada = HoraRectificada(HI, vEmpresa.AjusteEntrada, Minutos)
@@ -9425,28 +9505,28 @@ Dim Horas  As Currency
 
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
     
-    cad = "select marcajeshco.idtrabajador,marcajeshco.fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos , "
+    Cad = "select marcajeshco.idtrabajador,marcajeshco.fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos , "
     If vEmpresa.AcabalgadoDiaInicio Then
-        cad = cad & " 0 "  'Acabalgdo dia inicio no hay hpras negativas
+        Cad = Cad & " 0 "  'Acabalgdo dia inicio no hay hpras negativas
     Else
-        cad = cad & "if(hora<0,1,0) "
+        Cad = Cad & "if(hora<0,1,0) "
     End If
-    cad = cad & " HorasNegativas,marcajeshco.* "
+    Cad = Cad & " HorasNegativas,marcajeshco.* "
     
-    cad = cad & " from marcajeshco,entradamarcajeshco where marcajeshco.entrada =entradamarcajeshco.idmarcaje"
-    If Me.txtFec(24).Text <> "" Then cad = cad & " AND marcajeshco.fecha >='" & Format(txtFec(24).Text, FormatoFecha) & "'"
-    If Me.txtFec(25).Text <> "" Then cad = cad & " AND marcajeshco.fecha <='" & Format(txtFec(25).Text, FormatoFecha) & "'"
-    If Me.txtTrab(24).Text <> "" Then cad = cad & " AND marcajeshco.idtrabajador >= " & txtTrab(24).Text
-    If Me.txtTrab(25).Text <> "" Then cad = cad & " AND marcajeshco.idtrabajador <= " & txtTrab(25).Text
-    
-    
+    Cad = Cad & " from marcajeshco,entradamarcajeshco where marcajeshco.entrada =entradamarcajeshco.idmarcaje"
+    If Me.txtFec(24).Text <> "" Then Cad = Cad & " AND marcajeshco.fecha >='" & Format(txtFec(24).Text, FormatoFecha) & "'"
+    If Me.txtFec(25).Text <> "" Then Cad = Cad & " AND marcajeshco.fecha <='" & Format(txtFec(25).Text, FormatoFecha) & "'"
+    If Me.txtTrab(24).Text <> "" Then Cad = Cad & " AND marcajeshco.idtrabajador >= " & txtTrab(24).Text
+    If Me.txtTrab(25).Text <> "" Then Cad = Cad & " AND marcajeshco.idtrabajador <= " & txtTrab(25).Text
     
     
-    cad = cad & " ORDER BY marcajeshco.fecha,marcajeshco.idtrabajador,hora"
+    
+    
+    Cad = Cad & " ORDER BY marcajeshco.fecha,marcajeshco.idtrabajador,hora"
         
     Set miRsAux = New ADODB.Recordset
    
-    miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     F = CDate("01/01/1911")
     T = 0
     NumRegElim = 0
@@ -9472,9 +9552,9 @@ Dim Horas  As Currency
             
            
             
-            cad = "(" & DBSet(miRsAux!nomtrabajador2, "T") & "," & DBSet(IIf(miRsAux!IncFinal = 0, "", miRsAux!nominci2), "T") & ",'" & miRsAux!HorasTrabajadas & "',''"
+            Cad = "(" & DBSet(miRsAux!nomtrabajador2, "T") & "," & DBSet(IIf(miRsAux!IncFinal = 0, "", miRsAux!nominci2), "T") & ",'" & miRsAux!HorasTrabajadas & "',''"
             
-            cad = cad & "," & miRsAux!idTrabajador & "," & vUsu.Codigo & "," & DBSet(miRsAux!Fecha, "F") & "," & NumRegElim
+            Cad = Cad & "," & miRsAux!idTrabajador & "," & vUsu.Codigo & "," & DBSet(miRsAux!Fecha, "F") & "," & NumRegElim
             vHora = 0
         End If
         
@@ -9499,7 +9579,7 @@ Dim Horas  As Currency
                 End If
             End If
             CadPa = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-            cad = cad & ",'" & CadPa & "'"
+            Cad = Cad & ",'" & CadPa & "'"
             
             
             
@@ -9531,16 +9611,16 @@ Dim J As Integer
         
         J = NTicajes
         While J < 8
-            cad = cad & ",NULL"
+            Cad = Cad & ",NULL"
             J = J + 1
         Wend
         
-        cad = cad & "," & Abs(NTicajes > 8) & ")"
+        Cad = Cad & "," & Abs(NTicajes > 8) & ")"
                 
         
         
-        vSql = vSql & ", " & cad
-        cad = ""
+        vSql = vSql & ", " & Cad
+        Cad = ""
         
         
         If Not Insertar Then
@@ -9549,10 +9629,10 @@ Dim J As Integer
         
         If Insertar Then
             vSql = Mid(vSql, 2)
-            cad = "INSERT tmppresencia(NomTrabajador,Incidencias,NomEmpresa,Seccion,idtra,codusu,Fecha,id,H1,H2,H3,H4,H5,H6,H7,H8,semana) VALUES " & vSql
-            conn.Execute cad
+            Cad = "INSERT tmppresencia(NomTrabajador,Incidencias,NomEmpresa,Seccion,idtra,codusu,Fecha,id,H1,H2,H3,H4,H5,H6,H7,H8,semana) VALUES " & vSql
+            conn.Execute Cad
             vSql = ""
         End If
-        cad = ""
+        Cad = ""
 End Sub
 

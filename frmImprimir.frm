@@ -152,7 +152,7 @@ Public Opcion As Integer
             
             '14 .- sin seccion con foto    basico       codigo
             
-            
+                
             
             '18 .- SECCION SIN FOTO, basico codi
             '19                       "     nombre
@@ -279,16 +279,16 @@ Screen.MousePointer = vbDefault
 End Sub
 
 Private Sub Form_Load()
-Dim cad As String
+Dim Cad As String
 
 PrimeraVez = True
 Lanzado = False
 CargaICO
-cad = Dir(App.Path & "\impre.dat", vbArchive)
+Cad = Dir(App.Path & "\impre.dat", vbArchive)
 
 
 'ReestableceSoloImprimir = False
-If cad = "" Then
+If Cad = "" Then
     chkSoloImprimir.Value = 0
     Else
     chkSoloImprimir.Value = 1
@@ -612,7 +612,7 @@ Case 74
     Nombre = "marcactualPlanoTr.rpt"
     MostrarTree = True
     
-    
+Case 75
     
 Case 100
     'GENERICO. Se le pasa el rpt y el titulo
@@ -640,6 +640,7 @@ Dim Seguir As Boolean
 
     Screen.MousePointer = vbHourglass
     CadenaDesdeOtroForm = ""
+    Debug.Print Nombre
     With frmVisReport
         .FormulaSeleccion = Me.FormulaSeleccion
         .SoloImprimir = (Me.chkSoloImprimir.Value = 0)

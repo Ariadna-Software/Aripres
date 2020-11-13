@@ -60,13 +60,13 @@ Begin VB.Form frmPrevioProcesar
       Width           =   2895
    End
    Begin MSComctlLib.ListView ListView1 
-      Height          =   8415
+      Height          =   8535
       Left            =   240
       TabIndex        =   0
-      Top             =   240
+      Top             =   120
       Width           =   14535
       _ExtentX        =   25638
-      _ExtentY        =   14843
+      _ExtentY        =   15055
       View            =   3
       LabelEdit       =   1
       MultiSelect     =   -1  'True
@@ -107,38 +107,42 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
+Public Modificar As Boolean
 Public Fecha As Date
 
-Dim cad As String
+Dim Cad As String
 Dim i As Long
 
 
 
 Private Sub cmdAceptar_Click()
-    cad = ""
+
+
+    If Not Modificar Then Exit Sub
+
+    Cad = ""
     For i = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(i).Tag = 2 Then cad = cad & "X"
+        If ListView1.ListItems(i).Tag = 2 Then Cad = Cad & "X"
     Next
     
-    If cad <> "" Then
-        cad = Len(cad)
-        cad = "Ha modificado " & cad & " registro(s). Continuar con el proceso? "
-        If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+    If Cad <> "" Then
+        Cad = Len(Cad)
+        Cad = "Ha modificado " & Cad & " registro(s). Continuar con el proceso? "
+        If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         
         
         
         
-        cad = ""
+        Cad = ""
         For i = 1 To ListView1.ListItems.Count
             If ListView1.ListItems(i).Tag = 2 Then
-                cad = cad & ", (" & vUsu.Codigo & "," & ListView1.ListItems(i).Text & "," & TransformaComasPuntos(ListView1.ListItems(i).SubItems(5)) & ")"
+                Cad = Cad & ", (" & vUsu.Codigo & "," & ListView1.ListItems(i).Text & "," & TransformaComasPuntos(ListView1.ListItems(i).SubItems(5)) & ")"
             End If
         Next
-        cad = Mid(cad, 2)
+        Cad = Mid(Cad, 2)
         Screen.MousePointer = vbHourglass
-        cad = "INSERT INTO tmpcombinada(codusu,IdTrabajador,HR) VALUES " & cad
-        conn.Execute cad
+        Cad = "INSERT INTO tmpcombinada(codusu,IdTrabajador,HR) VALUES " & Cad
+        conn.Execute Cad
         
     End If
     CadenaDesdeOtroForm = "OK"
@@ -169,6 +173,10 @@ Private Sub Form_Load()
     'Columnas
    Me.Icon = frmMain.Icon
     Me.Label0(0).Caption = Format(Fecha, "dddd") & " " & Format(Fecha, "dd/mmm/yyyy")
+    
+   Me.cmdAceptar.Enabled = Modificar
+   Me.Command1.Enabled = Modificar
+    
 End Sub
 
 
@@ -184,9 +192,7 @@ Dim C As ColumnHeader
     
     
     L.Add "Codigo|1100|"
-    
     L.Add "Nombre|2900|"
-
     L.Add "Secc|900|"
     L.Add "Suma|1100|"
     L.Add "Ajustadas|1100|"
@@ -216,7 +222,7 @@ Private Function CargaDatos()
     On Error GoTo eCargadatos
     Set miRsAux = New ADODB.Recordset
 Dim IT As ListItem
-Dim Sql As String
+Dim SQL As String
 
 Dim vHora As Integer
 
@@ -230,7 +236,7 @@ Dim Minutos As Integer
 Dim HI As Date
 Dim HF As Date
 Dim HIAustada As Date
-Dim difer As Currency
+Dim Difer As Currency
 Dim Horas  As Currency
 Dim Ajustadas As Currency
 
@@ -243,32 +249,32 @@ Dim InicioHoras As Byte
     ListView1.ListItems.Clear
     InicioHoras = 7
 
-    Sql = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
-    conn.Execute Sql
+    SQL = "Delete from tmpCombinada where codusu = " & vUsu.Codigo
+    conn.Execute SQL
     Set vH = New CHorarios
     '''Sql = "Select entradafichajes.*,nomtrabajador from entradafichajes,trabajadores where entradafichajes.idtrabajador =trabajadores.idtrabajador "
-    Sql = "select entradafichajes.idtrabajador,nomtrabajador,control,seccion from entradafichajes,trabajadores"
-    Sql = Sql & " where trabajadores.idtrabajador=entradafichajes.idtrabajador and  fecha=" & DBSet(Fecha, "F")
-    Sql = Sql & " group by 1 order by "
+    SQL = "select entradafichajes.idtrabajador,nomtrabajador,control,seccion from entradafichajes,trabajadores"
+    SQL = SQL & " where trabajadores.idtrabajador=entradafichajes.idtrabajador and  fecha=" & DBSet(Fecha, "F")
+    SQL = SQL & " group by 1 order by "
     If Me.Option1(0).Value Then
-        Sql = Sql & " seccion,idtrabajador"
+        SQL = SQL & " seccion,idtrabajador"
     Else
-        Sql = Sql & " idtrabajador"
+        SQL = SQL & " idtrabajador"
     End If
     
     
     Set RT = New ADODB.Recordset
     Set miRsAux = New ADODB.Recordset
     
-    RT.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RT.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RT.EOF
         
-        Sql = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
-        Sql = Sql & ",Control,seccion,nomtrabajador from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
-        Sql = Sql & " AND fecha ='" & Format(Fecha, FormatoFecha) & "' and entradafichajes.idtrabajador=" & RT!idTrabajador & " ORDER BY hora"
+        SQL = "select entradafichajes.idtrabajador,fecha,hour(hora) lahora,minute(hora) minutos,second(hora) segundos "
+        SQL = SQL & ",Control,seccion,nomtrabajador from entradafichajes inner join trabajadores t on t.idtrabajador=entradafichajes.idtrabajador"
+        SQL = SQL & " AND fecha ='" & Format(Fecha, FormatoFecha) & "' and entradafichajes.idtrabajador=" & RT!idTrabajador & " ORDER BY hora"
         
        
-        miRsAux.Open Sql, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        miRsAux.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
         
     
@@ -291,13 +297,13 @@ Dim InicioHoras As Byte
           
         If PuedeQuitarParadas Then
              'Veamos el horario para el trabajador, dia
-              cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(miRsAux!Fecha, "F") & " and idtrabajador"
-              Sql = "trabajadores.idcal"
-              cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", cad, CStr(miRsAux!idTrabajador), "N", Sql)
-              If Val(cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
+              Cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(miRsAux!Fecha, "F") & " and idtrabajador"
+              SQL = "trabajadores.idcal"
+              Cad = DevuelveDesdeBD("idhorario", "calendariol,trabajadores", Cad, CStr(miRsAux!idTrabajador), "N", SQL)
+              If Val(Cad) = 0 Then Err.Raise 513, , "Error obteniendo horario trabajador: " & miRsAux!idTrabajador
               
-              If Val(cad) <> vH.IdHorario Then
-                  If vH.Leer(CInt(cad), miRsAux!Fecha, CInt(Sql)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & cad
+              If Val(Cad) <> vH.IdHorario Then
+                  If vH.Leer(CInt(Cad), miRsAux!Fecha, CInt(SQL)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & Cad
               End If
               
               'Si puede quitar paradas, y el horario lo tiene:
@@ -318,12 +324,12 @@ Dim InicioHoras As Byte
  
         'If It.Text = "0006" Then St op
     
-        Sql = ""
+        SQL = ""
         HF = "0:00:00"
         While Not miRsAux.EOF
         
            
-           If vHora < 16 Then   'solo ionserto 16
+           If vHora < 8 Then   'solo ionserto 8
                    
                    
                    
@@ -336,24 +342,24 @@ Dim InicioHoras As Byte
                    i = miRsAux!LaHora - FueraIntervalo_
                End If
                
-               Sql = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-               IT.SubItems(vHora + InicioHoras) = Mid(Sql, 1, 5)
+               SQL = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
+               IT.SubItems(vHora + InicioHoras) = Mid(SQL, 1, 5)
                If FueraIntervalo_ <> 0 Then IT.ListSubItems(vHora + InicioHoras).ForeColor = vbBlue
                
                If Not Entrada Then
                    HF = Format(i, "00") & ":" & Format(miRsAux!Minutos, "00") & ":" & Format(miRsAux!segundos, "00")
-                   difer = DateDiff("n", HI, HF)
-                   If FueraIntervalo_ > 0 Then difer = difer + 1440
+                   Difer = DateDiff("n", HI, HF)
+                   If FueraIntervalo_ > 0 Then Difer = Difer + 1440
                    
-                   Horas = Horas + difer
+                   Horas = Horas + Difer
            
                    'Ajustada
                    If Minutos > 0 Then
                        HF = HoraRectificada(HF, vEmpresa.AjusteSalida, Minutos)
-                       difer = DateDiff("n", HIAustada, HF)
-                       If FueraIntervalo_ > 0 Then difer = difer + 1440
+                       Difer = DateDiff("n", HIAustada, HF)
+                       If FueraIntervalo_ > 0 Then Difer = Difer + 1440
                    End If
-                   Ajustadas = Ajustadas + difer
+                   Ajustadas = Ajustadas + Difer
                        
                
                
@@ -404,18 +410,18 @@ Dim InicioHoras As Byte
         
         
         'Horas calculadas y ajustadas, y paradas
-        Sql = " "
+        SQL = " "
         vHora = vHora + InicioHoras
         For i = vHora To ListView1.ColumnHeaders.Count - 1
-            IT.SubItems(i) = Sql
+            IT.SubItems(i) = SQL
         Next
         
         
         If Not Entrada Then
             
-            IT.SubItems(3) = Sql
-            IT.SubItems(4) = Sql
-            IT.SubItems(5) = Sql
+            IT.SubItems(3) = SQL
+            IT.SubItems(4) = SQL
+            IT.SubItems(5) = SQL
             IT.Tag = 0
         Else
             IT.Tag = 1
@@ -456,33 +462,36 @@ Private Sub ListView1_DblClick()
 Dim HorasP As Currency
 Dim Hor As Currency
 Dim Par As Currency
-    cad = ""
+
+    If Not Modificar Then Exit Sub
+
+    Cad = ""
     CadenaDesdeOtroForm = ""
     For i = 1 To ListView1.ListItems.Count
         If ListView1.ListItems(i).Selected Then
-            cad = cad & "X"
+            Cad = Cad & "X"
             CadenaDesdeOtroForm = CadenaDesdeOtroForm & Replace(ListView1.ListItems(i).SubItems(1), "|", "") & vbCrLf
             NumRegElim = i   'me guardo cua les el itm a modificar
         End If
     Next
         
     
-    If cad = "" Then
+    If Cad = "" Then
         MsgBox "Seleccione trabajadore(s)", vbExclamation
     Else
         FrmVarios.Opcion = 6
         'Parametros frmviarios
         'UNOoMAS|HT|HP|trabajadores
-        If Len(cad) = 1 Then
+        If Len(Cad) = 1 Then
             'Un solo trabajador
-           cad = "1|" & ListView1.ListItems(NumRegElim).SubItems(4) & "|" & ListView1.ListItems(NumRegElim).SubItems(5) & "|"
+           Cad = "1|" & ListView1.ListItems(NumRegElim).SubItems(4) & "|" & ListView1.ListItems(NumRegElim).SubItems(5) & "|"
         Else
-           cad = Len(cad)
-            cad = cad & "||" & ListView1.ListItems(NumRegElim).SubItems(5) & "|"  'Pondra los del ultimo seleccionado
+           Cad = Len(Cad)
+            Cad = Cad & "||" & ListView1.ListItems(NumRegElim).SubItems(5) & "|"  'Pondra los del ultimo seleccionado
         End If
-        cad = cad & CadenaDesdeOtroForm & "|"
+        Cad = Cad & CadenaDesdeOtroForm & "|"
         CadenaDesdeOtroForm = ""
-        FrmVarios.Parametros = cad
+        FrmVarios.Parametros = Cad
         FrmVarios.Show vbModal
         
         If CadenaDesdeOtroForm <> "" Then

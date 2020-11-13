@@ -125,6 +125,12 @@ Private mvarNominaConEstructurales As Boolean  '
 
 
 
+
+
+
+
+
+
 Private SQL As String  'Para la sentencia
 Private Mens As String    'Para los mensajes
 Private RS As ADODB.Recordset 'Para la base de datos
@@ -811,6 +817,7 @@ End Property
 
 
 
+
 '**********************************************************************************************
 ' Dias acabalgados.
 ' Ejemplo.  Empieza a las 22:30  del dia 17  y acaba a las 06:00 del segundo
@@ -1071,7 +1078,17 @@ eF:
 End Sub
 
 
+Public Sub ActualizarDatosReloj(Datos As String)
+    On Error GoTo eAC
+    If vEmpresa.Reloj = vbBiostarXpass Then
+    
+        
+    End If
+    
+eAC:
+    If Err.Number <> 0 Then MuestraError Err.Number, , Err.Description
 
+End Sub
 
 
 
@@ -1155,3 +1172,4 @@ End Sub
 Private Sub Class_Terminate()
     Set RS = Nothing
 End Sub
+

@@ -166,7 +166,7 @@ Begin VB.Form frmPpal
       _ExtentY        =   847
       _Version        =   393216
    End
-   Begin MSComctlLib.ImageList ImageListRev 
+   Begin MSComctlLib.ImageList ImageListReloj 
       Left            =   5880
       Top             =   2760
       _ExtentX        =   1005

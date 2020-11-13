@@ -2,36 +2,47 @@ VERSION 5.00
 Object = "{67397AA1-7FB1-11D0-B148-00A0C922E820}#6.0#0"; "MSADODC.OCX"
 Object = "{CDE57A40-8B86-11D0-B3C6-00A0C90AEA82}#1.0#0"; "MSDATGRD.OCX"
 Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
-Begin VB.Form frmHorasProcesadas 
+Begin VB.Form frmHorasProcesadas2 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Horas procesadas"
    ClientHeight    =   7485
    ClientLeft      =   45
    ClientTop       =   330
-   ClientWidth     =   12240
+   ClientWidth     =   13725
    Icon            =   "frmHorasProcesadas.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   7485
-   ScaleWidth      =   12240
+   ScaleWidth      =   13725
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ComboBox Combo1 
+      Height          =   315
+      Index           =   1
+      Left            =   6960
+      Style           =   2  'Dropdown List
+      TabIndex        =   3
+      Tag             =   "Area|N|N|||jornadassemanalesalz|codarea||S|"
+      Top             =   5400
+      Width           =   1215
+   End
    Begin VB.CommandButton cmdTra 
       Caption         =   "+"
       Height          =   255
       Left            =   1080
-      TabIndex        =   16
+      TabIndex        =   17
       Top             =   4920
       Visible         =   0   'False
       Width           =   135
    End
    Begin VB.ComboBox Combo1 
       Height          =   315
+      Index           =   0
       Left            =   6000
-      TabIndex        =   3
+      Style           =   2  'Dropdown List
+      TabIndex        =   4
       Tag             =   "Empresa|N|N|||jornadassemanalesalz|ParaEmpresa||S|"
-      Text            =   "Combo1"
       Top             =   4920
       Width           =   975
    End
@@ -42,7 +53,7 @@ Begin VB.Form frmHorasProcesadas
       Height          =   285
       Index           =   2
       Left            =   4080
-      TabIndex        =   15
+      TabIndex        =   16
       Text            =   "Text2"
       Top             =   4920
       Width           =   1575
@@ -54,7 +65,7 @@ Begin VB.Form frmHorasProcesadas
       Height          =   285
       Index           =   0
       Left            =   1200
-      TabIndex        =   14
+      TabIndex        =   15
       Text            =   "Text2"
       Top             =   4920
       Width           =   1215
@@ -65,8 +76,8 @@ Begin VB.Form frmHorasProcesadas
       Height          =   290
       Index           =   4
       Left            =   8400
-      TabIndex        =   5
-      Tag             =   "laborable|T|S|||jornadassemanalesalz|laborable|||"
+      TabIndex        =   6
+      Tag             =   "laborable|T|S|||jornadassemanalesalz|ajuste|||"
       Top             =   4920
       Width           =   795
    End
@@ -76,7 +87,7 @@ Begin VB.Form frmHorasProcesadas
       Height          =   290
       Index           =   3
       Left            =   6480
-      TabIndex        =   4
+      TabIndex        =   5
       Tag             =   "Horas|N|N|||jornadassemanalesalz|horastrabajadas|#,##0.00||"
       Top             =   4920
       Width           =   1275
@@ -97,7 +108,7 @@ Begin VB.Form frmHorasProcesadas
       Caption         =   "&Aceptar"
       Height          =   375
       Left            =   9840
-      TabIndex        =   6
+      TabIndex        =   7
       Top             =   6960
       Visible         =   0   'False
       Width           =   1035
@@ -107,7 +118,7 @@ Begin VB.Form frmHorasProcesadas
       Caption         =   "&Cancelar"
       Height          =   375
       Left            =   11040
-      TabIndex        =   7
+      TabIndex        =   8
       Top             =   6960
       Visible         =   0   'False
       Width           =   1095
@@ -140,10 +151,10 @@ Begin VB.Form frmHorasProcesadas
       Bindings        =   "frmHorasProcesadas.frx":000C
       Height          =   6195
       Left            =   240
-      TabIndex        =   11
+      TabIndex        =   12
       Top             =   540
-      Width           =   11805
-      _ExtentX        =   20823
+      Width           =   13245
+      _ExtentX        =   23363
       _ExtentY        =   10927
       _Version        =   393216
       AllowUpdate     =   0   'False
@@ -210,7 +221,7 @@ Begin VB.Form frmHorasProcesadas
       Caption         =   "&Regresar"
       Height          =   375
       Left            =   11040
-      TabIndex        =   10
+      TabIndex        =   11
       Top             =   6960
       Visible         =   0   'False
       Width           =   1095
@@ -219,7 +230,7 @@ Begin VB.Form frmHorasProcesadas
       Height          =   555
       Index           =   1
       Left            =   120
-      TabIndex        =   8
+      TabIndex        =   9
       Top             =   6840
       Width           =   2385
       Begin VB.Label lblIndicador 
@@ -236,7 +247,7 @@ Begin VB.Form frmHorasProcesadas
          EndProperty
          Height          =   255
          Left            =   40
-         TabIndex        =   9
+         TabIndex        =   10
          Top             =   240
          Width           =   2295
       End
@@ -292,10 +303,10 @@ Begin VB.Form frmHorasProcesadas
       Align           =   1  'Align Top
       Height          =   360
       Left            =   0
-      TabIndex        =   12
+      TabIndex        =   13
       Top             =   0
-      Width           =   12240
-      _ExtentX        =   21590
+      Width           =   13725
+      _ExtentX        =   24209
       _ExtentY        =   635
       ButtonWidth     =   609
       ButtonHeight    =   582
@@ -354,7 +365,7 @@ Begin VB.Form frmHorasProcesadas
          Caption         =   "Vista previa"
          Height          =   195
          Left            =   8760
-         TabIndex        =   13
+         TabIndex        =   14
          Top             =   120
          Visible         =   0   'False
          Width           =   1215
@@ -393,41 +404,31 @@ Begin VB.Form frmHorasProcesadas
          Shortcut        =   ^S
       End
    End
+   Begin VB.Menu mnFiltro 
+      Caption         =   "Filtro"
+      Begin VB.Menu mnFIltro1 
+         Caption         =   "Selcccionar fecha"
+         Index           =   0
+      End
+      Begin VB.Menu mnFIltro1 
+         Caption         =   "Ultimo dia procesado"
+         Index           =   1
+      End
+      Begin VB.Menu mnFIltro1 
+         Caption         =   "Utlima semana procesada"
+         Index           =   2
+      End
+      Begin VB.Menu mnFIltro1 
+         Caption         =   "Sin filtro"
+         Index           =   3
+      End
+   End
 End
-Attribute VB_Name = "frmHorasProcesadas"
+Attribute VB_Name = "frmHorasProcesadas2"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-' +-+-+-+-+-+-+-+-+-+-+-+-+
-' +-+- Autor: LAURA +-+-+-+
-' +-+- Fecha: 03/03/06 +-+-
-' +-+-+-+-+-+-+-+-+-+-+-+-+
-
-' **************** PER A QUE FUNCIONE EN UN ATRE MANTENIMENT ********************
-' 0. Posar-li l'atribut Datasource a "adodc1" del Datagrid1. Canviar el Caption
-'    del formulari
-' 1. Canviar els TAGs i els Maxlength de TextAux(0) i TextAux(1)
-' 2. En PonerModo(vModo) repasar els indexs del botons, per si es canvien
-' 3. En la funció BotonAnyadir() canviar la taula i el camp per a SugerirCodigoSiguienteStr
-' 4. En la funció BotonBuscar() canviar el nom de la clau primaria
-' 5. En la funció BotonEliminar() canviar la pregunta, les descripcions de la
-'    variable SQL i el contingut del DELETE
-' 6. En la funció PonerLongCampos() posar els camps als que volem canviar el MaxLength quan busquem
-' 7. En Form_Load() repasar la barra d'iconos (per si es vol canviar algún) i
-'    canviar la consulta per a vore tots els registres
-' 8. En Toolbar1_ButtonClick repasar els indexs de cada botó per a que corresponguen
-' 9. En la funció CargaGrid canviar l'ORDER BY (normalment per la clau primaria);
-'    canviar ademés els noms dels camps, el format i si fa falta la cantitat;
-'    repasar els index dels botons modificar i eliminar.
-'    NOTA: si en Form_load ya li he posat clausula WHERE, canviar el `WHERE` de
-'    `SQL = CadenaConsulta & " WHERE " & vSQL` per un `AND`
-' 10. En txtAux_LostFocus canviar el mensage i el format del camp
-' 11. En la funció DatosOk() canviar els arguments de DevuelveDesdeBD i el mensage
-'    en cas d'error
-' 12. En la funció SepuedeBorrar() canviar les comprovacions per a vore si es pot
-'    borrar el registre
-' ********************************************************************************
 
 Option Explicit
 
@@ -435,10 +436,15 @@ Public DatosADevolverBusqueda As String    'Tendra el nº de text que quiere que 
 Public Event DatoSeleccionado(CadenaSeleccion As String)
 Private WithEvents frmB As frmBuscaGrid
 Attribute frmB.VB_VarHelpID = -1
+Private WithEvents frmc As frmCal
+Attribute frmc.VB_VarHelpID = -1
 
 'Private CadenaConsulta As String
 Private cadSeleccion As String
 Private CadB As String
+
+Dim CadB_Guardada As String
+
 
 Dim Modo As Byte
 '----------- MODOS --------------------------------
@@ -452,9 +458,13 @@ Dim Modo As Byte
 Dim PrimeraVez As Boolean
 
 
+Dim Filtro As Integer  '0 Fecha
+Dim NumeroSubEmpresa As Integer
+Dim NomSubEmpresas As String
+
 Private Sub PonerModo(vModo)
 Dim B As Boolean
-Dim i As Byte
+Dim I As Byte
 
     Modo = vModo
     
@@ -467,21 +477,23 @@ Dim i As Byte
     
     
     
-    For i = 0 To Me.txtAux.Count - 1
-        txtAux(i).Visible = Not B
-        If i = 0 Or i = 2 Then Text2(i).Visible = Not B
+    For I = 0 To Me.txtAux.Count - 1
+        txtAux(I).Visible = Not B
+        If I = 0 Or I = 2 Then Text2(I).Visible = Not B
         
         If Not B Then
-            If i < 3 Then
-                BloquearTxt txtAux(i), Modo = 4
+            If I < 3 Then
+                BloquearTxt txtAux(I), Modo = 4
             Else
-                BloquearTxt txtAux(i), B
+                BloquearTxt txtAux(I), B
             End If
         End If
     Next
-    Combo1.Visible = Not B
+    Combo1(0).Visible = Not B
+    Combo1(1).Visible = Not B
     
-    If Not B Then Combo1.Enabled = Modo = 3 Or Modo = 1
+    If Not B Then Combo1(0).Enabled = Modo = 3 Or Modo = 1
+    If Not B Then Combo1(1).Enabled = Modo = 3 Or Modo = 1
     
     
     
@@ -565,11 +577,20 @@ Dim anc As Single
     'txtAux(0).Text = NumF
     'FormateaCampo txtAux(0)
     txtAux(1).Text = ""
-    Combo1.ListIndex = 0
+    Combo1(0).ListIndex = 0
+    Combo1(1).ListIndex = IIf(vEmpresa.QueEmpresa = vbAlzira, 1, 0)
 
     LLamaLineas anc, 3
 
-   
+    'AJUSTE
+    '       0.- Sin ajustar
+    '       1.- Se ajusto en proceso calculo de horas
+    '       2.- Se creo a mano
+    '       3.- Se modifico la que  estaba sin ajustar en proc horas
+    '       4.- "            " del proceso de calculo de horas
+    '       5.- "               la creada a mano
+    '       7: TotalMenteManual Se ha cambiado sin respetar sumatorios
+    txtAux(4).Text = "2"
     PonerFoco txtAux(0)
    
 End Sub
@@ -588,14 +609,19 @@ Private Sub BotonBuscar()
     Limpiar Me
 
     LLamaLineas DataGrid1.Top + 206, 1
+    Me.Combo1(0).ListIndex = -1
+    Me.Combo1(1).ListIndex = -1
     PonerFoco txtAux(0)
 End Sub
 
 
 Private Sub BotonModificar()
     Dim anc As Single
-    Dim i As Integer
+    Dim I As Integer
 
+
+    On Error GoTo eBotonModificar
+    
     If adodc1.Recordset.EOF Then Exit Sub
     If adodc1.Recordset.RecordCount < 1 Then Exit Sub
 
@@ -603,8 +629,8 @@ Private Sub BotonModificar()
 
 
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
-        i = DataGrid1.Bookmark - DataGrid1.FirstRow
-        DataGrid1.Scroll 0, i
+        I = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, I
         DataGrid1.Refresh
     End If
 
@@ -622,10 +648,20 @@ Private Sub BotonModificar()
     txtAux(2).Text = DataGrid1.Columns(3).Text
     Text2(2).Text = DataGrid1.Columns(4).Text
     
-    Combo1.ListIndex = 0
+    Combo1(0).ListIndex = -1
+    I = Val(adodc1.Recordset!paraempresa)
+    PosicionarCombo Combo1(0), I
+    If Combo1(0).ListIndex = -1 Then Err.Raise 513, , "Error situando combo Empresa"
     
-    txtAux(3).Text = DataGrid1.Columns(6).Text
-    txtAux(4).Text = DataGrid1.Columns(7).Text
+    Combo1(1).ListIndex = -1
+    I = Val(adodc1.Recordset!codarea)
+    PosicionarCombo Combo1(1), I
+    If Combo1(1).ListIndex = -1 Then Err.Raise 513, , "Error situando combo ALMACEN"
+    
+    
+    I = 7
+    txtAux(3).Text = DataGrid1.Columns(I).Text
+    txtAux(4).Text = DataGrid1.Columns(I + 1).Text
     
 
     
@@ -633,6 +669,12 @@ Private Sub BotonModificar()
 
     'Como es modificar
     PonerFoco txtAux(3)
+    
+eBotonModificar:
+    If Err.Number <> 0 Then
+        MuestraError Err.Number, , Err.Description
+        Me.cmdAceptar.Enabled = False
+    End If
     Screen.MousePointer = vbDefault
 End Sub
 
@@ -644,7 +686,8 @@ Private Sub LLamaLineas(alto As Single, xModo As Byte)
     
     'Fijamos el ancho
     cmdTra.Top = alto
-    Combo1.Top = alto
+    Combo1(0).Top = alto
+    Combo1(1).Top = alto
     txtAux(0).Top = alto
     txtAux(1).Top = alto
     txtAux(2).Top = alto
@@ -677,6 +720,7 @@ Dim SQL As String
     SQL = SQL & vbCrLf & "Nombre: " & adodc1.Recordset.Fields(1)
     SQL = SQL & vbCrLf & "Dia: " & adodc1.Recordset.Fields(2)
     SQL = SQL & vbCrLf & "Horas " & adodc1.Recordset.Fields(4) & ": " & adodc1.Recordset.Fields(6)
+    SQL = SQL & vbCrLf & "Area: " & adodc1.Recordset.Fields(6)
     If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
         NumRegElim = adodc1.Recordset.AbsolutePosition
@@ -684,11 +728,12 @@ Dim SQL As String
       
         SQL = "DELETE FROM jornadassemanalesalz WHERE fecha =" & DBSet(adodc1.Recordset!Fecha, "F")
         SQL = SQL & " AND tipohoras  = " & adodc1.Recordset!TipoHoras
-        If vEmpresa.QueEmpresa = 2 Then
-            Err.Raise 513, "NO puede eliminar "
+        If vEmpresa.QueEmpresa = vbAlzira Then
+            Err.Raise 513, , "NO puede eliminar "
         Else
             SQL = SQL & " AND paraempresa= 0 "
         End If
+        SQL = SQL & " AND codarea=  " & adodc1.Recordset!codarea
         SQL = SQL & " AND idTrabajador =" & adodc1.Recordset!idTrabajador
         
         
@@ -724,14 +769,15 @@ End Sub
 
 
 Private Sub cmdAceptar_Click()
-Dim i As Long
+Dim I As Long
 
     Select Case Modo
         Case 3 'INSERTAR
             If DatosOk Then
-                txtAux(4).Text = "0"
+                
                 If InsertarDesdeForm(Me) Then
-                    CadB = "fecha = " & DBSet(Me.txtAux(1).Text, "F")
+                    
+                    CadB = CadB_Guardada
                     CargaGrid2 True, CadB
                     CadB = txtAux(1).Text
                     BotonAnyadir
@@ -743,14 +789,14 @@ Dim i As Long
             If DatosOk Then
                 If ModificaDesdeFormulario(Me) Then
                     TerminaBloquear
-                    i = adodc1.Recordset.Fields(0)
+                    I = adodc1.Recordset.Fields(0)
                     PonerModo 2
                     CadB = adodc1.Recordset.Source
                     
                         CargaGrid2 False, CadB
                         lblIndicador.Caption = "" & PonerContRegistros(Me.adodc1)
                     
-                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & i)
+                    adodc1.Recordset.Find (adodc1.Recordset.Fields(0).Name & " =" & I)
                 End If
            End If
            
@@ -791,8 +837,8 @@ End Sub
 
 
 Private Sub cmdRegresar_Click()
-Dim cad As String
-Dim i As Integer
+Dim Cad As String
+Dim I As Integer
 Dim J As Integer
 Dim Aux As String
 
@@ -800,18 +846,18 @@ Dim Aux As String
         MsgBox "Ningún registro devuelto.", vbExclamation
         Exit Sub
     End If
-    cad = ""
-    i = 0
+    Cad = ""
+    I = 0
     Do
-        J = i + 1
-        i = InStr(J, DatosADevolverBusqueda, "|")
-        If i > 0 Then
-            Aux = Mid(DatosADevolverBusqueda, J, i - J)
+        J = I + 1
+        I = InStr(J, DatosADevolverBusqueda, "|")
+        If I > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, I - J)
             J = Val(Aux)
-            cad = cad & adodc1.Recordset.Fields(J) & "|"
+            Cad = Cad & adodc1.Recordset.Fields(J) & "|"
         End If
-    Loop Until i = 0
-    RaiseEvent DatoSeleccionado(cad)
+    Loop Until I = 0
+    RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
 
@@ -839,8 +885,8 @@ Private Sub cmdTra_Click()
     End If
 End Sub
 
-Private Sub Combo1_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
+    KeyPress KeyAscii
 End Sub
 
 Private Sub DataGrid1_DblClick()
@@ -853,13 +899,22 @@ Dim F1 As Date
             If Not adodc1.Recordset.EOF Then
             
                 If vEmpresa.QueEmpresa = 2 Then
-                    'Cambio de horas entre alzira y fruxeresa
+                    'Cambio de horas entre alzira y fruxeresa-motilla
             
+                    
+
+            
+            
+                    frmAlzModificarHorasEmpresa.NombreAreasSubempresa = NomSubEmpresas
+                    frmAlzModificarHorasEmpresa.NumeroTotalAreasSubempresa = NumeroSubEmpresa
                     frmAlzModificarHorasEmpresa.idTrabajador = adodc1.Recordset!idTrabajador
                     frmAlzModificarHorasEmpresa.Fecha = adodc1.Recordset!Fecha
                     frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!TipoHoras
-                    frmAlzModificarHorasEmpresa.Label1(0).Caption = adodc1.Recordset!nomtrabajador
-                    frmAlzModificarHorasEmpresa.Label1(3).Caption = adodc1.Recordset!Desctipohora
+                    frmAlzModificarHorasEmpresa.AlmacenArea = adodc1.Recordset!codarea
+                    
+                    frmAlzModificarHorasEmpresa.lblNombre = adodc1.Recordset!nomtrabajador
+                    frmAlzModificarHorasEmpresa.lblTipoHora(0).Caption = adodc1.Recordset!Desctipohora
+                    frmAlzModificarHorasEmpresa.lblTipoHora(1).Caption = adodc1.Recordset!Area  'del area
                     frmAlzModificarHorasEmpresa.Show vbModal
                           
                     If CadenaDesdeOtroForm <> "" Then
@@ -921,7 +976,7 @@ Dim F1 As Date
 End Sub
 
 Private Sub DataGrid1_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub DataGrid1_RowColChange(LastRow As Variant, ByVal LastCol As Integer)
@@ -940,21 +995,41 @@ Private Sub Form_Activate()
     If PrimeraVez Then
         PrimeraVez = False
         
+        Screen.MousePointer = vbHourglass
+        Set miRsAux = New ADODB.Recordset
+        NumeroSubEmpresa = 0
+        NomSubEmpresas = ""
+        Set miRsAux = New ADODB.Recordset
+        miRsAux.Open "Select idSubEmr , NomSubEmpre    FROM areasubempresa", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        While Not miRsAux.EOF
+            NumeroSubEmpresa = NumeroSubEmpresa + 1
+            NomSubEmpresas = NomSubEmpresas & Format(miRsAux!idSubEmr, "0000") & miRsAux!NomSubEmpre & "|"
+            miRsAux.MoveNext
+        Wend
+        miRsAux.Close
+        Set miRsAux = Nothing
+'
+'        CadB = DBSet(Now, "F")
+'        CadB = "fecha < " & CadB & " AND 1"
+'        CadB = DevuelveDesdeBD("max(fecha)", "jornadassemanalesalz", CadB, "1")
+'        If CadB <> "" Then
+'            Modo = 1
+'            txtAux(1).Text = CadB
+'            cmdAceptar_Click
+'        Else
+'            PonerModo 0
+'        End If
         
-        
-        CadB = DBSet(Now, "F")
-        CadB = "fecha < " & CadB & " AND 1"
-        CadB = DevuelveDesdeBD("max(fecha)", "jornadassemanalesalz", CadB, "1")
-        If CadB <> "" Then
-            Modo = 1
-            txtAux(1).Text = CadB
-            cmdAceptar_Click
-        Else
+        mnFIltro1_Click 1
+        If Me.adodc1.Recordset.EOF Then
             PonerModo 0
+        Else
+            PonerModo 2
         End If
         
-
+        
     End If
+    Screen.MousePointer = vbDefault
 End Sub
 
 Private Sub Form_Load()
@@ -977,18 +1052,16 @@ Private Sub Form_Load()
         .Buttons(12).Image = 11  'Salir
     End With
 
-    Combo1.Clear
-    If vEmpresa.QueEmpresa = 2 Then
-        Combo1.AddItem "Alzicoop"
-        Combo1.ItemData(Combo1.NewIndex) = 0
-        Combo1.AddItem "Fruxeresa"
-        Combo1.ItemData(Combo1.NewIndex) = 1
-    Else
-        Combo1.AddItem Mid(vEmpresa.NomEmpresa, 1, 15)
-        Combo1.ItemData(Combo1.NewIndex) = 0
-    End If
+    
+    CadB = "Select idSubEmr AS id,NomSubEmpre as descripcion FROM areasubempresa "
+    CargaComboTabla CadB, Combo1(0), False
+    
+    
+    CadB = "Select codarea as id, descripcion FROM areas  "
+    CargaComboTabla CadB, Combo1(1), False
+    Filtro = 3
     CadB = ""
-    CargaGrid2 True, "TipoHoras = -1"
+    CargaGrid2 True, " false "
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -1001,12 +1074,77 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
     CadB = CadenaDevuelta
 End Sub
 
+Private Sub frmc_Selec(vFecha As Date)
+    CadB = vFecha
+End Sub
+
 Private Sub mnBuscar_Click()
     BotonBuscar
 End Sub
 
 Private Sub mnEliminar_Click()
 '    BotonEliminar
+End Sub
+
+Private Sub mnFIltro1_Click(Index As Integer)
+Dim I As Integer
+Dim C As String
+Dim F As Date
+Dim F2 As Date
+
+    I = 0
+    If Modo = 2 Then I = 1
+    If Modo = 0 Then I = 1
+
+    If I = 0 Then Exit Sub
+
+    For I = 0 To mnFIltro1.Count - 1
+        mnFIltro1(I).Checked = I = Index
+        
+    Next
+    Me.mnFIltro1(0).Caption = "Fecha"
+    C = ""
+    If Index <> mnFIltro1.Count - 1 Then C = " *" 'Es el ultimo
+    Me.mnFiltro.Caption = "Filtro " & C
+    
+    Select Case Index
+    Case 0
+           'Pide fecha
+        CadB = ""
+        Set frmc = New frmCal
+   
+        frmc.Left = Me.Left + 1200
+        frmc.Top = Me.Top
+        frmc.NovaData = Now
+        frmc.Show vbModal
+        Set frmc = Nothing
+        If CadB = "" Then CadB = Now
+             
+        mnFIltro1(Index).Tag = DBSet(CadB, "F")
+        mnFIltro1(Index).Caption = "Fecha " & mnFIltro1(Index).Tag
+        CadB = ""
+    Case 1, 2
+        CadB = DevuelveDesdeBD("max(fecha)", "jornadassemanalesalz", "1", "1")
+        If CadB = "" Then CadB = Now
+        F = CDate(CadB)
+        CadB = ""
+        F2 = F
+        
+        If Index = 2 Then
+            I = Weekday(F, vbMonday)
+            I = I - 1
+            F2 = DateAdd("d", -I, F)
+            mnFIltro1(Index).Tag = " between " & DBSet(F2, "F") & " AND " & DBSet(F, "F")
+        
+        Else
+            mnFIltro1(Index).Tag = DBSet(F, "F")
+        End If
+        
+        CadB = ""
+        
+    End Select
+    Filtro = Index
+    CargaGrid2 True, ""
 End Sub
 
 Private Sub mnModificar_Click()
@@ -1057,15 +1195,16 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
 End Sub
 
 
-Private Sub CargaGrid2(MontaElSelect As Boolean, vSql As String)
+Private Sub CargaGrid2(MontaElSelect As Boolean, vSQL As String)
     Dim SQL As String
     Dim tots As String
     
 '    adodc1.ConnectionString = Conn
+    CadB_Guardada = vSQL
     If MontaElSelect Then
-        SQL = DevuelveSQL(vSql)
+        SQL = DevuelveSQL(vSQL)
     Else
-        SQL = vSql
+        SQL = vSQL
     End If
     
     
@@ -1075,9 +1214,9 @@ Private Sub CargaGrid2(MontaElSelect As Boolean, vSql As String)
     'tots = "S|txtAux(0)|T|Código|700|;S|txtAux(1)|T|Nombre|3080|;S|txtAux(2)|T|Pob.|800|;S|btnBuscar(0)|B||0|;S|txtAux2(2)|T|Población|2200|;"
     
     tots = "S|txtAux(0)|T|Trab|850|;S|Text2(0)|T|Nombre|3500|;S|txtAux(1)|T|Fecha|1150|;S|txtAux(2)|T|Tipo|900|;"
-    tots = tots & "S|Text2(2)|T|Horas|1500|;S|Combo1|C|Tipo|1600|;S|txtAux(3)|T|Horas|900|;S|txtAux(4)|T|Ajuste|500|;"
-    tots = tots & "N|||||;"
-    
+    tots = tots & "S|Text2(2)|T|Horas|1500|;S|Combo1(1)|C|Area|1600|;S|Combo1(0)|C|Empresa|1600|"
+    tots = tots & ";S|txtAux(3)|T|Horas|900|;S|txtAux(4)|T|Ajuste|500|;"
+    tots = tots & "N|||||;N|||||;N|||||;"
     arregla tots, DataGrid1, Me
       
     DataGrid1.Columns(0).Alignment = dbgRight
@@ -1085,18 +1224,31 @@ Private Sub CargaGrid2(MontaElSelect As Boolean, vSql As String)
     Me.cmdTra.Left = Text2(0).Left - 30
 End Sub
 
-Private Sub txtAux_GotFocus(Index As Integer)
+Private Sub txtaux_GotFocus(Index As Integer)
     ConseguirFocoLin txtAux(Index)
 End Sub
 
-Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
+Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
     If Index = 0 And KeyAscii = teclaBuscar Then
         KeyAscii = 0
         cmdTra_Click
     Else
-        Keypress KeyAscii
+        KeyPress KeyAscii
     End If
 End Sub
+
+
+
+    
+    'AJUSTE
+    '       0.- Sin ajustar
+    '       1.- Se ajusto en proceso calculo de horas
+    '       2.- Se creo a mano
+    '       3.- Se modifico la que  estaba sin ajustar en proc horas
+    '       4.- "            " del proceso de calculo de horas
+    '       5.- "               la creada a mano
+    '       7: TotalMenteManual Se ha cambiado sin respetar sumatorios
+
 
 Private Sub txtAux_LostFocus(Index As Integer)
 Dim C As String
@@ -1140,15 +1292,19 @@ Private Function DatosOk() As Boolean
 Dim Datos As String
 Dim B As Boolean
 
+
+    If Modo = 3 Then txtAux(4).Text = "2"
+
     B = CompForm(Me)
     If Not B Then Exit Function
 
     If Modo = 3 Then
         Datos = "idtrabajador =" & txtAux(0).Text & " AND fecha =" & DBSet(txtAux(1).Text, "F")
-        Datos = Datos & " AND tipohoras = " & txtAux(2).Text & " AND ParaEmpresa"
-        Datos = DevuelveDesdeBD("horastrabajadas", "jornadassemanalesalz", Datos, Combo1.ItemData(Combo1.ListIndex))
+        Datos = Datos & " AND tipohoras = " & txtAux(2).Text
+        Datos = Datos & " AND codarea = " & Combo1(1).ItemData(Combo1(1).ListIndex) & " AND paraempresa"
+        Datos = DevuelveDesdeBD("horastrabajadas", "jornadassemanalesalz", Datos, Combo1(0).ItemData(Combo1(0).ListIndex))
         If Datos <> "" Then
-            MsgBox "Ya existe una entrada para trabajador", vbExclamation
+            MsgBox "Ya existe una entrada (Tra-Dia-Emr-Zona-TipoH)", vbExclamation
             B = False
         Else
             B = True
@@ -1169,7 +1325,7 @@ SepuedeBorrar = False
 End Function
 
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1212,18 +1368,53 @@ End Sub
 Private Function DevuelveSQL(SQL As String) As String
 
 
-    DevuelveSQL = "select jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,"
-    If vEmpresa.QueEmpresa = 2 Then
-        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Alzicoop','Fruxeresa')"
-    Else
-        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Externo','')"
-    End If
-    DevuelveSQL = DevuelveSQL & " ,horastrabajadas,Ajuste as ajustadas"
-    DevuelveSQL = DevuelveSQL & ",laborable from jornadassemanalesalz,trabajadores,tiposhora where"
-    DevuelveSQL = DevuelveSQL & " jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador and jornadassemanalesalz.tipohoras = tiposhora.tipohora"
+'    DevuelveSQL = "select jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,"
+'    If vEmpresa.QueEmpresa = 2 Then
+'        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Alzicoop','" & "vEmpresa.SegundaEmpresa" & "')"
+'    Else
+'        DevuelveSQL = DevuelveSQL & " if (paraempresa=1,'Externo','')"
+'    End If
+'    DevuelveSQL = DevuelveSQL & " ,horastrabajadas,Ajuste as ajustadas"
+'    DevuelveSQL = DevuelveSQL & ",laborable from jornadassemanalesalz,trabajadores,tiposhora where"
+'    DevuelveSQL = DevuelveSQL & " jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador and jornadassemanalesalz.tipohoras = tiposhora.tipohora"
+'
+'    'Si cambiamos el WHERE este, hay que tener cuidado que la regresar de editar horas busco el ultimo trozo , hasta aqui
     
-    'Si cambiamos el WHERE este, hay que tener cuidado que la regresar de editar horas busco el ultimo trozo , hasta aqui
+    DevuelveSQL = "SELECT jornadassemanalesalz.idtrabajador,nomtrabajador,fecha,tipohoras,DescTipoHora,areas.descripcion area,NomSubEmpre destino"
+    DevuelveSQL = DevuelveSQL & " ,horastrabajadas,Ajuste as ajustadas,  "
+    DevuelveSQL = DevuelveSQL & " laborable , paraempresa , jornadassemanalesalz.codarea"
+    DevuelveSQL = DevuelveSQL & " FROM jornadassemanalesalz,trabajadores,tiposhora,areasubempresa,areas where jornadassemanalesalz.idtrabajador=trabajadores.idtrabajador"
+    DevuelveSQL = DevuelveSQL & " and jornadassemanalesalz.tipohoras = tiposhora.tipohora"
+    DevuelveSQL = DevuelveSQL & " and jornadassemanalesalz.paraempresa = idSubEmr"
+    DevuelveSQL = DevuelveSQL & " and jornadassemanalesalz.codarea = areas.codarea"
+        
+    
+    
     
     If SQL <> "" Then DevuelveSQL = DevuelveSQL & " AND " & SQL
-    DevuelveSQL = DevuelveSQL & " ORDER BY jornadassemanalesalz.idTrabajador,fecha,tipohoras,paraempresa"
+    
+        
+    DevuelveSQL = DevuelveSQL & CargaSQLFiltro
+    
+    
+    DevuelveSQL = DevuelveSQL & " ORDER BY jornadassemanalesalz.idTrabajador,fecha,tipohoras,areas.codarea,paraempresa"
+End Function
+
+
+
+
+Private Function CargaSQLFiltro() As String
+Dim C As String
+
+    Select Case Filtro
+    Case 0
+        CargaSQLFiltro = " fecha = " & mnFIltro1(Filtro).Tag
+    Case 1
+        CargaSQLFiltro = " fecha = " & mnFIltro1(Filtro).Tag
+    Case 2
+        CargaSQLFiltro = " fecha  " & mnFIltro1(Filtro).Tag
+    Case 3
+            CargaSQLFiltro = " TRUE "
+    End Select
+        CargaSQLFiltro = " AND " & CargaSQLFiltro
 End Function

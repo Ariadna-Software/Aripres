@@ -609,7 +609,7 @@ Dim i As Long
 Dim PrimeraVez As Boolean
 
 Private Sub Acciones(Index As Integer)
-Dim cad As String
+Dim Cad As String
 
     Set frmB = New frmBuscaGrid
     'Ponemos los valores para abrir
@@ -619,11 +619,11 @@ Dim cad As String
     Case 0
           vIndice = 0
         
-          cad = "Codigo|idtrabajador|N||20·"
-          cad = cad & "Nombre|nomtrabajador|T||70·"
+          Cad = "Codigo|idtrabajador|N||20·"
+          Cad = Cad & "Nombre|nomtrabajador|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "Trabajadores"
         
@@ -635,11 +635,11 @@ Dim cad As String
         Exit Sub
     Case 2
   
-          cad = "Codigo|idseccion|N||20·"
-          cad = cad & "Nombre|nombre|T||70·"
+          Cad = "Codigo|idseccion|N||20·"
+          Cad = Cad & "Nombre|nombre|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "Secciones"
         
@@ -647,11 +647,11 @@ Dim cad As String
   
         
     Case 3
-            cad = "Codigo|idCal|N||20·"
-          cad = cad & "Nombre|Descripcion|T||70·"
+            Cad = "Codigo|idCal|N||20·"
+          Cad = Cad & "Nombre|Descripcion|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "calendario"
         
@@ -661,11 +661,11 @@ Dim cad As String
         'Agregar seccion
 
         
-          cad = "Codigo|idcategoria|N||20·"
-          cad = cad & "Nombre|nomCategoria|T||70·"
+          Cad = "Codigo|idcategoria|N||20·"
+          Cad = Cad & "Nombre|nomCategoria|T||70·"
           vIndice = Index
           Set frmB = New frmBuscaGrid
-          frmB.vCampos = cad
+          frmB.vCampos = Cad
           frmB.vDevuelve = "0|"
           frmB.vTabla = "categorias"
         
@@ -848,7 +848,7 @@ Private Sub cmdHacerCambio_Click(Index As Integer)
 End Sub
 
 Private Sub cmdModificar_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 
     If Index = 1 Then
         MenuEnable True
@@ -871,13 +871,13 @@ Dim cad As String
             Exit Sub
         End If
         
-        cad = "Va a modificar los fichajes de los trabajadores seleccionados " & vbCrLf
-        cad = cad & " para el dia : " & Text3(2).Text & vbCrLf
-        cad = cad & " Hora inicio: " & Text3(3).Text & vbCrLf
-        cad = cad & " Hora fin: " & Text3(4).Text & vbCrLf & vbCrLf
-        cad = cad & " Hora MODIFICADA: " & Text3(5).Text & vbCrLf
-        cad = cad & vbCrLf & "¿Desea continuar?"
-        If MsgBox(cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
+        Cad = "Va a modificar los fichajes de los trabajadores seleccionados " & vbCrLf
+        Cad = Cad & " para el dia : " & Text3(2).Text & vbCrLf
+        Cad = Cad & " Hora inicio: " & Text3(3).Text & vbCrLf
+        Cad = Cad & " Hora fin: " & Text3(4).Text & vbCrLf & vbCrLf
+        Cad = Cad & " Hora MODIFICADA: " & Text3(5).Text & vbCrLf
+        Cad = Cad & vbCrLf & "¿Desea continuar?"
+        If MsgBox(Cad, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         'Ahora
         Screen.MousePointer = vbHourglass
             Me.FrameModificarTicaje.Visible = False
@@ -887,22 +887,22 @@ Dim cad As String
             Me.Refresh
             espera 0.2
             Set RS = New ADODB.Recordset
-            cad = "select * from tmpCambioHor"
-            RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-            cad = "UPDATE EntradaFichajes SET HoraReal = '" & Format(Text3(5), "hh:mm") & ":00'"
+            Cad = "select * from tmpCambioHor"
+            RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            Cad = "UPDATE EntradaFichajes SET HoraReal = '" & Format(Text3(5), "hh:mm") & ":00'"
             'Modificacion del 10 / Enero /2005
-            cad = cad & ", Hora = '" & Format(Text3(5), "hh:mm") & ":00'"
+            Cad = Cad & ", Hora = '" & Format(Text3(5), "hh:mm") & ":00'"
             
-            cad = cad & " WHERE HoraReal >= '" & Format(Text3(3), "hh:mm") & ":00'"
-            cad = cad & " AND HoraReal <= '" & Format(Text3(4), "hh:mm") & ":00'"
-            cad = cad & " AND Fecha = '" & Format(Text3(2), FormatoFecha) & "'"
-            cad = cad & " AND IdTrabajador  = "
+            Cad = Cad & " WHERE HoraReal >= '" & Format(Text3(3), "hh:mm") & ":00'"
+            Cad = Cad & " AND HoraReal <= '" & Format(Text3(4), "hh:mm") & ":00'"
+            Cad = Cad & " AND Fecha = '" & Format(Text3(2), FormatoFecha) & "'"
+            Cad = Cad & " AND IdTrabajador  = "
 
             While Not RS.EOF
             
                 Label3.Caption = RS!Trabajador
                 Me.Refresh
-                conn.Execute cad & RS!Trabajador
+                conn.Execute Cad & RS!Trabajador
                 RS.MoveNext
                 
             Wend
@@ -1001,24 +1001,24 @@ End Sub
 
 'INSERTARA LA SECCION, EL HORARIO O LA CATEGORIA
 Private Sub InsertarSeccionHorario(Seccion As Integer)
-Dim cad As String
+Dim Cad As String
 
-    cad = " from Trabajadores,calendario,Categorias where "
-    cad = cad & " Trabajadores.idcal = calendario.idcal AND "
-    cad = cad & " Trabajadores.idCategoria = categorias.idcategoria AND "
+    Cad = " from Trabajadores,calendario,Categorias where "
+    Cad = Cad & " Trabajadores.idcal = calendario.idcal AND "
+    Cad = Cad & " Trabajadores.idCategoria = categorias.idcategoria AND "
     Select Case Seccion
     Case 2
-        cad = cad & "seccion"
+        Cad = Cad & "seccion"
     Case 3
-        cad = cad & "Trabajadores.idcal"
+        Cad = Cad & "Trabajadores.idcal"
     Case Else
-        cad = cad & "Trabajadores.idCategoria"
+        Cad = Cad & "Trabajadores.idCategoria"
     End Select
-    cad = cad & " = " & Devolucion
+    Cad = Cad & " = " & Devolucion
     Set RS = New ADODB.Recordset
     
     'Contador
-    RS.Open "Select count(*) " & cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open "Select count(*) " & Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Total = 0
     If Not RS.EOF Then
         Total = DBLet(RS.Fields(0))
@@ -1030,10 +1030,10 @@ Dim cad As String
         Exit Sub
     End If
     
-    cad = "Select idTrabajador,nomtrabajador,descripcion nomhorario,nomcategoria " & cad
-    cad = cad & " order by idTrabajador"
-    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    cad = ""
+    Cad = "Select idTrabajador,nomtrabajador,descripcion nomhorario,nomcategoria " & Cad
+    Cad = Cad & " order by idTrabajador"
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = ""
     i = 0
     While Not RS.EOF
         If Insertar1trabajador(RS.Fields(0)) Then _
@@ -1049,14 +1049,14 @@ End Sub
 
 
 Private Sub InsertarTrabajador()
-Dim cad As String
+Dim Cad As String
 
-    cad = "Select idTrabajador,nomtrabajador,descripcion,nomcategoria from Trabajadores,Calendario,Categorias where "
-    cad = cad & " Trabajadores.idcal = calendario.idcal AND "
-    cad = cad & " Trabajadores.idCategoria = categorias.idCategoria AND "
-    cad = cad & " idTrabajador = " & Devolucion
+    Cad = "Select idTrabajador,nomtrabajador,descripcion,nomcategoria from Trabajadores,Calendario,Categorias where "
+    Cad = Cad & " Trabajadores.idcal = calendario.idcal AND "
+    Cad = Cad & " Trabajadores.idCategoria = categorias.idCategoria AND "
+    Cad = Cad & " idTrabajador = " & Devolucion
     Set RS = New ADODB.Recordset
-    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not RS.EOF Then
         If Insertar1trabajador(RS.Fields(0)) Then _
             AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
@@ -1384,24 +1384,27 @@ End Sub
 
 Private Function TicadaTrabajador(Trab As String, vReloj As Integer) As Boolean
 Dim Tiene As Boolean
-Dim cad As String
+Dim Cad As String
+Dim IdTerminal As Integer
+
 
     On Error GoTo ETicadaTrabajador
     
     TicadaTrabajador = False
     'Para el trabajador veo si tiene ticadas
-    cad = "Select secuencia from Entradafichajes where  idTrabajador=" & Trab & " AND fecha = " & Text3(0).Tag
-    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Cad = "Select secuencia from Entradafichajes where  idTrabajador=" & Trab & " AND fecha = " & Text3(0).Tag
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If RS.EOF Then
-        cad = ""
+        Cad = ""
     End If
     RS.Close
    
     'Si k tiene ticajes
     'Insertamos el nuestro
-    cad = "insert into entradafichajes (secuencia,idtrabajador,fecha,hora,idinci,horareal,Reloj) VALUES ("
-    cad = cad & Total & "," & Trab & "," & Text3(0).Tag & "," & Text3(1).Tag & ",0," & Text3(1).Tag & "," & vReloj & ")"
-    conn.Execute cad
+    IdTerminal = 0 'Harba que pedirlo en
+    Cad = "insert into entradafichajes (secuencia,idtrabajador,fecha,hora,idinci,horareal,Reloj) VALUES ("
+    Cad = Cad & Total & "," & Trab & "," & Text3(0).Tag & "," & Text3(1).Tag & ",0," & Text3(1).Tag & "," & vReloj & ")"
+    conn.Execute Cad
     Total = Total + 1
     TicadaTrabajador = True
     Exit Function

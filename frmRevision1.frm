@@ -1496,22 +1496,22 @@ End Sub
 
 
 Private Sub MandaBusquedaPrevia(CadB As String)
-Dim cad As String
+Dim Cad As String
 
         'Llamamos a al form
         ' **************** arreglar-ho per a vore lo que es desije ****************
-        cad = ""
-        cad = cad & ParaGrid(Text1(0), 10, "Cód.")
-        cad = cad & ParaGrid(Text1(1), 26, "Nombre")
-        cad = cad & ParaGrid(Text1(2), 32, "1º Apellido")
-        cad = cad & ParaGrid(Text1(3), 32, "2º Apellido")
+        Cad = ""
+        Cad = Cad & ParaGrid(Text1(0), 10, "Cód.")
+        Cad = Cad & ParaGrid(Text1(1), 26, "Nombre")
+        Cad = Cad & ParaGrid(Text1(2), 32, "1º Apellido")
+        Cad = Cad & ParaGrid(Text1(3), 32, "2º Apellido")
         
-        If cad <> "" Then
+        If Cad <> "" Then
             Screen.MousePointer = vbHourglass
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = cad
+            frmB.vCampos = Cad
             'frmB.vTabla = NomTabla
-            frmB.vSql = CadB
+            frmB.vSQL = CadB
 
             '###A mano
             frmB.vDevuelve = "0|1|2|3|"
@@ -1861,7 +1861,7 @@ End Sub
 
 
 Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Command2_Click()
@@ -1926,9 +1926,9 @@ Private Sub Form_Load()
     Me.imgZoom(2).Picture = frmPpal.imgListImages16.ListImages(1).Picture
 
     'Las imagenes
-    Me.ListView1.SmallIcons = frmPpal.ImageListRev
-    Me.ListView2.SmallIcons = frmPpal.ImageListRev
-    Me.ListView3.SmallIcons = frmPpal.ImageListRev
+    Me.ListView1.SmallIcons = frmPpal.ImageListReloj
+    Me.ListView2.SmallIcons = frmPpal.ImageListReloj
+    Me.ListView3.SmallIcons = frmPpal.ImageListReloj
 
     'cargar IMAGE de mail
  '   Me.imgMail(0).Picture = frmPpal.imgListImages16.ListImages(2).Picture
@@ -1959,7 +1959,7 @@ End Sub
 
 Private Sub TratarOrdenacion(Leer As Boolean)
 Dim Traba As Boolean
-Dim i As Integer
+Dim I As Integer
 
     If Leer Then
         
@@ -1971,10 +1971,10 @@ Dim i As Integer
         Traba = Me.mnTrabajador.Checked
         If Traba Then
             If Dir(App.Path & "\Ordtra.dat", vbArchive) = "" Then
-                i = FreeFile
-                Open App.Path & "\Ordtra.dat" For Output As #i
-                Print #i, Now
-                Close #i
+                I = FreeFile
+                Open App.Path & "\Ordtra.dat" For Output As #I
+                Print #I, Now
+                Close #I
                 
             End If
         Else
@@ -2223,7 +2223,7 @@ Dim Carga As Boolean
 End Sub
 
 Private Sub imgZoom_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 Dim LeerHorario As Boolean
 
     If Index = 2 Then
@@ -2246,12 +2246,12 @@ Dim LeerHorario As Boolean
             'Llamamos a al form
             ' **************** arreglar-ho per a vore lo que es desije ****************
             'Cod Diag.|idDiag|N|Formato|10·
-            cad = "Codigo|idtrabajador|N||20·"
-            cad = cad & "Nombre|nomtrabajador|T||60·"
-            cad = cad & "Tarjeta|numtarjeta|N||20·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idtrabajador|N||20·"
+            Cad = Cad & "Nombre|nomtrabajador|T||60·"
+            Cad = Cad & "Tarjeta|numtarjeta|N||20·"
+            frmB.vCampos = Cad
             frmB.vTabla = "trabajadores"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             frmB.vTitulo = "Trabajadores"
@@ -2261,11 +2261,11 @@ Dim LeerHorario As Boolean
             'INCIDENCIAS
             
             'Cod Diag.|idDiag|N|Formato|10·
-            cad = "Codigo|idinci|N||20·"
-            cad = cad & "Descripcion|nominci|T||70·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idinci|N||20·"
+            Cad = Cad & "Descripcion|nominci|T||70·"
+            frmB.vCampos = Cad
             frmB.vTabla = "incidencias"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             
@@ -2276,11 +2276,11 @@ Dim LeerHorario As Boolean
     Case 2
             'HORARIO
     
-            cad = "Codigo|idhorario|N||20·"
-            cad = cad & "Descripcion|NomHorario|T||70·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idhorario|N||20·"
+            Cad = Cad & "Descripcion|NomHorario|T||70·"
+            frmB.vCampos = Cad
             frmB.vTabla = "Horarios"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             
@@ -2437,7 +2437,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
             End Select
         End If
     Else
-        Keypress KeyAscii
+        KeyPress KeyAscii
     End If
 End Sub
 
@@ -2761,7 +2761,7 @@ Private Function SepuedeBorrar() As Boolean
     SepuedeBorrar = True
 End Function
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -2842,10 +2842,10 @@ End Sub
 
 
 Private Sub PosicionarData()
-Dim cad As String, Indicador As String
+Dim Cad As String, Indicador As String
 
-    cad = "(codguiav=" & Text1(0).Text & ")"
-    If SituarData(Me.adodc1, cad, Indicador) Then
+    Cad = "(codguiav=" & Text1(0).Text & ")"
+    If SituarData(Me.adodc1, Cad, Indicador) Then
         PonerModo 2
         lblIndicador.Caption = Indicador
     Else
@@ -2879,39 +2879,39 @@ Private Sub printNou()
 End Sub
 
 Private Sub SeparaValores()
-Dim cad As String
+Dim Cad As String
 
 
-    cad = RecuperaValor(CadenaDesdeOtroForm, 1)
-    If cad = "" Then cad = "01/01/1900"
-    FI = CDate(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 1)
+    If Cad = "" Then Cad = "01/01/1900"
+    FI = CDate(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 2)
-    If cad = "" Then cad = "01/01/2900"
-    FF = CDate(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 2)
+    If Cad = "" Then Cad = "01/01/2900"
+    FF = CDate(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 3)
-    If cad = "" Then cad = "-1"
-    DTra = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 3)
+    If Cad = "" Then Cad = "-1"
+    DTra = Val(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 4)
-    If cad = "" Then cad = "100000000"
-    HTra = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 4)
+    If Cad = "" Then Cad = "100000000"
+    HTra = Val(Cad)
 
-    cad = RecuperaValor(CadenaDesdeOtroForm, 5)
-    If cad = "" Then cad = "-1"
-    DInci = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 5)
+    If Cad = "" Then Cad = "-1"
+    DInci = Val(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 6)
-    If cad = "" Then cad = "32200"
-    HInci = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 6)
+    If Cad = "" Then Cad = "32200"
+    HInci = Val(Cad)
 
 
 
     'Correctos o incorrectos
-    cad = RecuperaValor(CadenaDesdeOtroForm, 7)
-    If Val(cad) > 2 Then cad = "0"
-    CorrectosIncorrectos = CByte(Val(cad))
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 7)
+    If Val(Cad) > 2 Then Cad = "0"
+    CorrectosIncorrectos = CByte(Val(Cad))
     
 End Sub
 
@@ -2986,8 +2986,8 @@ End Sub
 Private Sub CargaDatosMarcajes(SoloIncidenciasGeneradas As Boolean)
 Dim RS As ADODB.Recordset
 Dim IT As ListItem
-Dim i As Integer
-Dim cad As String
+Dim I As Integer
+Dim Cad As String
 Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     Set RS = New ADODB.Recordset
     If Not SoloIncidenciasGeneradas Then
@@ -3006,12 +3006,12 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
                
             Else
                 If RS!LaHora <= 23 Then
-                    i = RS!LaHora
+                    I = RS!LaHora
                 Else
-                    If RS!LaHora > 23 Then i = -24
-                    i = RS!LaHora + i
+                    If RS!LaHora > 23 Then I = -24
+                    I = RS!LaHora + I
                 End If
-                SQL = Format(i, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
+                SQL = Format(I, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             
             End If
             
@@ -3026,20 +3026,19 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
                 SQL = Horas_Quitar24(RS!HoraReal, True)
             Else
             If RS!LaHora <= 23 Then
-                i = RS!lahorar
+                I = RS!lahorar
             Else
-                i = -24
-                i = RS!lahorar + i
+                I = -24
+                I = RS!lahorar + I
             End If
-            SQL = Format(i, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
+            SQL = Format(I, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
             End If
             Set IT = ListView3.ListItems.Add(, , SQL)
             
             If vEmpresa.Reloj2 > 0 Then
-                If DBLet(RS!Reloj, "N") > 0 Then
-                    IT.ToolTipText = "Biostar2"
-                    IT.SmallIcon = 4
-                End If
+                IT.SmallIcon = CargaIconoTerminalesZONA(DBLet(RS!Reloj, "N"), SQL)
+                 IT.ToolTipText = SQL
+                    
             End If
             'COORDENADAS
             IT.SubItems(1) = " "
@@ -3076,7 +3075,7 @@ End Sub
 
 Private Sub CalculaHoras()
 Dim g As Integer
-Dim i As Integer
+Dim I As Integer
 Dim Horas As Single
 Dim v As Single
 Dim FInter As Byte
@@ -3095,26 +3094,26 @@ Horas = 0
 
 
 
-For i = 1 To g
+For I = 1 To g
     
-    If ListView1.ListItems((i * 2)).Tag = 1 Then
+    If ListView1.ListItems((I * 2)).Tag = 1 Then
         FInter = 1
     Else
-        FInter = HoraFueraInterval(ListView1.ListItems((i * 2)).SubItems(2))
+        FInter = HoraFueraInterval(ListView1.ListItems((I * 2)).SubItems(2))
     End If
-    T1 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2)).SubItems(2))
+    T1 = DevuelveValorHora3(FInter, ListView1.ListItems((I * 2)).SubItems(2))
     
-    If ListView1.ListItems((i * 2) - 1).Tag = 1 Then
+    If ListView1.ListItems((I * 2) - 1).Tag = 1 Then
         FInter = 1
     Else
-        FInter = HoraFueraInterval(ListView1.ListItems((i * 2) - 1).SubItems(2))
+        FInter = HoraFueraInterval(ListView1.ListItems((I * 2) - 1).SubItems(2))
     End If
-    T2 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2) - 1).SubItems(2))
+    T2 = DevuelveValorHora3(FInter, ListView1.ListItems((I * 2) - 1).SubItems(2))
     v = T1 - T2
     
     'v = DevuelveValorHora(CDate(ListView1.ListItems((I * 2))) - CDate(ListView1.ListItems((I * 2) - 1)))
     Horas = Horas + v
-Next i
+Next I
 TextHt(0).Text = Round(Horas, 2)
 TextHt(1).Text = DevuelveHora(Horas)
 
@@ -3221,13 +3220,13 @@ End Function
 
 
 Private Sub HacerRevisionMultiple()
-Dim vSql As String
+Dim vSQL As String
 Dim Procesar As Boolean
 Dim Limpiado As Boolean
 Dim N As Integer
 
     Limpiar Me
-    vSql = adodc1.Recordset.Source
+    vSQL = adodc1.Recordset.Source
     adodc1.Recordset.MoveFirst
     Label15.Caption = adodc1.Recordset.AbsolutePosition & " de " & adodc1.Recordset.RecordCount
     Label18.Caption = 0
@@ -3289,7 +3288,7 @@ Dim N As Integer
     Me.Refresh
     espera 1
     
-    adodc1.RecordSource = vSql
+    adodc1.RecordSource = vSQL
     adodc1.Refresh
     Me.lblIndicador.Caption = ""
     If Not adodc1.Recordset.EOF Then
@@ -3304,8 +3303,8 @@ End Sub
 
 
 Private Sub AbrirGeolocalizacion()
-Dim cad As String
-    cad = "https://www.google.com/maps/?q=" & ListView3.SelectedItem.SubItems(1)
-    LanzaVisorMimeDocumento Me.Hwnd, cad
+Dim Cad As String
+    Cad = "https://www.google.com/maps/?q=" & ListView3.SelectedItem.SubItems(1)
+    LanzaVisorMimeDocumento Me.Hwnd, Cad
     
 End Sub

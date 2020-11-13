@@ -91,7 +91,7 @@ Attribute VB_Exposed = False
 Option Explicit
 
 
-Dim cad As String
+Dim Cad As String
 Dim NF As Integer
 
 Dim UtlFecLeidaCarpeta As Date
@@ -101,15 +101,15 @@ Private Sub cmdAjustarReloj_Click()
         
     For NumRegElim = 1 To 2
         'Carpeta 1
-        cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta" & NumRegElim, "relojZK", "1", "1")
-        If cad = "" Then cad = "12/04/1972 15:00:00"
-        UtlFecLeidaCarpeta = CDate(cad)
-        cad = "ULTIMA FECHA/HORA.     Reloj: " & NumRegElim
-        cad = InputBox(cad, "RELOJ " & NumRegElim, CStr(UtlFecLeidaCarpeta))
-        If cad <> "" Then
-            If IsDate(cad) Then
-                cad = "UPDATE relojZK set ultimaFechaLeidaCarpeta" & NumRegElim & "  =" & DBSet(cad, "FH")
-                EjecutaSQL cad
+        Cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta" & NumRegElim, "relojZK", "1", "1")
+        If Cad = "" Then Cad = "12/04/1972 15:00:00"
+        UtlFecLeidaCarpeta = CDate(Cad)
+        Cad = "ULTIMA FECHA/HORA.     Reloj: " & NumRegElim
+        Cad = InputBox(Cad, "RELOJ " & NumRegElim, CStr(UtlFecLeidaCarpeta))
+        If Cad <> "" Then
+            If IsDate(Cad) Then
+                Cad = "UPDATE relojZK set ultimaFechaLeidaCarpeta" & NumRegElim & "  =" & DBSet(Cad, "FH")
+                EjecutaSQL Cad
             Else
                 MsgBox "Fecha incorrecta", vbExclamation
             End If
@@ -157,20 +157,20 @@ Dim B As Boolean
     'Borramos de la temporal en aripres
     conn.Execute "DELETE FROM tmppresencia where codusu =" & vUsu.Codigo
     
-    cad = DevuelveDesdeBD("max(secuencia)", "entradafichajes", "1", "1")
-    NumRegElim = Val(cad) + 1
+    Cad = DevuelveDesdeBD("max(secuencia)", "entradafichajes", "1", "1")
+    NumRegElim = Val(Cad) + 1
     
     'Carpeta 1
-    cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta1", "relojZK", "1", "1")
-    If cad = "" Then cad = "12/04/1972 15:00:00"
-    UtlFecLeidaCarpeta = CDate(cad)
+    Cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta1", "relojZK", "1", "1")
+    If Cad = "" Then Cad = "12/04/1972 15:00:00"
+    UtlFecLeidaCarpeta = CDate(Cad)
     B = LeerDatos(1)
     
     
     'Carpeta 2
-    cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta2", "relojZK", "1", "1")
-    If cad = "" Then cad = "12/04/1972 15:00:00"
-    UtlFecLeidaCarpeta = CDate(cad)
+    Cad = DevuelveDesdeBD("ultimaFechaLeidaCarpeta2", "relojZK", "1", "1")
+    If Cad = "" Then Cad = "12/04/1972 15:00:00"
+    UtlFecLeidaCarpeta = CDate(Cad)
     B = B And LeerDatos(2)
     
  
@@ -232,9 +232,9 @@ Dim NumFich As Long
     LeerDatos = True
     Set cArc = New Collection
     
-    cad = Dir(Carpeta & "\" & vEmpresa.NomFich, vbArchive)    ' Recupera la primera entrada.
-    Do While cad <> ""   ' Inicia el bucle.
-        Fic = cad
+    Cad = Dir(Carpeta & "\" & vEmpresa.NomFich, vbArchive)    ' Recupera la primera entrada.
+    Do While Cad <> ""   ' Inicia el bucle.
+        Fic = Cad
         Label1.Caption = "Ver fic: " & Fic
         Label1.Refresh
         
@@ -242,18 +242,18 @@ Dim NumFich As Long
         If Opcion = 1 Then
             NumFich = 0
         Else
-            J = InStr(1, cad, ".")
-            NumFich = Mid(cad, 1, J - 1)
+            J = InStr(1, Cad, ".")
+            NumFich = Mid(Cad, 1, J - 1)
         End If
         
-        cad = Carpeta & "\" & cad
+        Cad = Carpeta & "\" & Cad
         If preComprobacion(Opcion, NumFich) Then
             cArc.Add CStr(Fic)
         Else
-            If cad <> "" Then Err.Raise 513, cad, cad
+            If Cad <> "" Then Err.Raise 513, Cad, Cad
         End If
       
-       cad = Dir   ' Obtiene siguiente entrada.
+       Cad = Dir   ' Obtiene siguiente entrada.
     Loop
 
         
@@ -269,18 +269,18 @@ Dim NumFich As Long
             Label1.Caption = "Bloquear fichero: " & cArc.Item(i)
             Label1.Refresh
             'Renombramos para bloquear el fichero
-            cad = cArc.Item(i)
-            J = InStrRev(cad, ".")
-            cad = Mid(cad, 1, J) & "ari"
-            cad = Carpeta & "\" & cad
-            Name Carpeta & "\" & cArc.Item(i) As cad
-            fil.Add CStr(cad)
+            Cad = cArc.Item(i)
+            J = InStrRev(Cad, ".")
+            Cad = Mid(Cad, 1, J) & "ari"
+            Cad = Carpeta & "\" & Cad
+            Name Carpeta & "\" & cArc.Item(i) As Cad
+            fil.Add CStr(Cad)
                
         Else
             
-            cad = cArc.Item(i)
-            cad = Carpeta & "\" & cad
-            fil.Add CStr(cad)
+            Cad = cArc.Item(i)
+            Cad = Carpeta & "\" & Cad
+            fil.Add CStr(Cad)
         End If
     Next
    
@@ -293,18 +293,18 @@ Dim NumFich As Long
         
         For i = 1 To fil.Count
            
-            cad = fil.Item(i)
+            Cad = fil.Item(i)
             If InsertarDatos Then
                 If Opcion = 1 Then
                     'En local
-                    cad = fil.Item(i)
-                    MatarFichero CStr(cad)
+                    Cad = fil.Item(i)
+                    MatarFichero CStr(Cad)
                 End If
                 
                 'Vemos la ultima fecha leida
-                cad = DevuelveDesdeBD("concat(fecha,' ',h1)", "tmppresencia", "codusu ", vUsu.Codigo & "   order by 1  desc")
-                If cad <> "" Then
-                    If CDate(cad) > UltFecLeidaFichero Then UltFecLeidaFichero = cad
+                Cad = DevuelveDesdeBD("concat(fecha,' ',h1)", "tmppresencia", "codusu ", vUsu.Codigo & "   order by 1  desc")
+                If Cad <> "" Then
+                    If CDate(Cad) > UltFecLeidaFichero Then UltFecLeidaFichero = Cad
                 End If
                 
             End If
@@ -312,8 +312,8 @@ Dim NumFich As Long
         Next i
         'Ult fec leida
         If UltFecLeidaFichero <> CDate("12/04/1972") Then
-            cad = "UPDATE relojZK set ultimaFechaLeidaCarpeta" & Opcion & "  =" & DBSet(UltFecLeidaFichero, "FH")
-            conn.Execute cad
+            Cad = "UPDATE relojZK set ultimaFechaLeidaCarpeta" & Opcion & "  =" & DBSet(UltFecLeidaFichero, "FH")
+            conn.Execute Cad
             
         End If
         
@@ -333,31 +333,31 @@ End Function
 
 Private Function preComprobacion(Opcion As Byte, NomFichero As Long) As Boolean
 Dim Tr As String
-Dim Aux As String
+Dim AUX As String
     On Error GoTo epreComprobacion
     
     If Opcion = 2 Then
         'Como en el servidor NO podemos borrar fichero ni nada, lo que haremos sera NO porcesar
         
         If NomFichero < Val(Format(UtlFecLeidaCarpeta, "yyyymm")) Then
-            cad = "" 'PARA QUE NO DE ERROR
+            Cad = "" 'PARA QUE NO DE ERROR
             Exit Function
         End If
     End If
     NF = FreeFile
     Tr = "|"
-    Open cad For Input As #NF
+    Open Cad For Input As #NF
     While Not EOF(NF)
-        Line Input #NF, cad
+        Line Input #NF, Cad
         'Primera linea: <PSD Copy File v.2.0>
         'Lineas de marca: 100720181228  Ejemplo len=12
-        If UCase(Mid(cad, 1, 5)) <> "<PSD " Then
-            If Len(cad) > 12 Then
+        If UCase(Mid(Cad, 1, 5)) <> "<PSD " Then
+            If Len(Cad) > 12 Then
                 'Ejemplo. Va con tabulaciones
                 ' tr  fe          hora
                 '5   20180710    124851  1   0
-                cad = Mid(cad, 1, InStr(1, cad, Chr(9)) - 1)
-                If InStr(1, Tr, "|" & cad & "|") = 0 Then Tr = Tr & cad & "|"
+                Cad = Mid(Cad, 1, InStr(1, Cad, Chr(9)) - 1)
+                If InStr(1, Tr, "|" & Cad & "|") = 0 Then Tr = Tr & Cad & "|"
         
             End If
         End If
@@ -371,12 +371,12 @@ Dim Aux As String
             If NF = 0 Then
                 Tr = ""
             Else
-                cad = Mid(Tr, 1, NF - 1)
+                Cad = Mid(Tr, 1, NF - 1)
                 Tr = Mid(Tr, NF + 1)
             
-                Aux = DevuelveDesdeBD("idtrabajador", "trabajadores", "numtarjeta", cad, "T")
-                If Aux = "" Then
-                    cad = "NO existe trabajador en BD: " & cad & vbCrLf
+                AUX = DevuelveDesdeBD("idtrabajador", "trabajadores", "numtarjeta", Cad, "T")
+                If AUX = "" Then
+                    Cad = "NO existe trabajador en BD: " & Cad & vbCrLf
                     Exit Function
                 End If
             End If
@@ -385,7 +385,7 @@ Dim Aux As String
     preComprobacion = True
     Exit Function
 epreComprobacion:
-    cad = Err.Description
+    Cad = Err.Description
     Err.Clear
     If NF > 0 Then Close #NF
 End Function
@@ -394,13 +394,13 @@ End Function
 
 
 Private Function InsertarDatos() As Boolean
-Dim Aux As String
+Dim AUX As String
 Dim Inser As String
 Dim J As Integer
 
     On Error GoTo epreComprobacion
     
-    Label1.Caption = cad
+    Label1.Caption = Cad
     Label1.Refresh
     espera 0.2
     
@@ -408,30 +408,30 @@ Dim J As Integer
     
     
     NF = FreeFile
-    Open cad For Input As #NF
+    Open Cad For Input As #NF
     While Not EOF(NF)
-        Line Input #NF, cad
+        Line Input #NF, Cad
         'Primera linea: <PSD Copy File v.2.0>
         'Lineas de marca: 100720181228  Ejemplo len=12
-        If UCase(Mid(cad, 1, 5)) <> "<PSD " Then
-            If Len(cad) > 12 Then
+        If UCase(Mid(Cad, 1, 5)) <> "<PSD " Then
+            If Len(Cad) > 12 Then
                 'Ejemplo. Va con tabulaciones
                 ' tr  fe          hora
                 '5   20180710    124851  1   0
                 'tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias)
                     
-                J = InStr(1, cad, Chr(9))
-                Aux = Mid(cad, 1, J - 1)
-                cad = Mid(cad, J + 1)
+                J = InStr(1, Cad, Chr(9))
+                AUX = Mid(Cad, 1, J - 1)
+                Cad = Mid(Cad, J + 1)
                 NumRegElim = NumRegElim + 1
                 '
-                Inser = Inser & ", (" & NumRegElim & "," & Aux & ","
-                Aux = Mid(cad, 1, 8)
-                Aux = Mid(Aux, 7, 2) & "/" & Mid(Aux, 5, 2) & "/" & Mid(Aux, 1, 4)
-                Inser = Inser & DBSet(Aux, "F") & ",'"
-                Aux = Mid(cad, 10, 6)
-                Aux = Mid(Aux, 1, 2) & ":" & Mid(Aux, 3, 2) & ":" & Mid(Aux, 5, 2)
-                Inser = Inser & Aux & "'," & vUsu.Codigo & ",0)"
+                Inser = Inser & ", (" & NumRegElim & "," & AUX & ","
+                AUX = Mid(Cad, 1, 8)
+                AUX = Mid(AUX, 7, 2) & "/" & Mid(AUX, 5, 2) & "/" & Mid(AUX, 1, 4)
+                Inser = Inser & DBSet(AUX, "F") & ",'"
+                AUX = Mid(Cad, 10, 6)
+                AUX = Mid(AUX, 1, 2) & ":" & Mid(AUX, 3, 2) & ":" & Mid(AUX, 5, 2)
+                Inser = Inser & AUX & "'," & vUsu.Codigo & ",0)"
                 
             End If
         End If
@@ -439,8 +439,8 @@ Dim J As Integer
     Close #NF
     NF = -1
     
-    cad = "DELETE FROM tmppresencia where codusu =" & vUsu.Codigo
-    conn.Execute cad
+    Cad = "DELETE FROM tmppresencia where codusu =" & vUsu.Codigo
+    conn.Execute Cad
     espera 0.1
         
     
@@ -456,34 +456,34 @@ Dim J As Integer
     
     
         'Nos cargamos los datos anteriores a la ultima vez leidos
-        cad = "DELETE from tmppresencia where fecha < " & DBSet(UtlFecLeidaCarpeta, "F")
-        conn.Execute cad
-        cad = "DELETE from tmppresencia where fecha = " & DBSet(UtlFecLeidaCarpeta, "F") & " AND h1 <=" & DBSet(UtlFecLeidaCarpeta, "H")
-        conn.Execute cad
+        Cad = "DELETE from tmppresencia where fecha < " & DBSet(UtlFecLeidaCarpeta, "F")
+        conn.Execute Cad
+        Cad = "DELETE from tmppresencia where fecha = " & DBSet(UtlFecLeidaCarpeta, "F") & " AND h1 <=" & DBSet(UtlFecLeidaCarpeta, "H")
+        conn.Execute Cad
     
     
     
         
         Set miRsAux = New ADODB.Recordset
         
-        cad = "    select distinct idtra from tmppresencia WHERE codusu = " & vUsu.Codigo
-        miRsAux.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        Cad = "    select distinct idtra from tmppresencia WHERE codusu = " & vUsu.Codigo
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
         While Not miRsAux.EOF
-            cad = miRsAux!idTRa
-            Aux = DevuelveDesdeBD("idtrabajador", "trabajadores", "numtarjeta", cad, "T")
-            If Aux = "" Then Err.Raise 513, , "NO existe trabajador. Tarjeta: " & cad
-            Aux = "UPDATE tmppresencia set seccion =" & Aux & " WHERE codusu =" & vUsu.Codigo & " AND idtra=" & miRsAux!idTRa
-            conn.Execute Aux
+            Cad = miRsAux!idTRa
+            AUX = DevuelveDesdeBD("idtrabajador", "trabajadores", "numtarjeta", Cad, "T")
+            If AUX = "" Then Err.Raise 513, , "NO existe trabajador. Tarjeta: " & Cad
+            AUX = "UPDATE tmppresencia set seccion =" & AUX & " WHERE codusu =" & vUsu.Codigo & " AND idtra=" & miRsAux!idTRa
+            conn.Execute AUX
             miRsAux.MoveNext
         Wend
         miRsAux.Close
         
 
            
-        cad = "tmppresencia where codusu =" & vUsu.Codigo
-        cad = "SELECT id,seccion,fecha ,h1,incidencias,h1 FROM " & cad & " ORDER BY fecha,h1"
-        cad = "INSERT INTO entradafichajes(Secuencia,idTrabajador,Fecha,Hora,idInci,HoraReal) " & cad
-        conn.Execute cad
+        Cad = "tmppresencia where codusu =" & vUsu.Codigo
+        Cad = "SELECT id,seccion,fecha ,h1,incidencias,h1,0 relj FROM " & Cad & " ORDER BY fecha,h1"
+        Cad = "INSERT INTO entradafichajes(Secuencia,idTrabajador,Fecha,Hora,idInci,HoraReal,reloj) " & Cad
+        conn.Execute Cad
     
     
     End If
@@ -506,15 +506,15 @@ Dim Secu As Long
     'Mataremos el fichero siempre que el añomes sea menor que el actual
     J = InStrRev(Origen, "\")
     If J > 0 Then
-        cad = Mid(Origen, J + 1)
-        J = InStr(1, cad, ".")
+        Cad = Mid(Origen, J + 1)
+        J = InStr(1, Cad, ".")
         
-        cad = Mid(cad, 1, J - 1)
+        Cad = Mid(Cad, 1, J - 1)
         '                   'No lleva el dia.
-        If Len(cad) = 6 Then
-            Secu = cad & "99"
+        If Len(Cad) = 6 Then
+            Secu = Cad & "99"
         Else
-            Secu = cad
+            Secu = Cad
         End If
         If Secu < Val(Format(Now, "yyyymmdd")) Then
             J = 1
@@ -526,16 +526,16 @@ Dim Secu As Long
     End If
     
     If J > 0 Then
-        cad = vEmpresa.DirProcesados & "\" & Format(Now, "yyyymmdd_hhnnss") & ".dat"
+        Cad = vEmpresa.DirProcesados & "\" & Format(Now, "yyyymmdd_hhnnss") & ".dat"
     
-        FileCopy Origen, cad
+        FileCopy Origen, Cad
         Kill Origen
     Else
         
         'Le volvemos a poner el .cop
         J = InStrRev(Origen, "\")
-        cad = Mid(Origen, 1, J) & cad & ".cop"
-        Name Origen As cad
+        Cad = Mid(Origen, 1, J) & Cad & ".cop"
+        Name Origen As Cad
     End If
     Exit Sub
 eM:

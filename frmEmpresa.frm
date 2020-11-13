@@ -27,189 +27,137 @@ Begin VB.Form frmEmpresa
       _ExtentY        =   7858
       _Version        =   393216
       Tabs            =   5
+      Tab             =   1
       TabsPerRow      =   5
       TabHeight       =   520
       TabCaption(0)   =   "Datos básicos"
       TabPicture(0)   =   "frmEmpresa.frx":000C
-      Tab(0).ControlEnabled=   -1  'True
-      Tab(0).Control(0)=   "Label1(0)"
-      Tab(0).Control(0).Enabled=   0   'False
-      Tab(0).Control(1)=   "Label1(1)"
-      Tab(0).Control(1).Enabled=   0   'False
-      Tab(0).Control(2)=   "Label1(2)"
-      Tab(0).Control(2).Enabled=   0   'False
-      Tab(0).Control(3)=   "Label1(3)"
-      Tab(0).Control(3).Enabled=   0   'False
-      Tab(0).Control(4)=   "Label1(4)"
-      Tab(0).Control(4).Enabled=   0   'False
-      Tab(0).Control(5)=   "Label1(5)"
-      Tab(0).Control(5).Enabled=   0   'False
-      Tab(0).Control(6)=   "Label1(6)"
-      Tab(0).Control(6).Enabled=   0   'False
-      Tab(0).Control(7)=   "Label1(7)"
-      Tab(0).Control(7).Enabled=   0   'False
-      Tab(0).Control(8)=   "Label1(8)"
-      Tab(0).Control(8).Enabled=   0   'False
-      Tab(0).Control(9)=   "Label1(9)"
-      Tab(0).Control(9).Enabled=   0   'False
-      Tab(0).Control(10)=   "Label2"
-      Tab(0).Control(10).Enabled=   0   'False
-      Tab(0).Control(11)=   "Label1(24)"
-      Tab(0).Control(11).Enabled=   0   'False
-      Tab(0).Control(12)=   "Label1(27)"
-      Tab(0).Control(12).Enabled=   0   'False
-      Tab(0).Control(13)=   "Label1(28)"
-      Tab(0).Control(13).Enabled=   0   'False
-      Tab(0).Control(14)=   "Text1(2)"
-      Tab(0).Control(14).Enabled=   0   'False
-      Tab(0).Control(15)=   "Text1(3)"
-      Tab(0).Control(15).Enabled=   0   'False
-      Tab(0).Control(16)=   "Text1(4)"
-      Tab(0).Control(16).Enabled=   0   'False
-      Tab(0).Control(17)=   "Text1(5)"
-      Tab(0).Control(17).Enabled=   0   'False
-      Tab(0).Control(18)=   "Text1(6)"
-      Tab(0).Control(18).Enabled=   0   'False
-      Tab(0).Control(19)=   "Text1(7)"
-      Tab(0).Control(19).Enabled=   0   'False
-      Tab(0).Control(20)=   "Text1(8)"
-      Tab(0).Control(20).Enabled=   0   'False
-      Tab(0).Control(21)=   "Text1(9)"
-      Tab(0).Control(21).Enabled=   0   'False
-      Tab(0).Control(22)=   "Text1(10)"
-      Tab(0).Control(22).Enabled=   0   'False
-      Tab(0).Control(23)=   "Text1(11)"
-      Tab(0).Control(23).Enabled=   0   'False
-      Tab(0).Control(24)=   "Text1(23)"
-      Tab(0).Control(24).Enabled=   0   'False
-      Tab(0).Control(25)=   "Text1(32)"
-      Tab(0).Control(25).Enabled=   0   'False
-      Tab(0).Control(26)=   "Text1(33)"
-      Tab(0).Control(26).Enabled=   0   'False
-      Tab(0).Control(27)=   "Check1(8)"
-      Tab(0).Control(27).Enabled=   0   'False
+      Tab(0).ControlEnabled=   0   'False
+      Tab(0).Control(0)=   "Check1(8)"
+      Tab(0).Control(1)=   "Text1(33)"
+      Tab(0).Control(2)=   "Text1(32)"
+      Tab(0).Control(3)=   "Text1(23)"
+      Tab(0).Control(4)=   "Text1(11)"
+      Tab(0).Control(5)=   "Text1(10)"
+      Tab(0).Control(6)=   "Text1(9)"
+      Tab(0).Control(7)=   "Text1(8)"
+      Tab(0).Control(8)=   "Text1(7)"
+      Tab(0).Control(9)=   "Text1(6)"
+      Tab(0).Control(10)=   "Text1(5)"
+      Tab(0).Control(11)=   "Text1(4)"
+      Tab(0).Control(12)=   "Text1(3)"
+      Tab(0).Control(13)=   "Text1(2)"
+      Tab(0).Control(14)=   "Label1(28)"
+      Tab(0).Control(15)=   "Label1(27)"
+      Tab(0).Control(16)=   "Label1(24)"
+      Tab(0).Control(17)=   "Label2"
+      Tab(0).Control(18)=   "Label1(9)"
+      Tab(0).Control(19)=   "Label1(8)"
+      Tab(0).Control(20)=   "Label1(7)"
+      Tab(0).Control(21)=   "Label1(6)"
+      Tab(0).Control(22)=   "Label1(5)"
+      Tab(0).Control(23)=   "Label1(4)"
+      Tab(0).Control(24)=   "Label1(3)"
+      Tab(0).Control(25)=   "Label1(2)"
+      Tab(0).Control(26)=   "Label1(1)"
+      Tab(0).Control(27)=   "Label1(0)"
       Tab(0).ControlCount=   28
       TabCaption(1)   =   "Configuracion"
       TabPicture(1)   =   "frmEmpresa.frx":0028
-      Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Text1(37)"
-      Tab(1).Control(1)=   "Combo3"
-      Tab(1).Control(2)=   "Text1(34)"
-      Tab(1).Control(3)=   "Text1(30)"
-      Tab(1).Control(4)=   "Text1(29)"
-      Tab(1).Control(5)=   "Check2"
-      Tab(1).Control(6)=   "Check3"
-      Tab(1).Control(7)=   "Frame3"
-      Tab(1).Control(8)=   "Text1(25)"
-      Tab(1).Control(9)=   "Check1(6)"
+      Tab(1).ControlEnabled=   -1  'True
+      Tab(1).Control(0)=   "Label1(23)"
+      Tab(1).Control(0).Enabled=   0   'False
+      Tab(1).Control(1)=   "Label3(4)"
+      Tab(1).Control(1).Enabled=   0   'False
+      Tab(1).Control(2)=   "Label3(8)"
+      Tab(1).Control(2).Enabled=   0   'False
+      Tab(1).Control(3)=   "Label3(9)"
+      Tab(1).Control(3).Enabled=   0   'False
+      Tab(1).Control(4)=   "Label3(3)"
+      Tab(1).Control(4).Enabled=   0   'False
+      Tab(1).Control(5)=   "Label1(31)"
+      Tab(1).Control(5).Enabled=   0   'False
+      Tab(1).Control(6)=   "Image1"
+      Tab(1).Control(6).Enabled=   0   'False
+      Tab(1).Control(7)=   "Label1(32)"
+      Tab(1).Control(7).Enabled=   0   'False
+      Tab(1).Control(8)=   "Label4"
+      Tab(1).Control(8).Enabled=   0   'False
+      Tab(1).Control(9)=   "Combo2"
+      Tab(1).Control(9).Enabled=   0   'False
       Tab(1).Control(10)=   "Check4"
-      Tab(1).Control(11)=   "Combo2"
-      Tab(1).Control(12)=   "Label1(32)"
-      Tab(1).Control(13)=   "Image1"
-      Tab(1).Control(14)=   "Label1(31)"
-      Tab(1).Control(15)=   "Label3(3)"
-      Tab(1).Control(16)=   "Label3(9)"
-      Tab(1).Control(17)=   "Label3(8)"
-      Tab(1).Control(18)=   "Label3(4)"
-      Tab(1).Control(19)=   "Label1(23)"
-      Tab(1).ControlCount=   20
+      Tab(1).Control(10).Enabled=   0   'False
+      Tab(1).Control(11)=   "Check1(6)"
+      Tab(1).Control(11).Enabled=   0   'False
+      Tab(1).Control(12)=   "Text1(25)"
+      Tab(1).Control(12).Enabled=   0   'False
+      Tab(1).Control(13)=   "Frame3"
+      Tab(1).Control(13).Enabled=   0   'False
+      Tab(1).Control(14)=   "Check3"
+      Tab(1).Control(14).Enabled=   0   'False
+      Tab(1).Control(15)=   "Check2"
+      Tab(1).Control(15).Enabled=   0   'False
+      Tab(1).Control(16)=   "Text1(29)"
+      Tab(1).Control(16).Enabled=   0   'False
+      Tab(1).Control(17)=   "Text1(30)"
+      Tab(1).Control(17).Enabled=   0   'False
+      Tab(1).Control(18)=   "Text1(34)"
+      Tab(1).Control(18).Enabled=   0   'False
+      Tab(1).Control(19)=   "Combo3"
+      Tab(1).Control(19).Enabled=   0   'False
+      Tab(1).Control(20)=   "Text1(37)"
+      Tab(1).Control(20).Enabled=   0   'False
+      Tab(1).ControlCount=   21
       TabCaption(2)   =   "Presencia"
       TabPicture(2)   =   "frmEmpresa.frx":0044
       Tab(2).ControlEnabled=   0   'False
       Tab(2).Control(0)=   "Label1(25)"
-      Tab(2).Control(0).Enabled=   0   'False
       Tab(2).Control(1)=   "imgBuscar(5)"
-      Tab(2).Control(1).Enabled=   0   'False
       Tab(2).Control(2)=   "Line1"
-      Tab(2).Control(2).Enabled=   0   'False
       Tab(2).Control(3)=   "imgBuscar(4)"
-      Tab(2).Control(3).Enabled=   0   'False
       Tab(2).Control(4)=   "imgBuscar(3)"
-      Tab(2).Control(4).Enabled=   0   'False
       Tab(2).Control(5)=   "imgBuscar(2)"
-      Tab(2).Control(5).Enabled=   0   'False
       Tab(2).Control(6)=   "imgBuscar(1)"
-      Tab(2).Control(6).Enabled=   0   'False
       Tab(2).Control(7)=   "imgBuscar(0)"
-      Tab(2).Control(7).Enabled=   0   'False
       Tab(2).Control(8)=   "Label1(22)"
-      Tab(2).Control(8).Enabled=   0   'False
       Tab(2).Control(9)=   "Label1(21)"
-      Tab(2).Control(9).Enabled=   0   'False
       Tab(2).Control(10)=   "Label1(20)"
-      Tab(2).Control(10).Enabled=   0   'False
       Tab(2).Control(11)=   "Label1(19)"
-      Tab(2).Control(11).Enabled=   0   'False
       Tab(2).Control(12)=   "Label3(1)"
-      Tab(2).Control(12).Enabled=   0   'False
       Tab(2).Control(13)=   "Label1(18)"
-      Tab(2).Control(13).Enabled=   0   'False
       Tab(2).Control(14)=   "Label1(17)"
-      Tab(2).Control(14).Enabled=   0   'False
       Tab(2).Control(15)=   "Label1(15)"
-      Tab(2).Control(15).Enabled=   0   'False
       Tab(2).Control(16)=   "Label1(14)"
-      Tab(2).Control(16).Enabled=   0   'False
       Tab(2).Control(17)=   "Label1(13)"
-      Tab(2).Control(17).Enabled=   0   'False
       Tab(2).Control(18)=   "Label1(12)"
-      Tab(2).Control(18).Enabled=   0   'False
       Tab(2).Control(19)=   "Label3(0)"
-      Tab(2).Control(19).Enabled=   0   'False
       Tab(2).Control(20)=   "Label1(11)"
-      Tab(2).Control(20).Enabled=   0   'False
       Tab(2).Control(21)=   "Label1(26)"
-      Tab(2).Control(21).Enabled=   0   'False
       Tab(2).Control(22)=   "Label1(16)"
-      Tab(2).Control(22).Enabled=   0   'False
       Tab(2).Control(23)=   "Label1(33)"
-      Tab(2).Control(23).Enabled=   0   'False
       Tab(2).Control(24)=   "Text1(24)"
-      Tab(2).Control(24).Enabled=   0   'False
       Tab(2).Control(25)=   "Text2(5)"
-      Tab(2).Control(25).Enabled=   0   'False
       Tab(2).Control(26)=   "Text1(21)"
-      Tab(2).Control(26).Enabled=   0   'False
       Tab(2).Control(27)=   "Text1(20)"
-      Tab(2).Control(27).Enabled=   0   'False
       Tab(2).Control(28)=   "Text1(19)"
-      Tab(2).Control(28).Enabled=   0   'False
       Tab(2).Control(29)=   "Combo1"
-      Tab(2).Control(29).Enabled=   0   'False
       Tab(2).Control(30)=   "Text1(18)"
-      Tab(2).Control(30).Enabled=   0   'False
       Tab(2).Control(31)=   "Text1(17)"
-      Tab(2).Control(31).Enabled=   0   'False
       Tab(2).Control(32)=   "Text2(4)"
-      Tab(2).Control(32).Enabled=   0   'False
       Tab(2).Control(33)=   "Text2(3)"
-      Tab(2).Control(33).Enabled=   0   'False
       Tab(2).Control(34)=   "Text2(2)"
-      Tab(2).Control(34).Enabled=   0   'False
       Tab(2).Control(35)=   "Text2(1)"
-      Tab(2).Control(35).Enabled=   0   'False
       Tab(2).Control(36)=   "Text2(0)"
-      Tab(2).Control(36).Enabled=   0   'False
       Tab(2).Control(37)=   "Text1(16)"
-      Tab(2).Control(37).Enabled=   0   'False
       Tab(2).Control(38)=   "Text1(15)"
-      Tab(2).Control(38).Enabled=   0   'False
       Tab(2).Control(39)=   "Text1(14)"
-      Tab(2).Control(39).Enabled=   0   'False
       Tab(2).Control(40)=   "Text1(13)"
-      Tab(2).Control(40).Enabled=   0   'False
       Tab(2).Control(41)=   "Text1(12)"
-      Tab(2).Control(41).Enabled=   0   'False
       Tab(2).Control(42)=   "Text3(1)"
-      Tab(2).Control(42).Enabled=   0   'False
       Tab(2).Control(43)=   "FrameTapaCortesia"
-      Tab(2).Control(43).Enabled=   0   'False
       Tab(2).Control(44)=   "Text1(31)"
-      Tab(2).Control(44).Enabled=   0   'False
       Tab(2).Control(45)=   "Text3(0)"
-      Tab(2).Control(45).Enabled=   0   'False
       Tab(2).Control(46)=   "Text1(38)"
-      Tab(2).Control(46).Enabled=   0   'False
       Tab(2).ControlCount=   47
       TabCaption(3)   =   "Laboral"
       TabPicture(3)   =   "frmEmpresa.frx":0060
@@ -243,7 +191,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   37
-         Left            =   -69000
+         Left            =   6000
          MaxLength       =   255
          TabIndex        =   115
          Tag             =   "1|T|S|||empresas|configreloj2|||"
@@ -253,7 +201,7 @@ Begin VB.Form frmEmpresa
       Begin VB.ComboBox Combo3 
          Height          =   315
          ItemData        =   "frmEmpresa.frx":0098
-         Left            =   -73080
+         Left            =   1920
          List            =   "frmEmpresa.frx":00A2
          Style           =   2  'Dropdown List
          TabIndex        =   114
@@ -265,7 +213,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "SEPA  XML"
          Height          =   255
          Index           =   8
-         Left            =   2280
+         Left            =   -72720
          TabIndex        =   112
          Tag             =   "1|N|S|||empresas|SepaXML|||"
          Top             =   3360
@@ -349,7 +297,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   34
-         Left            =   -69840
+         Left            =   5160
          MaxLength       =   255
          TabIndex        =   107
          Tag             =   "1|T|S|||empresas|Pathproces|||"
@@ -359,7 +307,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   33
-         Left            =   7080
+         Left            =   -67920
          MaxLength       =   3
          TabIndex        =   105
          Tag             =   "1|T|S|||empresas|sufijoN34|||"
@@ -369,7 +317,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   32
-         Left            =   2280
+         Left            =   -72720
          MaxLength       =   4
          TabIndex        =   7
          Tag             =   "1|T|S|||empresas|iban|||"
@@ -400,7 +348,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   30
-         Left            =   -67920
+         Left            =   7080
          MaxLength       =   35
          TabIndex        =   19
          Tag             =   "1|T|S|||empresas|Nomproces|||"
@@ -410,7 +358,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   29
-         Left            =   -74760
+         Left            =   240
          MaxLength       =   255
          TabIndex        =   21
          Tag             =   "1|T|S|||empresas|dirmarcajes|||"
@@ -420,7 +368,7 @@ Begin VB.Form frmEmpresa
       Begin VB.CheckBox Check2 
          Caption         =   "Produccion"
          Height          =   255
-         Left            =   -72960
+         Left            =   2040
          TabIndex        =   15
          Tag             =   "1|N|N|||empresas|produccion|||"
          Top             =   720
@@ -429,7 +377,7 @@ Begin VB.Form frmEmpresa
       Begin VB.CheckBox Check3 
          Caption         =   "Laboral"
          Height          =   255
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   14
          Tag             =   "1|N|S|||empresas|laboral|||"
          Top             =   720
@@ -456,7 +404,7 @@ Begin VB.Form frmEmpresa
       Begin VB.Frame Frame3 
          Caption         =   "Usuarios"
          Height          =   615
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   94
          Top             =   3600
          Width           =   9495
@@ -523,7 +471,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   25
-         Left            =   -73080
+         Left            =   1920
          MaxLength       =   255
          TabIndex        =   20
          Tag             =   "1|T|S|||empresas|configreloj|||"
@@ -534,7 +482,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Generación marcajes automatica"
          Height          =   255
          Index           =   6
-         Left            =   -68040
+         Left            =   6960
          TabIndex        =   17
          Tag             =   "1|N|S|||empresas|todoslosdias|||"
          Top             =   720
@@ -543,7 +491,7 @@ Begin VB.Form frmEmpresa
       Begin VB.CheckBox Check4 
          Caption         =   "Imagenes trabajadores"
          Height          =   255
-         Left            =   -70680
+         Left            =   4320
          TabIndex        =   16
          Tag             =   "1|N|N|||empresas|imgtrabaj|||"
          Top             =   720
@@ -552,8 +500,8 @@ Begin VB.Form frmEmpresa
       Begin VB.ComboBox Combo2 
          Height          =   315
          ItemData        =   "frmEmpresa.frx":00B9
-         Left            =   -73080
-         List            =   "frmEmpresa.frx":00D2
+         Left            =   1920
+         List            =   "frmEmpresa.frx":00D5
          Style           =   2  'Dropdown List
          TabIndex        =   18
          Tag             =   "1|N|S|||empresas|reloj|||"
@@ -687,9 +635,9 @@ Begin VB.Form frmEmpresa
       End
       Begin VB.ComboBox Combo1 
          Height          =   315
-         ItemData        =   "frmEmpresa.frx":011C
+         ItemData        =   "frmEmpresa.frx":0131
          Left            =   -68400
-         List            =   "frmEmpresa.frx":012C
+         List            =   "frmEmpresa.frx":0141
          Style           =   2  'Dropdown List
          TabIndex        =   33
          Tag             =   "1|N|S|||empresas|redondeo|||"
@@ -814,7 +762,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   23
-         Left            =   8160
+         Left            =   -66840
          MaxLength       =   10
          TabIndex        =   13
          Tag             =   "1|F|S|||empresas|fechainicio|dd/mm/yyyy||"
@@ -824,7 +772,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   11
-         Left            =   5400
+         Left            =   -69600
          MaxLength       =   10
          TabIndex        =   67
          Tag             =   "1|T|S|||empresas|cuenta|||"
@@ -834,7 +782,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   10
-         Left            =   4920
+         Left            =   -70080
          MaxLength       =   2
          TabIndex        =   65
          Tag             =   "1|T|S|||empresas|codcontrol|||"
@@ -844,7 +792,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   9
-         Left            =   3960
+         Left            =   -71040
          MaxLength       =   4
          TabIndex        =   9
          Tag             =   "1|T|S|||empresas|sucursal|||"
@@ -854,7 +802,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   8
-         Left            =   3120
+         Left            =   -71880
          MaxLength       =   4
          TabIndex        =   8
          Tag             =   "1|T|S|||empresas|entidad|||"
@@ -864,7 +812,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   7
-         Left            =   5880
+         Left            =   -69120
          MaxLength       =   15
          TabIndex        =   6
          Tag             =   "1|T|S|||empresas|cif|||"
@@ -874,7 +822,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   6
-         Left            =   3960
+         Left            =   -71040
          MaxLength       =   50
          TabIndex        =   5
          Tag             =   "1|T|S|||empresas|telempresa|||"
@@ -884,7 +832,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   5
-         Left            =   2880
+         Left            =   -72120
          MaxLength       =   50
          TabIndex        =   4
          Tag             =   "1|T|S|||empresas|codposempresa|||"
@@ -894,7 +842,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   4
-         Left            =   360
+         Left            =   -74640
          MaxLength       =   50
          TabIndex        =   3
          Tag             =   "1|T|S|||empresas|provempresa|||"
@@ -904,7 +852,7 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   3
-         Left            =   5160
+         Left            =   -69840
          MaxLength       =   50
          TabIndex        =   2
          Tag             =   "1|T|S|||empresas|pobempresa|||"
@@ -914,12 +862,21 @@ Begin VB.Form frmEmpresa
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   2
-         Left            =   360
+         Left            =   -74640
          MaxLength       =   50
          TabIndex        =   1
          Tag             =   "D|T|S|||empresas|dirempresa|||"
          Top             =   840
          Width           =   4575
+      End
+      Begin VB.Label Label4 
+         Caption         =   "Cuidado al añadir relojes ver tablas terminales"
+         Height          =   375
+         Left            =   2160
+         TabIndex        =   118
+         Top             =   2160
+         Visible         =   0   'False
+         Width           =   2535
       End
       Begin VB.Label Label1 
          AutoSize        =   -1  'True
@@ -935,15 +892,15 @@ Begin VB.Form frmEmpresa
          Caption         =   "Configuracion"
          Height          =   255
          Index           =   32
-         Left            =   -70080
+         Left            =   4920
          TabIndex        =   116
          Top             =   2400
          Width           =   1335
       End
       Begin VB.Image Image1 
          Height          =   240
-         Left            =   -73320
-         Picture         =   "frmEmpresa.frx":016B
+         Left            =   1680
+         Picture         =   "frmEmpresa.frx":0180
          Top             =   2400
          Width           =   240
       End
@@ -951,7 +908,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "2º Tipo reloj"
          Height          =   255
          Index           =   31
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   113
          Top             =   2400
          Width           =   1335
@@ -960,7 +917,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "PATH procesados"
          Height          =   255
          Index           =   3
-         Left            =   -69840
+         Left            =   5160
          TabIndex        =   108
          Top             =   2880
          Width           =   1695
@@ -969,7 +926,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Sufijo"
          Height          =   255
          Index           =   28
-         Left            =   7080
+         Left            =   -67920
          TabIndex        =   106
          Top             =   2640
          Width           =   975
@@ -978,7 +935,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "IBAN"
          Height          =   195
          Index           =   27
-         Left            =   2400
+         Left            =   -72600
          TabIndex        =   104
          Top             =   2640
          Width           =   375
@@ -1005,7 +962,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Nombre archivo"
          Height          =   255
          Index           =   9
-         Left            =   -69240
+         Left            =   5760
          TabIndex        =   102
          Top             =   1320
          Width           =   1215
@@ -1014,7 +971,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "PATH Marcajes"
          Height          =   255
          Index           =   8
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   101
          Top             =   2880
          Width           =   1695
@@ -1023,7 +980,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Configuracion RELOJ"
          Height          =   255
          Index           =   4
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   93
          Top             =   1920
          Width           =   1695
@@ -1032,7 +989,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Reloj presencia"
          Height          =   255
          Index           =   23
-         Left            =   -74760
+         Left            =   240
          TabIndex        =   92
          Top             =   1320
          Width           =   1335
@@ -1177,7 +1134,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   0
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":0CA5
+         MouseIcon       =   "frmEmpresa.frx":0CBA
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   840
@@ -1187,7 +1144,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   1
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":0DF7
+         MouseIcon       =   "frmEmpresa.frx":0E0C
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   1440
@@ -1197,7 +1154,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   2
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":0F49
+         MouseIcon       =   "frmEmpresa.frx":0F5E
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   1966
@@ -1207,7 +1164,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   3
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":109B
+         MouseIcon       =   "frmEmpresa.frx":10B0
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   2520
@@ -1217,7 +1174,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   4
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":11ED
+         MouseIcon       =   "frmEmpresa.frx":1202
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   3127
@@ -1233,7 +1190,7 @@ Begin VB.Form frmEmpresa
          Height          =   240
          Index           =   5
          Left            =   -73680
-         MouseIcon       =   "frmEmpresa.frx":133F
+         MouseIcon       =   "frmEmpresa.frx":1354
          MousePointer    =   4  'Icon
          ToolTipText     =   "Buscar población"
          Top             =   3600
@@ -1261,7 +1218,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Inicio temporada"
          Height          =   255
          Index           =   24
-         Left            =   8160
+         Left            =   -66840
          TabIndex        =   69
          Top             =   2640
          Width           =   1455
@@ -1278,7 +1235,7 @@ Begin VB.Form frmEmpresa
             Strikethrough   =   0   'False
          EndProperty
          Height          =   255
-         Left            =   720
+         Left            =   -74280
          TabIndex        =   68
          Top             =   2760
          Width           =   1575
@@ -1287,7 +1244,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Cuenta"
          Height          =   255
          Index           =   9
-         Left            =   5400
+         Left            =   -69600
          TabIndex        =   66
          Top             =   2640
          Width           =   975
@@ -1296,7 +1253,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "CC"
          Height          =   255
          Index           =   8
-         Left            =   4920
+         Left            =   -70080
          TabIndex        =   64
          Top             =   2640
          Width           =   975
@@ -1305,7 +1262,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Sucursal"
          Height          =   255
          Index           =   7
-         Left            =   3960
+         Left            =   -71040
          TabIndex        =   63
          Top             =   2640
          Width           =   975
@@ -1314,7 +1271,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Entidad"
          Height          =   255
          Index           =   6
-         Left            =   3000
+         Left            =   -72000
          TabIndex        =   62
          Top             =   2640
          Width           =   975
@@ -1323,7 +1280,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "C.I.F."
          Height          =   255
          Index           =   5
-         Left            =   5880
+         Left            =   -69120
          TabIndex        =   61
          Top             =   1560
          Width           =   975
@@ -1332,7 +1289,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Teléfono"
          Height          =   255
          Index           =   4
-         Left            =   3960
+         Left            =   -71040
          TabIndex        =   60
          Top             =   1560
          Width           =   975
@@ -1341,7 +1298,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "C.P"
          Height          =   255
          Index           =   3
-         Left            =   2880
+         Left            =   -72120
          TabIndex        =   59
          Top             =   1560
          Width           =   975
@@ -1350,7 +1307,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Provincia"
          Height          =   255
          Index           =   2
-         Left            =   360
+         Left            =   -74640
          TabIndex        =   58
          Top             =   1560
          Width           =   975
@@ -1359,7 +1316,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Población"
          Height          =   255
          Index           =   1
-         Left            =   5160
+         Left            =   -69840
          TabIndex        =   57
          Top             =   600
          Width           =   975
@@ -1368,7 +1325,7 @@ Begin VB.Form frmEmpresa
          Caption         =   "Dirección"
          Height          =   255
          Index           =   0
-         Left            =   360
+         Left            =   -74640
          TabIndex        =   56
          Top             =   600
          Width           =   975
@@ -1988,7 +1945,7 @@ End Sub
 
 
 Private Sub Combo1_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 
@@ -2152,7 +2109,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
             End Select
         End If
     Else
-        Keypress KeyAscii
+        KeyPress KeyAscii
     End If
 End Sub
 
@@ -2221,20 +2178,20 @@ Private Sub Text3_GotFocus(Index As Integer)
 End Sub
 
 Private Sub Text3_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text3_LostFocus(Index As Integer)
-Dim cad As String
+Dim Cad As String
     Text3(Index).Text = Trim(Text3(Index).Text)
-    cad = ""
+    Cad = ""
     If IsNumeric(Text3(Index).Text) Then
         Text3(Index).Text = Val(Text3(Index).Text)
-        cad = Text3(Index).Text
-        cad = Round(Val(cad) / 60, 2)
+        Cad = Text3(Index).Text
+        Cad = Round(Val(Cad) / 60, 2)
         
     End If
-    Text1(Index + 17) = cad
+    Text1(Index + 17) = Cad
 End Sub
 
 Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
@@ -2314,7 +2271,7 @@ End Sub
 Private Function DatosOk() As Boolean
 Dim B As Boolean
 Dim d As Date
-Dim cad As String
+Dim Cad As String
 
     If Text3(0).Text = "" Or Text3(1).Text = "" Then
         MsgBox "Campo retraso/Exceso en blanco", vbExclamation
@@ -2341,6 +2298,21 @@ Dim cad As String
         End If
     End If
     
+    If Combo2.ListIndex = vbBiostarXpass Then
+        'Obligado el path
+        Text1(25).Text = Trim(Text1(25).Text)
+        Cad = ""
+        If Text1(25).Text <> "" Then
+            If InStr(1, Text1(25).Text, ";") > 0 Then Cad = "S"
+        End If
+        If Cad = "" Then
+            MsgBox "Debe indicar la ODBC del Terminal y última fecha leída (ODBC;dd/mm/yyyy)", vbExclamation
+            B = False
+        End If
+        'Cad = ""
+    End If
+    
+    
     
     If Combo3.ListIndex > 0 Then
         'Obligado el path
@@ -2357,26 +2329,27 @@ Dim cad As String
     '3 Media Hora
     '0 Sin Redondear
     NumRegElim = CInt(Text1(19).Text)
+    Cad = ""
     If NumRegElim = 0 And Combo1.ListIndex <> 3 Then
-        cad = "Ponga minutos redondeo"
+        Cad = "Ponga minutos redondeo"
     Else
         Select Case Combo1.ListIndex
         Case 0
-            If NumRegElim >= 10 Then cad = "X"
+            If NumRegElim >= 10 Then Cad = "X"
         Case 1
-            If NumRegElim >= 15 Then cad = "X"
+            If NumRegElim >= 15 Then Cad = "X"
         
         Case 2
-            If NumRegElim >= 30 Then cad = "X"
+            If NumRegElim >= 30 Then Cad = "X"
         Case Else
-            cad = ""
+            Cad = ""
         End Select
     
     End If
     
-    If cad <> "" Then
-        If cad = "X" Then cad = "Reondeo mayor igual intervalo. " & Combo1.Text
-        MsgBox cad, vbExclamation
+    If Cad <> "" Then
+        If Cad = "X" Then Cad = "Redondeo mayor igual intervalo. " & Combo1.Text
+        MsgBox Cad, vbExclamation
         B = False
     End If
     
@@ -2394,7 +2367,7 @@ Private Function SepuedeBorrar() As Boolean
     SepuedeBorrar = True
 End Function
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -2452,18 +2425,18 @@ End Sub
 
 ' ***** SI N'HI HAN BOTONS I CAMPS DE BUSCAR EN ATRES FORMULARIS ********
 Private Sub imgBuscar_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 
     TerminaBloquear
 
     Select Case Index
         Case 0 To 5
             'INCIDENCIAS
-            cad = "Codigo|idinci|N||20·"
-            cad = cad & "Descripcion|nominci|T||70·"
+            Cad = "Codigo|idinci|N||20·"
+            Cad = Cad & "Descripcion|nominci|T||70·"
             Indice = Index
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = cad
+            frmB.vCampos = Cad
             frmB.vDevuelve = "0|1|"
             frmB.vTabla = "incidencias"
           

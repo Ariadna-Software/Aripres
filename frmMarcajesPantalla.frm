@@ -282,7 +282,7 @@ Attribute frmc.VB_VarHelpID = -1
 
 Dim PrimeraVez As Boolean
 Dim Antiguo As String
-Dim cad As String
+Dim Cad As String
 
 
 
@@ -326,29 +326,29 @@ Dim Aux As String
             Anterior = Me.ListView1.ListItems(NumRegElim).Text
             DosAnterior = Me.ListView1.ListItems(NumRegElim).SubItems(1)
         End If
-        cad = ", (" & vUsu.Codigo & ","
+        Cad = ", (" & vUsu.Codigo & ","
         If Me.Check1.Value = 0 Then
-            cad = cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(2), "F") & "," & Anterior & ","
-            cad = cad & DBSet(DosAnterior, "T") & ","
+            Cad = Cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(2), "F") & "," & Anterior & ","
+            Cad = Cad & DBSet(DosAnterior, "T") & ","
         
         Else
-            cad = cad & DBSet(Anterior, "F") & "," & DBSet(ListView1.ListItems(NumRegElim).SubItems(1), "T") & ","
-            cad = cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(2), "T") & ","
+            Cad = Cad & DBSet(Anterior, "F") & "," & DBSet(ListView1.ListItems(NumRegElim).SubItems(1), "T") & ","
+            Cad = Cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(2), "T") & ","
         End If
-        cad = cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(8), "N") & ","
+        Cad = Cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(8), "N") & ","
         If Trim(ListView1.ListItems(NumRegElim).SubItems(9)) = "" Then
-            cad = cad & "0"
+            Cad = Cad & "0"
         Else
             If Trim(ListView1.ListItems(NumRegElim).SubItems(9)) = "-" Then
-                cad = cad & "0"
+                Cad = Cad & "0"
             Else
-                cad = cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(9), "N")
+                Cad = Cad & DBSet(ListView1.ListItems(NumRegElim).SubItems(9), "N")
             End If
         End If
         
         'Los 4 marcajes, si es que los hay
         For N = 1 To 4
-            cad = cad & "," & DevuelveHoraBD(N + 2)
+            Cad = Cad & "," & DevuelveHoraBD(N + 2)
         Next N
         
         If Trim(ListView1.ListItems(NumRegElim).SubItems(7)) = "*" Then
@@ -362,7 +362,7 @@ Dim Aux As String
             Set miRsAux = New ADODB.Recordset
             miRsAux.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             While Not miRsAux.EOF
-                cad = cad & "," & DBSet(miRsAux!Hora, "H")
+                Cad = Cad & "," & DBSet(miRsAux!Hora, "H")
                 N = N + 1
                 If N = 16 Then
                     While Not miRsAux.EOF
@@ -380,43 +380,43 @@ Dim Aux As String
         N = 16 - N + 1
         If N > 0 Then
             Do
-                cad = cad & ", null"
+                Cad = Cad & ", null"
                 N = N - 1
             Loop Until N = 0
         End If
-        cad = cad & ")"
+        Cad = Cad & ")"
         
-        Antiguo = Antiguo & cad
+        Antiguo = Antiguo & Cad
         If Len(Antiguo) > 2000 Then
             Antiguo = Mid(Antiguo, 2)
-            cad = "INSERT INTO tmpinformehorasmes(codusu,fecha,idTrabajador,Nombre,HT,HN,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES " & Antiguo
-            conn.Execute cad
+            Cad = "INSERT INTO tmpinformehorasmes(codusu,fecha,idTrabajador,Nombre,HT,HN,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES " & Antiguo
+            conn.Execute Cad
             Antiguo = ""
         End If
     Next
     
     If Antiguo <> "" Then
         Antiguo = Mid(Antiguo, 2)
-        cad = "INSERT INTO tmpinformehorasmes(codusu,fecha,idTrabajador,Nombre,HT,HN,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES " & Antiguo
-        If Not EjecutaSQL(cad) Then
+        Cad = "INSERT INTO tmpinformehorasmes(codusu,fecha,idTrabajador,Nombre,HT,HN,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES " & Antiguo
+        If Not EjecutaSQL(Cad) Then
             MsgBox "Error insertando datos informes", vbExclamation
         End If
 
     End If
     
     Antiguo = ""
-    cad = ""
-    If Me.txtTrab(4).Text <> "" Then cad = " desde " & Me.txtTrab(4).Text
-    If Me.txtTrab(5).Text <> "" Then cad = cad & " hasta " & Me.txtTrab(5).Text
-    If cad <> "" Then Antiguo = "Trabajador : " & cad
-    cad = ""
-    If Me.txtFec(0).Text <> "" Then cad = " desde " & Me.txtFec(0).Text
-    If Me.txtFec(1).Text <> "" Then cad = cad & " hasta " & Me.txtFec(1).Text
-    If cad <> "" Then Antiguo = Trim(Antiguo & "        Fecha : " & cad)
+    Cad = ""
+    If Me.txtTrab(4).Text <> "" Then Cad = " desde " & Me.txtTrab(4).Text
+    If Me.txtTrab(5).Text <> "" Then Cad = Cad & " hasta " & Me.txtTrab(5).Text
+    If Cad <> "" Then Antiguo = "Trabajador : " & Cad
+    Cad = ""
+    If Me.txtFec(0).Text <> "" Then Cad = " desde " & Me.txtFec(0).Text
+    If Me.txtFec(1).Text <> "" Then Cad = Cad & " hasta " & Me.txtFec(1).Text
+    If Cad <> "" Then Antiguo = Trim(Antiguo & "        Fecha : " & Cad)
     
     
-    cad = IIf(Me.Option1(0).Value, "idTrabajador", "Nombre")
-    cad = "orden= {tmpinformehorasmes." & cad & "}"
+    Cad = IIf(Me.Option1(0).Value, "idTrabajador", "Nombre")
+    Cad = "orden= {tmpinformehorasmes." & Cad & "}"
     With frmImprimir
         .FormulaSeleccion = "{tmpinformehorasmes.codusu} = " & vUsu.Codigo
         If Me.Check1.Value = 0 Then
@@ -426,7 +426,7 @@ Dim Aux As String
         End If
         .Titulo100 = "Visor marcajes"
         
-        .OtrosParametros = "Emp=""" & vEmpresa.NomEmpresa & """|Sel= """ & Antiguo & """|" & cad & "|"
+        .OtrosParametros = "Emp=""" & vEmpresa.NomEmpresa & """|Sel= """ & Antiguo & """|" & Cad & "|"
         .Opcion = 100
         .NumeroParametros = 3
         .Show vbModal
@@ -532,8 +532,9 @@ Dim UltimaFechaDelTrabajador As String
     ListView1.ListItems.Clear
     
     SQL = "select marcajes.fecha,marcajes.idtrabajador,entrada,hora,nomtrabajador,nominci,incfinal "
-    SQL = SQL & ",HorasTrabajadas, HorasIncid,excesodefecto , HOUR(HORA) LaHora , minute(hora) LosMinutos "
-    SQL = SQL & " from marcajes left join entradamarcajes on marcajes.Entrada = entradamarcajes.idmarcaje,trabajadores,incidencias"
+    SQL = SQL & ",HorasTrabajadas, HorasIncid,excesodefecto , HOUR(HORA) LaHora , minute(hora) LosMinutos , terminales.area"
+    SQL = SQL & " from marcajes left join entradamarcajes on marcajes.Entrada = entradamarcajes.idmarcaje"
+    SQL = SQL & " LEFT JOIN terminales on terminales.id =reloj ,trabajadores,incidencias"
     SQL = SQL & " Where marcajes.idTrabajador = trabajadores.idTrabajador And IncFinal = incidencias.idinci"
 
     
@@ -729,7 +730,7 @@ End Function
 
 Private Sub CargarColumnas()
 Dim L As Collection
-Dim i As Integer
+Dim I As Integer
 Dim C As ColumnHeader
 
     ListView1.ColumnHeaders.Clear
@@ -747,9 +748,9 @@ Dim C As ColumnHeader
     If Not (Check1.Value = 1) Then L.Add "Fecha|1100|"
 
     'Las columnas para el resto de campos
-    For i = 1 To 4
-        L.Add "H" & i & "|800|"
-    Next i
+    For I = 1 To 4
+        L.Add "H" & I & "|800|"
+    Next I
     'Columna para marcar si hay mas
     L.Add "+|300|"
     
@@ -760,11 +761,11 @@ Dim C As ColumnHeader
     
     
     'TOTAL..... 11 campos
-    For i = 1 To 11
-        Set C = ListView1.ColumnHeaders.Add(, "C" & i)
-        C.Text = RecuperaValor(L.Item(i), 1)
-        C.Width = RecuperaValor(L.Item(i), 2)
-    Next i
+    For I = 1 To 11
+        Set C = ListView1.ColumnHeaders.Add(, "C" & I)
+        C.Text = RecuperaValor(L.Item(I), 1)
+        C.Width = RecuperaValor(L.Item(I), 2)
+    Next I
     
     'A MANO
     '---------
@@ -823,12 +824,12 @@ Private Sub imgTra_Click(Index As Integer)
     Antiguo = Me.txtTrab(Index).Text
     imgTra(4).Tag = 0 'Para que el devuelve grid sepa que es TRABAJADORES
     txtTrab(4).Tag = Index
-    cad = "Codigo|idTrabajador|N||15·"
-    cad = cad & "Nombre|nomtrabajador|T||60·"
-    cad = cad & "Tarjeta|numtarjeta|T||20·"
+    Cad = "Codigo|idTrabajador|N||15·"
+    Cad = Cad & "Nombre|nomtrabajador|T||60·"
+    Cad = Cad & "Tarjeta|numtarjeta|T||20·"
     Set frmB = New frmBuscaGrid
     frmB.vTabla = "Trabajadores"
-    frmB.vCampos = cad
+    frmB.vCampos = Cad
     frmB.vDevuelve = "0|1|"
     frmB.vSelElem = 0
     frmB.vTitulo = "TRABAJADORES"
@@ -866,7 +867,7 @@ Private Sub txtFec_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtFec_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtFec_LostFocus(Index As Integer)
@@ -884,7 +885,7 @@ Private Sub txtTrab_GotFocus(Index As Integer)
 End Sub
 
 Private Sub txtTrab_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub txtTrab_LostFocus(Index As Integer)
@@ -893,19 +894,19 @@ Private Sub txtTrab_LostFocus(Index As Integer)
         Me.txtDT(Index).Text = ""
     Else
         If IsNumeric(txtTrab(Index).Text) Then
-            cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
+            Cad = DevuelveDesdeBD("nomtrabajador", "trabajadores", "idtrabajador", txtTrab(Index).Text, "N")
         Else
             txtTrab(Index).Text = ""
-            cad = ""
+            Cad = ""
         End If
-        txtDT(Index).Text = cad
+        txtDT(Index).Text = Cad
     End If
     If Antiguo <> txtTrab(Index).Text Then CargaDatos
     
 End Sub
 
 
-Private Sub Keypress(ByRef KeyAscii As Integer)
+Private Sub KeyPress(ByRef KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"

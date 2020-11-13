@@ -17,10 +17,11 @@ Public Const vbBusca2 = 43
 ' TIPO RELOJ
 Public Const vbTCP3 = 1
 Public Const vbKimaldi = 2
-Public Const vbAlzira = 3
+Public Const vbAlziraR = 3
 Public Const vbRobotics = 4
 Public Const vbFingKey = 5
 Public Const vbZKTeco = 6
+Public Const vbBiostarXpass = 7  'Biostar1
 
 
 '--------------------------------------------------------------
@@ -40,3 +41,11 @@ Public Const vbDiaVacas = 1
 
 'PARA CATADAU. Habra de ver de ponerlo en los parametros
 Public Const vbDigitoTrabajadores = 1
+
+
+'Empresas
+Public Const vbAlzira = 2
+Public Const vbCatadau = 4
+Public Const vbBelgida = 6
+Public Const vbCoopic = 5
+

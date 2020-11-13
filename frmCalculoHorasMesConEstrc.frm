@@ -682,7 +682,7 @@ Private Sub CalculaEntreFechas(FI As Date, FF As Date)
 Dim RS As Recordset
 Dim Horas As Currency
 Dim Dias As Integer
-Dim Aux As String
+Dim AUX As String
 Dim idCal As Integer
 Dim vSeccion As Integer
 
@@ -694,8 +694,8 @@ Dim vSeccion As Integer
 
     Set RS = New ADODB.Recordset
     
-    Aux = "select idhorario,idcal from calendariol where fecha >='2018-01-01' and idcal in (select idcal from trabajadores)  group by 1,2"
-    RS.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    AUX = "select idhorario,idcal from calendariol where fecha >='2018-01-01' and idcal in (select idcal from trabajadores)  group by 1,2"
+    RS.Open AUX, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     Label1.Caption = "Obtener horarios"
     Label1.Refresh
@@ -1524,8 +1524,7 @@ Dim ToolTip As String
         If J = 7 Then ToolTip = "Revisar"
         
         
-        Debug.Assert Not (RS!Trabajador = 170)
-        Debug.Assert Not (RS!Trabajador = 9081)
+        
         
         
         i.SmallIcon = J
@@ -1994,11 +1993,11 @@ End Sub
 
 Private Function genNominas() As Boolean
 Dim i As Integer
-Dim cad As String
+Dim Cad As String
 Dim Importe As Currency
 Dim Horas As Currency
 Dim RS As ADODB.Recordset
-Dim Aux As String
+Dim AUX As String
 Dim PlusHorasTr As Currency
 On Error GoTo EGenerarNominas
     genNominas = False
@@ -2010,58 +2009,61 @@ On Error GoTo EGenerarNominas
     SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
     
     'Primero generamos la tabla de  nominas con los importes marcados aqui
-    cad = "SELECT tmpDatosMEs.*, "
-    cad = cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 "
-    cad = cad & " ,Trabajadores.FecAlta ,Trabajadores.idCentroA3,ImportNormales ,ImportExtras"
-    cad = cad & " FROM tmpDatosMEs , Trabajadores ,categorias WHERE  tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
-    cad = cad & " AND trabajadores.idcategoria=Categorias.idcategoria "
-    cad = cad & " AND codusu = " & vUsu.Codigo
-    cad = cad & " AND Mes = " & Combo2.ListIndex + 1
-    cad = cad & " ORDER BY tmpDatosMes.Trabajador"
+    Cad = "SELECT tmpDatosMEs.*, "
+    Cad = Cad & " Trabajadores.PorcSS, Trabajadores.PorcIRPF,Trabajadores.PorcAntiguedad,Importe1,Importe2,Importe3 "
+    Cad = Cad & " ,Trabajadores.FecAlta ,Trabajadores.idCentroA3,ImportNormales ,ImportExtras"
+    Cad = Cad & " FROM tmpDatosMEs , Trabajadores ,categorias WHERE  tmpDatosMEs.Trabajador = Trabajadores.IdTrabajador"
+    Cad = Cad & " AND trabajadores.idcategoria=Categorias.idcategoria "
+    Cad = Cad & " AND codusu = " & vUsu.Codigo
+    Cad = Cad & " AND Mes = " & Combo2.ListIndex + 1
+    Cad = Cad & " ORDER BY tmpDatosMes.Trabajador"
     Set RS = New ADODB.Recordset
-    RS.Open cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
       '  If RS!HorasC > 0 Then Stop
       '  If RS!extras > 0 Then Stop
     
         'IdTrabajador,Dias
-        cad = RS!Trabajador & "," & RS!diasperiodo & ","
+        
+        If RS!Trabajador = 9397 Then Stop
+        
+        Cad = RS!Trabajador & "," & RS!diasperiodo & ","
         
         Horas = 0 'sera el plus
-        cad = cad & TransformaComasPuntos(RS!Horasn) & "," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
-        cad = cad & TransformaComasPuntos(DBLet(RS!horase, "N")) & "," & DBSet(Horas, "N") & ","
+        Cad = Cad & TransformaComasPuntos(RS!Horasn) & "," & TransformaComasPuntos(DBLet(RS!HorasC, "N")) & ","
+        Cad = Cad & TransformaComasPuntos(DBLet(RS!horase, "N")) & "," & DBSet(Horas, "N") & ","
 
 
         
         'BolsaDespues,BolsaAntes,brutodespues,netodespues,importedelbote,brutoantes,netoan
-        cad = cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
+        Cad = Cad & DBSet(RS!bolsadespues, "N") & "," & DBSet(RS!bolsaantes, "N") & ","
         
         
         Importe = 0   'NO anticipos
-        cad = cad & TransformaComasPuntos(DBLet(Importe, "N"))
+        Cad = Cad & TransformaComasPuntos(DBLet(Importe, "N"))
         
         'Antiguedad,IRPF,SSEmpr
-        cad = cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
+        Cad = Cad & "," & DBSet(RS!PorcAntiguedad, "N") & "," & DBSet(RS!PorcIRPF, "N") & "," & DBSet(RS!PorcSS, "N")
         'PrecioHN,PrecioHC,PrecioHE
-        cad = cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
+        Cad = Cad & "," & DBSet(RS!Importe1, "N") & "," & DBSet(RS!Importe2, "N") & "," & DBSet(RS!Importe3, "N")
         
         'LlevaPlus , ImporteFijo
-        cad = cad & "," & DBSet(RS!LlevaPlus, "N") & "," & DBSet(RS!importefijo, "N")
+        Cad = Cad & "," & DBSet(RS!LlevaPlus, "N") & "," & DBSet(RS!importefijo, "N")
         
         'Bruto,ImporEstruc,ImportNormales  ,ImportExtras,Plus
         Importe = DBLet(RS!ImportNormales, "N") + DBLet(RS!ImporEstruc, "N") + DBLet(RS!ImportExtras, "N") + DBLet(RS!plus, "N")
-        cad = cad & "," & DBSet(Importe, "N") & "," & DBSet(RS!ImporEstruc, "N") & "," & DBSet(RS!ImportNormales, "N")
-        cad = cad & "," & DBSet(RS!ImportExtras, "N") & "," & DBSet(RS!plus, "N")
+        Cad = Cad & "," & DBSet(Importe, "N") & "," & DBSet(RS!ImporEstruc, "N") & "," & DBSet(RS!ImportNormales, "N")
+        Cad = Cad & "," & DBSet(RS!ImportExtras, "N") & "," & DBSet(RS!plus, "N")
         
         
         'cad = cad & " ,Trabajadores.FecAlta ,Trabajadores.idCentroA3"
-        cad = cad & "," & DBSet(RS!FecAlta, "F", "S") & "," & DBSet(RS!idCentroA3, "N", "S")
+        Cad = Cad & "," & DBSet(RS!FecAlta, "F", "S") & "," & DBSet(RS!idCentroA3, "N", "S")
         
         
         
-        cad = cad & ")"
-        cad = SQL & cad
-        conn.Execute cad
+        Cad = Cad & ")"
+        Cad = SQL & Cad
+        conn.Execute Cad
         
         
         
@@ -2073,13 +2075,13 @@ On Error GoTo EGenerarNominas
         
         If DBLet(RS!bolsadespues, "N") = 0 Then
             'Se queda sin bolsa de horas
-            cad = "DELETE FROM trabajadoresbolsahoras WHERE ParaEmpresa=0 AND TipoHora=1 "
-            cad = cad & " AND IdTrabajador= " & RS!Trabajador
+            Cad = "DELETE FROM trabajadoresbolsahoras WHERE ParaEmpresa=0 AND TipoHora=1 "
+            Cad = Cad & " AND IdTrabajador= " & RS!Trabajador
         Else
-            cad = "REPLACE INTO trabajadoresbolsahoras(IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) VALUES ("
-            cad = cad & RS!Trabajador & ",0,1," & DBSet(RS!bolsadespues, "N") & ")"
+            Cad = "REPLACE INTO trabajadoresbolsahoras(IdTrabajador,ParaEmpresa,TipoHora,HorasBolsa) VALUES ("
+            Cad = Cad & RS!Trabajador & ",0,1," & DBSet(RS!bolsadespues, "N") & ")"
         End If
-        conn.Execute cad
+        conn.Execute Cad
         
         
         

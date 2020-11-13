@@ -1217,20 +1217,20 @@ End Sub
 
 
 Private Sub MandaBusquedaPrevia(CadB As String)
-Dim cad As String
+Dim Cad As String
 
         'Llamamos a al form
         ' **************** arreglar-ho per a vore lo que es desije ****************
-        cad = ""
-        cad = cad & ParaGrid(Text1(0), 10, "Cód.")
-        cad = cad & ParaGrid(Text1(1), 26, "Nombre")
-        cad = cad & ParaGrid(Text1(2), 32, "1º Apellido")
-        cad = cad & ParaGrid(Text1(3), 32, "2º Apellido")
+        Cad = ""
+        Cad = Cad & ParaGrid(Text1(0), 10, "Cód.")
+        Cad = Cad & ParaGrid(Text1(1), 26, "Nombre")
+        Cad = Cad & ParaGrid(Text1(2), 32, "1º Apellido")
+        Cad = Cad & ParaGrid(Text1(3), 32, "2º Apellido")
         
-        If cad <> "" Then
+        If Cad <> "" Then
             Screen.MousePointer = vbHourglass
             Set frmB = New frmBuscaGrid
-            frmB.vCampos = cad
+            frmB.vCampos = Cad
             'frmB.vTabla = NomTabla
             frmB.vSql = CadB
 
@@ -1339,7 +1339,7 @@ Dim SQL As String
     '*************** canviar els noms i el DELETE **********************************
     SQL = "¿Seguro que desea eliminar el marcaje?"
     SQL = SQL & vbCrLf & "Código: " & Adodc2.Recordset!Entrada & "     -    " & Format(Adodc2.Recordset!Fecha, "dd/mm/yyyy")
-    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!nomtrabajador
+    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!NomTrabajador
     
     If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
@@ -1482,9 +1482,9 @@ Private Sub Form_Load()
    ' Me.imgZoom(2).Picture = frmPpal.imgListImages16.ListImages(1).Picture
 
     'Las imagenes
-    Me.ListView1.SmallIcons = frmPpal.ImageListRev
-    Me.ListView2.SmallIcons = frmPpal.ImageListRev
-    Me.ListView3.SmallIcons = frmPpal.ImageListRev
+    Me.ListView1.SmallIcons = frmPpal.ImageListReloj
+    Me.ListView2.SmallIcons = frmPpal.ImageListReloj
+    Me.ListView3.SmallIcons = frmPpal.ImageListReloj
 
     'cargar IMAGE de mail
  '   Me.imgMail(0).Picture = frmPpal.imgListImages16.ListImages(2).Picture
@@ -1680,7 +1680,7 @@ Dim Carga As Boolean
 End Sub
 
 Private Sub imgZoom_Click(Index As Integer)
-Dim cad As String
+Dim Cad As String
 Dim LeerHorario As Boolean
 
     If Index = 2 Then
@@ -1703,10 +1703,10 @@ Dim LeerHorario As Boolean
             'Llamamos a al form
             ' **************** arreglar-ho per a vore lo que es desije ****************
             'Cod Diag.|idDiag|N|Formato|10·
-            cad = "Codigo|idtrabajador|N||20·"
-            cad = cad & "Nombre|nomtrabajador|T||60·"
-            cad = cad & "Tarjeta|numtarjeta|N||20·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idtrabajador|N||20·"
+            Cad = Cad & "Nombre|nomtrabajador|T||60·"
+            Cad = Cad & "Tarjeta|numtarjeta|N||20·"
+            frmB.vCampos = Cad
             frmB.vTabla = "trabajadores"
             frmB.vSql = ""
             
@@ -1718,9 +1718,9 @@ Dim LeerHorario As Boolean
             'INCIDENCIAS
             
             'Cod Diag.|idDiag|N|Formato|10·
-            cad = "Codigo|idinci|N||20·"
-            cad = cad & "Descripcion|nominci|T||70·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idinci|N||20·"
+            Cad = Cad & "Descripcion|nominci|T||70·"
+            frmB.vCampos = Cad
             frmB.vTabla = "incidencias"
             frmB.vSql = ""
             
@@ -1733,9 +1733,9 @@ Dim LeerHorario As Boolean
     Case 2
             'HORARIO
     
-            cad = "Codigo|idhorario|N||20·"
-            cad = cad & "Descripcion|NomHorario|T||70·"
-            frmB.vCampos = cad
+            Cad = "Codigo|idhorario|N||20·"
+            Cad = Cad & "Descripcion|NomHorario|T||70·"
+            frmB.vCampos = Cad
             frmB.vTabla = "Horarios"
             frmB.vSql = ""
             
@@ -2220,10 +2220,10 @@ End Sub
 
 
 Private Sub PosicionarData()
-Dim cad As String, Indicador As String
+Dim Cad As String, Indicador As String
 
-    cad = "(codguiav=" & Text1(0).Text & ")"
-    If SituarData(Me.adodc1, cad, Indicador) Then
+    Cad = "(codguiav=" & Text1(0).Text & ")"
+    If SituarData(Me.adodc1, Cad, Indicador) Then
         PonerModo 2
         lblIndicador.Caption = Indicador
     Else
@@ -2262,39 +2262,39 @@ Private Sub printNou()
 End Sub
 
 Private Sub SeparaValores()
-Dim cad As String
+Dim Cad As String
 
 
-    cad = RecuperaValor(CadenaDesdeOtroForm, 1)
-    If cad = "" Then cad = "01/01/1900"
-    FI = CDate(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 1)
+    If Cad = "" Then Cad = "01/01/1900"
+    FI = CDate(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 2)
-    If cad = "" Then cad = "01/01/2900"
-    FF = CDate(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 2)
+    If Cad = "" Then Cad = "01/01/2900"
+    FF = CDate(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 3)
-    If cad = "" Then cad = "-1"
-    DTra = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 3)
+    If Cad = "" Then Cad = "-1"
+    DTra = Val(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 4)
-    If cad = "" Then cad = "100000000"
-    HTra = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 4)
+    If Cad = "" Then Cad = "100000000"
+    HTra = Val(Cad)
 
-    cad = RecuperaValor(CadenaDesdeOtroForm, 5)
-    If cad = "" Then cad = "-1"
-    DInci = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 5)
+    If Cad = "" Then Cad = "-1"
+    DInci = Val(Cad)
     
-    cad = RecuperaValor(CadenaDesdeOtroForm, 6)
-    If cad = "" Then cad = "32200"
-    HInci = Val(cad)
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 6)
+    If Cad = "" Then Cad = "32200"
+    HInci = Val(Cad)
 
 
 
     'Correctos o incorrectos
-    cad = RecuperaValor(CadenaDesdeOtroForm, 7)
-    If Val(cad) > 2 Then cad = "0"
-    CorrectosIncorrectos = CByte(Val(cad))
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 7)
+    If Val(Cad) > 2 Then Cad = "0"
+    CorrectosIncorrectos = CByte(Val(Cad))
     
 End Sub
 
@@ -2370,7 +2370,7 @@ Private Sub CargaDatosMarcajes(SoloIncidenciasGeneradas As Boolean)
 Dim RS As ADODB.Recordset
 Dim IT As ListItem
 Dim i As Integer
-Dim cad As String
+Dim Cad As String
 Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     Set RS = New ADODB.Recordset
     If Not SoloIncidenciasGeneradas Then
@@ -2399,7 +2399,7 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
             End If
             
             Set IT = ListView1.ListItems.Add(, , SQL)
-            If RS!IdInci > 0 Then IT.SubItems(1) = RS!nominci
+            If RS!IdInci > 0 Then IT.SubItems(1) = RS!NomInci
             IT.SubItems(2) = RS!LaHora & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             IT.Tag = RS!Negativa
             
@@ -2445,7 +2445,7 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     SQL = SQL & Adodc2.Recordset!Entrada & " ORDER BY id"
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     While Not RS.EOF
-        Set IT = ListView2.ListItems.Add(, , RS!nominci)
+        Set IT = ListView2.ListItems.Add(, , RS!NomInci)
         IT.SubItems(1) = DevuelveHora(RS!Horas)
         IT.SubItems(2) = Format(RS!Horas, "0.00")
         IT.SubItems(3) = RS!IdInci
@@ -2507,9 +2507,9 @@ End Sub
 
 
 Private Sub AbrirGeolocalizacion()
-Dim cad As String
-    cad = "https://www.google.com/maps/?q=" & ListView3.SelectedItem.SubItems(1)
-    LanzaVisorMimeDocumento Me.Hwnd, cad
+Dim Cad As String
+    Cad = "https://www.google.com/maps/?q=" & ListView3.SelectedItem.SubItems(1)
+    LanzaVisorMimeDocumento Me.Hwnd, Cad
     
 End Sub
 
@@ -2517,7 +2517,7 @@ End Sub
 
 
 Private Sub TraspasarDatosHco()
-Dim cad As String
+Dim Cad As String
 Dim OK  As Boolean
     
     lblIndicador.Caption = "Marcajes"
@@ -2525,16 +2525,16 @@ Dim OK  As Boolean
 
     OK = True
 
-    cad = "INSERT IGNORE INTO marcajeshco(Entrada , idTrabajador, Fecha, Correcto, IncFinal, HorasTrabajadas, HorasIncid, IdHorario,"
-    cad = cad & " HorasDto, Festivo, Baja, Nocturno, nomtrabajador2, idcal2 ,nominci2 , nomcalendar   )"
+    Cad = "INSERT IGNORE INTO marcajeshco(Entrada , idTrabajador, Fecha, Correcto, IncFinal, HorasTrabajadas, HorasIncid, IdHorario,"
+    Cad = Cad & " HorasDto, Festivo, Baja, Nocturno, nomtrabajador2, idcal2 ,nominci2 , nomcalendar   )"
 
-    cad = cad & " select Entrada,marcajes.idTrabajador,Fecha,Correcto,IncFinal,HorasTrabajadas,HorasIncid,idHorario,HorasDto,Festivo,"
-    cad = cad & " Baja,Nocturno,nomtrabajador,trabajadores.idcal,NomInci,calendario.descripcion"
-    cad = cad & " from  marcajes,incidencias , trabajadores  ,calendario"
-    cad = cad & " Where marcajes.idTrabajador = trabajadores.idTrabajador And marcajes.IncFinal = incidencias.IdInci"
-    cad = cad & " and trabajadores.idcal=calendario.idcal"
-    cad = cad & " and fecha<= " & DBSet(CadenaDesdeOtroForm, "F")
-    If Not EjecutaSQL(cad) Then OK = False
+    Cad = Cad & " select Entrada,marcajes.idTrabajador,Fecha,Correcto,IncFinal,HorasTrabajadas,HorasIncid,idHorario,HorasDto,Festivo,"
+    Cad = Cad & " Baja,Nocturno,nomtrabajador,trabajadores.idcal,NomInci,calendario.descripcion"
+    Cad = Cad & " from  marcajes,incidencias , trabajadores  ,calendario"
+    Cad = Cad & " Where marcajes.idTrabajador = trabajadores.idTrabajador And marcajes.IncFinal = incidencias.IdInci"
+    Cad = Cad & " and trabajadores.idcal=calendario.idcal"
+    Cad = Cad & " and fecha<= " & DBSet(CadenaDesdeOtroForm, "F")
+    If Not EjecutaSQL(Cad) Then OK = False
 
 
     If OK Then
@@ -2542,12 +2542,12 @@ Dim OK  As Boolean
         lblIndicador.Caption = "datos horas"
         lblIndicador.Refresh
 
-        cad = "INSERT IGNORE INTO entradamarcajeshco(Secuencia,idTrabajador,idMarcaje,Fecha,Hora,idInci,HoraReal,Reloj,latitud,longitud,ssid,imei,observaciones,appinfo,nominci)"
-        cad = cad & " select Secuencia,idTrabajador,idMarcaje,Fecha,Hora,entradamarcajes.idInci,HoraReal,Reloj,"
-        cad = cad & " latitud,longitud,ssid,imei,observaciones,appinfo,coalesce(nominci ,'')"
-        cad = cad & " from entradamarcajes left join incidencias on entradamarcajes.idinci=incidencias.idinci where"
-        cad = cad & " idmarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
-        If Not EjecutaSQL(cad) Then OK = False
+        Cad = "INSERT IGNORE INTO entradamarcajeshco(Secuencia,idTrabajador,idMarcaje,Fecha,Hora,idInci,HoraReal,Reloj,latitud,longitud,ssid,imei,observaciones,appinfo,nominci)"
+        Cad = Cad & " select Secuencia,idTrabajador,idMarcaje,Fecha,Hora,entradamarcajes.idInci,HoraReal,Reloj,"
+        Cad = Cad & " latitud,longitud,ssid,imei,observaciones,appinfo,coalesce(nominci ,'')"
+        Cad = Cad & " from entradamarcajes left join incidencias on entradamarcajes.idinci=incidencias.idinci where"
+        Cad = Cad & " idmarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
+        If Not EjecutaSQL(Cad) Then OK = False
     
     End If
     
@@ -2556,11 +2556,11 @@ Dim OK  As Boolean
         lblIndicador.Caption = "Incidencias generadas"
         lblIndicador.Refresh
 
-        cad = "INSERT IGNORE INTO incidenciasgeneradashco( Id,EntradaMarcaje,Incidencia,horas,nominci )"
-        cad = cad & " select  Id,EntradaMarcaje,Incidencia,horas,coalesce(nominci ,'')"
-        cad = cad & " from incidenciasgeneradas left join incidencias on incidenciasgeneradas.Incidencia=incidencias.idinci where"
-        cad = cad & " EntradaMarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
-        If Not EjecutaSQL(cad) Then OK = False
+        Cad = "INSERT IGNORE INTO incidenciasgeneradashco( Id,EntradaMarcaje,Incidencia,horas,nominci )"
+        Cad = Cad & " select  Id,EntradaMarcaje,Incidencia,horas,coalesce(nominci ,'')"
+        Cad = Cad & " from incidenciasgeneradas left join incidencias on incidenciasgeneradas.Incidencia=incidencias.idinci where"
+        Cad = Cad & " EntradaMarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
+        If Not EjecutaSQL(Cad) Then OK = False
 
     End If
     
@@ -2572,23 +2572,23 @@ Dim OK  As Boolean
 
     
         'Los deletes
-        cad = " DELETE from incidenciasgeneradas  where"
-        cad = cad & " EntradaMarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
-        If Not EjecutaSQL(cad) Then OK = False
-        cad = " DELETE from entradamarcajes  where"
-        cad = cad & " idmarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
-        If Not EjecutaSQL(cad) Then OK = False
-        cad = "DELETE FROM marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
-        If Not EjecutaSQL(cad) Then OK = False
+        Cad = " DELETE from incidenciasgeneradas  where"
+        Cad = Cad & " EntradaMarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
+        If Not EjecutaSQL(Cad) Then OK = False
+        Cad = " DELETE from entradamarcajes  where"
+        Cad = Cad & " idmarcaje in ( select entrada from marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F") & ")"
+        If Not EjecutaSQL(Cad) Then OK = False
+        Cad = "DELETE FROM marcajes where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
+        If Not EjecutaSQL(Cad) Then OK = False
         
-        cad = "DELETE FROM calendariof where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
-        EjecutaSQL cad
-        cad = "DELETE FROM calendariol where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
-        EjecutaSQL cad
-        cad = "DELETE FROM calendariot where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
-        EjecutaSQL cad
-        cad = "DELETE FROM festivos where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
-        EjecutaSQL cad
+        Cad = "DELETE FROM calendariof where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
+        EjecutaSQL Cad
+        Cad = "DELETE FROM calendariol where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
+        EjecutaSQL Cad
+        Cad = "DELETE FROM calendariot where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
+        EjecutaSQL Cad
+        Cad = "DELETE FROM festivos where fecha<=" & DBSet(CadenaDesdeOtroForm, "F")
+        EjecutaSQL Cad
         
         
 
@@ -2598,8 +2598,8 @@ Dim OK  As Boolean
     If OK Then
         MsgBox "Proceso finalizado correctamente", vbInformation
     Else
-        cad = "ERROR : " & lblIndicador.Caption & vbCrLf & cad & vbCrLf & "Avise soporte tecnico"
-        MsgBox cad, vbExclamation
+        Cad = "ERROR : " & lblIndicador.Caption & vbCrLf & Cad & vbCrLf & "Avise soporte tecnico"
+        MsgBox Cad, vbExclamation
     End If
     lblIndicador.Caption = ""
 End Sub
