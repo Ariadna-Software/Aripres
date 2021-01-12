@@ -654,7 +654,7 @@ Private Sub BotonModificar()
     If Combo1(0).ListIndex = -1 Then Err.Raise 513, , "Error situando combo Empresa"
     
     Combo1(1).ListIndex = -1
-    I = Val(adodc1.Recordset!codarea)
+    I = Val(adodc1.Recordset!codArea)
     PosicionarCombo Combo1(1), I
     If Combo1(1).ListIndex = -1 Then Err.Raise 513, , "Error situando combo ALMACEN"
     
@@ -733,7 +733,7 @@ Dim SQL As String
         Else
             SQL = SQL & " AND paraempresa= 0 "
         End If
-        SQL = SQL & " AND codarea=  " & adodc1.Recordset!codarea
+        SQL = SQL & " AND codarea=  " & adodc1.Recordset!codArea
         SQL = SQL & " AND idTrabajador =" & adodc1.Recordset!idTrabajador
         
         
@@ -910,7 +910,7 @@ Dim F1 As Date
                     frmAlzModificarHorasEmpresa.idTrabajador = adodc1.Recordset!idTrabajador
                     frmAlzModificarHorasEmpresa.Fecha = adodc1.Recordset!Fecha
                     frmAlzModificarHorasEmpresa.TipoHora = adodc1.Recordset!TipoHoras
-                    frmAlzModificarHorasEmpresa.AlmacenArea = adodc1.Recordset!codarea
+                    frmAlzModificarHorasEmpresa.AlmacenArea = adodc1.Recordset!codArea
                     
                     frmAlzModificarHorasEmpresa.lblNombre = adodc1.Recordset!nomtrabajador
                     frmAlzModificarHorasEmpresa.lblTipoHora(0).Caption = adodc1.Recordset!Desctipohora
@@ -1020,7 +1020,7 @@ Private Sub Form_Activate()
 '            PonerModo 0
 '        End If
         
-        mnFIltro1_Click 1
+        mnFIltro1_Click 2
         If Me.adodc1.Recordset.EOF Then
             PonerModo 0
         Else

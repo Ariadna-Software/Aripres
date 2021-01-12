@@ -373,7 +373,7 @@ Begin VB.Form frmTareaActual
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   5
+         NumListImages   =   6
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":9353
             Key             =   ""
@@ -392,6 +392,10 @@ Begin VB.Form frmTareaActual
          EndProperty
          BeginProperty ListImage5 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":FFBB
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmTareaActual.frx":109CD
             Key             =   ""
          EndProperty
       EndProperty
@@ -466,7 +470,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdImpTarea 
          Height          =   375
          Left            =   3720
-         Picture         =   "frmTareaActual.frx":109CD
+         Picture         =   "frmTareaActual.frx":113DF
          Style           =   1  'Graphical
          TabIndex        =   29
          Top             =   300
@@ -516,7 +520,7 @@ Begin VB.Form frmTareaActual
          Height          =   240
          Index           =   0
          Left            =   720
-         Picture         =   "frmTareaActual.frx":12A3F
+         Picture         =   "frmTareaActual.frx":13451
          ToolTipText     =   "Buscar fecha"
          Top             =   120
          Width           =   240
@@ -623,7 +627,7 @@ Dim Modifi As Boolean
 
 
 Private Sub Check1_Click()
-Dim i As Integer
+Dim I As Integer
         ListView2.MultiSelect = Check1.Value
         cmdSelecc(0).Visible = Check1.Value = 1
         cmdSelecc(1).Visible = Check1.Value = 1
@@ -632,9 +636,9 @@ Dim i As Integer
         Me.Text1(2).Visible = Check1.Value = 1
         
         If Not Check1.Value Then
-            For i = 1 To ListView2.ListItems.Count
-                ListView2.ListItems(i).Selected = False
-            Next i
+            For I = 1 To ListView2.ListItems.Count
+                ListView2.ListItems(I).Selected = False
+            Next I
             Set ListView2.SelectedItem = Nothing
         End If
 End Sub
@@ -738,7 +742,7 @@ Private Sub cmdImpTarea_Click()
 End Sub
 
 Private Sub cmdSelecc_Click(Index As Integer)
-Dim i As Integer
+Dim I As Integer
 Dim B As Boolean
 Dim Hora As Date
     If Me.ListView2.ListItems.Count = 0 Then Exit Sub
@@ -753,23 +757,23 @@ Dim Hora As Date
         Hora = CDate(Text1(2).Text)
         For Contador = 1 To ListView2.ListItems.Count
             B = False
-            For i = 2 To 17
-                If ListView2.ListItems(Contador).SubItems(i) = "" Then
+            For I = 2 To 17
+                If ListView2.ListItems(Contador).SubItems(I) = "" Then
                     Exit For
                 Else
                     If Index = 0 Then
                         'Seleccionamos los que tengan un marcaje anterior
-                        If CDate(Me.ListView2.ListItems(Contador).SubItems(i)) <= Hora Then B = True
+                        If CDate(Me.ListView2.ListItems(Contador).SubItems(I)) <= Hora Then B = True
                         Exit For
                     Else
                         'Marcaje posterior
-                        If CDate(Me.ListView2.ListItems(Contador).SubItems(i)) >= Hora Then
+                        If CDate(Me.ListView2.ListItems(Contador).SubItems(I)) >= Hora Then
                             B = True
                             Exit For
                         End If
                     End If
                 End If
-            Next i
+            Next I
             Me.ListView2.ListItems(Contador).Selected = B
         Next Contador
         PonFocoLW
@@ -1087,7 +1091,7 @@ On Error Resume Next
     If Err.Number <> 0 Then Err.Clear
 End Sub
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then
         KeyAscii = 0
         SendKeys "{tab}"
@@ -1170,7 +1174,7 @@ End Sub
 
 
 Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
@@ -1199,7 +1203,7 @@ Private Sub Text2_GotFocus()
 End Sub
 
 Private Sub Text2_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text2_LostFocus()
@@ -1527,7 +1531,7 @@ End Sub
 
 Private Sub PonMarcajes()
     'Dos recordsets
-    Dim i As Integer
+    Dim I As Integer
     Dim RS As ADODB.Recordset
     Dim RT As ADODB.Recordset
     Dim SQL As String
@@ -1535,6 +1539,8 @@ Private Sub PonMarcajes()
     Dim RelojAnterior As Integer
     Dim RelojesIncorrectos As Boolean
     Dim HoraPintar As Date
+    Dim Area As Integer
+    Dim masDeUnArea  As Boolean
     
     ListView2.ListItems.Clear
     SQL = "SELECT EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
@@ -1574,14 +1580,16 @@ Private Sub PonMarcajes()
     SQL = SQL & " AND idTrabajador = "
     While Not RS.EOF
         RT.Open SQL & RS.Fields(0) & " ORDER BY HoraReal", conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-        i = 2
+        I = 2
         
+        masDeUnArea = False
+        RelojAnterior = -1
         RelojesIncorrectos = False
         Set Item = ListView2.ListItems.Add(, , RS.Fields(0))
         Item.SubItems(1) = RS.Fields(1)
         While Not RT.EOF
             'If i < 8 Then  He puesto 2 mas
-            If i < 16 Then
+            If I < 16 Then
                 
                 'If RT!HoraReal > "23:59:59" Then
                 '    HoraPintar = DateAdd("h", -24, RT!HoraReal)
@@ -1591,11 +1599,14 @@ Private Sub PonMarcajes()
                 '    HoraPintar = RT!HoraReal
                 '
                 'End If
-                Item.SubItems(i) = Format(RT!acabalga, "hh:mm")
+                Item.SubItems(I) = Format(RT!acabalga, "hh:mm")
                 
                 If vEmpresa.Reloj2 > 0 Then
-                    If (i Mod 2) = 0 Then
+                    If (I Mod 2) = 0 Then
                         'RelojAnterior = RT!Reloj
+                        If RelojAnterior >= 0 Then
+                            If RelojAnterior <> RT!Area Then masDeUnArea = True
+                        End If
                         RelojAnterior = RT!Area
                     Else
                         'If RT!Reloj <> RelojAnterior Then RelojesIncorrectos = True
@@ -1603,20 +1614,25 @@ Private Sub PonMarcajes()
                     End If
                 End If
             End If
-            i = i + 1
+            I = I + 1
             RT.MoveNext
         Wend
         
         'El icono. Si son pares, y hay mas de un tipo de reloj(biostar 2 en coopic), las entradas salidas deberian ser por reloj
         'con lo cual si alguna entrad salid difiere de reloj, lo indicamos con el icono 5
         
-        If i Mod 2 = 0 Then
+        If I Mod 2 = 0 Then
         
             If RelojesIncorrectos Then
                 Item.SmallIcon = 5  'Pares pero distintos relojes E/S
                 Item.ToolTipText = "Areas diferentes"
             Else
-                Item.SmallIcon = 3 'OK. Todo
+                If masDeUnArea Then
+                    Item.SmallIcon = 6 'OK. Todo
+                    Item.ToolTipText = "Mas de un area de trabajo"
+                Else
+                    Item.SmallIcon = 3 'OK. Todo
+                End If
             End If
         Else
             Item.SmallIcon = 4  'Numero IMpar
@@ -1669,7 +1685,7 @@ Dim RegistrosTratar As Collection
 Dim FE As Date
 Dim Hora As Date
 Dim H1 As Date
-Dim i As Long
+Dim I As Long
 
 Dim QueDia As Integer
 Dim DiaTraba As Collection
@@ -1727,8 +1743,8 @@ Dim J As Integer
     'Vamos a ver los dias a tratar
     Set DiasATratar = New Collection
     
-    i = Round(vEmpresa.MaxRetraso * 60, 0)
-    Cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+    I = Round(vEmpresa.MaxRetraso * 60, 0)
+    Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
     If CDate(Format(UltimaDiaHoraTraidoMaquina2, "hh:nn:ss")) >= CDate(Cad) Then
         Cad = ""
     Else
@@ -1756,15 +1772,15 @@ Dim J As Integer
     For QueDia = 1 To DiasATratar.Count
             'Voy a ver que dias tienen fichajes superiror a las 22:30 (parametros)
             ' Y luego estudiare esos dias
-            i = Round(vEmpresa.MaxRetraso * 60, 0)
-            Cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+            I = Round(vEmpresa.MaxRetraso * 60, 0)
+            Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
             Hora = Cad
             Cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
             'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
             Cad = "Select distinct idtrabajador from entradafichajes where " & Cad & " ORDER BY idtrabajador"
             RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             Set RegistrosTratar = New Collection
-            i = -1
+            I = -1
             While Not RS.EOF
                 Cad = RS!idTrabajador
                 RegistrosTratar.Add Cad
@@ -1789,8 +1805,8 @@ Dim J As Integer
                     conn.Execute "Delete from tmpnotrabajo"
                     espera 0.5
                     Cad = ""
-                    For i = 1 To RegistrosTratar.Count
-                        Cad = Cad & ", (" & RegistrosTratar(i) & ")"
+                    For I = 1 To RegistrosTratar.Count
+                        Cad = Cad & ", (" & RegistrosTratar(I) & ")"
                     Next
                     Cad = Mid(Cad, 2)
                     Cad = "INSERT INTO tmpnotrabajo(idTra) VALUES " & Cad

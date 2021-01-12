@@ -682,7 +682,7 @@ Private Sub CalculaEntreFechas(FI As Date, FF As Date)
 Dim RS As Recordset
 Dim Horas As Currency
 Dim Dias As Integer
-Dim AUX As String
+Dim Aux As String
 Dim idCal As Integer
 Dim vSeccion As Integer
 
@@ -694,8 +694,8 @@ Dim vSeccion As Integer
 
     Set RS = New ADODB.Recordset
     
-    AUX = "select idhorario,idcal from calendariol where fecha >='2018-01-01' and idcal in (select idcal from trabajadores)  group by 1,2"
-    RS.Open AUX, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    Aux = "select idhorario,idcal from calendariol where fecha >='2018-01-01' and idcal in (select idcal from trabajadores)  group by 1,2"
+    RS.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     
     Label1.Caption = "Obtener horarios"
     Label1.Refresh
@@ -1019,7 +1019,7 @@ Dim RS As ADODB.Recordset
 End Sub
 
 Private Sub cmdImprimir_Click()
-Dim i As Integer
+Dim I As Integer
 
     If lw1.ListItems.Count < 1 Then Exit Sub
     
@@ -1042,8 +1042,8 @@ Dim i As Integer
     
     ' Dias Trabajados y duas nomina van en la tabla tmpHoras,, en campos Dias, HorasE
     
-    For i = 1 To lw1.ListItems.Count
-        With lw1.ListItems(i)
+    For I = 1 To lw1.ListItems.Count
+        With lw1.ListItems(I)
             SQL = .Text & ",'" & .SubItems(1) & "',"
             
             'OFICIALES
@@ -1070,7 +1070,7 @@ Dim i As Integer
             SQL = SQL & .SubItems(3) & "," & .SubItems(8) & ")"
             conn.Execute SQL
         End With
-    Next i
+    Next I
     
     If vEmpresa.NominaAutomatica Then
         SQL = "Mes= """ & UCase(Combo1.List(Combo1.ListIndex)) & " " & Text1.Text & """|"
@@ -1109,7 +1109,7 @@ E1:
 End Sub
 
 Private Sub Combo2_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Command1_Click()
@@ -1120,7 +1120,7 @@ End Sub
 Private Sub ProcesoDeGeneracionNominas()
 Dim B As Boolean
 Dim RS As ADODB.Recordset
-Dim i As Integer
+Dim I As Integer
 
 
     
@@ -1133,8 +1133,8 @@ Dim i As Integer
     
     
 
-        i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
-        SQL = "'" & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "'"
+        I = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
+        SQL = "'" & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & I & "'"
   
     SQL = "Select * from Nominas where Fecha = " & SQL
     Set RS = New ADODB.Recordset
@@ -1172,7 +1172,7 @@ End Sub
 
 
 Private Sub Command2_Click(Index As Integer)
-Dim i As Integer
+Dim I As Integer
 Dim RS As ADODB.Recordset
 
 
@@ -1218,10 +1218,10 @@ Dim RS As ADODB.Recordset
             frmCambiosDatosNomina.Caption = SQL
             frmCambiosDatosNomina.lblIdTra(0) = .Text             'Trabajador
             frmCambiosDatosNomina.lblTra(0) = " - " & .SubItems(1)              'Trabajador
-            i = InStr(.SubItems(2), "/")
+            I = InStr(.SubItems(2), "/")
             'OFICIALES
-            frmCambiosDatosNomina.txtDias(0).Text = Mid(.SubItems(2), 1, i - 1) '
-            frmCambiosDatosNomina.txtHN(0).Text = Mid(.SubItems(2), i + 1)
+            frmCambiosDatosNomina.txtDias(0).Text = Mid(.SubItems(2), 1, I - 1) '
+            frmCambiosDatosNomina.txtHN(0).Text = Mid(.SubItems(2), I + 1)
             'TRABAJADAS
             frmCambiosDatosNomina.txtDias(1).Text = .SubItems(3)
             frmCambiosDatosNomina.txtHN(1).Text = .SubItems(4)
@@ -1258,9 +1258,9 @@ Dim RS As ADODB.Recordset
         
         'Eliminar la entrada
         SQL = ""
-        For i = 1 To lw1.ListItems.Count
-            If lw1.ListItems(i).Selected Then SQL = SQL & "X"
-        Next i
+        For I = 1 To lw1.ListItems.Count
+            If lw1.ListItems(I).Selected Then SQL = SQL & "X"
+        Next I
         If SQL = "" Then Exit Sub
         
         
@@ -1268,14 +1268,14 @@ Dim RS As ADODB.Recordset
         If MsgBox(SQL, vbQuestion + vbYesNoCancel) <> vbYes Then Exit Sub
         
         SQL = ""
-        For i = lw1.ListItems.Count To 1 Step -1
-            If lw1.ListItems(i).Selected Then
+        For I = lw1.ListItems.Count To 1 Step -1
+            If lw1.ListItems(I).Selected Then
                 
-                SQL = "DELETE FROM tmpdatosmes where trabajador =" & lw1.ListItems(i).Text
+                SQL = "DELETE FROM tmpdatosmes where trabajador =" & lw1.ListItems(I).Text
                 conn.Execute SQL
-                lw1.ListItems.Remove i
+                lw1.ListItems.Remove I
             End If
-        Next i
+        Next I
         If SQL = "" Then Exit Sub
         
     End Select
@@ -1392,12 +1392,12 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub CargaCombo(ByRef C As ComboBox, ByRef T As TextBox)
-Dim i As Integer
+Dim I As Integer
 Dim F As Date
 
-    For i = 1 To 12
-        C.AddItem Format(CDate("01/" & i & "/2000"), "mmmm")
-    Next i
+    For I = 1 To 12
+        C.AddItem Format(CDate("01/" & I & "/2000"), "mmmm")
+    Next I
     F = Now
     If Day(Now) < 14 Then F = DateAdd("m", -1, Now)
     C.ListIndex = Month(F) - 1
@@ -1456,7 +1456,7 @@ End With
 
 End Sub
 
-Private Sub PonLinea(ByRef i As ListItem, ByRef RS As ADODB.Recordset)
+Private Sub PonLinea(ByRef I As ListItem, ByRef RS As ADODB.Recordset)
 'Si tiene dias pendientes
 Dim J As Integer
 Dim Cantidad1 As Currency
@@ -1527,24 +1527,24 @@ Dim ToolTip As String
         
         
         
-        i.SmallIcon = J
-        i.Text = RS!Trabajador
-        i.SubItems(1) = RS!nomtrabajador
-        i.ToolTipText = ToolTip
+        I.SmallIcon = J
+        I.Text = RS!Trabajador
+        I.SubItems(1) = RS!nomtrabajador
+        I.ToolTipText = ToolTip
         
         'Horas oficiles
-        i.SubItems(2) = RS!MesDias & "/" & Format(RS!meshoras, "0.00")
+        I.SubItems(2) = RS!MesDias & "/" & Format(RS!meshoras, "0.00")
         
         'Trabajados
         
         
-        i.SubItems(3) = RS!diasTrabajados
-        i.SubItems(4) = Format(RS!horast, "0.00")
-        i.SubItems(5) = Format(RS!HorasC, "0.00")
-        i.SubItems(6) = Format(RS!horase, "0.00")
+        I.SubItems(3) = RS!diasTrabajados
+        I.SubItems(4) = Format(RS!horast, "0.00")
+        I.SubItems(5) = Format(RS!HorasC, "0.00")
+        I.SubItems(6) = Format(RS!horase, "0.00")
         
         'Saldo
-        i.SubItems(7) = RS!saldodias
+        I.SubItems(7) = RS!saldodias
 
         Cantidad1 = RS!saldoh
         If Cantidad1 < 0 Then
@@ -1557,43 +1557,43 @@ Dim ToolTip As String
                 Cantidad1 = -Cantidad2
             End If
         End If
-        i.SubItems(8) = Format(Cantidad1, "0.00")
+        I.SubItems(8) = Format(Cantidad1, "0.00")
         
    
-        i.SubItems(9) = RS!diasperiodo
-        i.SubItems(10) = " "  'Horas que lleva a nomina son las horasn
-        i.SubItems(11) = " "  'PLUS
+        I.SubItems(9) = RS!diasperiodo
+        I.SubItems(10) = " "  'Horas que lleva a nomina son las horasn
+        I.SubItems(11) = " "  'PLUS
         'If RS!horase > 0 Then i.SubItems(11) = Format(RS!horase, "0.00")
         
         
         '
         'Bolsa
-        i.SubItems(12) = " "
-        i.SubItems(13) = " "
+        I.SubItems(12) = " "
+        I.SubItems(13) = " "
         If DBLet(RS!bolsaantes, "N") <> 0 Then
-            i.SubItems(12) = Format(RS!bolsaantes, "0.00")
-            i.SubItems(13) = Format(RS!bolsadespues, "0.00")  'aunque sea cero, la pinto, Para ver claro la diferencia
+            I.SubItems(12) = Format(RS!bolsaantes, "0.00")
+            I.SubItems(13) = Format(RS!bolsadespues, "0.00")  'aunque sea cero, la pinto, Para ver claro la diferencia
         
         Else
-            If DBLet(RS!bolsadespues, "N") <> 0 Then i.SubItems(13) = Format(RS!bolsadespues, "0.00")
+            If DBLet(RS!bolsadespues, "N") <> 0 Then I.SubItems(13) = Format(RS!bolsadespues, "0.00")
         End If
         
         'Bruto NORMALES
-        i.SubItems(14) = Format(DBLet(RS!ImportNormales, "N"), "0.00")
+        I.SubItems(14) = Format(DBLet(RS!ImportNormales, "N"), "0.00")
         
         
-        i.SubItems(15) = " "
-        If RS!ImporEstruc > 0 Then i.SubItems(15) = Format(RS!ImporEstruc, "0.00")
+        I.SubItems(15) = " "
+        If RS!ImporEstruc > 0 Then I.SubItems(15) = Format(RS!ImporEstruc, "0.00")
         
         
-        i.SubItems(16) = " "
-        If RS!ImportExtras > 0 Then i.SubItems(16) = Format(RS!ImportExtras, "0.00")
+        I.SubItems(16) = " "
+        If RS!ImportExtras > 0 Then I.SubItems(16) = Format(RS!ImportExtras, "0.00")
         
-        i.SubItems(17) = " "
+        I.SubItems(17) = " "
         If DBLet(RS!LlevaPlus, "N") <> 0 Then MsgBox "Con plus. ERROR. Soporte tecnico. Tr" & RS!Trabajador
         
         Importe1 = DBLet(RS!ImportNormales, "N") + DBLet(RS!ImporEstruc, "N") + DBLet(RS!ImportExtras, "N")
-        i.SubItems(18) = Format(Importe1, "0.00")
+        I.SubItems(18) = Format(Importe1, "0.00")
         
         
         
@@ -1607,12 +1607,12 @@ Dim ToolTip As String
 '            End If
 '        End If
   
-        i.Tag = RS!ControlNomina
+        I.Tag = RS!ControlNomina
 End Sub
 
 
 Private Sub CargaDatos()
-Dim i As ListItem
+Dim I As ListItem
 Dim RS As ADODB.Recordset
 Dim NParam As Byte
 
@@ -1639,9 +1639,9 @@ Dim NParam As Byte
     SQL = SQL & "Trabajador"
     RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
     While Not RS.EOF
-        Set i = lw1.ListItems.Add
+        Set I = lw1.ListItems.Add
         'If RS!Trabajador = 9006 Then St op
-        PonLinea i, RS
+        PonLinea I, RS
         RS.MoveNext
     Wend
     RS.Close
@@ -1690,7 +1690,7 @@ Dim Imp1 As Currency
 Dim RS As ADODB.Recordset
 
 
-    Stop
+    
 
     If Baja Then
     
@@ -1755,19 +1755,19 @@ End Sub
 
 
 Private Function PuedeCompensarDias() As Integer
-Dim i As Integer
+Dim I As Integer
 
     PuedeCompensarDias = 0
     SQL = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", lw1.SelectedItem.Text, "N")
-    i = Val(SQL)
+    I = Val(SQL)
     
     'En la tabla tmpHorasMesHorario, al cargar los datos
     'se han cargado las horas oficiales
-    SQL = DevuelveDesdeBD("Dias", "tmpHorasMesHorario", "idHorario", CStr(i), "N")
+    SQL = DevuelveDesdeBD("Dias", "tmpHorasMesHorario", "idHorario", CStr(I), "N")
     If SQL <> "" Then
-        i = Val(SQL)
-        i = i - Val(lw1.SelectedItem.SubItems(8))
-        If i > 0 Then PuedeCompensarDias = i
+        I = Val(SQL)
+        I = I - Val(lw1.SelectedItem.SubItems(8))
+        If I > 0 Then PuedeCompensarDias = I
     End If
     
     
@@ -1776,7 +1776,7 @@ End Function
 
 
 Private Sub CompensarDias(Dias As Integer)
-Dim i As Integer
+Dim I As Integer
 Dim Lab As Integer
 Dim H As Currency
 Dim H1 As Currency
@@ -1785,9 +1785,9 @@ Dim RS As ADODB.Recordset
     
 
     SQL = DevuelveDesdeBD("idHorario", "Trabajadores", "idTrabajador", lw1.SelectedItem.Text, "N")
-    i = Val(SQL)
+    I = Val(SQL)
 
-    Lab = DiasLaborablesSemana(i)
+    Lab = DiasLaborablesSemana(I)
     If Lab < 1 Then Exit Sub
 
     If Dias < Lab Then
@@ -1799,7 +1799,7 @@ Dim RS As ADODB.Recordset
 
     'QUiero saber las horas a la semana k puedo compensar
     Set RS = New ADODB.Recordset
-    SQL = "Select * from Horarios Where idHorario =" & i
+    SQL = "Select * from Horarios Where idHorario =" & I
     RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     If Not RS.EOF Then
     
@@ -1812,8 +1812,8 @@ Dim RS As ADODB.Recordset
         
         'Por lo tanto veo cuantas semanas mas voy a compensar
         Do
-            i = Dias \ Lab
-            If i > 0 Then
+            I = Dias \ Lab
+            If I > 0 Then
                 'Una semana seguro k puedo compensar. Vamos palla
                 If H >= RS!TotalHoras Then   'Horas semana
                     D1 = D1 + Lab
@@ -1822,7 +1822,7 @@ Dim RS As ADODB.Recordset
                 End If
                 Dias = Dias - Lab
             End If
-        Loop Until i = 0
+        Loop Until I = 0
     End If
     RS.Close
     
@@ -1857,8 +1857,8 @@ Dim RS As ADODB.Recordset
             lw1.SelectedItem.SubItems(12) = H
             
             'Dias nomina
-            i = Val(lw1.SelectedItem.SubItems(8)) + D1
-            lw1.SelectedItem.SubItems(8) = i
+            I = Val(lw1.SelectedItem.SubItems(8)) + D1
+            lw1.SelectedItem.SubItems(8) = I
         End If
     End If
     Set RS = Nothing
@@ -1947,7 +1947,7 @@ Private Sub Text1_GotFocus()
 End Sub
 
 Private Sub Text1_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Text1_LostFocus()
@@ -1984,7 +1984,7 @@ End Sub
 
 
 Private Sub Text2_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 
@@ -1992,12 +1992,12 @@ End Sub
 
 
 Private Function genNominas() As Boolean
-Dim i As Integer
+Dim I As Integer
 Dim Cad As String
 Dim Importe As Currency
 Dim Horas As Currency
 Dim RS As ADODB.Recordset
-Dim AUX As String
+Dim Aux As String
 Dim PlusHorasTr As Currency
 On Error GoTo EGenerarNominas
     genNominas = False
@@ -2005,8 +2005,8 @@ On Error GoTo EGenerarNominas
     SQL = "INSERT INTO Nominas (Fecha,IdTrabajador,Dias,HN,HC,HE,HP,BolsaDespues,BolsaAntes"
     SQL = SQL & ",Anticipos,Antiguedad,IRPF,SSEmpr,PrecioHN,PrecioHC,PrecioHE,LlevaPlus , ImporteFijo"
     SQL = SQL & ",Bruto,ImporEstruc,ImportNormales  ,ImportExtras,Plus,FechaAlta,CentroA3 ) VALUES ('"
-    i = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
-    SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & i & "',"
+    I = DiasMes(Combo2.ListIndex + 1, CInt(Text2.Text))
+    SQL = SQL & Text2.Text & "-" & Combo2.ListIndex + 1 & "-" & I & "',"
     
     'Primero generamos la tabla de  nominas con los importes marcados aqui
     Cad = "SELECT tmpDatosMEs.*, "
@@ -2025,7 +2025,7 @@ On Error GoTo EGenerarNominas
     
         'IdTrabajador,Dias
         
-        If RS!Trabajador = 9397 Then Stop
+        'If RS!Trabajador = 9397 Then Stop
         
         Cad = RS!Trabajador & "," & RS!diasperiodo & ","
         

@@ -180,23 +180,35 @@ Begin VB.Form frmTrabajadores
       TabCaption(1)   =   "Horario"
       TabPicture(1)   =   "frmTrabajadores.frx":0028
       Tab(1).ControlEnabled=   0   'False
-      Tab(1).Control(0)=   "Text2"
-      Tab(1).Control(1)=   "Text1(26)"
-      Tab(1).Control(2)=   "ListView1"
-      Tab(1).Control(3)=   "ListView2"
-      Tab(1).Control(4)=   "imgVacas"
-      Tab(1).Control(5)=   "imgCalendariP(0)"
-      Tab(1).Control(6)=   "Label2(2)"
-      Tab(1).Control(7)=   "ImgModifHora"
-      Tab(1).Control(8)=   "imgZoom(0)"
-      Tab(1).Control(9)=   "Label2(1)"
-      Tab(1).Control(10)=   "Label2(0)"
-      Tab(1).ControlCount=   11
+      Tab(1).Control(0)=   "Text1(38)"
+      Tab(1).Control(1)=   "Text2"
+      Tab(1).Control(2)=   "Text1(26)"
+      Tab(1).Control(3)=   "ListView1"
+      Tab(1).Control(4)=   "ListView2"
+      Tab(1).Control(5)=   "Label2(3)"
+      Tab(1).Control(6)=   "imgVacas"
+      Tab(1).Control(7)=   "imgCalendariP(0)"
+      Tab(1).Control(8)=   "Label2(2)"
+      Tab(1).Control(9)=   "ImgModifHora"
+      Tab(1).Control(10)=   "imgZoom(0)"
+      Tab(1).Control(11)=   "Label2(1)"
+      Tab(1).Control(12)=   "Label2(0)"
+      Tab(1).ControlCount=   13
       TabCaption(2)   =   "Laboral"
       TabPicture(2)   =   "frmTrabajadores.frx":0044
       Tab(2).ControlEnabled=   0   'False
       Tab(2).Control(0)=   "Framelaboral"
       Tab(2).ControlCount=   1
+      Begin VB.TextBox Text1 
+         Height          =   285
+         Index           =   38
+         Left            =   -67920
+         MaxLength       =   4
+         TabIndex        =   123
+         Tag             =   "Calendario|N|S|||trabajadores|DiasVacaciones|||"
+         Top             =   2040
+         Width           =   975
+      End
       Begin VB.TextBox Text1 
          Height          =   285
          Index           =   37
@@ -1214,13 +1226,13 @@ Begin VB.Form frmTrabajadores
          Width           =   4695
       End
       Begin MSComctlLib.ListView ListView2 
-         Height          =   3975
+         Height          =   3015
          Left            =   -67920
          TabIndex        =   89
-         Top             =   1560
+         Top             =   2400
          Width           =   4095
          _ExtentX        =   7223
-         _ExtentY        =   7011
+         _ExtentY        =   5318
          View            =   3
          LabelEdit       =   1
          LabelWrap       =   -1  'True
@@ -1252,6 +1264,15 @@ Begin VB.Form frmTrabajadores
          Tag             =   "Tarjeta|N|S|||trabajadores|sexo|||"
          Top             =   720
          Width           =   255
+      End
+      Begin VB.Label Label2 
+         Caption         =   "Dias anuales"
+         Height          =   195
+         Index           =   3
+         Left            =   -67920
+         TabIndex        =   124
+         Top             =   1800
+         Width           =   975
       End
       Begin VB.Label Label4 
          Caption         =   "Tarjeta SIP"
@@ -1336,9 +1357,9 @@ Begin VB.Form frmTrabajadores
       End
       Begin VB.Image imgVacas 
          Height          =   240
-         Left            =   -66960
+         Left            =   -66840
          Picture         =   "frmTrabajadores.frx":0B96
-         Top             =   1320
+         Top             =   1560
          Width           =   240
       End
       Begin VB.Image imgEMAIL 
@@ -1360,12 +1381,21 @@ Begin VB.Form frmTrabajadores
       End
       Begin VB.Label Label2 
          Caption         =   "Vacaciones"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   8.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
          Height          =   195
          Index           =   2
          Left            =   -67920
          TabIndex        =   90
-         Top             =   1320
-         Width           =   975
+         Top             =   1560
+         Width           =   1005
       End
       Begin VB.Image ImgModifHora 
          Height          =   240
@@ -2057,7 +2087,7 @@ End Sub
 Private Sub HacerCambioCalendario()
 Dim F As Date
 Dim FESTIVOS As String
-Dim i As Integer
+Dim I As Integer
     On Error GoTo EHacerCambioCalendario
     
     F = CDate(cad_meua)
@@ -2115,8 +2145,8 @@ Dim i As Integer
         cad_meua = RecuperaValor(FESTIVOS, 1)
         cad_meua = "UPDATE calendarioT set tipodia=2 where fecha='" & cad_meua & "' AND idtrabajador=" & Text1(0).Text
         conn.Execute cad_meua
-        i = InStr(1, FESTIVOS, "|")
-        FESTIVOS = Mid(FESTIVOS, i + 1)
+        I = InStr(1, FESTIVOS, "|")
+        FESTIVOS = Mid(FESTIVOS, I + 1)
     Wend
     
     Exit Sub
@@ -2129,7 +2159,7 @@ End Sub
 
 Private Sub CopiandoHorarios()
 Dim C As String
-Dim i As Integer
+Dim I As Integer
 
 
     On Error GoTo ECopiandoHorarios
@@ -2141,13 +2171,13 @@ Dim i As Integer
     C = C & " calendariol.idcal=calendariof.idcal  and calendariol.fecha=calendariof.fecha"
     C = C & " Where calendariol.idCal = " & Text1(26).Text
     miRsAux.Open C, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
-    i = 0
+    I = 0
     While Not miRsAux.EOF
-        If i > 100 Then
+        If I > 100 Then
             EjecutaSQL C & ";"
-            i = 0
+            I = 0
         End If
-        If i = 0 Then
+        If I = 0 Then
             C = "INSERT INTO calendariot (idtrabajador, fecha, idhorario, TipoDia) VALUES "
         Else
             C = C & ","
@@ -2161,10 +2191,10 @@ Dim i As Integer
         End If
         
         miRsAux.MoveNext
-        i = i + 1
+        I = I + 1
     Wend
     miRsAux.Close
-    If i > 0 Then EjecutaSQL C & ";"
+    If I > 0 Then EjecutaSQL C & ";"
             
     Exit Sub
 ECopiandoHorarios:
@@ -2280,7 +2310,7 @@ End Sub
 '***************************************+
 
 Private Sub Combo1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 
@@ -2290,7 +2320,7 @@ Private Sub Form_Activate()
 End Sub
 
 Private Sub Form_KeyPress(KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
@@ -2298,7 +2328,7 @@ Private Sub Form_Unload(Cancel As Integer)
 End Sub
 
 Private Sub Form_Load()
-Dim i As Integer
+Dim I As Integer
 
     PrimeraVez = True
     
@@ -2390,9 +2420,9 @@ Dim i As Integer
     Data1.RecordSource = "Select * from " & NombreTabla & " where idtrabajador=-1"
     Data1.Refresh
           
-    For i = 0 To Combo1.Count - 1
-        If i <> 5 Then CargaCombo i
-    Next i
+    For I = 0 To Combo1.Count - 1
+        If I <> 5 Then CargaCombo I
+    Next I
     
     imgZoom(0).Picture = frmPpal.imgListImages16.ListImages(3).Picture
     imgEMAIL.Picture = frmPpal.imgListImages16.ListImages(2).Picture
@@ -2414,7 +2444,7 @@ End Sub
 
 
 Private Sub LimpiarCampos()
-Dim i As Integer
+Dim I As Integer
     
     On Error Resume Next
 
@@ -2422,9 +2452,9 @@ Dim i As Integer
     lblIndicador.Caption = ""
     Check1(0).Value = 0
     Check1(1).Value = 0
-    For i = 0 To Me.Combo1.Count - 1
-        Me.Combo1(i).ListIndex = -1
-    Next i
+    For I = 0 To Me.Combo1.Count - 1
+        Me.Combo1(I).ListIndex = -1
+    Next I
     If vEmpresa.imgtrabaj Then
         ImageTra.Picture = LoadPicture("")
         ImageTra.Tag = ""
@@ -2441,7 +2471,7 @@ End Sub
 '   En PONERMODO se habilitan, o no, los diverso campos del
 '   formulario en funcion del modo en k vayamos a trabajar
 Private Sub PonerModo(Kmodo As Byte)
-Dim i As Integer, NumReg As Byte
+Dim I As Integer, NumReg As Byte
 Dim B As Boolean
 
     On Error GoTo EPonerModo
@@ -2514,7 +2544,7 @@ Dim B As Boolean
 '        End If
 '    Next i
     ImgModifHora.Visible = Modo = 4
-    imgVacas.Visible = Modo = 4
+    imgVacas.Visible = Modo = 2 'Modo = 4
     Me.imgCalendariP(0).Visible = Modo > 2
     If Modo = 4 Then _
         BloquearTxt Text1(0), True 'si estic en  modificar, bloqueja la clau primaria
@@ -2611,7 +2641,7 @@ Private Sub Desplazamiento(Index As Integer)
 End Sub
 
 Private Sub frmB_Selecionado(CadenaDevuelta As String)
-    Dim AUX As String
+    Dim Aux As String
 
     If CadenaDevuelta <> "" Then
         HaDevueltoDatos = True
@@ -2619,8 +2649,8 @@ Private Sub frmB_Selecionado(CadenaDevuelta As String)
         'Sabemos que campos son los que nos devuelve
         'Creamos una cadena consulta y ponemos los datos
         CadB = ""
-        AUX = ValorDevueltoFormGrid(Text1(0), CadenaDevuelta, 1)
-        CadB = AUX
+        Aux = ValorDevueltoFormGrid(Text1(0), CadenaDevuelta, 1)
+        CadB = Aux
         '   Como la clave principal es unica, con poner el sql apuntando
         '   al valor devuelto sobre la clave ppal es suficiente
         ' *** canviar o llevar el WHERE ***
@@ -2885,6 +2915,15 @@ End Sub
 
 
 Private Sub imgVacas_Click()
+    If Modo <> 2 Then Exit Sub
+    
+    frmCalendarioVacaciones.Trabajador = CLng(Text1(0).Text)
+    frmCalendarioVacaciones.Show vbModal
+    
+    Exit Sub
+
+
+    'ANtes Ene 21
     FrmVarios.Parametros = Text1(1).Text & "|" & Text1(0).Text & "|"
     FrmVarios.Opcion = 3
     FrmVarios.Show vbModal
@@ -2927,7 +2966,7 @@ End Sub
 
 
 Private Sub Option1_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+    KeyPress KeyAscii
 End Sub
 
 Private Sub SSTab1_Click(PreviousTab As Integer)
@@ -3114,7 +3153,7 @@ Dim Cad As String
             Set frmB = New frmBuscaGrid
             frmB.vCampos = Cad
             frmB.vTabla = NombreTabla
-            frmB.vSql = CadB
+            frmB.vSQL = CadB
             HaDevueltoDatos = False
             '###A mano
             frmB.vDevuelve = "0|1|"
@@ -3137,8 +3176,8 @@ End Sub
 
 Private Sub cmdRegresar_Click()
 Dim Cad As String
-Dim AUX As String
-Dim i As Integer
+Dim Aux As String
+Dim I As Integer
 Dim J As Integer
 
     If Data1.Recordset.EOF Then
@@ -3147,16 +3186,16 @@ Dim J As Integer
     End If
     
     Cad = ""
-    i = 0
+    I = 0
     Do
-        J = i + 1
-        i = InStr(J, DatosADevolverBusqueda, "|")
-        If i > 0 Then
-            AUX = Mid(DatosADevolverBusqueda, J, i - J)
-            J = Val(AUX)
+        J = I + 1
+        I = InStr(J, DatosADevolverBusqueda, "|")
+        If I > 0 Then
+            Aux = Mid(DatosADevolverBusqueda, J, I - J)
+            J = Val(Aux)
             Cad = Cad & Text1(J).Text & "|"
         End If
-    Loop Until i = 0
+    Loop Until I = 0
     RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
@@ -3307,6 +3346,9 @@ Private Sub PonerCampos()
     Option1(0).Value = Not Option1(1).Value
     
     
+    If Text1(38).Text = "0" Then Text1(38).Text = ""
+    
+    
     Text2.Text = DevuelveDesdeBD("descripcion", "calendario", "idcal", Text1(26).Text, "N")
 
     
@@ -3378,16 +3420,16 @@ Private Sub cmdCancelar_Click()
 End Sub
 
 Private Sub QuitarFocoCbo()
-Dim i
+Dim I
     On Error Resume Next
-    For i = 0 To Combo1.Count - 1
-        Me.Combo1(i).SelLength = 0
+    For I = 0 To Combo1.Count - 1
+        Me.Combo1(I).SelLength = 0
     Next
     Err.Clear
 End Sub
 Private Function DatosOk() As Boolean
 Dim B As Boolean
-Dim i As Integer
+Dim I As Integer
 
     On Error GoTo EDatosOK
 
@@ -3543,13 +3585,13 @@ Private Sub Combo1_GotFocus(Index As Integer)
 End Sub
 
 Private Sub PonTipoControl(valor As String)
-Dim i As Integer
-    For i = 0 To Combo1(2).ListCount - 1
-        If Combo1(2).ItemData(i) = valor Then
-            Combo1(2).ListIndex = i
+Dim I As Integer
+    For I = 0 To Combo1(2).ListCount - 1
+        If Combo1(2).ItemData(I) = valor Then
+            Combo1(2).ListIndex = I
             Exit For
         End If
-    Next i
+    Next I
 End Sub
 
 Private Sub Text1_LostFocus(Index As Integer)
@@ -3746,7 +3788,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
                 End Select
             End If
         Else
-            Keypress KeyAscii
+            KeyPress KeyAscii
         End If
     End If
 End Sub
@@ -3756,7 +3798,7 @@ Private Sub Text1_KeyDown(Index As Integer, KeyCode As Integer, Shift As Integer
     If Not Text1(Index).MultiLine Then KEYdown KeyCode
 End Sub
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -3900,13 +3942,20 @@ Private Sub printNou()
 End Sub
 
 
-Private Sub InsertaFestivo(F1 As String, F2 As Date)
+Private Sub InsertaFestivo(F1 As String, F2 As Date, EsSolicitud As Boolean)
     Dim IT As ListItem
     Set IT = ListView2.ListItems.Add()
     IT.Text = F1
-    F2 = DateAdd("d", -1, F2)
+    'F2 = DateAdd("d", -1, F2)
     If F1 <> F2 Then IT.SubItems(1) = Format(F2, "dd/mm/yyyy")
-    
+    If EsSolicitud Then
+        
+        IT.ForeColor = &H8000&
+        IT.ToolTipText = "Solicitud"
+    Else
+        IT.Bold = True
+        IT.ToolTipText = "Vacaciones"
+    End If
 End Sub
 
 Private Sub InsertaItem(H As Integer, FI As Date, FF As Date)
@@ -3942,7 +3991,8 @@ Dim F2 As Date
 Dim vFe As String
 Dim IniVacas As Date
 Dim FinVacas As Date
-
+Dim Semana As Integer
+Dim Situ As Byte
 
     ListView1.ListItems.Clear
     ListView2.ListItems.Clear
@@ -3972,7 +4022,7 @@ Dim FinVacas As Date
         Else
             If miRs!tipodia = 0 Then
                 'INSERTAR INICIO FIN VACIONES
-                InsertaFestivo vFe, miRs!Fecha
+                InsertaFestivo vFe, miRs!Fecha, False
                 vFe = ""
             End If
         End If
@@ -3985,15 +4035,52 @@ Dim FinVacas As Date
     End If
     
     'Ha iniciado las vaciones y no las ha acabado a 31 diciembre
-    If vFe <> "" Then InsertaFestivo vFe, vEmpresa.FechaFin
-        
-    
-    
+    If vFe <> "" Then InsertaFestivo vFe, vEmpresa.FechaFin, False
     miRs.Close
+        
+        
+    If Text1(38).Text <> "" Then
+        'Nuevo sistemas de vacaciones
+        miSQL = "select  if(situacion=0,1,0) situ,fecha  ,week(fecha,1) Semana, observa  from trabajadoresvacaciones v "
+        miSQL = miSQL & " WHERE IdTrabajador  =" & Text1(0).Text & " AND fecha between '" & Format(vEmpresa.FechaInicio, FormatoFecha) & "'"
+        miSQL = miSQL & " and '" & Format(vEmpresa.FechaFin, FormatoFecha) & "'"
+        miSQL = miSQL & " ORDER by 1,2"
+        miRs.Open miSQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        miSQL = ""
+        Situ = 100
+        While Not miRs.EOF
+            If Situ <> miRs!Situ Then
+                    If miSQL <> "" Then InsertaFestivo CStr(IniVacas), F, Situ = 1
+                    Semana = -1
+                    miSQL = ""
+                    Situ = miRs!Situ
+            End If
+            If Semana <> miRs!Semana Then
+                If miSQL <> "" Then InsertaFestivo CStr(IniVacas), F, Situ = 1
+                
+                miSQL = "Ok"
+                F = miRs!Fecha
+                IniVacas = F
+                Semana = miRs!Semana
+            Else
+                F2 = DateAdd("d", 1, F)
+                If F2 <> miRs!Fecha Then
+                    'Insertamos el item
+                    InsertaFestivo CStr(IniVacas), F2, Situ = 1
+                    IniVacas = miRs!Fecha
+                End If
+                F = miRs!Fecha
+            End If
+        
+            miRs.MoveNext
+        Wend
+        miRs.Close
+        If miSQL <> "" Then InsertaFestivo CStr(IniVacas), F, Situ = 1
+    End If
     
     
-    
-    
+        
+      
     Set miRs = Nothing
 End Sub
 

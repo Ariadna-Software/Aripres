@@ -17,7 +17,6 @@ Public vUsu As Usuario
 
 'Definicion Conexión a BASE DE DATOS
 '-----------------------------------------------    ----
-'Conexión a la BD PlannerTours de la empresa
 Public conn As ADODB.Connection
 
 'Para cargar datos en trozos que no hay llamadas a ningun sitio
@@ -1376,6 +1375,33 @@ Dim RS As ADODB.Recordset
     
 
 End Sub
+
+
+Public Sub CargaListBoxDesdeTabla(SQL As String, ByRef ListBoxX As ListBox, CargaCodigoEnDescripcion As Boolean, MarcadoPorDefecto As Boolean)
+Dim RS As ADODB.Recordset
+
+    
+    ListBoxX.Clear
+    
+        '   1ero texto (as descripcion    2 codigo (as id)
+    'SQL = "select desctipoterminal descripcion ,codTipoTerminal id from TerminalTipo order by 1"
+    Set RS = New ADODB.Recordset
+    RS.Open SQL, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    While Not RS.EOF
+        SQL = RS!descripcion
+        If CargaCodigoEnDescripcion Then SQL = SQL & " (" & RS!Id & ")"
+        ListBoxX.AddItem SQL
+        ListBoxX.ItemData(ListBoxX.NewIndex) = RS!Id
+        If MarcadoPorDefecto Then ListBoxX.Selected(ListBoxX.NewIndex) = True
+        
+        RS.MoveNext
+    Wend
+    RS.Close
+    Set RS = Nothing
+    
+
+End Sub
+
 
 
 

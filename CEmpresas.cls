@@ -899,7 +899,7 @@ End Property
 
 '****   LEER  ***
 Public Function Leer(vIdIdEmpresa As Long) As Byte
-Dim i As Integer
+Dim I As Integer
 
     On Error GoTo Err3
 
@@ -993,8 +993,8 @@ Dim i As Integer
             
             '-------------------------------------
             'Vere si son el mismo
-            i = InStr(1, conn.ConnectionString, ";SERVER=")
-            If i = 0 Then
+            I = InStr(1, conn.ConnectionString, ";SERVER=")
+            If I = 0 Then
             
                 'Voy a suponer que es el mismo servidor que el de usuarios
                 mvarServer = ""
@@ -1002,13 +1002,13 @@ Dim i As Integer
             Else
                 
                 
-                SQL = Mid(conn.ConnectionString, i + 8)
-                i = InStr(1, SQL, ";")
-                If i = 0 Then
+                SQL = Mid(conn.ConnectionString, I + 8)
+                I = InStr(1, SQL, ";")
+                If I = 0 Then
                     MsgBox "Error grave. Cadena no encontrada. 2º;" & vbCrLf & SQL, vbCritical
                     End
                 End If
-                SQL = UCase(Mid(SQL, 1, i - 1))
+                SQL = UCase(Mid(SQL, 1, I - 1))
                 If SQL = UCase(mvarServer) Then
                     'PERFECTO. SOn el mismo servidor
                     mvarServer = ""
@@ -1092,6 +1092,9 @@ End Sub
 
 
 
+
+
+
 '****   MODIFICAR  ***
 'Public Function Modificar() As Byte
 '    On Error GoTo Err4
@@ -1172,4 +1175,6 @@ End Sub
 Private Sub Class_Terminate()
     Set RS = Nothing
 End Sub
+
+
 

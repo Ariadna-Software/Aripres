@@ -514,6 +514,9 @@ Begin VB.MDIForm frmMain
       Begin VB.Menu mnTerminales 
          Caption         =   "Terminales"
       End
+      Begin VB.Menu mnVacaciones 
+         Caption         =   "Vacaciones"
+      End
       Begin VB.Menu mnbarr3 
          Caption         =   "-"
       End
@@ -940,6 +943,12 @@ Private Sub MDIForm_Activate()
     '            End If
             End If
             
+            CadenaDesdeOtroForm = " fecha >= " & DBSet(vEmpresa.FechaInicio, "F") & " AND 1"
+            CadenaDesdeOtroForm = DevuelveDesdeBD("count(*)", "trabajadoresvacaciones", CadenaDesdeOtroForm, "1")
+            If Val(CadenaDesdeOtroForm) Then
+                MsgBox "Tiene dias de vacaciones pendientes de aprobar", vbInformation
+            End If
+            CadenaDesdeOtroForm = ""
             Caption = Me.Tag
             Me.Tag = ""
         End If
@@ -1420,13 +1429,13 @@ Private Sub mnProcesar_Click()
 End Sub
 
 Private Sub mnProcesoPrevioALZ_Click()
-Dim AUX As String
+Dim Aux As String
 
     If Not vEmpresa.AcabaJornadaDiaSiguiente Then Exit Sub
 
     'Hacer PROCESO horas acabalgadas
     Screen.MousePointer = vbHourglass
-    AUX = Me.StatusBar1.Panels(2).Text
+    Aux = Me.StatusBar1.Panels(2).Text
     Me.StatusBar1.Panels(2).Text = "Leyendo datos"
     Me.StatusBar1.Refresh
      
@@ -1438,7 +1447,7 @@ Dim AUX As String
     End If
     
     
-    Me.StatusBar1.Panels(2).Text = AUX
+    Me.StatusBar1.Panels(2).Text = Aux
     Screen.MousePointer = vbDefault
 End Sub
 
@@ -1553,6 +1562,10 @@ Private Sub mnUsuariosActivos_Click()
     NoHaceNada
 End Sub
 
+Private Sub mnVacaciones_Click()
+    frmColVacaciones.Show vbModal
+End Sub
+
 Private Sub mnVerMarcajes_Click()
     CadenaDesdeOtroForm = ""
     frmRevision.MostrarUnosDatos = 0
@@ -1564,7 +1577,7 @@ Private Sub mnZonas_Click()
 End Sub
 
 Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
-
+ 
     HacerToolBar Button.Index
 End Sub
 
@@ -1764,7 +1777,7 @@ Dim RegistrosTratar As Collection
 Dim FE As Date
 Dim Hora As Date
 Dim H1 As Date
-Dim i As Long
+Dim I As Long
 
 Dim QueDia As Integer
 Dim DiaTraba As Collection
@@ -1820,8 +1833,8 @@ Dim J As Integer
     'Vamos a ver los dias a tratar
     Set DiasATratar = New Collection
     
-    i = Round(vEmpresa.MaxRetraso * 60, 0)
-    Cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+    I = Round(vEmpresa.MaxRetraso * 60, 0)
+    Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
     If CDate(Format(UltimaDiaHoraTraidoMaquina2, "hh:nn:ss")) >= CDate(Cad) Then
         Cad = ""
     Else
@@ -1849,15 +1862,15 @@ Dim J As Integer
     For QueDia = 1 To DiasATratar.Count
             'Voy a ver que dias tienen fichajes superiror a las 22:30 (parametros)
             ' Y luego estudiare esos dias
-            i = Round(vEmpresa.MaxRetraso * 60, 0)
-            Cad = DateAdd("n", -i, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
+            I = Round(vEmpresa.MaxRetraso * 60, 0)
+            Cad = DateAdd("n", -I, vEmpresa.AcabalgadoHora)   'para ver si puedo procesar el dia
             Hora = Cad
             Cad = "fecha = " & DBSet(DiasATratar.Item(QueDia), "F") & " AND hora > " & DBSet(Hora, "H") & " and hora <= '23:59:59'"
             'Select  from entradafichajes where fecha> '2001-01-10' AND hora > '22:00:00' and hora <= '23:59:59' ORDER BY fecha,idtrabajador
             Cad = "Select distinct idtrabajador from entradafichajes where " & Cad & " ORDER BY idtrabajador"
             RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             Set RegistrosTratar = New Collection
-            i = -1
+            I = -1
             While Not RS.EOF
                 Cad = RS!idTrabajador
                 RegistrosTratar.Add Cad
@@ -1882,8 +1895,8 @@ Dim J As Integer
                     conn.Execute "Delete from tmpnotrabajo"
                     espera 0.5
                     Cad = ""
-                    For i = 1 To RegistrosTratar.Count
-                        Cad = Cad & ", (" & RegistrosTratar(i) & ")"
+                    For I = 1 To RegistrosTratar.Count
+                        Cad = Cad & ", (" & RegistrosTratar(I) & ")"
                     Next
                     Cad = Mid(Cad, 2)
                     Cad = "INSERT INTO tmpnotrabajo(idTra) VALUES " & Cad
@@ -1981,5 +1994,9 @@ eProcesoHorasAcabalgadas:
     Set DiasATratar = Nothing
     
 End Sub
+
+
+
+
 
 

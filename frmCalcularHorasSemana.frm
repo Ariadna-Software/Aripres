@@ -483,7 +483,9 @@ Dim PintaColumnaDiasNominaAnterior As Boolean
         I = DateDiff("d", FechaInicioSemana, FechaAux) + 1 'Dias del proceso
         I = I - idTrabajador 'dias proceso
         If I < 0 Then
+            MsgBox "Diferencia de dias <0. " & idTrabajador & " "
             Stop 'que de error
+            
         End If
         
     End If
@@ -801,7 +803,7 @@ Dim PunteroZona As Integer
         Cad = " VALUES (" & Cad & ")"
     End If
     
-    Stop
+    
     Cad = "INSERT INTO jornadassemanalesproceso(fecha,fechaIni,fechaFin,Sumatorios,codusu,Nombre,Seccion) " & Cad
     conn.Execute Cad
     
@@ -839,6 +841,9 @@ Dim PunteroZona As Integer
     For J = 1 To Me.ListView1.ListItems.Count
         If ListView1.ListItems(J).Tag = 0 Then
             idTrabajador = CLng(ListView1.ListItems(J).Text)
+            
+            'If idTrabajador = 1743 Then St op
+            
             If TieneZonas Then
                 If J > 1 Then miRsAux.Close  '1 es el primer trasbajador
                 AuxH = "select * from tmphorasArea where codusu =" & vUsu.Codigo & " AND   idtra=" & idTrabajador & " order by fecha,masdenArea"
@@ -884,13 +889,16 @@ Dim PunteroZona As Integer
                                     AuxH = AuxH & Format(miRsAux!Area, "0000") & "-" & miRsAux!Horas & "|"
                                     Kuantos = Kuantos + 1
                                     miRsAux.MoveNext
+                                    If miRsAux.EOF Then FinB = True
                                 Else
                                     FinB = True
                                 End If
                                 
                             Wend
                             If Kuantos = 1 Then
-                                Stop
+                               
+                                MsgBox "No deberia haber llegado. Soporte."
+                                 Stop
                                 'NO DEBERIA HABER LLGADO
                             Else
                                 ReDim vecZona(Kuantos - 1)
@@ -942,12 +950,12 @@ Dim PunteroZona As Integer
                                             HZ2 = HZ1
                                             HZ1 = 0
                                             vecHorasZona(PunteroZona) = vecHorasZona(PunteroZona) - HZ2
-                                            If vecHorasZona(PunteroZona) < 0 Then Stop
+                                            If vecHorasZona(PunteroZona) < 0 Then MsgBox "Error puntero ZONA . Soporte "
                                         End If
                                     
                                     Else
                                         'Ya no hay mas zonas. Se queda en la que este
-                                        Stop
+                                        'Stop
                                     End If
                                 Else
                                     HZ2 = HZ1
@@ -1194,7 +1202,7 @@ Dim HemosAjustado As Boolean
                                 'Dias trabajados con anterioridad
                                 DiasTr = DiasTr + Val(ListView1.ListItems(J).SubItems(ColumnaDondeEmpiezanHoras + CuantosTiposHoraTrabaja + 1))  'Dia nomina
                             Else
-                                Stop
+                               ' Stop
                             End If
                         End If
                     End If

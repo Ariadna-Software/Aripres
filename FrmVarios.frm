@@ -1285,6 +1285,8 @@ Dim ContErrores As Integer
 Dim rAlmuerzo As ADODB.Recordset
 Dim hAlmuerzo As Currency
 
+Dim CurrencyAux As Currency
+
         
     HorasmaximoNormalesDia = 9
     If vEmpresa.QueEmpresa = vbCatadau Then HorasmaximoNormalesDia = 8
@@ -1410,7 +1412,7 @@ Dim hAlmuerzo As Currency
                 While Not miRsAux.EOF
                     Debug.Print miRsAux!idTrabajador
                     'FALTA####
-                    'If miRsAux!idTrabajador = 9 Then St op
+                    'If miRsAux!idTrabajador = 142 Then St op
                     HN = miRsAux!HorasTrabajadas
                     
                     HorasExceso = 0
@@ -1432,6 +1434,8 @@ Dim hAlmuerzo As Currency
                     'Vere las fichadas de ese dia que superen las HoraSabadoExtras
                     Cad = "Select * from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
                     Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
+                    
+                    
                     RT.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                     Fin = False
                     Do
@@ -1462,10 +1466,23 @@ Dim hAlmuerzo As Currency
                                 End If
                             End If
                             
-                            If T2 > HN Then
-                                MsgBox "NO puedo quitar mas horas", vbExclamation
+                            
+                            CurrencyAux = T2 - HN
+                            
+                            'Noviembre 2020
+                            'If T2 > HN Then
+                            If CurrencyAux >= 1 Then
+                                MsgBox "NO puedo quitar mas horas:" & miRsAux!Fecha & " - " & miRsAux!idTrabajador, vbExclamation
+                                Debug.Print miRsAux!idTrabajador
                             Else
-                                HN = HN - T2
+                                If CurrencyAux > 0 Then
+                                    'Puede ser que haya parado a merendar, con lo cual , en horas exceo tengo que quitarle esta diferencia
+                                    HorasExceso = HorasExceso - CurrencyAux
+                                    HN = 0
+                                Else
+                                    'Lo que habia
+                                    HN = HN - T2
+                                End If
                             End If
                            
                            
@@ -1636,12 +1653,15 @@ Dim hAlmuerzo As Currency
                             
                             If hAlmuerzo > 0 Then
                                 If hAlmuerzo < HN Then
-                                    If hAlmuerzo > 0.5 Then Stop
+                                    If hAlmuerzo > 0.5 Then
+                                        'stop
+                                        MsgBox "Hora parada > 0.5 (Merienda?)", vbExclamation
+                                    End If
                                     HN = HN - hAlmuerzo
                                     hAlmuerzo = 0
                                 Else
                                     MsgBox "MENOS HORAS que el almuerzo del dia"
-                                    Stop
+                                    'Stop
                                 End If
                             End If
                             'INSERT INTO tmphorasArea(codusu,idtra,Fecha,Area,masdenArea,Horas) "
@@ -2323,7 +2343,7 @@ Dim Encontrado As Boolean
         End If
     Wend
     
-    If Not Encontrado Then Exit Function: Stop
+    If Not Encontrado Then Exit Function: MsgBox "No localzado registro parada " & idTRa & " " & F: Debug.Print "Stop"
     
     Encontrado = False
     Fin = False

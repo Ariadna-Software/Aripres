@@ -232,7 +232,7 @@ Dim RS As ADODB.Recordset
 Dim Rs2 As ADODB.Recordset
 Dim Dias As Currency
 Dim Trabajador As Long
-Dim AUX As String
+Dim Aux As String
 Dim SQL As String
 Dim vH As CHorarios
 Dim FESTIVOS2 As String
@@ -446,29 +446,29 @@ Dim idCal As Integer
                     End If
     
                     'Si el dia esta en FESTIVOS no lo sumo
-                    AUX = Format(Rs2!Fecha, "dd/mm/yyyy") & "|"
+                    Aux = Format(Rs2!Fecha, "dd/mm/yyyy") & "|"
     
     
                     If vEmpresa.QueEmpresa = vbCatadau Then
                         'EN CATADAU, si es el dia lo ha trabajado (max(5)) semana
     
                         'Si esta de baja
-                        If InStr(1, BAJAS, AUX) > 0 Then MsgBox "Trabaja dia BAJA"
+                        If InStr(1, BAJAS, Aux) > 0 Then MsgBox "Trabaja dia BAJA"
     
                         If Rs2!Laborable = 1 Then
                             Dias = Dias + 1
                         Else
                             'SI ES FESTIVO  TAMBIEN LO MARCAMOS
-                            If InStr(1, FESTIVOS2, AUX) = 1 Then Dias = Dias + 1
+                            If InStr(1, FESTIVOS2, Aux) = 1 Then Dias = Dias + 1
                         End If
                     Else
                         'NO esta en festivos
-                        If InStr(1, FESTIVOS2, AUX) = 0 Then
+                        If InStr(1, FESTIVOS2, Aux) = 0 Then
                         
                             'Si esta de baja
-                            If InStr(1, BAJAS, AUX) = 0 Then
+                            If InStr(1, BAJAS, Aux) = 0 Then
                                 'Si es medio dia sumo medio
-                                If InStr(1, MEDIODIA, AUX) > 0 Then
+                                If InStr(1, MEDIODIA, Aux) > 0 Then
                                     Semana = Format(Rs2!Fecha, "ww")
                                     If Weekday(Rs2!Fecha) = 4 Then
                                         Dias = Dias + 1
@@ -539,7 +539,7 @@ Dim FAux2 As Date
 Dim RS As ADODB.Recordset
 Dim Horas As Currency
 Dim d As Integer
-Dim AUX As String
+Dim Aux As String
 Dim SQL As String
 Dim strControlNomina As String
 Dim D22 As Integer
@@ -631,18 +631,18 @@ Dim Leer As Boolean
             'Vamos a ver el horario para ese peridod
             If vEmpresa.CompensaHorasNominaMES Then
                 'Tipo castelduc.  Suma las HN + estr   y son las del mes. El resto bolas. PEEEEERO, se pueden pagar distito
-                AUX = " fecha >='" & Format(Fini, FormatoFecha) & "'"
-                AUX = AUX & " and fecha<='" & Format(FFin, FormatoFecha) & "' AND idcal"
-                AUX = DevuelveDesdeBD("min(idhorario)", "calendariol", AUX, CStr(idCal))
-                If Val(AUX) > 0 Then varHorario = AUX
+                Aux = " fecha >='" & Format(Fini, FormatoFecha) & "'"
+                Aux = Aux & " and fecha<='" & Format(FFin, FormatoFecha) & "' AND idcal"
+                Aux = DevuelveDesdeBD("min(idhorario)", "calendariol", Aux, CStr(idCal))
+                If Val(Aux) > 0 Then varHorario = Aux
             Else
                 varHorario = RS!idCal
             End If
             'Veamos el maximo de dias a trabajar
-            AUX = DevuelveDesdeBD("concat(dias,'|',horas,'|')", "tmphorasmeshorario", "idhorario", CStr(varHorario))
-            If AUX = "" Then AUX = "60|500|"
-            maxDias = RecuperaValor(AUX, 1)
-            maxHoras = TransformaPuntosComas(RecuperaValor(AUX, 2))
+            Aux = DevuelveDesdeBD("concat(dias,'|',horas,'|')", "tmphorasmeshorario", "idhorario", CStr(varHorario))
+            If Aux = "" Then Aux = "60|500|"
+            maxDias = RecuperaValor(Aux, 1)
+            maxHoras = TransformaPuntosComas(RecuperaValor(Aux, 2))
         End If
     
         If IsNull(RS!FecBaja) Then
@@ -665,8 +665,8 @@ Dim Leer As Boolean
     
         
         
-        AUX = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
-        conn.Execute SQL & AUX
+        Aux = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
+        conn.Execute SQL & Aux
         RS.MoveNext
     Wend
     RS.Close
@@ -684,8 +684,8 @@ Dim Leer As Boolean
     While Not RS.EOF
         Horas = CalculaHorasHorario(idCal, RS!idCal, d, Fini, RS!FecBaja)
         If Horas = 0 Then Err.Raise 513, , "Cero horas CalculaHorasHorario"
-        AUX = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
-        conn.Execute SQL & AUX
+        Aux = RS.Fields!idTrabajador & "," & TransformaComasPuntos(CStr(Horas)) & "," & d & "," & RS!idCal & ")"
+        conn.Execute SQL & Aux
         RS.MoveNext
     Wend
     RS.Close
@@ -696,7 +696,7 @@ Dim Leer As Boolean
         '-----------------
         'Calcularemos los dias que tenia que haber trabajado,
         'no los que le faltban para completar el mes y leugo restar
-    AUX = ""
+    Aux = ""
     If True Then  'por empresas?
         SQL = "Select bajas.*,trabajadores.idcal from bajas,trabajadores where idtrab=idTrabajador"
         SQL = SQL & strControlNomina
@@ -709,7 +709,7 @@ Dim Leer As Boolean
         While Not RS.EOF
             If d <> RS!idTrab Then
                 d = RS!idTrab
-                AUX = AUX & d & "|"
+                Aux = Aux & d & "|"
             End If
             
             RS.MoveNext
@@ -722,17 +722,17 @@ Dim Leer As Boolean
     idCal = 1
     
     'Ya tengo los trabajadores. Ahora ire uno a uno por si han tenido mas dias de baja y eso
-    While AUX <> ""
+    While Aux <> ""
         
-        d = InStr(1, AUX, "|")
+        d = InStr(1, Aux, "|")
         If d = 0 Then
-            AUX = ""
+            Aux = ""
         Else
             SQL = "Select bajas.*,trabajadores.idcal,trabajadores.fecalta  from bajas,trabajadores where idtrab=idTrabajador"
             SQL = SQL & strControlNomina
             SQL = SQL & " AND fechabaja >='" & Format(Fini, FormatoFecha) & "'"
             SQL = SQL & " AND fechabaja <='" & Format(FFin, FormatoFecha) & "' AND idtrab = "
-            SQL = SQL & Mid(AUX, 1, d - 1)
+            SQL = SQL & Mid(Aux, 1, d - 1)
             SQL = SQL & " ORDER BY fechabaja"
             
             
@@ -740,7 +740,7 @@ Dim Leer As Boolean
             
             
             
-            AUX = Mid(AUX, d + 1)
+            Aux = Mid(Aux, d + 1)
             RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
             FAux = Fini
             If Not IsNull(RS!FecAlta) Then
@@ -830,7 +830,7 @@ Dim Leer As Boolean
     'Cmprobar el procedimiento de baja
     'Aquellos que entraron de baja en dias anteriores al mes
     'Y se dieron de alta en el mes de calculo
-    AUX = ""
+    Aux = ""
     If True Then  'MiEmpresa.QueEmpresa = 0
             SQL = "Select bajas.*,trabajadores.idcal,fechaalta as altaTrabajador from bajas,trabajadores where idtrab=idTrabajador"
             SQL = SQL & strControlNomina
@@ -842,7 +842,7 @@ Dim Leer As Boolean
             While Not RS.EOF
                 If d <> RS!idTrab Then
                     d = RS!idTrab
-                    AUX = AUX & d & "|"
+                    Aux = Aux & d & "|"
                 End If
                 
                 RS.MoveNext
@@ -851,11 +851,11 @@ Dim Leer As Boolean
     End If
     
     'Ya tengo los trabajadores. Ahora ire uno a uno por si han tenido mas dias de baja y eso
-    While AUX <> ""
+    While Aux <> ""
         
-        d = InStr(1, AUX, "|")
+        d = InStr(1, Aux, "|")
         If d = 0 Then
-            AUX = ""
+            Aux = ""
         Else
     
             'Empieza a trabajar este mes despues de una baja. No hacemos nada
@@ -864,7 +864,7 @@ Dim Leer As Boolean
             SQL = SQL & " AND fechabaja <'" & Format(Fini, FormatoFecha) & "'"
             SQL = SQL & " AND fechaalta >='" & Format(Fini, FormatoFecha) & "'"
             SQL = SQL & " AND fechaalta <='" & Format(FFin, FormatoFecha) & "'"
-            SQL = SQL & " AND idtrab = " & Mid(AUX, 1, d - 1)
+            SQL = SQL & " AND idtrab = " & Mid(Aux, 1, d - 1)
             RS.Open SQL, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
             
             
@@ -877,7 +877,7 @@ Dim Leer As Boolean
              'If IDT = 31 Then MsgBox " -----"   '
             
             
-            AUX = Mid(AUX, d + 1)
+            Aux = Mid(Aux, d + 1)
             'Si se ha dado de
             FAux = Fini
             If RS!altaTrabajador > FAux Then FAux = RS!altaTrabajador
@@ -956,10 +956,10 @@ End Sub
 Public Sub CombinaDatos(Fini As Date, FFin As Date)
 Dim RS As ADODB.Recordset
 Dim RT As ADODB.Recordset
-Dim i As Integer
+Dim I As Integer
 Dim Tot As Currency
 'Dim Importe As Currency
-Dim AUX As String
+Dim Aux As String
 Dim SQL As String
 Dim Rs2 As ADODB.Recordset
 Dim meshoras As Currency
@@ -990,54 +990,54 @@ Dim Aux2 As String
         
         
         If Not RT.EOF Then
-            AUX = "UPDATE tmpDatosMes Set HorasN=" & TransformaComasPuntos(CStr(RT!horast))
-            AUX = AUX & " ,HorasC=" & TransformaComasPuntos(CStr(RT!HorasC))  'Las compensables SON las extras en COOPIC
-            AUX = AUX & " ,HorasE=" & TransformaComasPuntos(CStr(RT!horase))
+            Aux = "UPDATE tmpDatosMes Set HorasN=" & TransformaComasPuntos(CStr(RT!horast))
+            Aux = Aux & " ,HorasC=" & TransformaComasPuntos(CStr(RT!HorasC))  'Las compensables SON las extras en COOPIC
+            Aux = Aux & " ,HorasE=" & TransformaComasPuntos(CStr(RT!horase))
             'Tot = RT!horasc + RT!horast  extras mas normales
             Tot = RT!horast
-            AUX = AUX & " ,HorasT=" & TransformaComasPuntos(CStr(Tot))
-            i = RS!MesDias - RT!Dias
+            Aux = Aux & " ,HorasT=" & TransformaComasPuntos(CStr(Tot))
+            I = RS!MesDias - RT!Dias
             meshoras = RS!meshoras
-            If i < 0 Then
+            If I < 0 Then
                 'EN CATADAU dejo pasar.
                 'NO compensan dias desde bolsa, con lo cual, cualquier dia que haya venido entra
                 
                 If vEmpresa.QueEmpresa = vbCatadau Then
-                    i = RT!Dias
+                    I = RT!Dias
                 Else
-                    i = RS!MesDias
+                    I = RS!MesDias
                 End If
             Else
                
                
-               If vEmpresa.QueEmpresa = 4 Then If i > 0 Then meshoras = RT!Dias * 8
+               If vEmpresa.QueEmpresa = 4 Then If I > 0 Then meshoras = RT!Dias * 8
                                     
-                 i = RT!Dias
+                 I = RT!Dias
             End If
             
-            AUX = AUX & " ,DiasTrabajados=" & i
-            AUX = AUX & " ,meshoras=" & TransformaComasPuntos(CStr(meshoras))
-            AUX = AUX & " ,BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
-            AUX = AUX & " ,Anticipos = " & "0"    ' & TransformaComasPuntos(CStr(Tot))
-            AUX = AUX & " WHERE trabajador = " & RS.Fields(0)
-            conn.Execute AUX
+            Aux = Aux & " ,DiasTrabajados=" & I
+            Aux = Aux & " ,meshoras=" & TransformaComasPuntos(CStr(meshoras))
+            Aux = Aux & " ,BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
+            Aux = Aux & " ,Anticipos = " & "0"    ' & TransformaComasPuntos(CStr(Tot))
+            Aux = Aux & " WHERE trabajador = " & RS.Fields(0)
+            conn.Execute Aux
         Else
             'MIRARE SI TIENE BOLSA DE HORAS. Con lo cual puede que no haya trabajado NINGUN dia
             'pero si tenia bolsa le seguiremos generando dias
             RT.Close
-            AUX = "SELECT trabajadoresbolsahoras.HorasBolsa"
-            AUX = AUX & " FROM  trabajadoresbolsahoras WHERE "
-            AUX = AUX & " tipohora=1 " 'No deberia tener bolsa horas extra
-            AUX = AUX & " AND  idtrabajador = " & RS.Fields(0)
+            Aux = "SELECT trabajadoresbolsahoras.HorasBolsa"
+            Aux = Aux & " FROM  trabajadoresbolsahoras WHERE "
+            Aux = Aux & " tipohora=1 " 'No deberia tener bolsa horas extra
+            Aux = Aux & " AND  idtrabajador = " & RS.Fields(0)
         
             
-            RT.Open AUX, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+            RT.Open Aux, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
             If Not RT.EOF Then
                 If DBLet(RT!horasbolsa, "N") > 0 Then
-                    AUX = "UPDATE tmpDatosMes SET "
-                    AUX = AUX & " BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
-                    AUX = AUX & " WHERE trabajador = " & RS.Fields(0)
-                    conn.Execute AUX
+                    Aux = "UPDATE tmpDatosMes SET "
+                    Aux = Aux & " BolsaAntes =" & TransformaComasPuntos(CStr(DBLet(RT!horasbolsa, "N")))
+                    Aux = Aux & " WHERE trabajador = " & RS.Fields(0)
+                    conn.Execute Aux
                 End If
             End If
         End If
@@ -1058,7 +1058,7 @@ End Sub
 'Total horas y total dias
 Public Sub CalculoDatosACompensar()
 Dim RS As ADODB.Recordset
-Dim i As Integer
+Dim I As Integer
 Dim SQL As String
 Dim Diferencia As Currency
     SQL = "Select * from tmpDatosMes"
@@ -1866,10 +1866,10 @@ Dim HorasDisponibles As Currency
                 HPaBolsa = HorasDisponibles - RS!meshoras
                 DiasOF = RS!MesDias
                 
-                If HPaBolsa < 0 Then MsgBox "Bolsa menor cero(II)": Stop
+                If HPaBolsa < 0 Then MsgBox "Bolsa menor cero(II)"
                 
             Else
-                Stop
+                '
             End If
         
         End If
@@ -2080,12 +2080,12 @@ End Function
 
 Private Function CuantosDiasCompensas(Dias As Integer, HorasCompensar As Currency, HorasJornadaCompensable As Currency) As Integer
 Dim J As Currency
-Dim i As Integer
+Dim I As Integer
     'Compensamos dias a partir de HorasJornada  horas trabajadas
     J = (HorasCompensar / HorasJornadaCompensable)
-    i = Int(J)
-    If i > Dias Then i = Dias
-    CuantosDiasCompensas = i
+    I = Int(J)
+    If I > Dias Then I = Dias
+    CuantosDiasCompensas = I
 End Function
 
 
@@ -2278,7 +2278,7 @@ Dim RS As ADODB.Recordset
 Dim Rs2 As ADODB.Recordset
 Dim Dias As Currency
 Dim Trab As Long
-Dim AUX As String
+Dim Aux As String
 Dim SQL As String
 Dim vH As CHorarios
 Dim FESTIVOS As String
@@ -2386,17 +2386,17 @@ Dim HE As Currency
         End If
         
         'Si el dia esta en FESTIVOS no lo sumo
-        AUX = Format(RS!Fecha, "dd/mm/yyyy") & "|"
+        Aux = Format(RS!Fecha, "dd/mm/yyyy") & "|"
 
         
-        If InStr(1, FESTIVOS, AUX) = 0 Then
+        If InStr(1, FESTIVOS, Aux) = 0 Then
             'Si es medio dia sumo medio
             'NO esta en festivos  'NO esta en festivos   'NO esta en festivos  'NO esta en festivos
             If RS!IncFinal = vEmpresa.IncHoraExtra Then
                 HC = HC + RS!HorasIncid
             End If
                 
-            If InStr(1, MEDIODIA, AUX) > 0 Then
+            If InStr(1, MEDIODIA, Aux) > 0 Then
                 Dias = Dias + 0.5
             Else
                 Dias = Dias + 1
@@ -3913,7 +3913,7 @@ End Sub
 Private Sub ProcesarTrabajadorPicasent(ByRef cT As CTrabajadorNomina, FI As Date, FF As Date, ByRef vHor As CHorarios, PrimerMiercoles As Integer, FESTIVOS As String, ByRef BajaTodoElMes2 As Boolean)
 Dim vMEs(30) As cDiaProcesado
 Dim vM As cDiaProcesado
-Dim i As Integer
+Dim I As Integer
 Dim J As Integer
 Dim N As Integer
 Dim HN As Currency
@@ -3959,27 +3959,27 @@ Dim CadenaDiasMes As String
     J = Weekday(FI, vbMonday)
     NumeroDiasMes = DiasMes(Month(FI), Year(FF)) - 1
     BAJAS = "/" & Month(FI) & "/" & Year(FF)
-    For i = 0 To NumeroDiasMes
-        Set vMEs(i) = New cDiaProcesado
-        vMEs(i).DiaProcesable = True
-        vMEs(i).DiaSemana = (J + i) Mod 7  'L,M,X,J,
+    For I = 0 To NumeroDiasMes
+        Set vMEs(I) = New cDiaProcesado
+        vMEs(I).DiaProcesable = True
+        vMEs(I).DiaSemana = (J + I) Mod 7  'L,M,X,J,
         'Debug.Print I & ": " & I + 1 & "  " & vMes(I).DiaSemana
-        vMEs(i).Festivo = vMEs(i).DiaSemana = 0   'Los domingos son festivos SEGURO
-        Cad = Format(i + 1 & BAJAS, "dd/mm/yyyy")
+        vMEs(I).Festivo = vMEs(I).DiaSemana = 0   'Los domingos son festivos SEGURO
+        Cad = Format(I + 1 & BAJAS, "dd/mm/yyyy")
         If InStr(1, FESTIVOS, Cad) > 0 Then
             
-            vMEs(i).Festivo = True
+            vMEs(I).Festivo = True
         End If
         
-        vMEs(i).NumeroSemana = CInt(Format(i + 1 & "/" & Month(FI) & "/" & Year(FF), "ww"))
+        vMEs(I).NumeroSemana = CInt(Format(I + 1 & "/" & Month(FI) & "/" & Year(FF), "ww"))
     Next
     Set RF = New ADODB.Recordset
     
     If cT.FecAlta > FI Then
         FechaReferencia = FI
         While FechaReferencia < cT.FecAlta
-            i = Day(FechaReferencia) - 1
-            vMEs(i).DiaProcesable = False
+            I = Day(FechaReferencia) - 1
+            vMEs(I).DiaProcesable = False
             FechaReferencia = DateAdd("d", 1, FechaReferencia)
         Wend
     End If
@@ -3989,8 +3989,8 @@ Dim CadenaDiasMes As String
     If cT.FecBaja <= FF Then
         FechaReferencia = FF
         While FechaReferencia > cT.FecBaja
-            i = Day(FechaReferencia) - 1
-            vMEs(i).DiaProcesable = False
+            I = Day(FechaReferencia) - 1
+            vMEs(I).DiaProcesable = False
             FechaReferencia = DateAdd("d", -1, FechaReferencia)
         Wend
     End If
@@ -4007,9 +4007,9 @@ Dim CadenaDiasMes As String
         While Not RF.EOF
             FechaReferencia = RF!Fecha
             Do
-                i = Day(FechaReferencia) - 1
-                vMEs(i).DiaProcesable = True
-                vMEs(i).Baja = True
+                I = Day(FechaReferencia) - 1
+                vMEs(I).DiaProcesable = True
+                vMEs(I).Baja = True
                 BAJAS = BAJAS & Format(FechaReferencia, "dd/mm/yyyy") & "|"
                 FechaReferencia = DateAdd("d", 1, FechaReferencia)
             Loop Until FechaReferencia > RF!H1
@@ -4067,23 +4067,23 @@ Dim CadenaDiasMes As String
             
         
         HN = RF!HorasTrabajadas
-        i = 0
+        I = 0
         If vMEs(N).DiaSemana = 3 Then
-            If HN > 3.5 Then i = 1
+            If HN > 3.5 Then I = 1
         ElseIf vMEs(N).DiaSemana = 6 Then
-            If HN > 4.5 Then i = 1
-        ElseIf HN > 8 Then i = 1
+            If HN > 4.5 Then I = 1
+        ElseIf HN > 8 Then I = 1
         End If
         
         
-        If vMEs(N).Festivo Then i = 1 'Ha trabajado el festivo. TOdas son EXTRA pero la suma de horas del mes YA estabien, el update horasn ya lo recoge
+        If vMEs(N).Festivo Then I = 1 'Ha trabajado el festivo. TOdas son EXTRA pero la suma de horas del mes YA estabien, el update horasn ya lo recoge
         
         'Si es dia festivo..
         'If N = 5 Then St op
         vMEs(N).DiaNomina = 1
         vMEs(N).SabadoSiHabiaTrabajado = True  'Me da lo mismo que no sea sabado
         
-        If i = 1 Then 'Horas extra
+        If I = 1 Then 'Horas extra
             
             HC = RF!HorasIncid
             HN = HN - HC
@@ -4136,9 +4136,9 @@ Dim CadenaDiasMes As String
         
         
     'Compensacion de horas por dia que no llegan al minimo
-    i = CInt(Format(FI, "ww"))
+    I = CInt(Format(FI, "ww"))
     J = CInt(Format(FF, "ww"))
-    NUmeroSemanasMes = J - i + 1
+    NUmeroSemanasMes = J - I + 1
     
     'Variables
     HC = cT.HEReales + cT.HBolsa  'Las extra del mes mas la bolsa
@@ -4182,28 +4182,28 @@ Dim CadenaDiasMes As String
         'Si tiene miercoles y sabado miro sus horas. Igual pasan todas a hextras
         MiercolesDeSemanaProcesando2 = -1
         SabadoSemanaProcesando2 = -1
-        For i = Dia To UltDiaSemana
-            If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
+        For I = Dia To UltDiaSemana
+            If vMEs(I).DiaProcesable And Not vMEs(I).Baja And Not vMEs(I).Festivo Then
                 
-                If vMEs(i).DiaSemana = 3 Or vMEs(i).DiaSemana = 6 Then
+                If vMEs(I).DiaSemana = 3 Or vMEs(I).DiaSemana = 6 Then
                     
                     'MIERCOLES SABADO
-                    If vMEs(i).DiaSemana = 3 Then
-                        MiercolesDeSemanaProcesando2 = i
+                    If vMEs(I).DiaSemana = 3 Then
+                        MiercolesDeSemanaProcesando2 = I
                     Else
-                        SabadoSemanaProcesando2 = i
+                        SabadoSemanaProcesando2 = I
                     End If
                     HorasCambiadasMierSab = 0
                     Cad = ""
-                    FijarHorasMiercolesSabadoPicassent cT, vMEs(i), CDate(CStr(i + 1) & Format(FI, "/mm/yyyy")), Cad, HorasCambiadasMierSab
+                    FijarHorasMiercolesSabadoPicassent cT, vMEs(I), CDate(CStr(I + 1) & Format(FI, "/mm/yyyy")), Cad, HorasCambiadasMierSab
                     
-                    If vMEs(i).HT_Reales > 0 Then
-                        HorPart = HorPart + vMEs(i).HT_Reales
+                    If vMEs(I).HT_Reales > 0 Then
+                        HorPart = HorPart + vMEs(I).HT_Reales
                         DiasPartidos = 1
                     Else
                         'Horas trabajadas=0
-                        vMEs(i).DiaNomina = 0
-                        vMEs(i).SabadoSiHabiaTrabajado = False  'Todas son compensables
+                        vMEs(I).DiaNomina = 0
+                        vMEs(I).SabadoSiHabiaTrabajado = False  'Todas son compensables
                     End If
                     If HorasCambiadasMierSab <> 0 Then
                         
@@ -4216,7 +4216,7 @@ Dim CadenaDiasMes As String
                     If TrabajadorDepuracion > 0 Then VariablesDepuracion_Dias = VariablesDepuracion_Dias & Cad
                 End If
             End If
-        Next i
+        Next I
     
          
         'Ahora ya vamos a ver si necesitan horas extra  para completar
@@ -4259,32 +4259,32 @@ Dim CadenaDiasMes As String
         End If
         
         
-        For i = Dia To UltDiaSemana
+        For I = Dia To UltDiaSemana
             
      
-                If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
-                    If vMEs(i).DiaSemana <> 3 And vMEs(i).DiaSemana <> 6 Then
-                        If vMEs(i).DiaNomina = 1 And vMEs(i).HT_Reales < 3.5 Then
+                If vMEs(I).DiaProcesable And Not vMEs(I).Baja And Not vMEs(I).Festivo Then
+                    If vMEs(I).DiaSemana <> 3 And vMEs(I).DiaSemana <> 6 Then
+                        If vMEs(I).DiaNomina = 1 And vMEs(I).HT_Reales < 3.5 Then
                             Dim AuxH As Currency
                             'No ha llegado a 3.5 trabajadas
-                            AuxH = HC + vMEs(i).HT_Reales
+                            AuxH = HC + vMEs(I).HT_Reales
                             If AuxH >= 3.5 Then
                                 'Utilizamos horas para compensar
-                                HN = 3.5 - vMEs(i).HT_Reales
+                                HN = 3.5 - vMEs(I).HT_Reales
                                 HC = HC - HN
-                                Cad = Cad & "Dia : " & i + 1 & " Falta " & HN & vbCrLf
+                                Cad = Cad & "Dia : " & I + 1 & " Falta " & HN & vbCrLf
                                 
                                 
                                 cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + HN
                             Else
                                 'NO tiene bastante para compensar
-                                HN = vMEs(i).HE_Reales + vMEs(i).HT_Reales
+                                HN = vMEs(I).HE_Reales + vMEs(I).HT_Reales
                                 
-                                Cad = Cad & "Dia : " & i + 1 & "   a compensar.  " & HN & ". Antes " & vMEs(i).HE_Reales
+                                Cad = Cad & "Dia : " & I + 1 & "   a compensar.  " & HN & ". Antes " & vMEs(I).HE_Reales
                                 
-                                vMEs(i).HT_Reales = 0
-                                vMEs(i).HE_Reales = HN
-                                vMEs(i).DiaNomina = 0
+                                vMEs(I).HT_Reales = 0
+                                vMEs(I).HE_Reales = HN
+                                vMEs(I).DiaNomina = 0
                                 'Quito las del dia
                                 cT.HNReales = cT.HNReales - HN
                                 cT.HEReales = cT.HEReales + HN
@@ -4297,7 +4297,7 @@ Dim CadenaDiasMes As String
                     End If
                 End If
             
-        Next i
+        Next I
         If TrabajadorDepuracion > 0 And Cad <> "" Then cDep2.Add Cad
         Dia = UltDiaSemana + 1
         If Dia > 30 Then N = 9 'QUe se salga
@@ -4327,23 +4327,23 @@ Dim CadenaDiasMes As String
    End If
   ''' If TrabajadorDepuracion > 0 Then St op
    
-   For i = 0 To NumeroDiasMes
-        If i = N Then
-            N = i + 7
+   For I = 0 To NumeroDiasMes
+        If I = N Then
+            N = I + 7
             Cad = Cad & vbCrLf
         End If
-        If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
+        If vMEs(I).DiaProcesable And Not vMEs(I).Baja And Not vMEs(I).Festivo Then
             FinalCompensar = True
             
-            J = J + vMEs(i).DiaNomina
+            J = J + vMEs(I).DiaNomina
             'HN = HN + vMes(i).HT_Reales
         Else
             FinalCompensar = False
             
         End If
-        Cad = Cad & PintaDia(i, vMEs(i), FinalCompensar)
+        Cad = Cad & PintaDia(I, vMEs(I), FinalCompensar)
         
-    Next i
+    Next I
     CadenaDiasMes = ""
     If TrabajadorDepuracion > 0 Then CadenaDiasMes = Cad
 
@@ -4402,15 +4402,15 @@ Dim CadenaDiasMes As String
                         Else
                             If UltDiaSemana = NumeroDiasMes Then
                                 'Ultima semana
-                                i = Dia + 2
+                                I = Dia + 2
                             Else
                                 'Semanas intemedias
-                                i = UltDiaSemana - 4
+                                I = UltDiaSemana - 4
                             End If
-                            If i > Dia Then
-                                If i <= NumeroDiasMes Then Set vM = vMEs(i)
+                            If I > Dia Then
+                                If I <= NumeroDiasMes Then Set vM = vMEs(I)
                             Else
-                                If i = 0 Then Set vM = vMEs(i)
+                                If I = 0 Then Set vM = vMEs(I)
                             End If
                         End If
                         If UltDiaSemana = NumeroDiasMes Then
@@ -4420,12 +4420,12 @@ Dim CadenaDiasMes As String
                             End If
                         Else
                             
-                            i = UltDiaSemana - 1
-                            If i < 0 Then
+                            I = UltDiaSemana - 1
+                            If I < 0 Then
                                 'domingo es primer y utlimo dia semana
                                 Set vM2 = Nothing
                             Else
-                                Set vM2 = vMEs(i)
+                                Set vM2 = vMEs(I)
                             End If
                         End If
                         
@@ -4457,12 +4457,12 @@ Dim CadenaDiasMes As String
                         End If
                     End If
                     
-                    For i = Dia To UltDiaSemana
+                    For I = Dia To UltDiaSemana
                         If J > 0 And HC >= 8 Then
-                            If vMEs(i).DiaProcesable Then
-                                If Not (vMEs(i).Festivo Or vMEs(i).Baja) Then
-                                    If vMEs(i).DiaNomina = 0 Then
-                                        If vMEs(i).DiaSemana <> 3 And vMEs(i).DiaSemana <> 6 Then
+                            If vMEs(I).DiaProcesable Then
+                                If Not (vMEs(I).Festivo Or vMEs(I).Baja) Then
+                                    If vMEs(I).DiaNomina = 0 Then
+                                        If vMEs(I).DiaSemana <> 3 And vMEs(I).DiaSemana <> 6 Then
                                             'DIA NORMAL NO TRABAJADO
                                             
                                             J = J - 1
@@ -4470,15 +4470,15 @@ Dim CadenaDiasMes As String
                                             cT.HorasCompensadasNomina = cT.HorasCompensadasNomina + 8
                                             cT.DiasCompensables = cT.DiasCompensables + 1
                                             
-                                            VariablesDepuracion_Dias = VariablesDepuracion_Dias & " Compensamos " & i + 1 & "                    #" & HC & vbCrLf   'Para insertar en la variable
+                                            VariablesDepuracion_Dias = VariablesDepuracion_Dias & " Compensamos " & I + 1 & "                    #" & HC & vbCrLf   'Para insertar en la variable
                                             
                                         End If
                                     End If 'dianomina=0
                                 End If 'no de baja o festivo
                             End If 'diaprocesable
                         End If 'suficiente para compensar
-                    Next i ' Siguiente dia
-                    Dia = i  'para el siguiente bucle
+                    Next I ' Siguiente dia
+                    Dia = I  'para el siguiente bucle
                     'Ya hemos procesado todo el mes
                     If Dia > NumeroDiasMes Then FinalCompensar = True
             End If
@@ -4523,22 +4523,22 @@ Dim CadenaDiasMes As String
         End If
        
        End If
-       For i = 0 To NumeroDiasMes
-            If i = N Then
-                N = i + 7
+       For I = 0 To NumeroDiasMes
+            If I = N Then
+                N = I + 7
                 Cad = Cad & vbCrLf
             End If
-            If vMEs(i).DiaProcesable And Not vMEs(i).Baja And Not vMEs(i).Festivo Then
+            If vMEs(I).DiaProcesable And Not vMEs(I).Baja And Not vMEs(I).Festivo Then
                 FinalCompensar = True
     
-                J = J + vMEs(i).DiaNomina
-                HN = HN + vMEs(i).HT_Reales
+                J = J + vMEs(I).DiaNomina
+                HN = HN + vMEs(I).HT_Reales
             Else
                 FinalCompensar = False
             End If
-            Cad = Cad & PintaDia(i, vMEs(i), FinalCompensar)
+            Cad = Cad & PintaDia(I, vMEs(I), FinalCompensar)
             
-        Next i
+        Next I
     
         cDep2.Add ""
         cDep2.Add CadenaDiasMes
@@ -4552,7 +4552,7 @@ Dim CadenaDiasMes As String
     cT.HBolsa = HC
     
     If TrabajadorDepuracion > 0 Then
-        For i = 1 To 3
+        For I = 1 To 3
             cDep2.Add ""
         Next
         If VariablesDepuracion_Dias <> "" Then
@@ -4561,7 +4561,7 @@ Dim CadenaDiasMes As String
             cDep2.Add "------------------------------------------"
             cDep2.Add VariablesDepuracion_Dias
         
-            For i = 1 To 3
+            For I = 1 To 3
                 cDep2.Add ""
             Next
         End If
@@ -4571,8 +4571,8 @@ Dim CadenaDiasMes As String
     End If
 
     
-    For i = 0 To NumeroDiasMes
-        Set vMEs(i) = Nothing
+    For I = 0 To NumeroDiasMes
+        Set vMEs(I) = Nothing
     Next
 End Sub
 
@@ -4863,21 +4863,21 @@ End Sub
 
 
 Private Sub ImprimeFichero(Trabajador As String)
-Dim i As Integer
+Dim I As Integer
     On Error GoTo EI
     Print #MiNF, "Trabajador: " & Trabajador
     Print #MiNF, "": Print #MiNF, ""
-    For i = 1 To cDep2.Count
-        Print #MiNF, cDep2.Item(i)
-    Next i
+    For I = 1 To cDep2.Count
+        Print #MiNF, cDep2.Item(I)
+    Next I
     
     'Damos espacios
     Print #MiNF, String(70, "*")
     Print #MiNF, String(70, "*")
     Print #MiNF, String(70, "*")
-    For i = 1 To 5
+    For I = 1 To 5
         Print #MiNF, ""
-    Next i
+    Next I
 EI:
     Err.Clear
 End Sub

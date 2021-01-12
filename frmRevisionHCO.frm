@@ -1232,7 +1232,7 @@ Dim Cad As String
             Set frmB = New frmBuscaGrid
             frmB.vCampos = Cad
             'frmB.vTabla = NomTabla
-            frmB.vSql = CadB
+            frmB.vSQL = CadB
 
             '###A mano
             frmB.vDevuelve = "0|1|2|3|"
@@ -1339,7 +1339,7 @@ Dim SQL As String
     '*************** canviar els noms i el DELETE **********************************
     SQL = "¿Seguro que desea eliminar el marcaje?"
     SQL = SQL & vbCrLf & "Código: " & Adodc2.Recordset!Entrada & "     -    " & Format(Adodc2.Recordset!Fecha, "dd/mm/yyyy")
-    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!NomTrabajador
+    SQL = SQL & vbCrLf & "Nombre: " & Adodc2.Recordset!idTrabajador & " - " & Me.Adodc2.Recordset!nomtrabajador
     
     If MsgBox(SQL, vbQuestion + vbYesNo) = vbYes Then
         'Hay que eliminar
@@ -1514,7 +1514,7 @@ End Sub
 
 Private Sub TratarOrdenacion(Leer As Boolean)
 Dim Traba As Boolean
-Dim i As Integer
+Dim I As Integer
 
     If Leer Then
         
@@ -1526,10 +1526,10 @@ Dim i As Integer
         Traba = Me.mnTrabajador.Checked
         If Traba Then
             If Dir(App.Path & "\Ordtra.dat", vbArchive) = "" Then
-                i = FreeFile
-                Open App.Path & "\Ordtra.dat" For Output As #i
-                Print #i, Now
-                Close #i
+                I = FreeFile
+                Open App.Path & "\Ordtra.dat" For Output As #I
+                Print #I, Now
+                Close #I
                 
             End If
         Else
@@ -1708,7 +1708,7 @@ Dim LeerHorario As Boolean
             Cad = Cad & "Tarjeta|numtarjeta|N||20·"
             frmB.vCampos = Cad
             frmB.vTabla = "trabajadores"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             frmB.vTitulo = "Trabajadores"
@@ -1722,7 +1722,7 @@ Dim LeerHorario As Boolean
             Cad = Cad & "Descripcion|nominci|T||70·"
             frmB.vCampos = Cad
             frmB.vTabla = "incidencias"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             
@@ -1737,7 +1737,7 @@ Dim LeerHorario As Boolean
             Cad = Cad & "Descripcion|NomHorario|T||70·"
             frmB.vCampos = Cad
             frmB.vTabla = "Horarios"
-            frmB.vSql = ""
+            frmB.vSQL = ""
             
             '###A mano
             
@@ -1865,7 +1865,7 @@ Private Sub Text1_KeyPress(Index As Integer, KeyAscii As Integer)
             End Select
         End If
     Else
-        Keypress KeyAscii
+        KeyPress KeyAscii
     End If
 End Sub
 
@@ -2139,7 +2139,7 @@ Private Function SepuedeBorrar() As Boolean
     SepuedeBorrar = True
 End Function
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     If KeyAscii = 13 Then 'ENTER
         KeyAscii = 0
         SendKeys "{tab}"
@@ -2369,7 +2369,7 @@ End Sub
 Private Sub CargaDatosMarcajes(SoloIncidenciasGeneradas As Boolean)
 Dim RS As ADODB.Recordset
 Dim IT As ListItem
-Dim i As Integer
+Dim I As Integer
 Dim Cad As String
 Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
     Set RS = New ADODB.Recordset
@@ -2389,12 +2389,12 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
                
             Else
                 If RS!LaHora <= 23 Then
-                    i = RS!LaHora
+                    I = RS!LaHora
                 Else
-                    If RS!LaHora > 23 Then i = -24
-                    i = RS!LaHora + i
+                    If RS!LaHora > 23 Then I = -24
+                    I = RS!LaHora + I
                 End If
-                SQL = Format(i, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
+                SQL = Format(I, "00") & ":" & Format(RS!Minutos, "00") & ":" & Format(RS!segundos, "00")
             
             End If
             
@@ -2409,12 +2409,12 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
                 SQL = Horas_Quitar24(RS!HoraReal, True)
             Else
             If RS!LaHora <= 23 Then
-                i = RS!lahorar
+                I = RS!lahorar
             Else
-                i = -24
-                i = RS!lahorar + i
+                I = -24
+                I = RS!lahorar + I
             End If
-            SQL = Format(i, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
+            SQL = Format(I, "00") & ":" & Format(RS!Minutosr, "00") & ":" & Format(RS!Segundosr, "00")
             End If
             Set IT = ListView3.ListItems.Add(, , SQL)
             
@@ -2448,7 +2448,7 @@ Dim FueraIntervaloHoras As Byte   '0.No  1<0    2>=24
         Set IT = ListView2.ListItems.Add(, , RS!NomInci)
         IT.SubItems(1) = DevuelveHora(RS!Horas)
         IT.SubItems(2) = Format(RS!Horas, "0.00")
-        IT.SubItems(3) = RS!IdInci
+        IT.SubItems(3) = RS!Id
         IT.Tag = RS!Id
         RS.MoveNext
     Wend
@@ -2459,7 +2459,7 @@ End Sub
 
 Private Sub CalculaHoras()
 Dim g As Integer
-Dim i As Integer
+Dim I As Integer
 Dim Horas As Single
 Dim v As Single
 Dim FInter As Byte
@@ -2478,26 +2478,26 @@ Horas = 0
 
 
 
-For i = 1 To g
+For I = 1 To g
     
-    If ListView1.ListItems((i * 2)).Tag = 1 Then
+    If ListView1.ListItems((I * 2)).Tag = 1 Then
         FInter = 1
     Else
-        FInter = HoraFueraInterval(ListView1.ListItems((i * 2)).SubItems(2))
+        FInter = HoraFueraInterval(ListView1.ListItems((I * 2)).SubItems(2))
     End If
-    T1 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2)).SubItems(2))
+    T1 = DevuelveValorHora3(FInter, ListView1.ListItems((I * 2)).SubItems(2))
     
-    If ListView1.ListItems((i * 2) - 1).Tag = 1 Then
+    If ListView1.ListItems((I * 2) - 1).Tag = 1 Then
         FInter = 1
     Else
-        FInter = HoraFueraInterval(ListView1.ListItems((i * 2) - 1).SubItems(2))
+        FInter = HoraFueraInterval(ListView1.ListItems((I * 2) - 1).SubItems(2))
     End If
-    T2 = DevuelveValorHora3(FInter, ListView1.ListItems((i * 2) - 1).SubItems(2))
+    T2 = DevuelveValorHora3(FInter, ListView1.ListItems((I * 2) - 1).SubItems(2))
     v = T1 - T2
     
     'v = DevuelveValorHora(CDate(ListView1.ListItems((I * 2))) - CDate(ListView1.ListItems((I * 2) - 1)))
     Horas = Horas + v
-Next i
+Next I
 TextHt(0).Text = Round(Horas, 2)
 TextHt(1).Text = DevuelveHora(Horas)
 

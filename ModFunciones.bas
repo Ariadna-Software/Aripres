@@ -544,7 +544,7 @@ Dim I As Integer
                     If mTag.columna <> "" Then
                         
                         
-                        Debug.Print mTag.columna
+                        'Debug.Print mTag.columna
                         Campo = mTag.columna
                         
                         If mTag.Vacio = "S" Then

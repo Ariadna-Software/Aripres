@@ -466,9 +466,9 @@ Private Sub BotonAnyadir()
     lblIndicador.Caption = "INSERTANDO"
     'Situamos el grid al final
     DataGrid1.AllowAddNew = True
-    If Not adodc1.Recordset.EOF Then
+    If Not Adodc1.Recordset.EOF Then
         DataGrid1.HoldFields
-        adodc1.Recordset.MoveLast
+        Adodc1.Recordset.MoveLast
     End If
     
     
@@ -517,10 +517,10 @@ Private Sub BotonModificar()
     '---------
     'MODIFICAR
     '----------
-    Dim cad As String
+    Dim Cad As String
     Dim anc As Single
-    Dim i As Integer
-    If adodc1.Recordset.EOF Then Exit Sub
+    Dim I As Integer
+    If Adodc1.Recordset.EOF Then Exit Sub
     'If Adodc1.Recordset.RecordCount < 1 Then Exit Sub
 
 
@@ -528,8 +528,8 @@ Private Sub BotonModificar()
     Me.lblIndicador.Caption = "MODIFICAR"
     
     If DataGrid1.Bookmark < DataGrid1.FirstRow Or DataGrid1.Bookmark > (DataGrid1.FirstRow + DataGrid1.VisibleRows - 1) Then
-        i = DataGrid1.Bookmark - DataGrid1.FirstRow
-        DataGrid1.Scroll 0, i
+        I = DataGrid1.Bookmark - DataGrid1.FirstRow
+        DataGrid1.Scroll 0, I
         DataGrid1.Refresh
     End If
     
@@ -568,24 +568,24 @@ Private Sub BotonEliminar()
 Dim SQL As String
     On Error GoTo Error2
     'Ciertas comprobaciones
-    If adodc1.Recordset.EOF Then Exit Sub
+    If Adodc1.Recordset.EOF Then Exit Sub
  
     Exit Sub
  
     
     '### a mano
     SQL = "Seguro que desea eliminar la baja :"
-    SQL = SQL & vbCrLf & "Trabajador: " & adodc1.Recordset.Fields(4)
-    SQL = SQL & vbCrLf & "Codigo: " & adodc1.Recordset.Fields(3)
-    SQL = SQL & vbCrLf & "Fecha baja: " & adodc1.Recordset.Fields(0)
+    SQL = SQL & vbCrLf & "Trabajador: " & Adodc1.Recordset.Fields(4)
+    SQL = SQL & vbCrLf & "Codigo: " & Adodc1.Recordset.Fields(3)
+    SQL = SQL & vbCrLf & "Fecha baja: " & Adodc1.Recordset.Fields(0)
     If MsgBox(SQL, vbQuestion + vbYesNoCancel) = vbYes Then
         'Hay que eliminar
-        SQL = "Delete from bajas where idtrab = " & adodc1.Recordset.Fields(3)
-        SQL = SQL & " AND FechaBaja = " & DBSet(adodc1.Recordset.Fields(0), "F")
+        SQL = "Delete from bajas where idtrab = " & Adodc1.Recordset.Fields(3)
+        SQL = SQL & " AND FechaBaja = " & DBSet(Adodc1.Recordset.Fields(0), "F")
         conn.Execute SQL
         espera 0.5
         CargaGrid ""
-        adodc1.Recordset.Cancel
+        Adodc1.Recordset.Cancel
     End If
     Exit Sub
 Error2:
@@ -598,7 +598,7 @@ End Sub
 
 
 Private Sub cmdAceptar_Click()
-Dim i As Integer
+Dim I As Integer
 Dim CadB As String
 Select Case Modo
     Case 1
@@ -619,10 +619,10 @@ Select Case Modo
                 'Hacemos insertar
                 If ModificaDesdeFormulario(Me) Then
                    
-                    i = adodc1.Recordset.AbsolutePosition
+                    I = Adodc1.Recordset.AbsolutePosition
                     PonerModo 0
                     CargaGrid
-                    adodc1.Recordset.Move i - 1
+                    Adodc1.Recordset.Move I - 1
                     lblIndicador.Caption = ""
                 End If
             End If
@@ -643,7 +643,7 @@ Select Case Modo
 Case 1
     DataGrid1.AllowAddNew = False
     'CargaGrid
-    If Not adodc1.Recordset.EOF Then adodc1.Recordset.MoveFirst
+    If Not Adodc1.Recordset.EOF Then Adodc1.Recordset.MoveFirst
     
 Case 3
     CargaGrid
@@ -656,16 +656,16 @@ End Sub
 
 
 Private Sub cmdRegresar_Click()
-Dim cad As String
+Dim Cad As String
     
-    If adodc1.Recordset.EOF Then
+    If Adodc1.Recordset.EOF Then
         MsgBox "Ningún registro a devolver.", vbExclamation
         Exit Sub
     End If
     
-    cad = adodc1.Recordset.Fields(0) & "|"
-    cad = cad & adodc1.Recordset.Fields(1) & "|"
-    RaiseEvent DatoSeleccionado(cad)
+    Cad = Adodc1.Recordset.Fields(0) & "|"
+    Cad = Cad & Adodc1.Recordset.Fields(1) & "|"
+    RaiseEvent DatoSeleccionado(Cad)
     Unload Me
 End Sub
 
@@ -802,7 +802,7 @@ Private Sub Toolbar1_ButtonClick(ByVal Button As MSComctlLib.Button)
     Case 8
             BotonEliminar
     Case 10
-            If Me.adodc1.Recordset.EOF Then Exit Sub
+            If Me.Adodc1.Recordset.EOF Then Exit Sub
     Case 11
         frmListado.Opcion = 21
         frmListado.Show vbModal
@@ -815,89 +815,89 @@ End Sub
 
 
 Private Sub DespalzamientoVisible(bol As Boolean)
-    Dim i
-    For i = 14 To 17
-        Toolbar1.Buttons(i).Visible = bol
-    Next i
+    Dim I
+    For I = 14 To 17
+        Toolbar1.Buttons(I).Visible = bol
+    Next I
 End Sub
 
-Private Sub CargaGrid(Optional vSql As String)
+Private Sub CargaGrid(Optional vSQL As String)
     Dim J As Integer
     Dim TotalAncho As Integer
-    Dim i As Integer
+    Dim I As Integer
     Dim Inicio As Integer
     
-    adodc1.ConnectionString = conn
+    Adodc1.ConnectionString = conn
     SQL = ""
-    vSql = SQL & vSql
+    vSQL = SQL & vSQL
     
     PonerSQL
-    If vSql <> "" Then SQL = SQL & " AND " & vSql
+    If vSQL <> "" Then SQL = SQL & " AND " & vSQL
     
     SQL = SQL & " ORDER BY fecha desc ,nominas.idtrabajador"
-    adodc1.RecordSource = SQL
-    adodc1.CursorType = adOpenDynamic
-    adodc1.LockType = adLockOptimistic
-    adodc1.Refresh
+    Adodc1.RecordSource = SQL
+    Adodc1.CursorType = adOpenDynamic
+    Adodc1.LockType = adLockOptimistic
+    Adodc1.Refresh
     
     DataGrid1.AllowRowSizing = False
     DataGrid1.RowHeight = 290
    
     ' Fechabaja, idbaja, descbaja, IdTrabajador, NomTrabajador"
     'Cuenta contable
-    i = 0
-        DataGrid1.Columns(i).Caption = "Fecha"
-        DataGrid1.Columns(i).Width = 1000
-        DataGrid1.Columns(i).NumberFormat = "dd/mm/yyyy"
+    I = 0
+        DataGrid1.Columns(I).Caption = "Fecha"
+        DataGrid1.Columns(I).Width = 1000
+        DataGrid1.Columns(I).NumberFormat = "dd/mm/yyyy"
     
     'Descripcion NOMMACTA
-    i = 1
-        DataGrid1.Columns(i).Caption = "Trab"
-        DataGrid1.Columns(i).Width = 900
-        TotalAncho = TotalAncho + DataGrid1.Columns(i).Width
+    I = 1
+        DataGrid1.Columns(I).Caption = "Trab"
+        DataGrid1.Columns(I).Width = 900
+        TotalAncho = TotalAncho + DataGrid1.Columns(I).Width
     
     
-    i = 2
-        DataGrid1.Columns(i).Caption = "Nombre"
-        DataGrid1.Columns(i).Width = IIf(vEmpresa.QueEmpresa = 4, 3000, 3500)
+    I = 2
+        DataGrid1.Columns(I).Caption = "Nombre"
+        DataGrid1.Columns(I).Width = IIf(vEmpresa.QueEmpresa = 4, 3000, 3500)
         
         
-    i = 3
-        DataGrid1.Columns(i).Caption = "Dias"
-        DataGrid1.Columns(i).Width = 600
-        DataGrid1.Columns(i).Alignment = dbgRight
+    I = 3
+        DataGrid1.Columns(I).Caption = "Dias"
+        DataGrid1.Columns(I).Width = 600
+        DataGrid1.Columns(I).Alignment = dbgRight
         
     
-    For i = 4 To 6
-        DataGrid1.Columns(i).Caption = RecuperaValor("Horas|Estr.|Extra|", i - 3)
-        DataGrid1.Columns(i).Width = IIf(i < 6, 780, 750)
-        DataGrid1.Columns(i).Alignment = dbgRight
-        DataGrid1.Columns(i).NumberFormat = FormatoImporte
+    For I = 4 To 6
+        DataGrid1.Columns(I).Caption = RecuperaValor("Horas|Estr.|Extra|", I - 3)
+        DataGrid1.Columns(I).Width = IIf(I < 6, 780, 750)
+        DataGrid1.Columns(I).Alignment = dbgRight
+        DataGrid1.Columns(I).NumberFormat = FormatoImporte
     Next
     Inicio = 7
-    i = 7
+    I = 7
     If vEmpresa.CompensaHorasNominaMES Then
-        DataGrid1.Columns(i).Caption = "Plus"
-        DataGrid1.Columns(i).Width = 750
-        DataGrid1.Columns(i).Alignment = dbgRight
-        DataGrid1.Columns(i).NumberFormat = FormatoImporte
+        DataGrid1.Columns(I).Caption = "Plus"
+        DataGrid1.Columns(I).Width = 750
+        DataGrid1.Columns(I).Alignment = dbgRight
+        DataGrid1.Columns(I).NumberFormat = FormatoImporte
         Inicio = 8
     End If
     
-    For i = Inicio To Me.DataGrid1.Columns.Count - 1
-        DataGrid1.Columns(i).NumberFormat = FormatoImporte
-        DataGrid1.Columns(i).Alignment = dbgRight
-        If i = DataGrid1.Columns.Count - 1 Then
-            DataGrid1.Columns(i).Width = 1200
+    For I = Inicio To Me.DataGrid1.Columns.Count - 1
+        DataGrid1.Columns(I).NumberFormat = FormatoImporte
+        DataGrid1.Columns(I).Alignment = dbgRight
+        If I = DataGrid1.Columns.Count - 1 Then
+            DataGrid1.Columns(I).Width = 1200
         Else
-            DataGrid1.Columns(i).Width = 800
+            DataGrid1.Columns(I).Width = 800
         End If
     Next
     
-    For i = 0 To 3
-        DataGrid1.Columns(i).AllowSizing = False
+    For I = 0 To 3
+        DataGrid1.Columns(I).AllowSizing = False
 
-    Next i
+    Next I
         
         'Fiajamos el cadancho
     If Not CadAncho Then
@@ -924,18 +924,18 @@ Private Sub CargaGrid(Optional vSql As String)
 '    End If
 End Sub
 
-Private Sub txtAux_GotFocus(Index As Integer)
+Private Sub txtaux_GotFocus(Index As Integer)
 With txtAux(Index)
     .SelStart = 0
     .SelLength = Len(.Text)
 End With
 End Sub
 
-Private Sub txtAux_KeyPress(Index As Integer, KeyAscii As Integer)
-    Keypress KeyAscii
+Private Sub txtaux_KeyPress(Index As Integer, KeyAscii As Integer)
+    KeyPress KeyAscii
 End Sub
 
-Private Sub Keypress(KeyAscii As Integer)
+Private Sub KeyPress(KeyAscii As Integer)
     'Caption = KeyAscii
     If KeyAscii = 13 Then
         KeyAscii = 0
@@ -1047,7 +1047,7 @@ Private Sub PonerSQL()
     
     If vEmpresa.QueEmpresa = 4 Then
         'Catadau
-        SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HP, "
+        SQL = "SELECT Fecha,nominas.idTrabajador,nomtrabajador,Dias,HN,HC,HE, "
         SQL = SQL & " Bruto,ImporEstruc 'Imp est',Plus, LlevaPlus PlusH "
     Else
         'Quien lleve horas
