@@ -2917,17 +2917,22 @@ End Sub
 Private Sub imgVacas_Click()
     If Modo <> 2 Then Exit Sub
     
-    frmCalendarioVacaciones.Trabajador = CLng(Text1(0).Text)
-    frmCalendarioVacaciones.Show vbModal
     
-    Exit Sub
+    
+    If vEmpresa.SolicitudVacaciones Then
+      frmCalendarioVacaciones.Trabajador = CLng(Text1(0).Text)
+        frmCalendarioVacaciones.Show vbModal
+    
+    Else
 
 
-    'ANtes Ene 21
-    FrmVarios.Parametros = Text1(1).Text & "|" & Text1(0).Text & "|"
-    FrmVarios.Opcion = 3
-    FrmVarios.Show vbModal
+        'ANtes Ene 21
+        FrmVarios.Parametros = Text1(1).Text & "|" & Text1(0).Text & "|"
+        FrmVarios.Opcion = 3
+        FrmVarios.Show vbModal
+    End If
     CargaCalendario
+
 End Sub
 
 Private Sub imgZoom_Click(Index As Integer)
@@ -3952,9 +3957,13 @@ Private Sub InsertaFestivo(F1 As String, F2 As Date, EsSolicitud As Boolean)
         
         IT.ForeColor = &H8000&
         IT.ToolTipText = "Solicitud"
+        
+        If F1 <> F2 Then IT.ListSubItems(1).ForeColor = &H8000&
     Else
         IT.Bold = True
         IT.ToolTipText = "Vacaciones"
+        IT.ForeColor = &HC00000
+        If F1 <> F2 Then IT.ListSubItems(1).ForeColor = &HC00000
     End If
 End Sub
 
@@ -4039,7 +4048,7 @@ Dim Situ As Byte
     miRs.Close
         
         
-    If Text1(38).Text <> "" Then
+    If Text1(38).Text <> "" And vEmpresa.SolicitudVacaciones Then
         'Nuevo sistemas de vacaciones
         miSQL = "select  if(situacion=0,1,0) situ,fecha  ,week(fecha,1) Semana, observa  from trabajadoresvacaciones v "
         miSQL = miSQL & " WHERE IdTrabajador  =" & Text1(0).Text & " AND fecha between '" & Format(vEmpresa.FechaInicio, FormatoFecha) & "'"

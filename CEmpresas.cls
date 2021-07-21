@@ -122,7 +122,7 @@ Private mvarRelojConfig2 As String 'copia local
 Private mvarNominaConEstructurales As Boolean  '
 
 
-
+Private mvarSolicitudVacaciones As Boolean
 
 
 
@@ -892,6 +892,9 @@ Public Property Get NominaConEstructurales() As Boolean
      NominaConEstructurales = mvarNominaConEstructurales
 End Property
 
+Public Property Get SolicitudVacaciones() As Boolean
+     SolicitudVacaciones = mvarSolicitudVacaciones
+End Property
 
 
 
@@ -1038,6 +1041,10 @@ Dim I As Integer
             
             mvarNominaConEstructurales = False
             mvarNominaConEstructurales = DBLet(RS!NominaConEstructurales, "N") = 1
+            
+            
+            mvarSolicitudVacaciones = False
+            mvarSolicitudVacaciones = DBLet(RS!SolicitudVacaciones, "N") = 1
             
             
             Leer = 0

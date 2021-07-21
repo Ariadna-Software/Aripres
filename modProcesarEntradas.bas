@@ -115,9 +115,9 @@ Dim Recortes As ADODB.Recordset
 Dim vRs As ADODB.Recordset
 Dim H1, h2, H3
 Dim Cad As String
-Dim AUX As String
+Dim Aux As String
 Dim Trabajador As Long
-Dim i As Integer
+Dim I As Integer
 Dim Hora As Date
 Dim HoraAnt As Date
 Dim HoraFin As Date
@@ -194,9 +194,9 @@ Dim k As Integer
           'Tenemos k redondear a cuartos, o a media hora en funcion del valor en datos de empresa
           'Entonces, a partir de las doce de la mañana vamos haciendo hasta las 11:30 de la noche
           If vH.Rectificar = vbRecNormCuarto Then
-              AUX = "15"
+              Aux = "15"
           Else
-              AUX = "30"
+              Aux = "30"
           End If
           
           'Primero vemos los minutos para cortar los intervalos
@@ -233,53 +233,53 @@ Dim k As Integer
           'Ajuste hora fin
           mihora = vRs.Fields(1) 'fin
           If mihora < CDate("23:30:00") Then
-                mihora = DateAdd("n", Val(AUX), mihora)
+                mihora = DateAdd("n", Val(Aux), mihora)
           
           
           
-                i = Minute(mihora)
+                I = Minute(mihora)
                 If vH.Rectificar = vbRecNormCuarto Then
-                   i = (i \ 15)
+                   I = (I \ 15)
                    
-                   i = 15 * i
+                   I = 15 * I
                    
                 Else
-                     If i < 31 Then
-                          i = 0
+                     If I < 31 Then
+                          I = 0
                      Else
-                          i = 30
+                          I = 30
                      End If
                      
                 End If
-                HoraFin = CDate(Hour(mihora) & ":" & Format(i, "00"))
+                HoraFin = CDate(Hour(mihora) & ":" & Format(I, "00"))
                 
                 
         Else
                 If vH.Rectificar = vbRecNormCuarto Then
-                    i = 15
+                    I = 15
                 Else
-                    i = 30
+                    I = 30
                 End If
-                HoraFin = Format(DateAdd("n", -i, CDate("0:00:00")), "hh:mm:ss")
+                HoraFin = Format(DateAdd("n", -I, CDate("0:00:00")), "hh:mm:ss")
           'Minimo   ######### INICIO
         End If
           mihora = vRs.Fields(0) 'minimo
           
-          i = Minute(mihora)
+          I = Minute(mihora)
           If vH.Rectificar = vbRecNormCuarto Then
-             i = (i \ 15)
+             I = (I \ 15)
              
-             i = 15 * i
+             I = 15 * I
              
           Else
-               If i < 31 Then
-                    i = 0
+               If I < 31 Then
+                    I = 0
                Else
-                    i = 30
+                    I = 30
                End If
                
           End If
-          Hora = CDate(Hour(mihora) & ":" & Format(i, "00"))
+          Hora = CDate(Hour(mihora) & ":" & Format(I, "00"))
 
           vRs.Close
               
@@ -334,7 +334,7 @@ Dim k As Integer
                         vRs.Close
                           
                       'Subimos hora y hora post
-                      Hora = DateAdd("n", Val(AUX), Hora)
+                      Hora = DateAdd("n", Val(Aux), Hora)
                       HoraAnt = DateAdd("n", 1, mihora)
               Wend
           
@@ -380,9 +380,9 @@ Dim k As Integer
       
                
           If vH.Rectificar = vbRecESCuarto Then
-              AUX = "15"
+              Aux = "15"
           Else
-              AUX = "30"   'Entradas salidas cada media hora
+              Aux = "30"   'Entradas salidas cada media hora
           End If
                    
          
@@ -421,16 +421,17 @@ Dim k As Integer
           
               If Trabajador <> vRs!idTrabajador Then
                   'label
+                  
                    Trabajador = vRs!idTrabajador
                     L2.Caption = "Trab: " & Trabajador
                     DoEvents
-                    i = 0
+                    I = 0
                     
                     
                     
                     'If InStr(1, ",901,178,169,196,193,150,182,154,", "," & vRs!idTrabajador & ",") > 0 Then St op
         
-                    'If Trabajador = 30 Then St op
+                    If Trabajador = 50 Then Debug.Assert False
                    
               End If
  
@@ -456,12 +457,12 @@ Dim k As Integer
                 
               End If
               
-              If (i Mod 2) = 0 Then
+              If (I Mod 2) = 0 Then
                   'Entrada
-                  Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteEntrada, CInt(AUX))
+                  Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteEntrada, CInt(Aux))
               Else
                   'Salida
-                  Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteSalida, CInt(AUX))
+                  Hora = HoraRectificada(HoraAnt, vEmpresa.AjusteSalida, CInt(Aux))
               End If
                 'If Hora <> HoraAnt Then St op
               'reajusto la hora
@@ -486,7 +487,7 @@ Dim k As Integer
               espera 0.03
               conn.Execute Cad
               'Siguiente
-              i = i + 1
+              I = I + 1
            Wend
            vRs.Close
             
@@ -971,7 +972,7 @@ Dim TieneIncidencia As Boolean
 Dim MarcajeCorrecto As Boolean
 Dim Exceso As Date
 Dim Retraso As Date
-Dim i As Long
+Dim I As Long
 Dim v(3) As Currency
 Dim vI(3) As Integer
 Dim Cad As String
@@ -988,10 +989,10 @@ Dim SQLUpdateHora As String
     
     Set Rss = New ADODB.Recordset
     'Vector para incidencias
-    For i = 0 To 3
-        v(i) = 0
-        vI(i) = 0
-    Next i
+    For I = 0 To 3
+        v(I) = 0
+        vI(I) = 0
+    Next I
     'Seleccionamos todas las horas de este
     If RevisionEnMarcajes Then
     
@@ -1039,13 +1040,13 @@ If vH.EsDiaFestivo Then
         TotalH = 0
         'NUMERO DE MARCAJES PAR
         Rss.MoveFirst
-        For i = 1 To N
+        For I = 1 To N
             T1 = DevuelveValorHora(Rss!Hora)
             Rss.MoveNext
             T2 = DevuelveValorHora(Rss!Hora)
             Rss.MoveNext
             TotalH = TotalH + (T2 - T1)
-        Next i
+        Next I
         
         'Contabilizaremos los descuentos relativos al almuerzo y merienda
         'si procede
@@ -1072,13 +1073,13 @@ If vH.EsDiaFestivo Then
         End If
                 
         If vH.DtoMer > 0 Then
-            For i = 1 To N
+            For I = 1 To N
                 PrimerTicaje = Rss!Hora
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Rss!Hora > vH.HoraDtoMer Then quitarmerienda = True
                 End If
-            Next i
+            Next I
         End If
         
         'Ahora ya sabemos las horas trabajadas
@@ -1113,16 +1114,16 @@ Else
         Exceso = DevuelveHora(vEmpresa.MaxExceso)
         Retraso = DevuelveHora(vEmpresa.MaxRetraso)
         vMar.HorasDto = 0
-        i = 0
+        I = 0
         Rss.MoveFirst
         PrimerTicaje = Format(Rss!Hora, "hh:mm:ss")
         SQLUpdateHora = ""
         While Not Rss.EOF
             If Rss!IdInci > 0 Then
                 InciManual = Rss!IdInci
-                vI(i) = InciManual
+                vI(I) = InciManual
             End If
-            Select Case i
+            Select Case I
             Case 0
                 HoraH = vH.HoraE1
             Case 1
@@ -1132,8 +1133,8 @@ Else
             Case 3
                 HoraH = vH.HoraS2
             End Select
-            kIncidencia = EntraDentro(Format(Rss!Hora, "hh:mm:ss"), HoraH, Exceso, Retraso, (i Mod 2) = 0)
-            v(i) = kIncidencia
+            kIncidencia = EntraDentro(Format(Rss!Hora, "hh:mm:ss"), HoraH, Exceso, Retraso, (I Mod 2) = 0)
+            v(I) = kIncidencia
             If kIncidencia = 0 Then
                 'Como ha entrado dentro entonces UPDATE la hora a hora
                 If RevisionEnMarcajes Then
@@ -1144,7 +1145,7 @@ Else
                 SQLUpdateHora = "UPDATE " & SQLUpdateHora & " SET hora ='" & Format(HoraH, "hh:mm:ss") & "' WHERE Secuencia =" & Rss!Secuencia
                 EjecutaSQL SQLUpdateHora
             End If
-            i = i + 1
+            I = I + 1
             UltimoTicaje = Format(Rss!Hora, "hh:mm:ss")
             Rss.MoveNext
         Wend
@@ -1165,31 +1166,31 @@ Else
         'En t1 tendremos las horas en las incidencias
         T1 = 0
         TieneIncidencia = False
-        For i = 0 To 3
-            T1 = T1 + v(i)
-            If v(i) > 0 Then
+        For I = 0 To 3
+            T1 = T1 + v(I)
+            If v(I) > 0 Then
                 'Si tenia incidencia manul la pongo
-                If vI(i) <> 0 Then
-                    N = vI(i)
+                If vI(I) <> 0 Then
+                    N = vI(I)
                 Else
                     N = vEmpresa.IncRetraso
                 End If
-                GeneraIncidencia N, vMar.Entrada, v(i)
+                GeneraIncidencia N, vMar.Entrada, v(I)
                 TieneIncidencia = True
                 Else
                     
-                    If v(i) < 0 Then
+                    If v(I) < 0 Then
                     
-                        If vI(i) <> 0 Then
-                            N = vI(i)
+                        If vI(I) <> 0 Then
+                            N = vI(I)
                         Else
                             N = vEmpresa.IncHoraExceso
                         End If
-                        GeneraIncidencia N, vMar.Entrada, Abs(v(i))
+                        GeneraIncidencia N, vMar.Entrada, Abs(v(I))
                         TieneIncidencia = True
                     End If
             End If
-        Next i
+        Next I
         'Debug.Print vMar.IdTrabajador & ": " & T1
         
         'si tiene dto. Le sumaremos al valor obtenido en T1 el valor de los dtos
@@ -1213,14 +1214,14 @@ Else
                 
         If vH.DtoMer > 0 Then
             Rss.MoveFirst
-            For i = 1 To N
+            For I = 1 To N
                 PrimerTicaje = Format(Rss!Hora, "hh:mm:ss")
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Format(Rss!Hora, "hh:mm:ss") > vH.HoraDtoMer Then quitarmerienda = True
                 End If
                 Rss.MoveNext
-            Next i
+            Next I
         End If
             
         
@@ -1353,13 +1354,13 @@ Else
         End If
                 
         If vH.DtoMer > 0 Then
-            For i = 1 To N
+            For I = 1 To N
                 PrimerTicaje = Rss!Hora
                 Rss.MoveNext
                 If PrimerTicaje <= vH.HoraDtoMer Then
                     If Rss!Hora > vH.HoraDtoMer Then quitarmerienda = True
                 End If
-            Next i
+            Next I
         End If
     
         'Ahora ya sabemos las horas trabajadas
@@ -1433,20 +1434,20 @@ End If
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            i = 1
+            I = 1
             Else
-                i = DBLet(RFin.Fields(0), "N") + 1
+                I = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         While Not Rss.EOF
-            Cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
+            Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada
             Cad = Cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
             Cad = Cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj
             ' latitud,longitud,ssid,imei,observaciones,appinfo,revisado
             Cad = Cad & "," & DBSet(Rss!latitud, "T", "S") & "," & DBSet(Rss!Longitud, "T", "S") & "," & DBSet(Rss!ssid, "T", "S")
             Cad = Cad & "," & DBSet(Rss!imei, "T", "S") & "," & DBSet(Rss!observaciones, "T", "S") & "," & DBSet(Rss!appinfo, "T", "S") & "," & DBSet(Rss!revisado, "N") & ")"
             conn.Execute vSQL3 & Cad
-            i = i + 1
+            I = I + 1
             Rss.MoveNext
         Wend
         
@@ -1484,7 +1485,7 @@ Dim RFin As ADODB.Recordset
 Dim NumTikadas As Integer
 Dim T1 As Currency
 Dim T2 As Currency
-Dim i As Long
+Dim I As Long
 Dim Cad As String
 Dim N As Integer
 Dim TotalH As Currency
@@ -1571,7 +1572,7 @@ If (NumTikadas Mod 2) > 0 Then
             End If
         End If
         HoraNocturna = False
-        For i = 1 To N
+        For I = 1 To N
         
             
             If Rss!Negativa = 1 Or Rss!LaHora > 23 Then
@@ -1639,7 +1640,7 @@ If (NumTikadas Mod 2) > 0 Then
             End If
             Rss.MoveNext
             TotalH = TotalH + (T2 - T1)
-        Next i
+        Next I
         
         
         'ALZIRA. Los ticajes NOCTURNOS llevan una hora mas trabajada
@@ -1771,9 +1772,9 @@ End If
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            i = 1
+            I = 1
             Else
-                i = DBLet(RFin.Fields(0), "N") + 1
+                I = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         
@@ -1799,10 +1800,10 @@ End If
             
             Cad = ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & HoraPintar & Cad
             
-            Cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada & Cad
+            Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada & Cad
             Debug.Print Cad
             conn.Execute vSQL3 & Cad
-            i = i + 1
+            I = I + 1
             Rss.MoveNext
         Wend
                 
@@ -1856,7 +1857,7 @@ Dim kIncidencia As Currency
 'Dim MarcajeCorrecto As Boolean
 'Dim Exceso As Date
 'Dim Retraso As Date
-Dim i As Long
+Dim I As Long
 'Dim v(3) As Single
 Dim Cad As String
 'Dim HoraH As Date
@@ -1923,7 +1924,7 @@ If (NumTikadas Mod 2) > 0 Then
             
             '----------------------------------------------
             
-                For i = 1 To N
+                For I = 1 To N
                     T1 = DevuelveValorHora(Rss!Hora)
                     'por si acaso; traen; incidencias; manuales
                     If InciManual = 0 Then InciManual = Rss!IdInci
@@ -1934,7 +1935,7 @@ If (NumTikadas Mod 2) > 0 Then
                     UltimoTicaje = Rss!Hora
                     Rss.MoveNext
                     TotalH = TotalH + (T2 - T1)
-            Next i
+            Next I
                 
             'Ahora ya sabemos las horas trabajadas, y las redondeamos
             TotalH = RealizaRedondeo(TotalH)
@@ -2004,15 +2005,15 @@ End If 'De DIAFESTIVO
         Set RFin = New ADODB.Recordset
         RFin.Open "Select max(secuencia) from EntradaMarcajes ", conn, , , adCmdText
         If RFin.EOF Then
-            i = 1
+            I = 1
             Else
-                i = DBLet(RFin.Fields(0), "N") + 1
+                I = DBLet(RFin.Fields(0), "N") + 1
         End If
         RFin.Close
         While Not Rss.EOF
             If ProcesandomarcajesHoraOk(Rss) Then
                 
-                Cad = i & "," & vMar.idTrabajador & "," & vMar.Entrada
+                Cad = I & "," & vMar.idTrabajador & "," & vMar.Entrada
                 Cad = Cad & ",'" & Format(Rss!Fecha, FormatoFecha) & "','" & Format(Rss!Hora, "hh:mm:ss")
                 Cad = Cad & "'," & Rss!IdInci & ",'" & Format(Rss!HoraReal, "hh:mm:ss") & "'," & Rss!Reloj
                   ' latitud,longitud,ssid,imei,observaciones,appinfo,revisado
@@ -2026,7 +2027,7 @@ End If 'De DIAFESTIVO
                 Cad = Cad & "Fecha: " & Format(Rss!Fecha, FormatoFecha)
                 MsgBox Cad, vbExclamation
             End If
-            i = i + 1
+            I = I + 1
             Rss.MoveNext
         Wend
         
@@ -2085,14 +2086,18 @@ Dim H As Date
         If dRS.EOF Then Exit Function
         'Segundo ticaje
         'Ticaje menor. k la hora de almuerzo. Vemos si no ha salido
-        If Format(dRS!Hora, "hh:mm:ss") < dH.HoraDtoAlm Then
-            'Ha salido antes de comienzo almuerzo
-            'No hago nada
-        Else
+        If dRS!LaHora > 23 Then
             LeQuitamosElAmluerzo = True
             Exit Function
+        Else
+            If Format(dRS!Hora, "hh:mm:ss") < dH.HoraDtoAlm Then
+                'Ha salido antes de comienzo almuerzo
+                'No hago nada
+            Else
+                LeQuitamosElAmluerzo = True
+                Exit Function
+            End If
         End If
-        
         dRS.MoveNext
             
         If dRS.EOF Then Fin = True
@@ -2272,11 +2277,11 @@ Public Function GeneraUnmarcajeAlzicoop(NTarjeta As String, Codigo As Long, vFec
 Dim RS As ADODB.Recordset
 Dim RsAUX As Recordset
 Dim Cad As String
-Dim i As Integer
+Dim I As Integer
 Dim H1 As Date
 Dim h2 As Date
 Dim Entrada As Boolean
-Dim AUX As Byte
+Dim Aux As Byte
 
 
 On Error GoTo ErrGeneraUnmarcajeAlzicoop

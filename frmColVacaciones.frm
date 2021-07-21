@@ -3,14 +3,14 @@ Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.2#0"; "MSCOMCTL.OCX"
 Begin VB.Form frmColVacaciones 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Resumen vacaciones"
-   ClientHeight    =   8055
+   ClientHeight    =   7380
    ClientLeft      =   45
    ClientTop       =   375
    ClientWidth     =   12900
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   8055
+   ScaleHeight     =   7380
    ScaleWidth      =   12900
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
@@ -18,9 +18,9 @@ Begin VB.Form frmColVacaciones
       Cancel          =   -1  'True
       Caption         =   "Command1"
       Height          =   495
-      Left            =   11520
+      Left            =   11400
       TabIndex        =   1
-      Top             =   7440
+      Top             =   7920
       Width           =   1215
    End
    Begin MSComctlLib.ListView ListView1 

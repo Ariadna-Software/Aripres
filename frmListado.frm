@@ -15,12 +15,184 @@ Begin VB.Form frmListado
    ScaleHeight     =   8550
    ScaleWidth      =   14880
    StartUpPosition =   2  'CenterScreen
+   Begin VB.Frame FrCopiaHorario 
+      Height          =   5295
+      Left            =   120
+      TabIndex        =   102
+      Top             =   0
+      Width           =   8175
+      Begin VB.CommandButton cmdCopiaHorario 
+         Caption         =   "Copiar"
+         Height          =   375
+         Left            =   5400
+         TabIndex        =   113
+         Top             =   4680
+         Width           =   1215
+      End
+      Begin VB.CheckBox chkTempoActual 
+         Caption         =   "Temporada actual"
+         Height          =   255
+         Left            =   4800
+         TabIndex        =   112
+         Top             =   2640
+         Value           =   1  'Checked
+         Width           =   3015
+      End
+      Begin VB.TextBox txtCalendarioDestino 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Left            =   4800
+         TabIndex        =   110
+         Text            =   "Text1"
+         Top             =   1080
+         Width           =   3135
+      End
+      Begin VB.CheckBox chkMas1año 
+         Caption         =   "Incrementa 1 año "
+         Height          =   255
+         Left            =   4800
+         TabIndex        =   109
+         Top             =   1680
+         Width           =   2535
+      End
+      Begin MSComctlLib.ListView ListView1 
+         Height          =   3375
+         Left            =   240
+         TabIndex        =   107
+         Top             =   1440
+         Width           =   4215
+         _ExtentX        =   7435
+         _ExtentY        =   5953
+         View            =   3
+         MultiSelect     =   -1  'True
+         LabelWrap       =   -1  'True
+         HideSelection   =   -1  'True
+         Checkboxes      =   -1  'True
+         _Version        =   393217
+         ForeColor       =   -2147483640
+         BackColor       =   -2147483643
+         BorderStyle     =   1
+         Appearance      =   1
+         NumItems        =   2
+         BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+            Text            =   "Fecha"
+            Object.Width           =   2540
+         EndProperty
+         BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+            SubItemIndex    =   1
+            Text            =   "Descripción"
+            Object.Width           =   5292
+         EndProperty
+      End
+      Begin VB.TextBox txtCalendD 
+         BackColor       =   &H80000018&
+         Enabled         =   0   'False
+         Height          =   285
+         Index           =   0
+         Left            =   960
+         TabIndex        =   106
+         Text            =   "Text1"
+         Top             =   1080
+         Width           =   3495
+      End
+      Begin VB.TextBox txtCalen 
+         Height          =   285
+         Index           =   0
+         Left            =   240
+         TabIndex        =   105
+         Text            =   "Text1"
+         Top             =   1080
+         Width           =   735
+      End
+      Begin VB.CommandButton cmdCancelar 
+         Caption         =   "C&ancelar"
+         Height          =   375
+         Index           =   10
+         Left            =   6720
+         TabIndex        =   104
+         Top             =   4680
+         Width           =   1215
+      End
+      Begin VB.Image imgCalen 
+         Height          =   255
+         Index           =   0
+         Left            =   1080
+         Top             =   840
+         Width           =   255
+      End
+      Begin VB.Label Label4 
+         Caption         =   "Destino"
+         Height          =   255
+         Index           =   0
+         Left            =   4800
+         TabIndex        =   111
+         Top             =   840
+         Width           =   1695
+      End
+      Begin VB.Image imgcheckall 
+         Height          =   240
+         Index           =   0
+         Left            =   240
+         Picture         =   "frmListado.frx":6852
+         ToolTipText     =   "Seleccionar todos"
+         Top             =   4900
+         Width           =   240
+      End
+      Begin VB.Image imgcheckall 
+         Height          =   240
+         Index           =   1
+         Left            =   600
+         Picture         =   "frmListado.frx":699C
+         ToolTipText     =   "Quitar seleccion"
+         Top             =   4900
+         Width           =   240
+      End
+      Begin VB.Label Label3 
+         Caption         =   "Calendario"
+         Height          =   255
+         Left            =   240
+         TabIndex        =   108
+         Top             =   840
+         Width           =   855
+      End
+      Begin VB.Label lblTitulo 
+         Alignment       =   2  'Center
+         Caption         =   "Copiar  dias  festivos"
+         BeginProperty Font 
+            Name            =   "MS Sans Serif"
+            Size            =   18
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00800000&
+         Height          =   495
+         Index           =   5
+         Left            =   1200
+         TabIndex        =   103
+         Top             =   240
+         Width           =   5415
+      End
+   End
    Begin VB.Frame FrameActual 
       Height          =   6975
       Left            =   2520
       TabIndex        =   139
       Top             =   0
       Width           =   6495
+      Begin VB.CheckBox chkSinProcesar 
+         Caption         =   "Horas decimal"
+         Height          =   255
+         Index           =   4
+         Left            =   4800
+         TabIndex        =   378
+         Top             =   5880
+         Value           =   1  'Checked
+         Width           =   1695
+      End
       Begin VB.Frame FrameActual2 
          Caption         =   "Frame1"
          Height          =   495
@@ -38,7 +210,7 @@ Begin VB.Form frmListado
             Width           =   855
          End
          Begin VB.OptionButton optActual 
-            Caption         =   "Trabajador"
+            Caption         =   "Fecha"
             Height          =   255
             Index           =   3
             Left            =   1920
@@ -50,7 +222,7 @@ Begin VB.Form frmListado
             Caption         =   "Seccion"
             Height          =   255
             Index           =   2
-            Left            =   360
+            Left            =   240
             TabIndex        =   375
             Top             =   120
             Value           =   -1  'True
@@ -69,7 +241,7 @@ Begin VB.Form frmListado
          Caption         =   "Adapta horario"
          Height          =   255
          Index           =   3
-         Left            =   3720
+         Left            =   3000
          TabIndex        =   339
          Top             =   5880
          Width           =   1575
@@ -124,7 +296,7 @@ Begin VB.Form frmListado
          Caption         =   "Agrupa por trabajador"
          Height          =   255
          Index           =   0
-         Left            =   1320
+         Left            =   840
          TabIndex        =   152
          Top             =   5880
          Width           =   2175
@@ -404,7 +576,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   9
          Left            =   3960
-         Picture         =   "frmListado.frx":6852
+         Picture         =   "frmListado.frx":6AE6
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -441,7 +613,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   8
          Left            =   1560
-         Picture         =   "frmListado.frx":68DD
+         Picture         =   "frmListado.frx":6B71
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -575,9 +747,9 @@ Begin VB.Form frmListado
       End
       Begin VB.ListBox List1 
          Height          =   735
-         ItemData        =   "frmListado.frx":6968
+         ItemData        =   "frmListado.frx":6BFC
          Left            =   960
-         List            =   "frmListado.frx":696A
+         List            =   "frmListado.frx":6BFE
          Style           =   1  'Checkbox
          TabIndex        =   268
          Top             =   4920
@@ -809,7 +981,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   17
          Left            =   4560
-         Picture         =   "frmListado.frx":696C
+         Picture         =   "frmListado.frx":6C00
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -875,7 +1047,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   16
          Left            =   1440
-         Picture         =   "frmListado.frx":69F7
+         Picture         =   "frmListado.frx":6C8B
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -899,9 +1071,9 @@ Begin VB.Form frmListado
       End
       Begin VB.ComboBox cboBaja 
          Height          =   315
-         ItemData        =   "frmListado.frx":6A82
+         ItemData        =   "frmListado.frx":6D16
          Left            =   1440
-         List            =   "frmListado.frx":6A8F
+         List            =   "frmListado.frx":6D23
          Style           =   2  'Dropdown List
          TabIndex        =   340
          Top             =   3360
@@ -1378,7 +1550,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   25
          Left            =   3840
-         Picture         =   "frmListado.frx":6AA4
+         Picture         =   "frmListado.frx":6D38
          ToolTipText     =   "Buscar fecha"
          Top             =   2280
          Width           =   240
@@ -1405,7 +1577,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   24
          Left            =   1080
-         Picture         =   "frmListado.frx":6B2F
+         Picture         =   "frmListado.frx":6DC3
          ToolTipText     =   "Buscar fecha"
          Top             =   2280
          Width           =   240
@@ -1558,7 +1730,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   23
          Left            =   1800
-         Picture         =   "frmListado.frx":6BBA
+         Picture         =   "frmListado.frx":6E4E
          ToolTipText     =   "Buscar fecha"
          Top             =   1200
          Width           =   240
@@ -1592,9 +1764,9 @@ Begin VB.Form frmListado
       Width           =   6495
       Begin VB.ComboBox cboReloj 
          Height          =   315
-         ItemData        =   "frmListado.frx":6C45
+         ItemData        =   "frmListado.frx":6ED9
          Left            =   1560
-         List            =   "frmListado.frx":6C52
+         List            =   "frmListado.frx":6EE6
          Style           =   2  'Dropdown List
          TabIndex        =   177
          Top             =   4080
@@ -1915,7 +2087,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   11
          Left            =   3960
-         Picture         =   "frmListado.frx":6C72
+         Picture         =   "frmListado.frx":6F06
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1952,7 +2124,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   10
          Left            =   1560
-         Picture         =   "frmListado.frx":6CFD
+         Picture         =   "frmListado.frx":6F91
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -1967,9 +2139,9 @@ Begin VB.Form frmListado
       Width           =   6015
       Begin VB.ComboBox cboCentroTrabajo 
          Height          =   315
-         ItemData        =   "frmListado.frx":6D88
+         ItemData        =   "frmListado.frx":701C
          Left            =   1920
-         List            =   "frmListado.frx":6D8A
+         List            =   "frmListado.frx":701E
          TabIndex        =   304
          Tag             =   "Centro trabajo trabajo|N|S|||trabajadores|idCentroA3|||"
          Text            =   "Combo1"
@@ -2035,7 +2207,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   20
          Left            =   2400
-         Picture         =   "frmListado.frx":6D8C
+         Picture         =   "frmListado.frx":7020
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -2310,7 +2482,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   22
          Left            =   4680
-         Picture         =   "frmListado.frx":6E17
+         Picture         =   "frmListado.frx":70AB
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -2319,7 +2491,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   21
          Left            =   1560
-         Picture         =   "frmListado.frx":6EA2
+         Picture         =   "frmListado.frx":7136
          ToolTipText     =   "Buscar fecha"
          Top             =   1080
          Width           =   240
@@ -2656,7 +2828,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   14
          Left            =   1800
-         Picture         =   "frmListado.frx":6F2D
+         Picture         =   "frmListado.frx":71C1
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -2693,7 +2865,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   15
          Left            =   4200
-         Picture         =   "frmListado.frx":6FB8
+         Picture         =   "frmListado.frx":724C
          ToolTipText     =   "Buscar fecha"
          Top             =   960
          Width           =   240
@@ -2874,7 +3046,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   5
          Left            =   4320
-         Picture         =   "frmListado.frx":7043
+         Picture         =   "frmListado.frx":72D7
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -2892,7 +3064,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   4
          Left            =   1680
-         Picture         =   "frmListado.frx":70CE
+         Picture         =   "frmListado.frx":7362
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -3151,7 +3323,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   3
          Left            =   1680
-         Picture         =   "frmListado.frx":7159
+         Picture         =   "frmListado.frx":73ED
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -3169,7 +3341,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   2
          Left            =   4320
-         Picture         =   "frmListado.frx":71E4
+         Picture         =   "frmListado.frx":7478
          ToolTipText     =   "Buscar fecha"
          Top             =   1290
          Width           =   240
@@ -3490,7 +3662,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   7
          Left            =   4680
-         Picture         =   "frmListado.frx":726F
+         Picture         =   "frmListado.frx":7503
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -3508,7 +3680,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   6
          Left            =   1560
-         Picture         =   "frmListado.frx":72FA
+         Picture         =   "frmListado.frx":758E
          ToolTipText     =   "Buscar fecha"
          Top             =   1170
          Width           =   240
@@ -3668,7 +3840,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   13
          Left            =   4800
-         Picture         =   "frmListado.frx":7385
+         Picture         =   "frmListado.frx":7619
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -3686,7 +3858,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   12
          Left            =   1680
-         Picture         =   "frmListado.frx":7410
+         Picture         =   "frmListado.frx":76A4
          ToolTipText     =   "Buscar fecha"
          Top             =   1177
          Width           =   240
@@ -4245,7 +4417,7 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   1
          Left            =   4200
-         Picture         =   "frmListado.frx":749B
+         Picture         =   "frmListado.frx":772F
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
@@ -4263,172 +4435,10 @@ Begin VB.Form frmListado
          Height          =   240
          Index           =   0
          Left            =   1560
-         Picture         =   "frmListado.frx":7526
+         Picture         =   "frmListado.frx":77BA
          ToolTipText     =   "Buscar fecha"
          Top             =   1050
          Width           =   240
-      End
-   End
-   Begin VB.Frame FrCopiaHorario 
-      Height          =   5295
-      Left            =   120
-      TabIndex        =   102
-      Top             =   0
-      Width           =   8175
-      Begin VB.CommandButton cmdCopiaHorario 
-         Caption         =   "Copiar"
-         Height          =   375
-         Left            =   5400
-         TabIndex        =   113
-         Top             =   4680
-         Width           =   1215
-      End
-      Begin VB.CheckBox chkTempoActual 
-         Caption         =   "Temporada actual"
-         Height          =   255
-         Left            =   4800
-         TabIndex        =   112
-         Top             =   1560
-         Value           =   1  'Checked
-         Width           =   3015
-      End
-      Begin VB.TextBox txtCalendarioDestino 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Left            =   4800
-         TabIndex        =   110
-         Text            =   "Text1"
-         Top             =   1080
-         Width           =   3135
-      End
-      Begin VB.CheckBox chkMas1año 
-         Caption         =   "Incrementa 1 año"
-         Height          =   255
-         Left            =   4800
-         TabIndex        =   109
-         Top             =   1920
-         Width           =   2535
-      End
-      Begin MSComctlLib.ListView ListView1 
-         Height          =   3375
-         Left            =   240
-         TabIndex        =   107
-         Top             =   1440
-         Width           =   4215
-         _ExtentX        =   7435
-         _ExtentY        =   5953
-         View            =   3
-         MultiSelect     =   -1  'True
-         LabelWrap       =   -1  'True
-         HideSelection   =   -1  'True
-         Checkboxes      =   -1  'True
-         _Version        =   393217
-         ForeColor       =   -2147483640
-         BackColor       =   -2147483643
-         BorderStyle     =   1
-         Appearance      =   1
-         NumItems        =   2
-         BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-            Text            =   "Fecha"
-            Object.Width           =   2540
-         EndProperty
-         BeginProperty ColumnHeader(2) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
-            SubItemIndex    =   1
-            Text            =   "Descripción"
-            Object.Width           =   5292
-         EndProperty
-      End
-      Begin VB.TextBox txtCalendD 
-         BackColor       =   &H80000018&
-         Enabled         =   0   'False
-         Height          =   285
-         Index           =   0
-         Left            =   960
-         TabIndex        =   106
-         Text            =   "Text1"
-         Top             =   1080
-         Width           =   3495
-      End
-      Begin VB.TextBox txtCalen 
-         Height          =   285
-         Index           =   0
-         Left            =   240
-         TabIndex        =   105
-         Text            =   "Text1"
-         Top             =   1080
-         Width           =   735
-      End
-      Begin VB.CommandButton cmdCancelar 
-         Caption         =   "C&ancelar"
-         Height          =   375
-         Index           =   10
-         Left            =   6720
-         TabIndex        =   104
-         Top             =   4680
-         Width           =   1215
-      End
-      Begin VB.Image imgCalen 
-         Height          =   255
-         Index           =   0
-         Left            =   1080
-         Top             =   840
-         Width           =   255
-      End
-      Begin VB.Label Label4 
-         Caption         =   "Destino"
-         Height          =   255
-         Index           =   0
-         Left            =   4800
-         TabIndex        =   111
-         Top             =   840
-         Width           =   1695
-      End
-      Begin VB.Image imgcheckall 
-         Height          =   240
-         Index           =   0
-         Left            =   240
-         Picture         =   "frmListado.frx":75B1
-         ToolTipText     =   "Seleccionar todos"
-         Top             =   4900
-         Width           =   240
-      End
-      Begin VB.Image imgcheckall 
-         Height          =   240
-         Index           =   1
-         Left            =   600
-         Picture         =   "frmListado.frx":76FB
-         ToolTipText     =   "Quitar seleccion"
-         Top             =   4900
-         Width           =   240
-      End
-      Begin VB.Label Label3 
-         Caption         =   "Calendario"
-         Height          =   255
-         Left            =   240
-         TabIndex        =   108
-         Top             =   840
-         Width           =   855
-      End
-      Begin VB.Label lblTitulo 
-         Alignment       =   2  'Center
-         Caption         =   "Copiar  dias  festivos"
-         BeginProperty Font 
-            Name            =   "MS Sans Serif"
-            Size            =   18
-            Charset         =   0
-            Weight          =   700
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00800000&
-         Height          =   495
-         Index           =   5
-         Left            =   1200
-         TabIndex        =   103
-         Top             =   240
-         Width           =   5415
       End
    End
    Begin VB.Frame FrameRelojesAuxiliares 
@@ -4879,6 +4889,10 @@ Dim B As Boolean
         CadPa = "0"
         If vEmpresa.QueEmpresa = 0 Then CadPa = "1"
         Cad = Cad & "EsTeinsa= " & CadPa & "|"
+                
+        CadPa = Abs(chkSinProcesar(4).Value)
+        Cad = Cad & "EnDecimal= " & CadPa & "|"
+        
         
         Dim PorSeccion As Boolean
         
@@ -4913,7 +4927,7 @@ Dim B As Boolean
         End If
         frmImprimir.FormulaSeleccion = "{tmpcombinada.codusu} = " & vUsu.Codigo
         frmImprimir.OtrosParametros = Cad
-        frmImprimir.NumeroParametros = 3
+        frmImprimir.NumeroParametros = 5
 
         frmImprimir.Show vbModal
         Screen.MousePointer = vbDefault
@@ -6313,6 +6327,12 @@ Dim IndiceCancelar As Integer
         W = Me.FrCopiaHorario.Width
         
         FrCopiaHorario.Visible = True
+        
+        'Copiaremos todos los festivos de la temporada ACTUAL. No hace falta ver el checkbox
+        chkTempoActual.Value = 1
+        chkTempoActual.Visible = False
+        
+        
         Caption = "Calendario"
         imgCalen(0).Picture = frmPpal.imgListImages16.ListImages(3).Picture
         txtCalendarioDestino.Text = RecuperaValor(CadenaDesdeOtroForm, 1)
@@ -7007,7 +7027,7 @@ Dim Ajustadas As Currency
 Dim QuitoMeriendaAlmuerzo As Currency
 Dim QuitoMeriAlm As Byte '0 No he quitado nada     1. Ya he quitado almuerzo    2. Quito la merienda
 Dim AuxArea As String
-
+Dim HorasDia As Currency
 
 
     On Error GoTo eImprimirTicajeActual
@@ -7075,7 +7095,10 @@ Dim AuxArea As String
     
     
     If Cad <> "" Then Cad = " WHERE " & Mid(Cad, 5)
-    Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
+    'Ene21
+    'Cad = Cad & " ORDER BY fecha,idtrabajador,hora"
+    Cad = Cad & " ORDER BY fecha,t.idCal , t.idTrabajador, Fecha, Hora"
+    
         
     Set miRsAux = New ADODB.Recordset
     SQL = SQL & Cad
@@ -7109,7 +7132,7 @@ Dim AuxArea As String
             If miRsAux!Control = 2 Then PuedeQuitarParadas = True
   
             
-            If PuedeQuitarParadas Then
+            
                 'Veamos el horario para el trabajador, dia
                 Cad = "calendariol.idcal=trabajadores.idcal and fecha=" & DBSet(F, "F") & " and idtrabajador"
                 CadPa = "trabajadores.idcal"
@@ -7118,10 +7141,14 @@ Dim AuxArea As String
                 
                 If Val(Cad) <> vH.IdHorario Then
                     If vH.Leer(CInt(Cad), F, CInt(CadPa)) = 1 Then Err.Raise 513, , "Error obteniendo horario nº: " & Cad
+                    HorasDia = vH.TotalHoras
                 End If
+                                
                 
+                               
                 'Si puede quitar paradas, y el horario lo tiene:
-                Minutos = 0
+                If PuedeQuitarParadas Then
+                    Minutos = 0
                 
                     If vH.Rectificar > 0 Then
                       If vH.Rectificar = vbRecESCuarto Then
@@ -7131,12 +7158,13 @@ Dim AuxArea As String
                       End If
                     End If
                  
-                If vH.DtoMer = 0 And vH.DtoAlm = 0 Then PuedeQuitarParadas = False
+                    If vH.DtoMer = 0 And vH.DtoAlm = 0 Then PuedeQuitarParadas = False
   
-                 
-            End If
-            vSQL = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
-            vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "',"
+                End If
+                
+            
+            vSQL = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,auxiliar,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
+            vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "'," & vH.TotalHoras & ","
             Cad = ""
         End If
         
@@ -9068,11 +9096,16 @@ Dim h2 As Currency
 Dim Entrada As Boolean
 Dim HoraAnt As Date
 Dim HorasParada As Currency
-Dim AnteriorA_Las_9 As Boolean
 Dim YaDescontado As Boolean
 Dim Aux As String
-
 Dim AlmuerzoEnReloj As Byte
+
+Dim AnteriorA_Las_9 As Boolean
+
+Dim B1 As Boolean
+
+
+
 On Error GoTo ErrSQL
     CargaDatosTipoReloj = False
     
@@ -9198,7 +9231,16 @@ On Error GoTo ErrSQL
                     CadenaInsertReloj1 = CadenaInsertReloj1 & ",'" & HoraAnt & "','" & HoraF & "'"
                     H1 = H1 + DateDiff("n", HoraAnt, HoraF)
                     
-                    If HorasParada > 0 And AnteriorA_Las_9 And Not YaDescontado Then
+                    'Para alzira
+                    B1 = False
+                    If vEmpresa.QueEmpresa = vbAlzira Then
+                        If HorasParada > 0 And AnteriorA_Las_9 And Not YaDescontado Then B1 = True
+                    Else
+                        'Resto
+                        If HorasParada > 0 And Not YaDescontado Then B1 = True
+                    End If
+                    'If HorasParada > 0 And AnteriorA_Las_9 And Not YaDescontado Then
+                    If B1 Then
                         HorasParada = 0
                         YaDescontado = True
                         AlmuerzoEnReloj = 1

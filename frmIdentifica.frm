@@ -222,7 +222,7 @@ Private Sub Form_Load()
   
     
   
-    If vEmpresa.QueEmpresa > 1 Then Text1(1).Text = "aritel"
+  '  If vEmpresa.QueEmpresa > 1 Then Text1(1).Text = "aritel"
 End Sub
 
 

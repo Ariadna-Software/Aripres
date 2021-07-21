@@ -605,7 +605,7 @@ Private Devolucion As String
 
 Dim RS As ADODB.Recordset
 Dim Total As Long
-Dim i As Long
+Dim I As Long
 Dim PrimeraVez As Boolean
 
 Private Sub Acciones(Index As Integer)
@@ -718,12 +718,12 @@ Private Sub cmdCambiar_Click()
 
     If Opcion = 6 Then
         Total = 0
-        For i = 1 To ListView2.ListItems.Count
-            If ListView2.ListItems(i).Checked Then
+        For I = 1 To ListView2.ListItems.Count
+            If ListView2.ListItems(I).Checked Then
                 Total = 1
                 Exit For
             End If
-        Next i
+        Next I
         
         If Total = 0 Then
             MsgBox "Marque algun trabajador para cambiarle el horario", vbExclamation
@@ -749,13 +749,13 @@ Private Sub cmdCambiar_Click()
             Case 1, 2
                 If Opcion <> 2 Then
                     Text3(0).Text = ""
-                    i = 0
+                    I = 0
                 Else
-                    i = 1
+                    I = 1
                 End If
                 Text3(1).Text = ""
                 FrameTicada.Visible = True
-                Text3(i).SetFocus
+                Text3(I).SetFocus
             Case 3
                 FrameModificarTicaje.Visible = True
             End Select
@@ -987,9 +987,9 @@ Private Sub Form_Load()
         Text3(6).Visible = Me.Inserta2Ticajes
         Label12.Visible = Me.Inserta2Ticajes
     
-    
-        cboReloj.Visible = vEmpresa.Reloj2 > 0
-        Label13.Visible = vEmpresa.Reloj2 > 0
+        CargaComboTerminales Me.cboReloj
+        cboReloj.Visible = True 'vEmpresa.Reloj2 > 0
+        Label13.Visible = True 'vEmpresa.Reloj2 > 0
         cboReloj.ListIndex = 0
     End Select
     Caption = Devolucion
@@ -1034,12 +1034,12 @@ Dim Cad As String
     Cad = Cad & " order by idTrabajador"
     RS.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
     Cad = ""
-    i = 0
+    I = 0
     While Not RS.EOF
         If Insertar1trabajador(RS.Fields(0)) Then _
             AñadeListview1 RS.Fields(0), RS.Fields(1), RS.Fields(2), RS.Fields(3)
-        i = i + 1
-        Label3.Caption = i & " de " & Total
+        I = I + 1
+        Label3.Caption = I & " de " & Total
         Label3.Refresh
         RS.MoveNext
     Wend
@@ -1087,22 +1087,22 @@ Private Sub HacerCambio()
     
     If Opcion = 6 Then
     
-        For i = 1 To ListView2.ListItems.Count
-            Label3.Caption = i & " de " & ListView2.ListItems.Count
+        For I = 1 To ListView2.ListItems.Count
+            Label3.Caption = I & " de " & ListView2.ListItems.Count
             Label3.Refresh
-            If ListView2.ListItems(i).Checked Then
-                If UpdatearTrabajador(ListView2.ListItems(i).Tag) Then ListView2.ListItems(i).SubItems(1) = Text2.Text
+            If ListView2.ListItems(I).Checked Then
+                If UpdatearTrabajador(ListView2.ListItems(I).Tag) Then ListView2.ListItems(I).SubItems(1) = Text2.Text
             End If
-        Next i
+        Next I
     Else
     
     
-        For i = 1 To ListView1.ListItems.Count
-              Label3.Caption = i & " de " & ListView1.ListItems.Count
+        For I = 1 To ListView1.ListItems.Count
+              Label3.Caption = I & " de " & ListView1.ListItems.Count
               Label3.Refresh
-              If UpdatearTrabajador(ListView1.ListItems(i).Tag) Then _
-                  ListView1.ListItems(i).SubItems(1) = Text2.Text
-        Next i
+              If UpdatearTrabajador(ListView1.ListItems(I).Tag) Then _
+                  ListView1.ListItems(I).SubItems(1) = Text2.Text
+        Next I
     End If
     
 End Sub
@@ -1115,9 +1115,9 @@ Private Sub HacerEliminar()
 Dim J As Integer
 
     Total = 0
-    For i = 1 To ListView1.ListItems.Count
-        If ListView1.ListItems(i).Selected Then Total = Total + 1
-    Next i
+    For I = 1 To ListView1.ListItems.Count
+        If ListView1.ListItems(I).Selected Then Total = Total + 1
+    Next I
     
     
     
@@ -1130,15 +1130,15 @@ Dim J As Integer
         Frame2.Visible = True
         Me.Refresh
         J = 0
-        For i = ListView1.ListItems.Count To 1 Step -1
-            If ListView1.ListItems(i).Selected Then
+        For I = ListView1.ListItems.Count To 1 Step -1
+            If ListView1.ListItems(I).Selected Then
                 J = J + 1
                 Label3.Caption = J & " de " & Total
                 Label3.Refresh
-                If BorrarTrabajador(ListView1.ListItems(i).Tag) Then _
-                    ListView1.ListItems.Remove ListView1.ListItems(i).Index
+                If BorrarTrabajador(ListView1.ListItems(I).Tag) Then _
+                    ListView1.ListItems.Remove ListView1.ListItems(I).Index
             End If
-        Next i
+        Next I
     End If
     Frame2.Visible = False
 End Sub
@@ -1218,9 +1218,9 @@ End Sub
 Private Sub imgCheck_Click(Index As Integer)
 Dim B As Boolean
     B = Index = 0
-    For i = 1 To ListView2.ListItems.Count
-        ListView2.ListItems(i).Checked = B
-    Next i
+    For I = 1 To ListView2.ListItems.Count
+        ListView2.ListItems(I).Checked = B
+    Next I
 End Sub
 
 Private Sub mn1Trabajador_Click()
@@ -1310,6 +1310,7 @@ Private Sub Text3_LostFocus(Index As Integer)
         If Not IsDate(Devolucion) Then
             MsgBox "Se esperaba una hora: " & Devolucion, vbExclamation
             Text3(Index).Text = ""
+            PonerFoco Text3(Index)
             Exit Sub
         End If
         Text3(Index).Text = Format(Text3(Index).Text, "hh:mm")
@@ -1369,11 +1370,11 @@ Dim Rel As Integer
         Text3(1).Tag = "'" & Format(Text3(6).Text, "hh:mm:ss") & "'"
     End If
     'i ->errores
-    i = 0
+    I = 0
     For JJ = 1 To ListView1.ListItems.Count
           Label3.Caption = JJ & " de " & ListView1.ListItems.Count
           Label3.Refresh
-          If TicadaTrabajador(ListView1.ListItems(JJ).Tag, Rel) = False Then i = i + 1
+          If TicadaTrabajador(ListView1.ListItems(JJ).Tag, Rel) = False Then I = I + 1
 
     Next JJ
     Set RS = Nothing

@@ -30,7 +30,7 @@ Begin VB.Form frmCalendarioVacaciones
       Index           =   7
       Left            =   10920
       Locked          =   -1  'True
-      TabIndex        =   21
+      TabIndex        =   17
       Tag             =   "0"
       Text            =   "Text1"
       Top             =   960
@@ -51,11 +51,11 @@ Begin VB.Form frmCalendarioVacaciones
       Index           =   8
       Left            =   13560
       Locked          =   -1  'True
-      TabIndex        =   19
+      TabIndex        =   16
       Tag             =   "0"
       Text            =   "Text1"
       Top             =   960
-      Width           =   735
+      Width           =   855
    End
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
@@ -72,7 +72,7 @@ Begin VB.Form frmCalendarioVacaciones
       Index           =   5
       Left            =   8640
       Locked          =   -1  'True
-      TabIndex        =   17
+      TabIndex        =   14
       Tag             =   "0"
       Text            =   "Text1"
       Top             =   960
@@ -93,7 +93,7 @@ Begin VB.Form frmCalendarioVacaciones
       Index           =   6
       Left            =   9840
       Locked          =   -1  'True
-      TabIndex        =   14
+      TabIndex        =   12
       Tag             =   "0"
       Text            =   "Text1"
       Top             =   960
@@ -102,16 +102,16 @@ Begin VB.Form frmCalendarioVacaciones
    Begin VB.Frame frameButt 
       Height          =   735
       Left            =   0
-      TabIndex        =   11
+      TabIndex        =   9
       Top             =   0
-      Width           =   4455
+      Width           =   3015
       Begin MSComctlLib.Toolbar Toolbar1 
          Height          =   360
          Left            =   120
-         TabIndex        =   12
+         TabIndex        =   10
          Top             =   120
-         Width           =   4095
-         _ExtentX        =   7223
+         Width           =   2775
+         _ExtentX        =   4895
          _ExtentY        =   635
          ButtonWidth     =   609
          ButtonHeight    =   582
@@ -128,13 +128,13 @@ Begin VB.Form frmCalendarioVacaciones
                Style           =   3
             EndProperty
             BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Solicitar dia"
+               Object.ToolTipText     =   "Solicitar dias"
             EndProperty
             BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Quitar solicitud"
+               Object.ToolTipText     =   "Eliminar solicitud"
             EndProperty
             BeginProperty Button5 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-               Object.ToolTipText     =   "Conceder dia"
+               Object.ToolTipText     =   "Conceder dias"
             EndProperty
             BeginProperty Button6 {66833FEA-8583-11D1-B16A-00C0F0283628} 
                Style           =   3
@@ -149,7 +149,7 @@ Begin VB.Form frmCalendarioVacaciones
             Height          =   195
             Index           =   0
             Left            =   8520
-            TabIndex        =   13
+            TabIndex        =   11
             Top             =   120
             Width           =   1215
          End
@@ -195,7 +195,7 @@ Begin VB.Form frmCalendarioVacaciones
       Tag             =   "0"
       Text            =   "Text1"
       Top             =   960
-      Width           =   735
+      Width           =   855
    End
    Begin VB.TextBox Text1 
       Alignment       =   2  'Center
@@ -275,7 +275,8 @@ Begin VB.Form frmCalendarioVacaciones
       AskDayMetrics   =   -1  'True
    End
    Begin VB.Label Label1 
-      Caption         =   "Pendientes"
+      AutoSize        =   -1  'True
+      Caption         =   "Solicitados"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   9.75
@@ -285,16 +286,17 @@ Begin VB.Form frmCalendarioVacaciones
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
+      ForeColor       =   &H00000000&
       Height          =   240
-      Index           =   9
-      Left            =   10800
+      Index           =   3
+      Left            =   12120
       TabIndex        =   22
-      Top             =   720
-      Width           =   1275
+      Top             =   690
+      Width           =   1065
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
-      Caption         =   "Disponibles"
+      Caption         =   "DISPONIBLES"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   9.75
@@ -307,10 +309,65 @@ Begin VB.Form frmCalendarioVacaciones
       ForeColor       =   &H00000000&
       Height          =   240
       Index           =   8
-      Left            =   13440
+      Left            =   13320
+      TabIndex        =   21
+      Top             =   690
+      Width           =   1305
+   End
+   Begin VB.Label Label1 
+      AutoSize        =   -1  'True
+      Caption         =   "DÍAS"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Index           =   2
+      Left            =   6600
       TabIndex        =   20
-      Top             =   720
-      Width           =   1080
+      Top             =   690
+      Width           =   480
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Disfrutados"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Index           =   6
+      Left            =   7440
+      TabIndex        =   19
+      Top             =   690
+      Width           =   1110
+   End
+   Begin VB.Label Label1 
+      Caption         =   "Pendientes"
+      BeginProperty Font 
+         Name            =   "Verdana"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   240
+      Index           =   9
+      Left            =   10920
+      TabIndex        =   18
+      Top             =   690
+      Width           =   1155
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -327,8 +384,8 @@ Begin VB.Form frmCalendarioVacaciones
       ForeColor       =   &H00004000&
       Height          =   240
       Index           =   4
-      Left            =   8880
-      TabIndex        =   10
+      Left            =   10200
+      TabIndex        =   8
       Top             =   420
       Width           =   1365
    End
@@ -336,7 +393,7 @@ Begin VB.Form frmCalendarioVacaciones
       BorderColor     =   &H00008000&
       BorderWidth     =   3
       X1              =   7440
-      X2              =   11880
+      X2              =   14520
       Y1              =   540
       Y2              =   540
    End
@@ -354,31 +411,13 @@ Begin VB.Form frmCalendarioVacaciones
       Height          =   240
       Index           =   7
       Left            =   8640
-      TabIndex        =   18
-      Top             =   720
-      Width           =   1110
-   End
-   Begin VB.Label Label1 
-      Caption         =   "Disfrutados"
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Index           =   6
-      Left            =   7440
-      TabIndex        =   16
-      Top             =   720
+      TabIndex        =   15
+      Top             =   690
       Width           =   1110
    End
    Begin VB.Label Label1 
       Alignment       =   2  'Center
-      Caption         =   "total"
+      Caption         =   "TOTAL"
       BeginProperty Font 
          Name            =   "Verdana"
          Size            =   9.75
@@ -391,48 +430,9 @@ Begin VB.Form frmCalendarioVacaciones
       Height          =   240
       Index           =   5
       Left            =   9840
-      TabIndex        =   15
-      Top             =   720
-      Width           =   915
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      Caption         =   "Solicitados"
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      ForeColor       =   &H00000000&
-      Height          =   240
-      Index           =   3
-      Left            =   12120
-      TabIndex        =   9
-      Top             =   720
-      Width           =   1065
-   End
-   Begin VB.Label Label1 
-      AutoSize        =   -1  'True
-      Caption         =   "Dias"
-      BeginProperty Font 
-         Name            =   "Verdana"
-         Size            =   9.75
-         Charset         =   0
-         Weight          =   400
-         Underline       =   0   'False
-         Italic          =   0   'False
-         Strikethrough   =   0   'False
-      EndProperty
-      Height          =   240
-      Index           =   2
-      Left            =   6600
-      TabIndex        =   8
+      TabIndex        =   13
       Top             =   690
-      Width           =   405
+      Width           =   915
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True

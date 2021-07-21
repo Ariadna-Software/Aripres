@@ -291,11 +291,12 @@ Dim H As Integer
         End If
         PosicionarCombo cboReloj, CInt(vReloj)
         
-        H = 3750
         
+    Else
+       cboReloj.ListIndex = 0
         
     End If
-       
+    H = 3750
     Me.Command1(0).Top = H - 900
     Me.Command1(1).Top = H - 900
     Label1(2).Visible = True   'vEmpresa.Reloj2 > 0

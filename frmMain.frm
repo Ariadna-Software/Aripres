@@ -155,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "18:05"
+            TextSave        =   "10:20"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -916,7 +916,7 @@ Private Sub MDIForm_Activate()
     If PrimeraVez Then
         PrimeraVez = False
         If Not vEmpresa Is Nothing Then
-            Me.Tag = Caption
+            Me.Tag = "Aripres   ver. " & App.Major & "." & App.Minor & "." & Format(App.Revision, "00") & "   -   " & vEmpresa.NomEmpresa & "   -   " & vUsu.Nombre
             Screen.MousePointer = vbHourglass
             Caption = ".................  Leyendo datos BD ............................"
             DoEvents
@@ -943,10 +943,13 @@ Private Sub MDIForm_Activate()
     '            End If
             End If
             
-            CadenaDesdeOtroForm = " fecha >= " & DBSet(vEmpresa.FechaInicio, "F") & " AND 1"
-            CadenaDesdeOtroForm = DevuelveDesdeBD("count(*)", "trabajadoresvacaciones", CadenaDesdeOtroForm, "1")
-            If Val(CadenaDesdeOtroForm) Then
-                MsgBox "Tiene dias de vacaciones pendientes de aprobar", vbInformation
+            
+            If vEmpresa.SolicitudVacaciones Then
+                CadenaDesdeOtroForm = " fecha >= " & DBSet(vEmpresa.FechaInicio, "F") & " AND situacion"
+                CadenaDesdeOtroForm = DevuelveDesdeBD("count(*)", "trabajadoresvacaciones", CadenaDesdeOtroForm, "0")
+                If Val(CadenaDesdeOtroForm) Then
+                    MsgBox "Tiene dias de vacaciones pendientes de aprobar", vbInformation
+                End If
             End If
             CadenaDesdeOtroForm = ""
             Caption = Me.Tag
@@ -1115,7 +1118,8 @@ On Error Resume Next
     mnLaboralHoras1(10).Visible = vEmpresa.QueEmpresa = 2 Or vEmpresa.QueEmpresa = 4
 
 
-        
+   'SolicitudVacaciones
+   mnVacaciones.Visible = vEmpresa.SolicitudVacaciones
     
     
     If vEmpresa.Reloj = vbKimaldi Then

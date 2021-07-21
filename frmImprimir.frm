@@ -648,6 +648,7 @@ Dim Seguir As Boolean
         .NumeroParametros = NumeroParametros
         .MostrarTree = MostrarTree
         .Informe = MIPATH & Nombre
+        Debug.Print Now & ": " & Nombre
         .ConSubinforme = LlevaSubinforme
         .ExportarPDF = (chkEMAIL.Value = 1)
         .Show vbModal

@@ -897,7 +897,8 @@ Dim idCal As String
     Else
         
         'En alzira los horarios no van POR trabajador, si no que lo tiene el calendario
-        Cad = "trabajadores.idcal=calendariol.idcal AND idtrabajador"
+        'Debemos mirar desde inicio de temporada por lo mens
+        Cad = "calendariol.fecha>=" & DBSet(vEmpresa.FechaInicio, "F") & " AND trabajadores.idcal=calendariol.idcal AND idtrabajador"
         Cad = DevuelveDesdeBD("idhorario", "trabajadores,calendariol", Cad, vM.idTrabajador, "N")
     End If
     
