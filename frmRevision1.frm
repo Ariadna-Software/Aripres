@@ -1270,7 +1270,7 @@ Option Explicit
 
 
 Public MostrarUnosDatos As Long
-
+Public MasDeUnaArea As Boolean
 'Public DatosADevolverBusqueda As String    'Tendra el nº de text que quiere que devuelva, empipados
 'Public Event DatoSeleccionado(CadenaSeleccion As String)
 
@@ -1283,6 +1283,7 @@ Private HTra As Long
 Private DInci As Integer
 Private HInci As Integer
 Private CorrectosIncorrectos As Byte  '0.- Ambos  1.- Correctos  2.-Incorrectos
+Private Areas As Integer
 
 Private WithEvents frmHoras As frmHorasMarcajes
 Attribute frmHoras.VB_VarHelpID = -1
@@ -1566,7 +1567,7 @@ End Sub
 Private Sub BotonBuscar()
 
 
-    CadenaDesdeOtroForm = ""
+    CadenaDesdeOtroForm = IIf(MasDeUnaArea, "S", "N")
     frmListado.Opcion = 0
     frmListado.Show vbModal
     If CadenaDesdeOtroForm <> "" Then
@@ -2913,6 +2914,16 @@ Dim Cad As String
     If Val(Cad) > 2 Then Cad = "0"
     CorrectosIncorrectos = CByte(Val(Cad))
     
+    
+    'Oct 2021
+    Areas = -1
+    Cad = RecuperaValor(CadenaDesdeOtroForm, 8)
+    If Cad <> "" Then
+        If Cad <> "X" Then
+            'OK. Ha cogido un area unicamente
+            Areas = CInt(Cad)
+        End If
+    End If
 End Sub
 
 
@@ -2942,7 +2953,26 @@ Private Sub MontaSQL()
     
     If CadB <> "" Then SQL = SQL & " AND " & CadB
     
+    If Areas >= 0 Then
     
+ 
+
+            'select group_concat(id separator ', ') from terminales where area=0 group by area
+            CadB = DevuelveDesdeBD("cast(group_concat(id separator ', ') as char)", "terminales", "area", CStr(Areas))
+            If CadB <> "" Then
+                CadB = " reloj IN (" & CadB & ") AND"
+                CadB = CadB & " fecha >='" & Format(FI, FormatoFecha) & "'"
+                CadB = CadB & " AND fecha <='" & Format(FF, FormatoFecha) & "'"
+                CadB = CadB & " AND idtrabajador >= " & DTra
+                CadB = CadB & " AND idtrabajador <= " & HTra
+                
+                
+                SQL = SQL & " AND entrada IN ( SELECT distinct idmarcaje from entradamarcajes where " & CadB & ")"
+                
+                
+            End If
+    
+    End If
     
     'Ordenacion
     If Me.mnTrabajador.Checked Then

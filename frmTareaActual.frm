@@ -373,7 +373,7 @@ Begin VB.Form frmTareaActual
       MaskColor       =   12632256
       _Version        =   393216
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
-         NumListImages   =   6
+         NumListImages   =   7
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":9353
             Key             =   ""
@@ -396,6 +396,10 @@ Begin VB.Form frmTareaActual
          EndProperty
          BeginProperty ListImage6 {2C247F27-8591-11D1-B16A-00C0F0283628} 
             Picture         =   "frmTareaActual.frx":109CD
+            Key             =   ""
+         EndProperty
+         BeginProperty ListImage7 {2C247F27-8591-11D1-B16A-00C0F0283628} 
+            Picture         =   "frmTareaActual.frx":113DF
             Key             =   ""
          EndProperty
       EndProperty
@@ -470,7 +474,7 @@ Begin VB.Form frmTareaActual
       Begin VB.CommandButton cmdImpTarea 
          Height          =   375
          Left            =   3720
-         Picture         =   "frmTareaActual.frx":113DF
+         Picture         =   "frmTareaActual.frx":11DF1
          Style           =   1  'Graphical
          TabIndex        =   29
          Top             =   300
@@ -520,7 +524,7 @@ Begin VB.Form frmTareaActual
          Height          =   240
          Index           =   0
          Left            =   720
-         Picture         =   "frmTareaActual.frx":13451
+         Picture         =   "frmTareaActual.frx":13E63
          ToolTipText     =   "Buscar fecha"
          Top             =   120
          Width           =   240
@@ -1544,19 +1548,33 @@ Private Sub PonMarcajes()
     Dim masDeUnArea  As Boolean
     
     ListView2.ListItems.Clear
+    
+    
+    
+    
     SQL = "SELECT EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
     SQL = SQL & " FROM Trabajadores,EntradaFichajes  WHERE EntradaFichajes.idTrabajador = Trabajadores.IdTrabajador"
     SQL = SQL & " AND Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "' "
     
     'If vUsu.Nivel > 2 Then Sql = Sql & " AND Trabajadores.controlnomina >0"
     If Combo1.ListIndex > 0 Then SQL = SQL & " AND trabajadores.seccion=" & Combo1.ItemData(Combo1.ListIndex)
-        
-    SQL = SQL & " GROUP BY EntradaFichajes.idTrabajador, Trabajadores.NomTrabajador"
+    SQL = SQL & " GROUP BY EntradaFichajes.idTrabajador"
+    
+    If vEmpresa.MuestraTrabajadoresSinFicharMarcajesPdtes Then
+        SQL = SQL & " Union"
+        SQL = SQL & " select idtrabajador,nomtrabajador from trabajadores where FecBaja is null"
+        If Combo1.ListIndex > 0 Then SQL = SQL & " AND trabajadores.seccion=" & Combo1.ItemData(Combo1.ListIndex)
+        SQL = SQL & " and not idtrabajador IN (select distinct idtrabajador from EntradaFichajes  WHERE "
+        SQL = SQL & " Fecha = '" & Format(Text1(1).Text, FormatoFecha) & "' )"
+    End If
+
+    
+    
     SQL = SQL & " ORDER BY "
     If optTicaje(0).Value Then
-        SQL = SQL & " EntradaFichajes.idTrabajador"
+        SQL = SQL & " idTrabajador"
     Else
-        SQL = SQL & "  Trabajadores.NomTrabajador"
+        SQL = SQL & "  NomTrabajador"
     End If
     
     Set RS = New ADODB.Recordset
@@ -1632,7 +1650,14 @@ Private Sub PonMarcajes()
                     Item.SmallIcon = 6 'OK. Todo
                     Item.ToolTipText = "Mas de un area de trabajo"
                 Else
-                    Item.SmallIcon = 3 'OK. Todo
+                    If I > 2 Then
+                        Item.SmallIcon = 3 'OK. Todo
+                        
+                    Else
+                        'NO han fichado
+                        Item.ToolTipText = "No ha fichado"
+                        Item.SmallIcon = 7 'OK. Todo
+                    End If
                 End If
             End If
         Else
@@ -1908,5 +1933,15 @@ eProcesoHorasAcabalgadas:
 End Sub
 
 
+
+
+Private Sub CargaNoHanFichado()
+    
+    If Not vEmpresa.MuestraTrabajadoresSinFicharMarcajesPdtes Then Exit Sub
+    
+    
+    '1.- Tiene que haber fichado alguno por lo menos
+    
+End Sub
 
 

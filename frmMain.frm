@@ -155,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "10:20"
+            TextSave        =   "9:32"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -909,6 +909,10 @@ Private PrimeraVez As Boolean
 '---------------------------------------------------------------------------------------------
 Private LlevaRelojesAuxiliares As Boolean   'Si existe la tabla es que lleva relojes auxiliares
 
+Private MasDeUnaArea As Byte    '>=100 No esta establecido
+                                '  0.-  No
+                                '  1.-  Si
+
 
 Private Sub MDIForm_Activate()
    
@@ -1130,7 +1134,7 @@ On Error Resume Next
     End If
 
 
-
+    MasDeUnaArea = 100 'Sin establrecer el valor
 End Sub
 
 Private Sub MDIForm_Unload(Cancel As Integer)
@@ -1603,7 +1607,16 @@ Private Sub HacerToolBar(Index As Integer)
             
     Case 5
             
+            If MasDeUnaArea >= 100 Then
+                CadenaDesdeOtroForm = DevuelveDesdeBD("count(*)", "areas", "1", "1")
+                If Val(CadenaDesdeOtroForm) > 1 Then
+                    MasDeUnaArea = 1
+                Else
+                    MasDeUnaArea = 0
+                End If
+            End If
             CadenaDesdeOtroForm = ""
+            frmRevision.MasDeUnaArea = MasDeUnaArea = 1
             frmRevision.MostrarUnosDatos = 0
             frmRevision.Show vbModal
     Case 8

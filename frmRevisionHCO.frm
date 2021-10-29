@@ -1287,7 +1287,7 @@ End Sub
 Private Sub BotonBuscar()
 
 
-    CadenaDesdeOtroForm = "hco"
+    CadenaDesdeOtroForm = "hco|"
     frmListado.Opcion = 0
     frmListado.Show vbModal
     If CadenaDesdeOtroForm <> "" Then

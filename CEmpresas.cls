@@ -124,7 +124,7 @@ Private mvarNominaConEstructurales As Boolean  '
 
 Private mvarSolicitudVacaciones As Boolean
 
-
+Private mvarMuestraTrabajadoresSinFicharMarcajesPdtes As Boolean
 
 
 
@@ -896,6 +896,10 @@ Public Property Get SolicitudVacaciones() As Boolean
      SolicitudVacaciones = mvarSolicitudVacaciones
 End Property
 
+Public Property Get MuestraTrabajadoresSinFicharMarcajesPdtes() As Boolean
+     MuestraTrabajadoresSinFicharMarcajesPdtes = mvarMuestraTrabajadoresSinFicharMarcajesPdtes
+End Property
+
 
 
 
@@ -1047,6 +1051,9 @@ Dim I As Integer
             mvarSolicitudVacaciones = DBLet(RS!SolicitudVacaciones, "N") = 1
             
             
+            mvarMuestraTrabajadoresSinFicharMarcajesPdtes = DBLet(RS!MosrtrarBajasEnPendientes, "N") = 1
+            
+                   
             Leer = 0
     End If
  

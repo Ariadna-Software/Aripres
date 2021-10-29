@@ -300,7 +300,7 @@ End Sub
 'tmpcombinada(IdTrabajador,Fecha,H1,codusu,idinci)
 Private Function LeerDatos() As Boolean
 Dim ColTablas As Collection
-Dim i As Integer
+Dim I As Integer
 Dim Inicial  As Long
 Dim MaxFecha As Date
 Dim B As Boolean
@@ -345,12 +345,12 @@ Dim NF As Integer
     'Añadimos identificador termianal.  Hay una tabla
     
     
-    For i = 1 To ColTablas.Count
-        Label11.Caption = "Leyendo " & ColTablas.Item(i) & "  (" & i & "/" & ColTablas.Count & ")"
+    For I = 1 To ColTablas.Count
+        Label11.Caption = "Leyendo " & ColTablas.Item(I) & "  (" & I & "/" & ColTablas.Count & ")"
         Label11.Refresh
                                                                     'huell cara pin   tarjeta (20/05/20(
         Cad = "SELECT * ,from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') horaRealUnix "
-        Cad = Cad & " FROM " & ColTablas.Item(i) & " WHERE evt in (4865,4867,4097,4102)"
+        Cad = Cad & " FROM " & ColTablas.Item(I) & " WHERE evt in (4865,4867,4097,4102)"
         Cad = Cad & " AND from_unixtime(devdt, '%Y-%m-%d %H:%i:%s') >" & Label11.Tag
         Cad = Cad & " order by devdt"
         miRsAux.Open Cad, Cn, adOpenKeyset, adLockPessimistic, adCmdText
@@ -380,7 +380,7 @@ Dim NF As Integer
             Cad = "INSERT INTO tmppresencia(Id,idtra,Fecha,H1,codusu,Incidencias,NomTrabajador) VALUES " & Cad
             conn.Execute Cad
         End If
-    Next i
+    Next I
     Set ColTablas = Nothing
     
     
@@ -483,7 +483,8 @@ Dim NF As Integer
         
         
         
-        
+         'Octubre 2021
+         ' Blanca: Grabamos el año, justo despues del trabajador
          If vEmpresa.QueEmpresa = vbBelgida Then
             '1ª y BELGIç
             Label11.Caption = "Generando fichero txt"
@@ -500,6 +501,9 @@ Dim NF As Integer
                     
                     While Not miRsAux.EOF
                             Cad = Format(miRsAux!idTrabajador, "00000")  'trab
+                            'OCt 2021
+                            Cad = Cad & "," & Format(miRsAux!Fecha, "yyyy")  'año
+                            '
                             Cad = Cad & "," & Format(miRsAux!Fecha, "mm")  'mes
                             Cad = Cad & "," & Format(miRsAux!Fecha, "dd")  'dia
                             Cad = Cad & "," & Format(miRsAux!Hora, "hh")   'hora
