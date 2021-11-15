@@ -1286,7 +1286,7 @@ Dim rAlmuerzo As ADODB.Recordset
 Dim hAlmuerzo As Currency
 
 Dim CurrencyAux As Currency
-
+Dim VariableAux As String
         
     HorasmaximoNormalesDia = 9
     If vEmpresa.QueEmpresa = vbCatadau Then HorasmaximoNormalesDia = 8
@@ -1338,6 +1338,8 @@ Dim CurrencyAux As Currency
     'Los sabados, a partir de las 14:30 son extras
     '------------------------------------------------
     'Los sabados, que no sean festivos
+    Label3(14).Caption = "Vers diasema: 5"
+    Label3(14).Refresh
     Cad = "select fecha from marcajes where " & TipoAlziraEntreFechas
     Cad = Cad & ListaTrabajadores & " and date_format(fecha,'%w')=6 and festivo=0 GROUP BY 1"
     miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
@@ -1362,7 +1364,8 @@ Dim CurrencyAux As Currency
     
     
     For I = 1 To ColSabados.Count
-                
+            
+            
             'Veremos que trabajadores tienen un fichaje mas alla de las 14:30(HoraSabadoExtras )
             Cad = "select idtrabajador from  entradamarcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " and hora>" & DBSet(HoraSabadoExtras, "H")
             Cad = Cad & ListaTrabajadores & " GROUP BY 1"
@@ -1410,6 +1413,10 @@ Dim CurrencyAux As Currency
                 Cad = "Select marcajes.*,ExcesoDefecto from marcajes,incidencias where idinci=IncFinal AND fecha=" & DBSet(ColSabados.Item(I), "F") & " and idtrabajador in  (" & AuxTra & ")"
                 miRsAux.Open Cad, conn, adOpenForwardOnly, adLockOptimistic, adCmdText
                 While Not miRsAux.EOF
+                
+                    Label3(14).Caption = "sabados " & miRsAux!idTrabajador
+                    Label3(14).Refresh
+                
                     Debug.Print miRsAux!idTrabajador
                     'FALTA####
                     'If miRsAux!idTrabajador = 142 Then St op
@@ -1432,18 +1439,27 @@ Dim CurrencyAux As Currency
                     End If
                     
                     'Vere las fichadas de ese dia que superen las HoraSabadoExtras
-                    Cad = "Select * from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
-                    Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
+                    Cad = "Select entradamarcajes.*,hour(hora) lahora, ADDTIME(hora , '-24:00:00' ) horaajustada from entradamarcajes  where fecha=" & DBSet(miRsAux!Fecha, "F") & " AND idtrabajador =" & miRsAux!idTrabajador
+                    'Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") & "  and hora <='23:59:59' ORDER by hora desc"
+                    Cad = Cad & "  and hora>" & DBSet(HoraSabadoExtras, "H") '& "  and hora <='23:59:59' ORDER by hora desc"
+                    Cad = Cad & "  ORDER by hora desc"
                     
                     
                     RT.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
                     Fin = False
                     Do
-                        T1 = CCur(DevuelveValorHora(RT!Hora))
+                        If Val(RT!LaHora) >= 24 Then
+                            T1 = CCur(DevuelveValorHora(RT!horaajustada)) + 24
+                        Else
+                            'Lo que habia
+                            T1 = CCur(DevuelveValorHora(RT!Hora))
+                        End If
+                        
                         RT.MoveNext
                         If RT.EOF Then
                             T2 = CCur(DevuelveValorHora(HoraSabadoExtras))
                         Else
+                            
                             T2 = CCur(DevuelveValorHora(RT!Hora))
                             RT.MoveNext
                         End If
@@ -1577,6 +1593,9 @@ Dim CurrencyAux As Currency
         Cadena1 = ""
         I = 0
         While Not miRsAux.EOF
+        
+            
+        
            Cadena1 = Cadena1 & ", (" & miRsAux!idTrabajador & "," & DBSet(miRsAux!Fecha, "F") & ")"
            I = I + 1
            miRsAux.MoveNext
@@ -1584,8 +1603,9 @@ Dim CurrencyAux As Currency
            If I > 20 Then
            
            
-           
-           
+                Label3(14).Caption = "Areas-secciones 1. " & Format(Now, "hh:mm:ss")
+                Label3(14).Refresh
+            
 
                 'insert INTO tmpinformehorasmes(codusu,fecha,idTrabajador,DT,H1)
                 Cadena1 = Mid(Cadena1, 2)
