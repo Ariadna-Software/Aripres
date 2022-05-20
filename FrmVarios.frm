@@ -1222,7 +1222,8 @@ Dim Salir As Boolean
     '
     Cad = "DELETE FROM tmphorastipoalzira WHERE codusu =" & vUsu.Codigo
     conn.Execute Cad
-    
+    Cad = "DELETE FROM tmpcombinada  WHERE codusu =" & vUsu.Codigo
+    conn.Execute Cad
     
     Salir = True
     If ColTraba.Count = 0 Then
@@ -1234,7 +1235,7 @@ Dim Salir As Boolean
         For N = 1 To ColTraba.Count
             If Me.cboSeccion.Tag = 1 Then
                 'Proceso de horas. Horas normales, extra, extrucutrales...
-                ProcesoCalculaHorasTipoAlzira " AND idtrabajador in (" & ColTraba.Item(N) & ")"
+                ProcesoCalculaHorasTipoAlzira " AND idtrabajador in (" & ColTraba.Item(N) & ")", CStr(N) & " de  " & ColTraba.Count
                 
             Else
                 'Proceso de calculo de horas por conteo (sums)
@@ -1245,6 +1246,37 @@ Dim Salir As Boolean
                 Exit Sub
             End If
         Next
+        
+        'Diciembre 2021
+        'Comprobaremos si todos estan
+    
+        Label3(14).Caption = "Verificando datos presencia"
+        Label3(14).Refresh
+    
+        Cad = "insert into tmpcombinada (IdTrabajador ,Fecha,codusu)"
+        Cad = Cad & "Select marcajes.idtrabajador,fecha," & vUsu.Codigo & " codusu  FROM marcajes,trabajadores WHERE marcajes.idtrabajador=trabajadores.idtrabajador AND"
+        Cad = Cad & TipoAlziraEntreFechas
+        If cboSeccion.ListIndex >= 0 Then Cad = Cad & " AND seccion=" & cboSeccion.ItemData(cboSeccion.ListIndex)
+        
+        If Not EjecutaSQL(Cad) Then
+            MsgBox "No se puede verifiacar datos", vbExclamation
+        Else
+            'Vemos los counts de tmpcombinada y tmphorastipoalzira
+            Cad = "(select * from tmphorastipoalzira where codusu =" & vUsu.Codigo & " group by idtrabajador,fecha) as aaa"
+            
+            Cad = DevuelveDesdeBD("count(*)", Cad, "1", "1")
+            I = Val(Cad)
+        
+            Cad = DevuelveDesdeBD("count(*)", "tmpcombinada", "codusu", CStr(vUsu.Codigo))
+            
+            If Val(Cad) <> I Then
+                Cad = vbCrLf & "Contador tmphoras: " & Cad & vbCrLf & "Contador marcajes: " & I & vbCrLf & "El programa continuará"
+                MsgBox "Avise soporte" & vbCrLf & Cad, vbExclamation
+            End If
+        
+        
+        End If
+        
         
         CadenaDesdeOtroForm = txtFecha(5).Text & "|" & txtFecha(6).Text & "|" & IIf(Me.cboSeccion.ListIndex < 0, 1, 0) & "|"
     End If
@@ -1258,7 +1290,7 @@ End Sub
 
 
 'Llevara UN list de trabajadores 23,35,36....
-Private Sub ProcesoCalculaHorasTipoAlzira(ListaTrabajadores As String)
+Private Sub ProcesoCalculaHorasTipoAlzira(ListaTrabajadores As String, idProceso As String)
 Dim Insert As String
 Dim ColSabados As Collection
 Dim AuxTra As String
@@ -1288,14 +1320,20 @@ Dim hAlmuerzo As Currency
 Dim CurrencyAux As Currency
 Dim VariableAux As String
         
+        
+        
     HorasmaximoNormalesDia = 9
     If vEmpresa.QueEmpresa = vbCatadau Then HorasmaximoNormalesDia = 8
+    
+
+    If vEmpresa.QueEmpresa = vbAlzira Then HorasmaximoNormalesDia = 8     'Noviembre 2021.
     
     'Hay empresas CASTELDUC, que hacen una compensacion en nomina a final de mes. Y ya esta. No van dia a dia
     If vEmpresa.CompensaHorasNominaMES Then HorasmaximoNormalesDia = vEmpresa.CompensaMES_HorasDia   'HorasmaximoNormalesDia = 10
         
     
-    Label3(14).Caption = "Calculando horas-tipo-area"
+    idProceso = "(" & idProceso & ")"
+    Label3(14).Caption = "Calculando horas-tipo-area: " & idProceso
     Label3(14).Refresh
     
     
@@ -1338,7 +1376,7 @@ Dim VariableAux As String
     'Los sabados, a partir de las 14:30 son extras
     '------------------------------------------------
     'Los sabados, que no sean festivos
-    Label3(14).Caption = "Vers diasema: 5"
+    Label3(14).Caption = "Ver diasema: 5 " & idProceso
     Label3(14).Refresh
     Cad = "select fecha from marcajes where " & TipoAlziraEntreFechas
     Cad = Cad & ListaTrabajadores & " and date_format(fecha,'%w')=6 and festivo=0 GROUP BY 1"
@@ -1380,29 +1418,29 @@ Dim VariableAux As String
             'YA tengo los trabadores que el SABADO ha trabajado mas alla de las HoraSabadoExtras
             
             'Los que NO han ido mas alla HoraSabadoExtras
-                Cad = 1 'HORA estrucutrales
-                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas>" & HorasmaximoNormalesDia
-                Cad = Cad & ListaTrabajadores
-                If AuxTra <> "" Then
-                    AuxTra = Mid(AuxTra, 2)
-                    'En auxtra estan los que han trabajado mas alla de las 14:30
-                    Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
-    
-                End If
-                conn.Execute Insert & Cad
-                
-                Cad = 0 'HORA normales
-                Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas"
-                Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas<=" & HorasmaximoNormalesDia
-                Cad = Cad & ListaTrabajadores
-                If AuxTra <> "" Then
-                    'En auxtra estan los que han trabajado mas alla de las  HoraSabadoExtras
-                    Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
-                End If
-                conn.Execute Insert & Cad
-                
-          
+            Cad = 1 'HORA estrucutrales
+            Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",if(horastrabajadas>" & HorasmaximoNormalesDia & "," & HorasmaximoNormalesDia & ",horastrabajadas)"
+            Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas>" & HorasmaximoNormalesDia
+            Cad = Cad & ListaTrabajadores
+            If AuxTra <> "" Then
+                AuxTra = Mid(AuxTra, 2)
+                'En auxtra estan los que han trabajado mas alla de las 14:30
+                Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
+
+            End If
+            conn.Execute Insert & Cad
+            
+            Cad = 0 'HORA normales
+            Cad = "select " & vUsu.Codigo & ", idtrabajador,date_format(fecha,'%w') diasem,fecha," & Cad & ",horastrabajadas"
+            Cad = Cad & " from marcajes where fecha=" & DBSet(ColSabados.Item(I), "F") & " AND horastrabajadas<=" & HorasmaximoNormalesDia
+            Cad = Cad & ListaTrabajadores
+            If AuxTra <> "" Then
+                'En auxtra estan los que han trabajado mas alla de las  HoraSabadoExtras
+                Cad = Cad & " and not idtrabajador in  (" & AuxTra & ")"
+            End If
+            conn.Execute Insert & Cad
+            
+      
                 
             
             'Los que han trabajado el sabado REESTRUCTURAMOS sus horas
@@ -1600,10 +1638,10 @@ Dim VariableAux As String
            I = I + 1
            miRsAux.MoveNext
            If miRsAux.EOF Then I = 100
-           If I > 20 Then
+           If I > 60 Then
            
            
-                Label3(14).Caption = "Areas-secciones 1. " & Format(Now, "hh:mm:ss")
+                Label3(14).Caption = "Areas-secciones 1. " & idProceso & "  " & Format(Now, "hh:mm:ss")
                 Label3(14).Refresh
             
 
@@ -1624,7 +1662,7 @@ Dim VariableAux As String
         
         
         'Los que tienen mas de una zona
-        Label3(14).Caption = "Areas-secciones 2"
+        Label3(14).Caption = "Areas-secciones 2 " & idProceso
         Label3(14).Refresh
         Cad = "select idtrabajador, fecha, count(*) from "
         Cad = Cad & " ("

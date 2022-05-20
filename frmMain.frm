@@ -155,7 +155,7 @@ Begin VB.MDIForm frmMain
             Style           =   5
             Object.Width           =   1058
             MinWidth        =   1058
-            TextSave        =   "9:32"
+            TextSave        =   "13:51"
          EndProperty
       EndProperty
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
@@ -921,6 +921,7 @@ Private Sub MDIForm_Activate()
         PrimeraVez = False
         If Not vEmpresa Is Nothing Then
             Me.Tag = "Aripres   ver. " & App.Major & "." & App.Minor & "." & Format(App.Revision, "00") & "   -   " & vEmpresa.NomEmpresa & "   -   " & vUsu.Nombre
+            If ForzarBBDD <> "" Then Me.Tag = "****************         Programa horas. " & App.Major & "." & App.Minor & "." & Format(App.Revision, "00") & "   -   " & vEmpresa.NomEmpresa & "   -   " & vUsu.Nombre & "     *********"
             Screen.MousePointer = vbHourglass
             Caption = ".................  Leyendo datos BD ............................"
             DoEvents
@@ -973,6 +974,15 @@ On Error Resume Next
     Me.Top = 0
     Me.Width = 12000
     Me.Height = 9000
+    
+    
+    
+    'Abril 2022. Empresa Forzada por fichero
+    If ForzarBBDD <> "" Then
+        If Dir(App.Path & "\aripres_fon.jpg", vbArchive) <> "" Then CargaFndo App.Path & "\aripres_fon.jpg"
+    End If
+    
+    
     
     If Toolbar1.ImageList Is Nothing Then Set Toolbar1.ImageList = ImageList22
     
@@ -1070,7 +1080,7 @@ On Error Resume Next
    
    
     Me.StatusBar1.Panels(2).Text = "Empresa: " & vEmpresa.NomEmpresa & "            Usuario:    " & vUsu.Nombre
-    
+    If ForzarBBDD <> "" Then Me.StatusBar1.Panels(2).Text = "**** HORAS ***       " & Me.StatusBar1.Panels(2).Text
 
     
     
@@ -1402,7 +1412,7 @@ Private Sub mnMantenUsuarios_Click()
         conn.Close
         'Abrir otra conexion
         If Not AbrirConnParaUsuarios() Then
-            AbrirConexion
+            AbrirConexion ""
             frmEmpresa.Show vbModal
             End
         End If
@@ -1415,7 +1425,7 @@ Private Sub mnMantenUsuarios_Click()
     If vEmpresa.Server <> "" Then
         conn.Close
         'Abrir otra conexion
-        AbrirConexion
+        AbrirConexion ""
     End If
     
 End Sub
@@ -2015,5 +2025,11 @@ End Sub
 
 
 
-
+Private Sub CargaFndo(Archivo As String)
+    On Error Resume Next
+    Me.Picture = LoadPicture(Archivo)
+    
+    
+    If Err.Number <> 0 Then Err.Clear
+End Sub
 

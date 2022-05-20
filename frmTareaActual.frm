@@ -656,7 +656,7 @@ Private Sub cmdExcel_Click()
     If cd1.FileName <> "" Then
         
         Cad = """" & App.Path & "\AripresImpor.exe" & """ ""/" & cd1.FileName & """"
-        
+        If ForzarBBDD <> "" Then Cad = Cad & "  /BD:" & ForzarBBDD
         Me.Caption = "Leyendo EXCEL"
         DoEvents
     

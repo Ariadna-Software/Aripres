@@ -60,8 +60,12 @@ Public AnchoLogin As String  'Para fijar los anchos de columna
 
 
 
+
+
 Public Servidor As String
 Public ValorBD As String
+Public ForzarBBDD As String
+
 
 Public VariableCompartida As String
 
@@ -121,19 +125,29 @@ Public Sub Main()
 
 
      
+     'Abril 2022
+     '------------------------
+     'Castelduc quiere dos empresas con el mismo exe
+     'para eso
+     ForzarBBDD = ""
+     ValorBD = App.EXEName
+     ValorBD = ValorBD & "_FOR"
+     ValorBD = Dir(App.Path & "\" & ValorBD & ".*")
+     '                       los 3 ultimos caracters sera la BBDD AripresX
+
+     If ValorBD <> "" Then ForzarBBDD = "aripres" & Val(Right(ValorBD, 3))
+     
+        
      GetWinVersion
      ValorBD = VersionSO
      
+     
+     
      'obric la conexio
-    If AbrirConexion() = False Then
+    If AbrirConexion(ForzarBBDD) = False Then
         MsgBox "La aplicación no puede continuar sin acceso a los datos. ", vbCritical
         End
     End If
-
-    
-    
-    
-
 
     FormatoFecha = "yyyy-mm-dd"
     teclaBuscar = 43
@@ -160,7 +174,7 @@ Public Sub Main()
         conn.Close
         'Abrir otra conexion
         If Not AbrirConnParaUsuarios() Then
-            AbrirConexion
+            AbrirConexion ForzarBBDD
             frmEmpresa.Show vbModal
             End
         End If
@@ -173,7 +187,7 @@ Public Sub Main()
     If vEmpresa.Server <> "" Then
         conn.Close
         'Abrir otra conexion
-        AbrirConexion
+        AbrirConexion ForzarBBDD
     End If
     
     
@@ -213,7 +227,7 @@ End Function
 
 
 
-Public Function AbrirConexion() As Boolean
+Public Function AbrirConexion(ByVal ForzarBBDD As String) As Boolean
 Dim Cad As String
 On Error GoTo eAbrirConexion
     
@@ -260,6 +274,32 @@ On Error GoTo eAbrirConexion
     
     conn.ConnectionString = Cad
     conn.Open
+  
+    If ForzarBBDD <> "" Then
+        NumRegElim = InStr(1, conn.ConnectionString, "DATABASE=")
+        If NumRegElim = 0 Then
+            Cad = ";DATABASE    " & Cad
+            Err.Raise 513, , Cad
+        End If
+        
+        Cad = Mid(conn.ConnectionString, 1, NumRegElim - 1)
+        ForzarBBDD = Cad & "DATABASE=" & ForzarBBDD & ""
+        
+        NumRegElim = InStr(NumRegElim + 3, conn.ConnectionString, ";")
+        If NumRegElim = 0 Then
+            Cad = "Fin server  " & conn.ConnectionString
+            Err.Raise 513, , Cad
+        End If
+        
+        Cad = Mid(conn.ConnectionString, NumRegElim)
+        ForzarBBDD = ForzarBBDD & Cad
+    
+        conn.Close
+        conn.ConnectionString = ForzarBBDD
+        conn.Open
+    
+    End If
+    
     AbrirConexion = True
     Exit Function
     

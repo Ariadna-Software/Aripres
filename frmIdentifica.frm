@@ -59,6 +59,27 @@ Begin VB.Form frmIdentifica
       Width           =   2655
    End
    Begin VB.Label Label1 
+      Alignment       =   1  'Right Justify
+      BackStyle       =   0  'Transparent
+      Caption         =   "HORAS"
+      BeginProperty Font 
+         Name            =   "Tahoma"
+         Size            =   72
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      ForeColor       =   &H000000C0&
+      Height          =   2055
+      Index           =   5
+      Left            =   120
+      TabIndex        =   7
+      Top             =   120
+      Width           =   5175
+   End
+   Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
       Caption         =   "Usuario"
       BeginProperty Font 
@@ -94,11 +115,11 @@ Begin VB.Form frmIdentifica
       ForeColor       =   &H00FFFFFF&
       Height          =   855
       Index           =   3
-      Left            =   2880
+      Left            =   3480
       TabIndex        =   5
-      Top             =   360
+      Top             =   240
       Visible         =   0   'False
-      Width           =   4695
+      Width           =   6135
    End
    Begin VB.Label Label1 
       BackStyle       =   0  'Transparent
@@ -212,7 +233,7 @@ Private Sub Form_Load()
     'Text1(1).Text = "aritel"
     
     Label1(4).Caption = "Versión " & App.Major & "." & App.Minor & "." & App.Revision
-    
+    Label1(5).Visible = ForzarBBDD <> ""
     Text1(0).Text = ""
     Text1(1).Text = ""
     PrimeraVez = True
@@ -228,6 +249,13 @@ End Sub
 
 Private Sub CargaImagen()
     On Error Resume Next
+    
+    
+    If ForzarBBDD <> "" Then
+        Label1(3).Visible = True
+        Exit Sub
+    End If
+    
     Me.Image1 = LoadPicture(App.Path & "\arifon2.dll")
     If Err.Number <> 0 Then
         MsgBox Err.Description & vbCrLf & vbCrLf & "Error cargando", vbCritical
