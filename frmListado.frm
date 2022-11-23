@@ -1399,6 +1399,15 @@ Begin VB.Form frmListado
          Top             =   960
          Width           =   1215
       End
+      Begin VB.Label lblIndicador 
+         Caption         =   "Label5"
+         Height          =   255
+         Index           =   0
+         Left            =   120
+         TabIndex        =   381
+         Top             =   7800
+         Width           =   3255
+      End
       Begin VB.Label Label1 
          Caption         =   "Area"
          BeginProperty Font 
@@ -5262,6 +5271,9 @@ Dim I As Integer
 Dim info As Integer
 Dim Aux As String
 
+Dim ParaAlzira As String
+
+
     NumPa = 0
     CadPa = ""
     vSQL = ""
@@ -5285,35 +5297,42 @@ Dim Aux As String
     vSQL = "({jornadassemanalesalz.fecha} >= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & ")"
     Cad = "Desde " & F1
     
+    ParaAlzira = "jornadassemanalesalz.fecha >= " & DBSet(F1, "F")
+    
+    
     F1 = Now
     If txtFec(17).Text <> "" Then F1 = CDate(txtFec(17).Text)
     NumPa = NumPa + 1
     CadPa = CadPa & "FechaFin= """ & Format(F1, "dd/mm/yyyy") & """|"
     vSQL = vSQL & " AND {jornadassemanalesalz.fecha} <= Date(" & Year(F1) & "," & Month(F1) & "," & Day(F1) & "))"
     Cad = Cad & " hasta " & F1
-  
-        
+    'CSV       alizra
+    ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.fecha <= " & DBSet(F1, "F")
     
     'Trabajador
     If txtTrab(18).Text <> "" Then
         Cad = Cad & "   Desde " & txtTrab(18).Text & " " & txtDT(18).Text
+        ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.idtrabajador >= " & txtTrab(18).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(1, 18, "{jornadassemanalesalz.idtrabajador} >=", " AND ")
     
     If txtTrab(19).Text <> "" Then
         Cad = Cad & "hasta " & txtTrab(19).Text & " " & txtDT(19).Text
+        ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.idtrabajador <= " & txtTrab(19).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(1, 19, "{jornadassemanalesalz.idtrabajador} <=", " AND ")
     
     'Seccion
     If txtSecc(8).Text <> "" Then
         Cad = Cad & "   Desde " & txtSecc(8).Text & " " & txtDSecc(8).Text
+        ParaAlzira = ParaAlzira & " AND trabajadores.Seccion >= " & txtSecc(8).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(2, 8, "{trabajadores.Seccion} >=", " AND ")
     
     
     If txtSecc(9).Text <> "" Then
         Cad = Cad & "hasta " & txtSecc(9).Text & " " & txtDSecc(9).Text
+        ParaAlzira = ParaAlzira & " AND trabajadores.Seccion <= " & txtSecc(9).Text
     End If
     vSQL = vSQL & DesdeHastaSelect(2, 9, "{trabajadores.Seccion} <=", " AND ")
     
@@ -5332,9 +5351,11 @@ Dim Aux As String
             If List1.Selected(0) Then
                 Cad = Trim(Cad & "      " & List1.List(0))
                 vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=0 "
+                ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.ParaEmpresa = 0"
             Else
                 Cad = Trim(Cad & "      " & List1.List(1))
                 vSQL = vSQL & " AND {jornadassemanalesalz.ParaEmpresa}=1 "
+                ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.ParaEmpresa = 1"
             End If
         End If
     End If
@@ -5367,6 +5388,7 @@ Dim Aux As String
         'para el SQL
         Aux = Mid(Aux, 2)
         vSQL = vSQL & " AND {jornadassemanalesalz.codarea} in [ " & Aux & "]"
+        ParaAlzira = ParaAlzira & " AND jornadassemanalesalz.codarea IN (" & Aux & ")"
     End If
     
     
@@ -5420,6 +5442,31 @@ Dim Aux As String
         .Opcion = 65
         .Show vbModal
     End With
+    
+    
+    If Opcion = 17 And vEmpresa.QueEmpresa = 2 And chkDesglosaDias(0).Value = 1 Then
+    
+        If MsgBox("Generar CSV de exportación de marcajes?", vbQuestion + vbYesNoCancel) = vbYes Then
+
+            lblIndicador(0).Caption = "Generando fichero CSV.  Leyendo BBDD"
+            lblIndicador(0).Refresh
+            
+            Screen.MousePointer = vbHourglass
+            vSQL = CStr(ParaAlzira)
+            
+       
+            GeneraFicheroCSV_Alzira
+            
+            
+            Screen.MousePointer = vbDefault
+        End If
+    
+    End If
+    lblIndicador(0).Caption = ""
+    
+    
+    
+    
     
 End Sub
 
@@ -6517,7 +6564,7 @@ Dim IndiceCancelar As Integer
             
             
         txtFec(16).Text = CadenaDesdeOtroForm
-        
+        lblIndicador(0).Caption = ""
         Caption = "Listado"
         
         Cad = "select NomSubEmpre descripcion ,idSubEmr id from areasubempresa order by 1"
@@ -7223,7 +7270,7 @@ Dim HorasDia As Currency
                 
             
             vSQL = "INSERT INTO tmpCombinada(codusu,idTrabajador,Fecha,auxiliar,HT,HE,HR,idinci,H1,H2,H3,H4,H5,H6,H7,H8,H9,H10,H11,H12,H13,H14,H15,H16) VALUES (" & vUsu.Codigo & ","
-            vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "'," & vH.TotalHoras & ","
+            vSQL = vSQL & miRsAux!idTrabajador & ",'" & Format(miRsAux!Fecha, FormatoFecha) & "'," & DBSet(vH.TotalHoras, "N") & ","
             Cad = ""
         End If
         
@@ -8769,7 +8816,7 @@ Dim PosiblesErrores As String
         VectorDiasTrab = CStr(DiasTrabajadosPorMes)  'Lo copio
        
         
-        'If miRsAux!idTrabajador = 101 Then Stop
+        If miRsAux!idTrabajador = 183 Then Debug.Assert False
         'If miRsAux!idTrabajador = 146 Then St op
         
         'Veremos si ha trabajado algun dia festivo fesivos.. FESTIVO
@@ -10040,4 +10087,155 @@ Private Sub CargaAreaas()
     Wend
     miRsAux.Close
     
+End Sub
+
+Private Sub GeneraFicheroCSV_Alzira()
+Dim RN As ADODB.Recordset
+Dim Horas As Currency
+Dim TotHoras As Currency
+Dim Coste As Currency
+Dim ImpAux As Currency
+
+    On Error GoTo eGeneraFicheroCSV_Alzira
+    
+    I = -1
+    Set miRsAux = New ADODB.Recordset
+    Set RN = New ADODB.Recordset
+    lblIndicador(0).Caption = "Abrir registros jornadas"
+    lblIndicador(0).Refresh
+    Cad = "SELECT  jornadassemanalesalz.fecha,jornadassemanalesalz.idtrabajador, Categorias.Importe1"
+    Cad = Cad & " , Trabajadores.PorcAntiguedad, Categorias.Importe2, Trabajadores.PorcSS, Trabajadores.IdTrabajador,"
+    Cad = Cad & " Trabajadores.NomTrabajador , Trabajadores.PorcIRPF, categorias.Importe3, jornadassemanalesalz.TipoHoras, Trabajadores.IRPFempresa"
+    Cad = Cad & " , sum( if (jornadassemanalesalz.TipoHoras =0,jornadassemanalesalz.horastrabajadas,0)) horas"
+    Cad = Cad & " , sum(if (jornadassemanalesalz.TipoHoras =1,jornadassemanalesalz.horastrabajadas,0)) horasEs"
+    Cad = Cad & " , sum(if (jornadassemanalesalz.TipoHoras =2,jornadassemanalesalz.horastrabajadas,0)) horasEx"
+    Cad = Cad & "  FROM   jornadassemanalesalz INNER JOIN trabajadores ON jornadassemanalesalz.idtrabajador=Trabajadores.IdTrabajador"
+    Cad = Cad & " INNER JOIN categorias ON Trabajadores.idCategoria=Categorias.IdCategoria"
+    Cad = Cad & " INNER JOIN secciones secciones ON Trabajadores.Seccion=secciones.IdSeccion"
+    Cad = Cad & " WHERE  " & vSQL
+
+    Cad = Cad & "  GROUP BY  jornadassemanalesalz.fecha, jornadassemanalesalz.idtrabajador"
+    Cad = Cad & "  ORDER BY  jornadassemanalesalz.fecha, jornadassemanalesalz.idtrabajador"
+    
+    RN.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+    DoEvents
+    If RN.EOF Then
+        RN.Close
+        Set RN = Nothing
+        MsgBox "Sin registros", vbExclamation
+        Exit Sub
+    End If
+    
+
+    I = FreeFile
+    Cad = App.Path & "\marcajestmp.csv"
+    Open Cad For Output As #I
+    
+    Print #I, "idTrabajador;Fecha;horarR;HoraAj;idin;Reloj;horas;coste;"
+    vSQL = ""
+    While Not RN.EOF
+        lblIndicador(0).Caption = RN!Fecha & "  -  " & RN!idTrabajador
+        lblIndicador(0).Refresh
+        Coste = 0
+        TotHoras = 0
+        
+        
+        'Horas normales
+        Horas = RN!Horas
+        If Horas > 0 Then
+            TotHoras = TotHoras + Horas
+            ImpAux = Round(Horas * RN!Importe1, 2)
+            Coste = Coste + ImpAux
+        End If
+        
+        
+        'Horas estructurales
+        Horas = RN!horasEs
+        If Horas > 0 Then
+            TotHoras = TotHoras + Horas
+            ImpAux = Round(Horas * RN!Importe2, 2)
+            Coste = Coste + ImpAux
+        End If
+        
+        
+        'Horas extra
+        Horas = RN!horasEx
+        If Horas > 0 Then
+            TotHoras = TotHoras + Horas
+            ImpAux = Round(Horas * RN!Importe3, 2)
+            Coste = Coste + ImpAux
+        End If
+        
+        
+        'Antiugedad
+        If DBLet(RN!PorcAntiguedad, "N") > 0 Then
+            ImpAux = Round((Coste * RN!PorcAntiguedad) / 100, 2)
+            Coste = Coste + ImpAux
+        End If
+        
+        'Coste SS empresa
+        If DBLet(RN!IRPFempresa, "N") > 0 Then
+            ImpAux = Round((Coste * RN!IRPFempresa) / 100, 2)
+            Coste = Coste + ImpAux
+        End If
+        
+        Cad = " SELECT idtrabajador,fecha,horareal, hora,idinci,reloj ,if(hour(Hora)>=24,ADDTIME(hora , '-24:00:00' ),Hora) hajus "
+        Cad = Cad & " ,if(hour(Horareal)>=24,ADDTIME(Horareal , '-24:00:00' ),Horareal)  hreal  from entradamarcajes where "
+        Cad = Cad & " Fecha =" & DBSet(RN!Fecha, "F") & " AND idtrabajador=" & RN!idTrabajador
+        Cad = Cad & "   order by fecha,idtrabajador,hour(Hora),hora "
+        miRsAux.Open Cad, conn, adOpenForwardOnly, adLockPessimistic, adCmdText
+        
+        While Not miRsAux.EOF
+            Cad = ""
+            vSQL = miRsAux.Fields(0) & ";"
+            vSQL = vSQL & Format(miRsAux!Fecha, "dd/mm/yyyy") & ";"
+            vSQL = vSQL & Format(miRsAux!hreal, "hh:nn") & ";"
+            vSQL = vSQL & Format(miRsAux!hajus, "hh:nn") & ";"
+            vSQL = vSQL & miRsAux!IdInci & ";"
+            vSQL = vSQL & miRsAux!Reloj & ";"
+            vSQL = vSQL & TotHoras & ";" & Coste & ";"
+            Print #I, vSQL
+            miRsAux.MoveNext
+        Wend
+        miRsAux.Close
+        If Cad <> "" Then
+            Debug.Assert False 'eso es que no ha enciotrado ninguna entrada
+            vSQL = RN!idTrabajador & ";"
+            vSQL = vSQL & Format(RN!Fecha, "dd/mm/yyyy") & ";;;0;0;"
+            vSQL = vSQL & TotHoras & ";" & Coste & ";"
+            Print #I, vSQL
+            
+        End If
+        
+        RN.MoveNext
+    Wend
+    Close #I
+    I = -1
+    RN.Close
+    
+    If vSQL <> "" Then
+        'Se han generado datos
+        lblTitulo(11).Caption = "Grabando fichero"
+        lblTitulo(11).Refresh
+        
+        Screen.MousePointer = vbHourglass
+        
+        vSQL = "Marcajes" & Format(Now, "yyyymmdd") & ".csv"
+        frmPpal.cd1.CancelError = True
+        frmPpal.cd1.FileName = vSQL
+        frmPpal.cd1.ShowSave
+        If frmPpal.cd1.FileName <> "" Then
+            FileCopy App.Path & "\marcajestmp.csv", frmPpal.cd1.FileName
+    
+        End If
+    End If
+eGeneraFicheroCSV_Alzira:
+    If Err.Number <> 0 Then
+        If Err.Number <> 32755 Then
+            MuestraError Err.Number, , vSQL
+        End If
+    End If
+    If I > 0 Then Close #I
+    Set miRsAux = Nothing
+    Set RN = Nothing
 End Sub

@@ -1875,13 +1875,17 @@ Dim UltimoTicaje As Date
 Set Rss = New ADODB.Recordset
 
 'Seleccionamos todas las horas de este
+Cad = ",hour(hora) lahora,minute(hora) minutos,second(hora) segundos , concat(horareal,' ') LaReal,if(hora<'0:00:00',1,0) Negativa"
 If RevisionEnMarcajes Then
 
-    Cad = "Select * from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
+    Cad = "Select EntradaMarcajes.* " & Cad
+    Cad = Cad & " from EntradaMarcajes WHERE idmarcaje=" & vMar.Entrada
     'cad = cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
     Cad = Cad & " ORDER BY Hora"
 Else
-    Cad = "Select * from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
+    '
+    Cad = "Select EntradaFichajes.* " & Cad
+    Cad = Cad & " from EntradaFichajes WHERE IdTrabajador=" & vMar.idTrabajador
     Cad = Cad & " AND Fecha='" & Format(vMar.Fecha, FormatoFecha) & "'"
     Cad = Cad & " ORDER BY Hora"
 
