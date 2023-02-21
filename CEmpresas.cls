@@ -907,9 +907,12 @@ End Property
 '****   LEER  ***
 Public Function Leer(vIdIdEmpresa As Long) As Byte
 Dim I As Integer
+Dim V As Variant
+Dim Msg As String
 
     On Error GoTo Err3
-
+    Msg = ""
+    
     SQL = "SELECT * FROM empresas"
     SQL = SQL & " WHERE "
     SQL = SQL & " IdEmpresa = " & vIdIdEmpresa
@@ -1051,13 +1054,29 @@ Dim I As Integer
             mvarSolicitudVacaciones = DBLet(RS!SolicitudVacaciones, "N") = 1
             
             
-            mvarMuestraTrabajadoresSinFicharMarcajesPdtes = DBLet(RS!MosrtrarBajasEnPendientes, "N") = 1
+            'mvarMuestraTrabajadoresSinFicharMarcajesPdtes = DBLet(RS!MosrtrarBajasEnPendientes, "N") = 1
+            mvarMuestraTrabajadoresSinFicharMarcajesPdtes = False
+            If CampoNuevoBD(RS, "MosrtrarBajasEnPendientes", "B", V, Msg) Then mvarMuestraTrabajadoresSinFicharMarcajesPdtes = V
+            
+            
+            
+            
+            
+            
             
                    
             Leer = 0
     End If
  
     RS.Close
+    
+    
+    
+    If Msg <> "" Then
+        Msg = "Faltan parametros. " & Msg & vbCrLf & vbCrLf & "El programa continuará"
+        MsgBox Msg, vbExclamation
+    End If
+    
     
     If Leer = 0 Then
         FijaCentrosA3
@@ -1191,4 +1210,38 @@ Private Sub Class_Terminate()
 End Sub
 
 
+
+
+
+Private Function CampoNuevoBD(ByRef R As ADODB.Recordset, campo As String, Tipo As String, ByRef ValorDevuelto, ByRef CadenaMsg As String) As Boolean
+    On Error Resume Next
+        
+    ValorDevuelto = R(campo)
+    If Err.Number <> 0 Then
+        CadenaMsg = CadenaMsg & vbCrLf & campo
+        
+        Err.Clear
+        CampoNuevoBD = False
+        
+    Else
+        'OK
+        If Tipo = "B" Then
+            
+            ValorDevuelto = CBool(ValorDevuelto = 1)
+        Else
+            If IsNull(R(campo)) Then
+                If Tipo = "T" Then
+                    ValorDevuelto = ""
+                Else
+                    If Tipo = "F" Then
+                        ValorDevuelto = "'1900-01-01'"
+                    Else
+                        ValorDevuelto = 0
+                    End If
+                End If
+            End If
+        End If
+        CampoNuevoBD = True
+    End If
+End Function
 
